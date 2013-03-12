@@ -23,8 +23,6 @@ goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product']);
 goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.dom']);
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub']);
-goog.addDependency('../../../apps/pstj/tpl/en/pstj.soy.js', ['pstj.templates'], ['soy']);
-goog.addDependency('../../../apps/pstj/tpl/en/select.soy.js', ['pstj.select'], ['soy']);
 goog.addDependency('../../../apps/pstj/ui/clock.js', ['pstj.ui.Clock'], ['goog.ui.Component', 'pstj.ds.IClock', 'pstj.ds.TimeProvider']);
 goog.addDependency('../../../apps/pstj/ui/coupledinput.js', ['pstj.ui.CoupledInput'], ['goog.Disposable', 'goog.dom', 'goog.dom.classes', 'goog.dom.forms', 'goog.events', 'goog.events.EventType', 'goog.ui.LabelInput']);
 goog.addDependency('../../../apps/pstj/ui/custombuttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.dom.a11y', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);

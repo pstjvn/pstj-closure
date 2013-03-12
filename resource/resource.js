@@ -198,32 +198,36 @@ pstj.resource.Resource.prototype.enableCache = function(enable) {
 
 /**
  * Allows to predefine the call backs for the named 'run' method. This is
- * useful mostly for application code that has only one consumer for any
- * particular request.
+ *   useful mostly for application code that has only one consumer for any
+ *   particular request.
  * @param {!string} run_name The name of the run to register default callback
- * for.
- * @param {function(Error, ({string|Object})): void} callback The callback
- * function to execute for the named request if no other callback is provided
- * with the request.
+ *   for.
+ * @param {function(Error, (Object|Array)): void} callback The callback
+ *   function to execute for the named request if no other callback is
+ *   provided with the request.
  */
-pstj.resource.Resource.prototype.registerRunCallback = function(run_name, callback) {
+pstj.resource.Resource.prototype.registerRunCallback = function(run_name,
+  callback) {
   this.run_registry_[run_name] = callback;
 };
 
 /**
  * Retrieves a resource by its name.
  * @param  {Object} data The resource to retrieve.
- * @param  {function(Error, string|Object|Array):void=} callback The
+ * @param  {function(Error, (Object|Array)): void=} callback The
  *   callback to execute when a reply arrives.
  * @param {boolean=} opt_cache_request If set to true the response will be
  *   cached and will be dumped only when {@link #dumpCache} method is
  *   called.
  */
-pstj.resource.Resource.prototype.get = function(data, callback, opt_cache_request) {
+pstj.resource.Resource.prototype.get = function(data, callback,
+  opt_cache_request) {
   if (!goog.isDefAndNotNull(data) || !goog.isString(data[pstj.resource.run_])) {
     throw new Error('Cannot create request without "run" value');
   }
-  var url = pstj.resource.execPath_ + '?' + pstj.resource.buildRequestParams(data);
+  var url = pstj.resource.execPath_ + '?' + pstj.resource.buildRequestParams(
+    data);
+
   if (!goog.isFunction(callback) && goog.isFunction(
     this.run_registry_[data[pstj.resource.run_]])) {
     callback = this.run_registry_[data[pstj.resource.run_]];
@@ -252,7 +256,7 @@ pstj.resource.Resource.prototype.dumpCache = function() {
 /**
  * Send data to the server as a POST request.
  * @param {Object} data The resource payload.
- * @param {function(Error, string|Object): void=} callback The callback to
+ * @param {function(Error, (Object|Array)): undefined} callback The callback to
  *   execute when a reply arrives.
  */
 pstj.resource.Resource.prototype.post = function(data, callback) {
@@ -266,17 +270,17 @@ pstj.resource.Resource.prototype.post = function(data, callback) {
 /**
  * Sends the request using xhrio package.
  * @param {!string} url The URL to send the request to.
- * @param {function(Error, *):void} callback The callback to apply on the
- *   result.
+ * @param {function(Error, (Object|Array)):void} callback The callback to
+ *   apply on the result.
  * @param {string=} method The HTTP method to use to place the request. The
  *   default is GET.
- * @param {ArrayBuffer|Blob|Document|FormData|GearsBlob|string=} data The
- *   data to send as part of the request.
+ * @param {ArrayBuffer|Blob|Document|FormData|GearsBlob|string=} data The data
+ *   to send as part of the request.
  * @param {boolean=} cache_response If true the response will be cached and
  *   used subsequently.
  * @protected
  */
-pstj.resource.Resource.prototype.sendRequest = function(url, 
+pstj.resource.Resource.prototype.sendRequest = function(url,
     callback, method, data, cache_response) {
   goog.net.XhrIo.send(url, goog.bind(this.handleResponse, this, callback,
     cache_response, url), method, data);
@@ -284,15 +288,16 @@ pstj.resource.Resource.prototype.sendRequest = function(url,
 
 /**
  * Handles the response from the server.
- * @param {function(Error, Object):void} callback The callback function for
- *   this particular request.
- * @param {boolean} cache If true - cache the result and use it
- *   subsequently.
+ * @param {function(Error, (Object|Array)): void} callback The callback function
+ *   for this particular request.
+ * @param {boolean} cache If true - cache the result and use it subsequently.
  * @param {string} url The URL served, used for the cache key.
  * @param {goog.events.Event} ev The XHR complete event.
  * @protected
  */
-pstj.resource.Resource.prototype.handleResponse = function(callback, cache, url, ev) {
+pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
+  url, ev) {
+
   var xhr = /** @type {goog.net.XhrIo} */ (ev.target);
   var response = null;
   var error = null;
@@ -304,11 +309,11 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache, url,
   } catch (e) {
     error = e;
   }
-  if (!goog.isDefAndNotNull(response)) {
+  if (!goog.isDefAndNotNull(response) || goog.isString(response)) {
     error = new Error('The result of JSON evaluation was not useful');
   }
   if (goog.isFunction(callback)) {
-    callback(error, response);
+    callback(error, /** @type {Array|Object} */ (response));
   }
 };
 

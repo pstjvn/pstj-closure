@@ -1,3 +1,9 @@
+goog.provide('pstj.ui.Clock');
+
+goog.require('goog.ui.Component');
+goog.require('pstj.ds.IClock');
+goog.require('pstj.ds.TimeProvider');
+
 /**
  * @fileoverview Provides UI for a clock. Represents a very simplistic UI
  * component that simply updates the rendered time each time the time provider
@@ -8,23 +14,14 @@
  * @author  regardingscot@gmail.com (Peter StJ)
  */
 
-goog.provide('pstj.ui.Clock');
-
-goog.require('goog.ui.Component');
-goog.require('pstj.ds.IClock');
-goog.require('pstj.ds.TimeProvider');
-
 /**
  * Class that implements the IClock interface, that is an UI representation of
- * a system clock that can expose its setTime method to be called by the time
- * provider and update the UI that presents the current time to the user.
- *
+ *   a system clock that can expose its setTime method to be called by the
+ *   time provider and update the UI that presents the current time to the
+ *   user.
  * @constructor
- *
  * @implements {pstj.ds.IClock}
- *
  * @extends {goog.ui.Component}
- *
  * @param {goog.dom.DomHelper=} odh Optional dom helper.
  */
 pstj.ui.Clock = function(odh) {
@@ -34,10 +31,8 @@ goog.inherits(pstj.ui.Clock, goog.ui.Component);
 
 /**
  * Flag indicating if the instance is registered to receive time updates from
- * the global time provider
- *
+ *   the global time provider
  * @type {!boolean}
- *
  * @private
  */
 pstj.ui.Clock.prototype.registeredForTimeUpdate_ = false;
@@ -72,11 +67,8 @@ pstj.ui.Clock.prototype.disposeInternal = function() {
 
 /**
  * Implementation of the IClock interface.
- *
- * @param {!number} time The time in the global time provider as it was set to
- * during the last update.
- *
- * @protected
+ * @param {number} time The time in the global time provider as it was set to
+ *   during the last update.
  */
 pstj.ui.Clock.prototype.setTime = function(time) {
   if (this.isInDocument()) {

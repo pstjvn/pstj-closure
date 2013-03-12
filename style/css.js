@@ -1,14 +1,20 @@
+goog.provide('pstj.style.css');
+
+goog.require('goog.dom');
+goog.require('goog.userAgent');
+goog.require('goog.userAgent.product');
+
 /**
  * @fileoverview Provides utilities for CSS declarative interface handling. Main
  * usage could be as follow.
   <code>
-  css.getTranslation(Xoffset, Yoffset)
+    css.getTranslation(Xoffset, Yoffset)
   </code>
 
   should return:
 
   <pre>
-  [-*-]transform[3d]: translate*:(Xpx,Ypx[,Zpx]);
+    [-*-]transform[3d]: translate*:(Xpx,Ypx[,Zpx]);
   </pre>
 
  * NOTE: capabilities are declaratively determined using the caniuse.com
@@ -17,16 +23,10 @@
  *
  * @author  regardingscot@gmail.com (Peter StJ)
  */
-goog.provide('pstj.style.css');
-
-goog.require('goog.dom');
-goog.require('goog.userAgent');
-goog.require('goog.userAgent.product');
-
 
 /**
- * Will be true if the host supports transform.
- * Information deducted from canIuse.com.
+ * Will be true if the host supports transform. Information deducted from
+ *   canIuse.com.
  * @type {boolean}
  */
 pstj.style.css.canUseTransform = (function() {

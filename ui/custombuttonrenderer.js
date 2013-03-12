@@ -9,11 +9,12 @@ goog.require('goog.ui.ButtonRenderer');
  * renderer. This renderer is used with 'div' tags to make buttons out of
  * them and make them behave like such, i.e. receive focus, receive aria roles
  * and receive outline.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
  */
 
-
 /**
- * Provides custom renderer for the text buttons.
+ * Provides custom renderer for the text buttons to match our styling needs.
  * @constructor
  * @extends {goog.ui.ButtonRenderer}
  */
@@ -42,7 +43,7 @@ pstj.ui.CustomButtonRenderer.prototype.getAriaRole = function() {
 
 /**
  * Sets the value for the button text.
- * @param {Element} el    The button element.
+ * @param {Element} el The button element.
  * @param {string} value The new text value of the button.
  */
 pstj.ui.CustomButtonRenderer.prototype.setValue = function(el, value) {

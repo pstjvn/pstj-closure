@@ -29,13 +29,13 @@ goog.inherits(pstj.ui.Templated, goog.ui.Component);
  * @inheritDoc
  */
 pstj.ui.Templated.prototype.createDom = function() {
-  this.decorateInternal(/** @type {!Element} */ (this.getTemplateCompiled()));
+  this.decorateInternal(/** @type {Element} */ (this.getTemplateCompiled()));
 };
 
 /**
  * Returns the widget's HTML.
  * @protected
- * @return {!string} The HTML of the template used to generate the DOM tree.
+ * @return {string} The HTML of the template used to generate the DOM tree.
  */
 pstj.ui.Templated.prototype.getTemplate = function() {
   return '<div></div>';
@@ -44,7 +44,7 @@ pstj.ui.Templated.prototype.getTemplate = function() {
 /**
  * The Node generate from the HTML of the template.
  * @protected
- * @return {!Node} The DOM node the widget tree is attached to.
+ * @return {Node} The DOM node the widget tree is attached to.
  */
 pstj.ui.Templated.prototype.getTemplateCompiled = function() {
   return goog.dom.htmlToDocumentFragment(this.getTemplate());
