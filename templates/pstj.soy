@@ -1,0 +1,18 @@
+{namespace pstj.templates}
+
+/**
+ * Template for the custom scroll area widget.
+ * Content goes on custom-scroll-div so it should be returned by getContentElement
+ */
+{template .CustomScrollArea}
+  <div class="{css custom-scroll-area}">
+    <div class="{css custom-scroll-internal}">
+      <div class="{css custom-scroll-div}"></div>
+    </div>
+    <div class="{css custom-scroll-bar} {css goog-slider}">
+      <div class="{css custom-scroll-bar-line}"></div>
+      <div class="{css goog-slider-thumb} {css custom-scroll-bar-thumb}"></div>
+    </div>
+  </div>
+{/template}
+
