@@ -85,6 +85,7 @@ define INDEXFILE
 
 		<script src="build/$(NS)-cssmap.js"></script>
 		<script src="../../library/closure/goog/base.js"></script>
+		<script src="../pstj/deps.js"></script>
 		<script src="build/deps.js"></script>
 		<script>goog.require('$(NS)');</script>
 
@@ -106,6 +107,8 @@ endef
 define BUILDOPTIONSFILE
 --compilation_level=ADVANCED_OPTIMIZATIONS
 --warning_level=VERBOSE
+--js=../../library/closure/goog/deps.js
+--js=../pstj/deps.js
 --use_types_for_optimization
 --jscomp_warning accessControls
 --jscomp_warning ambiguousFunctionDecl
@@ -119,13 +122,31 @@ define BUILDOPTIONSFILE
 --jscomp_warning undefinedVars
 --jscomp_warning unknownDefines
 --jscomp_warning uselessCode
---js=../../library/closure/goog/deps.js
 --externs=../../externs/webkit_console.js
+endef
+
+define CSSINI
+--allowed-non-standard-function color-stop
+--allowed-non-standard-function blur
+--allowed-unrecognized-property -webkit-filter
+--output-renaming-map-format CLOSURE_UNCOMPILED
+--rename NONE
+--pretty-print
+endef
+
+define CSSBUILDINI
+--allowed-non-standard-function color-stop
+--allowed-non-standard-function blur
+--allowed-unrecognized-property -webkit-filter
+--output-renaming-map-format CLOSURE_COMPILED
+--rename CLOSURE
 endef
 
 define GITIGNOREFILE
 build/
 $(TEMPLATE_TMP_DIR)
+help/
+*sublime-*
 endef
 
 # Default build to execute on 'make'.
@@ -194,8 +215,6 @@ compile: cssbuild tpl deps
 	-f --define="goog.LOCALE $(LOCALE)" \
 	-c $(COMPILER_JAR) \
 	-f --flagfile=options/compile.ini \
-	-f --create_source_map=$(BUILDDIR)/$(NS).build.js.map \
-	-f --output_wrapper="%output% ////@ sourceMappingURL=$(NS).build.js.map" \
 	--output_file=$(BUILDDIR)/$(NS).build.js
 	rm $(BUILDDIR)/cssmap-build.js
 
@@ -218,17 +237,20 @@ debug: css
 
 # Create a structure for a new closure project.
 initproject:
-	mkdir -p gss/$(NS) js $(TEMPLATES_SOURCE_DIR) $(I18NDIR) $(BUILDDIR) assets $(TEMPLATE_TMP_DIR) options
+	mkdir -p gss/$(NS) js $(TEMPLATES_SOURCE_DIR) $(I18NDIR) $(BUILDDIR) \
+	assets $(TEMPLATE_TMP_DIR) options
 	touch index.html
 	touch js/$(NS).js
 	touch $(TEMPLATES_SOURCE_DIR)/$(NS).soy
 	touch gss/$(NS)/$(NS).gss
 	touch gss/base.gss
-	touch options/compile.ini
-	echo -e '$(subst $(newline),\n,${INDEXFILE})' > index.html
-	echo -e '$(subst $(newline),\n,${APPFILE})' > js/$(NS).js
-	echo -e '$(subst $(newline),\n,${BUILDOPTIONSFILE})' > options/compile.ini
-	echo -e '$(subst $(newline),\n,${GITIGNOREFILE})' > .gitignore
+	touch options/{css.ini,cssbuild.ini,compile.ini}
+	echo '$(subst $(newline),\n,${INDEXFILE})' > index.html
+	echo '$(subst $(newline),\n,${APPFILE})' > js/$(NS).js
+	echo '$(subst $(newline),\n,${CSSINI})' > options/css.ini
+	echo '$(subst $(newline),\n,${CSSBUILDINI})' > options/css.ini
+	echo '$(subst $(newline),\n,${BUILDOPTIONSFILE})' > options/compile.ini
+	echo '$(subst $(newline),\n,${GITIGNOREFILE})' > .gitignore
 
 # Run the compalier against a specific name space only for the checks.
 # This includes the templates (so it is compatible with applications and the
