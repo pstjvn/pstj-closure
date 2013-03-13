@@ -111,7 +111,9 @@ pstj.resource.instance_ = null;
  */
 pstj.resource.getInstance = function() {
   if (goog.isNull(pstj.resource.instance_)) {
-    var resourceSource = pstj.configure.getRuntimeValue('PROVIDER', 'remote');
+    var resourceSource = pstj.configure.getRuntimeValue('DATASTREAM',
+      'remote').toString();
+
     switch (resourceSource) {
       case 'local':
         pstj.resource.instance_ = new pstj.resource.Local();

@@ -54,7 +54,7 @@ pstj.graphics.Timeline.STEPS = [3600, 1800, 600, 60, 30, 1];
  * @type {string}
  * @private
  */
-pstj.graphics.Timeline.PREFIX_ = 'TIMELINE';
+pstj.graphics.Timeline.PREFIX_ = 'SYSMASTER.TIMELINE.VIEW';
 /**
  * The default font to use to draw text in the canvas. Configurable at run time.
  * @type {string}
