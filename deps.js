@@ -15,6 +15,7 @@ goog.addDependency('../../../apps/pstj/graphics/canvas.js', ['pstj.graphics.Canv
 goog.addDependency('../../../apps/pstj/graphics/draw.js', ['pstj.graphics.Draw'], ['goog.Disposable']);
 goog.addDependency('../../../apps/pstj/graphics/smooth.js', ['pstj.graphics.Smooth'], ['goog.Disposable', 'goog.async.AnimationDelay']);
 goog.addDependency('../../../apps/pstj/graphics/timeline.js', ['pstj.graphics.Timeline'], ['goog.dom.classlist', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventType', 'goog.functions', 'pstj.configure', 'pstj.date.utils', 'pstj.graphics.Canvas', 'pstj.graphics.Draw', 'pstj.graphics.Smooth', 'pstj.ui.Templated']);
+goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], []);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.dom.classlist', 'goog.dom.dataset', 'goog.dom.query', 'pstj.ng.filters', 'pstj.ui.Templated']);
