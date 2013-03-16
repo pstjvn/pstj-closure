@@ -212,7 +212,7 @@ compile: cssbuild tpl deps
 	--root=$(TEMPLATES_PATH) \
 	--root=$(LIBRARY_PATH) \
 	-o compiled \
-	-f --define="goog.LOCALE $(LOCALE)" \
+	-f --define='goog.LOCALE="$(LOCALE)"' \
 	-c $(COMPILER_JAR) \
 	-f --flagfile=options/compile.ini \
 	--output_file=$(BUILDDIR)/$(NS).build.js
