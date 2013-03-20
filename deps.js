@@ -29,12 +29,13 @@ goog.addDependency('../../../apps/pstj/ui/clock.js', ['pstj.ui.Clock'], ['goog.u
 goog.addDependency('../../../apps/pstj/ui/coupledinput.js', ['pstj.ui.CoupledInput'], ['goog.Disposable', 'goog.dom', 'goog.dom.classes', 'goog.dom.forms', 'goog.events', 'goog.events.EventType', 'goog.ui.LabelInput']);
 goog.addDependency('../../../apps/pstj/ui/custombuttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.dom.a11y', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);
 goog.addDependency('../../../apps/pstj/ui/elementids.js', ['pstj.ui.IdGenerator'], []);
+goog.addDependency('../../../apps/pstj/ui/isheet.js', ['pstj.ui.ISheet'], []);
 goog.addDependency('../../../apps/pstj/ui/scrollarea.js', ['pstj.ui.CustomScrollArea'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventType', 'goog.style', 'goog.ui.Component.EventType', 'goog.ui.Slider', 'pstj.style.css', 'pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/scrolllist.js', ['pstj.ui.ScrollList'], ['goog.style', 'pstj.ui.CustomScrollArea', 'pstj.ui.IdGenerator']);
-goog.addDependency('../../../apps/pstj/ui/scrollsheet.js', ['pstj.ui.ScrollSheet'], ['goog.style', 'pstj.ui.Sheet']);
+goog.addDependency('../../../apps/pstj/ui/scrollsheet.js', ['pstj.ui.ScrollSheet'], ['goog.style', 'pstj.ui.ISheet', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/select.js', ['pstj.ui.Select', 'pstj.ui.SelectionItem'], ['goog.array', 'goog.dom.classlist', 'goog.events.EventType', 'goog.ui.Component.EventType', 'goog.ui.CustomButton', 'pstj.ds.List', 'pstj.ds.ListItem', 'pstj.graphics.Smooth', 'pstj.select', 'pstj.ui.CustomButtonRenderer', 'pstj.ui.Templated']);
-goog.addDependency('../../../apps/pstj/ui/sheet.js', ['pstj.ui.Sheet'], ['pstj.ui.Async']);
-goog.addDependency('../../../apps/pstj/ui/sheetframe.js', ['pstj.ui.SheetFrame'], ['goog.asserts', 'goog.async.Throttle', 'goog.dom', 'goog.dom.ViewportSizeMonitor', 'goog.math.Size', 'goog.style', 'pstj.ui.Sheet', 'pstj.ui.Templated']);
+goog.addDependency('../../../apps/pstj/ui/sheetframe.js', ['pstj.ui.SheetFrame'], ['goog.asserts', 'goog.async.Throttle', 'goog.dom', 'goog.dom.ViewportSizeMonitor', 'goog.math.Size', 'goog.style', 'pstj.ui.ISheet', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sizeable.js', ['pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType'], ['goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events.EventHandler', 'goog.ui.Component']);
 goog.addDependency('../../../apps/pstj/ui/templated.js', ['pstj.ui.Templated'], ['goog.dom', 'goog.ui.Component']);
+goog.addDependency('../../../apps/pstj/ui/touchable.js', ['pstj.ui.Touchable'], ['goog.events', 'goog.events.MouseWheelHandler', 'goog.math.Coordinate', 'goog.ui.Component.EventType', 'pstj.ui.Async']);
 goog.addDependency('../../../apps/pstj/ui/uploads.js', ['pstj.ui.Upload', 'pstj.ui.Upload.Event'], ['goog.dom', 'goog.events', 'goog.events.Event', 'goog.net.EventType', 'goog.net.IframeIo', 'pstj.ui.Templated']);
