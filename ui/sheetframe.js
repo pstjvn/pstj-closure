@@ -6,7 +6,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.math.Size');
 goog.require('goog.style');
-goog.require('pstj.ui.Sheet');
+goog.require('pstj.ui.ISheet');
 goog.require('pstj.ui.Templated');
 
 /**
@@ -81,10 +81,11 @@ pstj.ui.SheetFrame.prototype.handleResize = function() {
 
 /**
  * Let the child know about the parent size change.
- * @param {pstj.ui.Sheet} child The child to set parent size on and update.
+ * @param {pstj.ui.ISheet} child The child to set parent size on and update.
  */
 pstj.ui.SheetFrame.prototype.provisionChild = function(child) {
-  child.updateParentSize(this.size);
+  var transpiled = /** @type {pstj.ui.ISheet} */ (child);
+  transpiled.updateParentSize(this.size);
 };
 
 /** @inheritDoc */
@@ -97,9 +98,8 @@ pstj.ui.SheetFrame.prototype.decorateInternal = function(el) {
 /** @inheritDoc */
 pstj.ui.SheetFrame.prototype.addChild = function(child, render) {
   goog.base(this, 'addChild', child, render);
-  goog.asserts.assertInstanceof(child, pstj.ui.Sheet,
-    'The child of a SheetFrame must be a Sheet');
-  child.updateParentSize(this.size);
+  var transpiled  = /** @type {pstj.ui.ISheet} */ (child);
+  transpiled.updateParentSize(this.size);
 };
 
 /** @inheritDoc */

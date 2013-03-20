@@ -1,7 +1,8 @@
 goog.provide('pstj.ui.ScrollSheet');
 
 goog.require('goog.style');
-goog.require('pstj.ui.Sheet');
+goog.require('pstj.ui.ISheet');
+goog.require('pstj.ui.Templated');
 
 /**
  * @fileoverview Provides a sheet that uses the native scroll of the browser
@@ -9,18 +10,21 @@ goog.require('pstj.ui.Sheet');
  *   native scroll is accelerated and is accessible (i.e. touch devices for
  *   all directions scrolling or scrolling only vertically for mouse devices.)
  *
+ *  TODO: Add fake scrollbars on hover for complete experience.
+ *
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
 /**
  * A sheet that is using the native scrolling capabilities of the browser.
  * @constructor
- * @extends {pstj.ui.Sheet}
+ * @extends {pstj.ui.Templated}
+ * @implements {pstj.ui.ISheet}
  */
 pstj.ui.ScrollSheet = function() {
   goog.base(this);
 };
-goog.inherits(pstj.ui.ScrollSheet, pstj.ui.Sheet);
+goog.inherits(pstj.ui.ScrollSheet, pstj.ui.Templated);
 
 /**
  * The scroll bar width in the current browser.
@@ -39,5 +43,4 @@ pstj.ui.ScrollSheet.prototype.updateParentSize = function(size) {
   newSize.height = newSize.height + pstj.ui.ScrollSheet.scrollBarWidth;
   this.getElement().style.width = newSize.width + 'px';
   this.getElement().style.height = newSize.height + 'px';
-  goog.base(this, 'updateParentSize', newSize);
 };
