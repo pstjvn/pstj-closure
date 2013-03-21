@@ -37,5 +37,5 @@ goog.addDependency('../../../apps/pstj/ui/select.js', ['pstj.ui.Select', 'pstj.u
 goog.addDependency('../../../apps/pstj/ui/sheetframe.js', ['pstj.ui.SheetFrame'], ['goog.asserts', 'goog.async.Throttle', 'goog.dom', 'goog.dom.ViewportSizeMonitor', 'goog.math.Size', 'goog.style', 'pstj.ui.ISheet', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sizeable.js', ['pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType'], ['goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events.EventHandler', 'goog.ui.Component']);
 goog.addDependency('../../../apps/pstj/ui/templated.js', ['pstj.ui.Templated'], ['goog.dom', 'goog.ui.Component']);
-goog.addDependency('../../../apps/pstj/ui/touchable.js', ['pstj.ui.Touchable'], ['goog.events', 'goog.events.MouseWheelHandler', 'goog.math.Coordinate', 'goog.ui.Component.EventType', 'pstj.ui.Async']);
+goog.addDependency('../../../apps/pstj/ui/touchable/touchable.js', ['pstj.ui.Touchable', 'pstj.ui.Touchable.Event', 'pstj.ui.Touchable.EventType', 'pstj.ui.Touchable.PubSub'], ['goog.events', 'goog.pubsub.PubSub', 'goog.ui.Component.EventType', 'pstj.ui.Async']);
 goog.addDependency('../../../apps/pstj/ui/uploads.js', ['pstj.ui.Upload', 'pstj.ui.Upload.Event'], ['goog.dom', 'goog.events', 'goog.events.Event', 'goog.net.EventType', 'goog.net.IframeIo', 'pstj.ui.Templated']);
