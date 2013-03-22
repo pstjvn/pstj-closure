@@ -6,6 +6,7 @@ goog.require('goog.dom.classlist');
 goog.require('goog.events.EventType');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.CustomButton');
+goog.require('pstj.configure');
 goog.require('pstj.ds.List');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.graphics.Smooth');
@@ -14,8 +15,18 @@ goog.require('pstj.ui.CustomButtonRenderer');
 goog.require('pstj.ui.Templated');
 
 /**
+ * @fileoverview Provides a widget to perform a selection of a single item.
+ *   The design is comparable to the OSX selection dialog.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
+/**
  * Provides a reusable select-like widget that has the feel of OSX select
- *   panel.
+ *   panel. The widget exposes runtime configuration option
+ *
+ * PSTJ.UI.SELECT.DEFAULT_IMAGE (string) => assets/default-select-image.png
+ *
  * @constructor
  * @extends {pstj.ui.Templated}
  */
@@ -28,20 +39,43 @@ pstj.ui.Select = function() {
     pstj.ui.CustomButtonRenderer.getInstance());
   this.addChild(this.cancelButton);
   this.addChild(this.selectButton);
+
+  /**
+   * @private
+   * @type {boolean}
+   */
   this.opened_ = false;
+
+  /**
+   * @private
+   * @type {pstj.ui.SelectionItem}
+   */
   this.currentlySelected_ = null;
+
+  /**
+   * @private
+   * @type {boolean}
+   */
   this.selectButtonDisabled_ = true;
 };
 goog.inherits(pstj.ui.Select, pstj.ui.Templated);
 
-
-  var array = goog.array;
-
 /**
+ * Overrides the getter method from Component to let the compiler know the
+ *   type of the model data.
  * @override
  * @return {pstj.ds.List} The list of items.
  */
 pstj.ui.Select.prototype.getModel;
+
+/** @inheritDoc */
+pstj.ui.Select.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  goog.dispose(this.smooth);
+  goog.dispose(this.selectButton);
+  goog.dispose(this.cancelButton);
+  this.currentlySelected_ = null;
+};
 
 /**
  * Overrides the method to check if the provided data is indeed a list. The
@@ -55,7 +89,7 @@ pstj.ui.Select.prototype.setModel = function(model) {
     throw new Error('The model should be an array of objects');
   }
   var list = new pstj.ds.List();
-  array.forEach(/** @type {Array} */ (model), function(item) {
+  goog.array.forEach(/** @type {Array} */ (model), function(item) {
     var listitem = new pstj.ds.ListItem(item);
     list.add(listitem);
   });
@@ -164,7 +198,7 @@ pstj.ui.Select.prototype.enterDocument = function() {
  * @protected
  */
 pstj.ui.Select.prototype.handleHighlight = function(e) {
-  var comp = e.target;
+  var comp = /** @type {pstj.ui.SelectionItem} */ (e.target);
   if (this.selectButtonDisabled_) {
     this.selectButtonDisabled_ = false;
     this.selectButton.setEnabled(true);
@@ -237,6 +271,8 @@ pstj.ui.Select.prototype.draw = function(ts) {
 };
 
 /**
+ * Provides a basic selection item for the selection widget. It has only a
+ *   thumbnail and name.
  * @constructor
  * @extends {pstj.ui.Templated}
  */
@@ -244,6 +280,15 @@ pstj.ui.SelectionItem = function() {
   goog.base(this);
 };
 goog.inherits(pstj.ui.SelectionItem, pstj.ui.Templated);
+
+/**
+ * The default thumbnail to use for selection item in select widget.
+ * @type {string}
+ * @protected
+ */
+pstj.ui.SelectionItem.defaultThumbnail = pstj.configure.getRuntimeValue(
+  'DEFAULT_IMAGE', 'assets/default-select-image.png',
+  'PSTJ.UI.SELECT').toString();
 
 /**
  * Easier to spot naming convention.
@@ -297,9 +342,12 @@ pstj.ui.SelectionItem.prototype.update = function() {
 
 /** @inheritDoc */
 pstj.ui.SelectionItem.prototype.getTemplate = function() {
+  var thumb = this.getModel().getProp(this.thumnailPropertyName);
+  if (!goog.isString(thumb) || goog.string.trim(thumb) == '') {
+    thumb = pstj.ui.SelectionItem.defaultThumbnail;
+  }
   return pstj.select.SelectionItem({
-    thumbnail: this.getModel().getProp(this.thumnailPropertyName) ||
-      'assets/def-mov.png',
+    thumbnail: thumb,
     name: this.getModel().getProp(this.namePropertyname)
   });
 };
