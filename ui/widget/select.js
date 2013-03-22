@@ -1,5 +1,5 @@
-goog.provide('pstj.ui.Select');
-goog.provide('pstj.ui.SelectionItem');
+goog.provide('pstj.widget.Select');
+goog.provide('pstj.widget.SelectionItem');
 
 goog.require('goog.array');
 goog.require('goog.dom.classlist');
@@ -25,12 +25,12 @@ goog.require('pstj.ui.Templated');
  * Provides a reusable select-like widget that has the feel of OSX select
  *   panel. The widget exposes runtime configuration option
  *
- * PSTJ.UI.SELECT.DEFAULT_IMAGE (string) => assets/default-select-image.png
+ * PSTJ.WIDGET.SELECT.DEFAULT_IMAGE (string) => assets/default-select-image.png
  *
  * @constructor
  * @extends {pstj.ui.Templated}
  */
-pstj.ui.Select = function() {
+pstj.widget.Select = function() {
   goog.base(this);
   this.smooth = new pstj.graphics.Smooth(this.draw, this);
   this.selectButton = new goog.ui.CustomButton('',
@@ -48,7 +48,7 @@ pstj.ui.Select = function() {
 
   /**
    * @private
-   * @type {pstj.ui.SelectionItem}
+   * @type {pstj.widget.SelectionItem}
    */
   this.currentlySelected_ = null;
 
@@ -58,7 +58,7 @@ pstj.ui.Select = function() {
    */
   this.selectButtonDisabled_ = true;
 };
-goog.inherits(pstj.ui.Select, pstj.ui.Templated);
+goog.inherits(pstj.widget.Select, pstj.ui.Templated);
 
 /**
  * Overrides the getter method from Component to let the compiler know the
@@ -66,10 +66,10 @@ goog.inherits(pstj.ui.Select, pstj.ui.Templated);
  * @override
  * @return {pstj.ds.List} The list of items.
  */
-pstj.ui.Select.prototype.getModel;
+pstj.widget.Select.prototype.getModel;
 
 /** @inheritDoc */
-pstj.ui.Select.prototype.disposeInternal = function() {
+pstj.widget.Select.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   goog.dispose(this.smooth);
   goog.dispose(this.selectButton);
@@ -83,7 +83,7 @@ pstj.ui.Select.prototype.disposeInternal = function() {
  *   automatically. The expected format is array of objects really.
  * @override
  */
-pstj.ui.Select.prototype.setModel = function(model) {
+pstj.widget.Select.prototype.setModel = function(model) {
   // expect an array and convert internally to list.
   if (!goog.isArray(model)) {
     throw new Error('The model should be an array of objects');
@@ -100,7 +100,7 @@ pstj.ui.Select.prototype.setModel = function(model) {
 /**
  * Toggles the state of the selection view.
  */
-pstj.ui.Select.prototype.toggle = function() {
+pstj.widget.Select.prototype.toggle = function() {
   this.opened_ = !this.opened_;
   this.update();
 };
@@ -108,21 +108,21 @@ pstj.ui.Select.prototype.toggle = function() {
 /**
  * Close the view.
  */
-pstj.ui.Select.prototype.close = function() {
+pstj.widget.Select.prototype.close = function() {
   this.setState(false);
 };
 
 /**
  * Opens the view.
  */
-pstj.ui.Select.prototype.open = function() {
+pstj.widget.Select.prototype.open = function() {
   this.setState(true);
 };
 
 /**
  * Signal the internal state needs update on screen.
  */
-pstj.ui.Select.prototype.update = function() {
+pstj.widget.Select.prototype.update = function() {
   this.smooth.update();
 };
 
@@ -131,13 +131,13 @@ pstj.ui.Select.prototype.update = function() {
  * @return {pstj.ds.ListItem} The ID of the selected record or null if
  *   record is not currently selected.
  */
-pstj.ui.Select.prototype.getSelection = function() {
+pstj.widget.Select.prototype.getSelection = function() {
   if (goog.isNull(this.currentlySelected_)) return null;
   return this.currentlySelected_.getModel();
 };
 
 /** @inheritDoc */
-pstj.ui.Select.prototype.getTemplate = function() {
+pstj.widget.Select.prototype.getTemplate = function() {
   return pstj.select.Select({});
 };
 
@@ -147,8 +147,8 @@ pstj.ui.Select.prototype.getTemplate = function() {
  * @param {pstj.ds.ListItem} model The model for the new selection item.
  * @protected
  */
-pstj.ui.Select.prototype.createSelectionItem = function(model) {
-  var child = new pstj.ui.SelectionItem();
+pstj.widget.Select.prototype.createSelectionItem = function(model) {
+  var child = new pstj.widget.SelectionItem();
   child.setModel(model);
   this.addChild(child, true);
 };
@@ -157,7 +157,7 @@ pstj.ui.Select.prototype.createSelectionItem = function(model) {
  * Visualizes the selection items (i.e. ads them to the view).
  * @protected.
  */
-pstj.ui.Select.prototype.visualizeModel = function() {
+pstj.widget.Select.prototype.visualizeModel = function() {
   var model = /** @type {pstj.ds.List} */ (this.getModel());
   var count = model.getCount();
   for (var i = 0; i < count; i++) {
@@ -166,7 +166,7 @@ pstj.ui.Select.prototype.visualizeModel = function() {
 };
 
 /** @inheritDoc */
-pstj.ui.Select.prototype.decorateInternal = function(el) {
+pstj.widget.Select.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
   this.selectButton.decorate(this.getEls(goog.getCssName(
     'pstj-action-select')));
@@ -175,7 +175,7 @@ pstj.ui.Select.prototype.decorateInternal = function(el) {
 };
 
 /** @inheritDoc */
-pstj.ui.Select.prototype.enterDocument = function() {
+pstj.widget.Select.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this, goog.ui.Component.EventType.HIGHLIGHT,
     this.handleHighlight);
@@ -197,8 +197,8 @@ pstj.ui.Select.prototype.enterDocument = function() {
  * @param {goog.events.Event} e The highlight event.
  * @protected
  */
-pstj.ui.Select.prototype.handleHighlight = function(e) {
-  var comp = /** @type {pstj.ui.SelectionItem} */ (e.target);
+pstj.widget.Select.prototype.handleHighlight = function(e) {
+  var comp = /** @type {pstj.widget.SelectionItem} */ (e.target);
   if (this.selectButtonDisabled_) {
     this.selectButtonDisabled_ = false;
     this.selectButton.setEnabled(true);
@@ -217,7 +217,7 @@ pstj.ui.Select.prototype.handleHighlight = function(e) {
  * @param {goog.events.Event} e The SELECT event from a child.
  * @protected
  */
-pstj.ui.Select.prototype.handleSelect = function(e) {
+pstj.widget.Select.prototype.handleSelect = function(e) {
   // We assume we already know the active component so we will simply invoke
   // the action event here.
   e.stopPropagation();
@@ -230,13 +230,13 @@ pstj.ui.Select.prototype.handleSelect = function(e) {
  * @param {goog.events.Event} e The ACTION event from the button.
  * @protected
  */
-pstj.ui.Select.prototype.handleCancel = function(e) {
+pstj.widget.Select.prototype.handleCancel = function(e) {
   e.stopPropagation();
   this.close();
 };
 
 /** @inheritDoc */
-pstj.ui.Select.prototype.getContentElement = function() {
+pstj.widget.Select.prototype.getContentElement = function() {
   return this.getEls(goog.getCssName('pstj-select-body'));
 };
 
@@ -245,7 +245,7 @@ pstj.ui.Select.prototype.getContentElement = function() {
  * @param {boolean} open If true the selection menu is shown.
  * @protected
  */
-pstj.ui.Select.prototype.setState = function(open) {
+pstj.widget.Select.prototype.setState = function(open) {
   if (this.opened_ != open) {
     this.opened_ = open;
     this.update();
@@ -258,7 +258,7 @@ pstj.ui.Select.prototype.setState = function(open) {
  * @return {boolean} True if any more updates are needed.
  * @protected
  */
-pstj.ui.Select.prototype.draw = function(ts) {
+pstj.widget.Select.prototype.draw = function(ts) {
   if (this.opened_) {
     goog.dom.classlist.add(this.getElement(), goog.getCssName(
       'pstj-select-active'));
@@ -276,38 +276,38 @@ pstj.ui.Select.prototype.draw = function(ts) {
  * @constructor
  * @extends {pstj.ui.Templated}
  */
-pstj.ui.SelectionItem = function() {
+pstj.widget.SelectionItem = function() {
   goog.base(this);
 };
-goog.inherits(pstj.ui.SelectionItem, pstj.ui.Templated);
+goog.inherits(pstj.widget.SelectionItem, pstj.ui.Templated);
 
 /**
  * The default thumbnail to use for selection item in select widget.
  * @type {string}
  * @protected
  */
-pstj.ui.SelectionItem.defaultThumbnail = pstj.configure.getRuntimeValue(
+pstj.widget.SelectionItem.defaultThumbnail = pstj.configure.getRuntimeValue(
   'DEFAULT_IMAGE', 'assets/default-select-image.png',
-  'PSTJ.UI.SELECT').toString();
+  'PSTJ.WIDGET.SELECT').toString();
 
 /**
  * Easier to spot naming convention.
  * @type {string}
  */
-pstj.ui.SelectionItem.prototype.thumnailPropertyName = 'thumbnail';
+pstj.widget.SelectionItem.prototype.thumnailPropertyName = 'thumbnail';
 
 /**
  * Easier to spot naming convention.
  * @type {string}
  */
-pstj.ui.SelectionItem.prototype.namePropertyname = 'name';
+pstj.widget.SelectionItem.prototype.namePropertyname = 'name';
 
 /**
  * The last time stamp a click was registered.
  * @type {number}
  * @private
  */
-pstj.ui.SelectionItem.prototype.lastTs_ = 0;
+pstj.widget.SelectionItem.prototype.lastTs_ = 0;
 
 
 /**
@@ -315,14 +315,14 @@ pstj.ui.SelectionItem.prototype.lastTs_ = 0;
  * @override
  * @return {pstj.ds.ListItem} The data record constituting the item.
  */
-pstj.ui.SelectionItem.prototype.getModel;
+pstj.widget.SelectionItem.prototype.getModel;
 
 /**
  * This method is designed to be called by the collection handler instance
  *   and not internally, as internally we only dispatch the events.
  * @param {boolean} active True if the element should be marked as active.
  */
-pstj.ui.SelectionItem.prototype.setActiveState = function(active) {
+pstj.widget.SelectionItem.prototype.setActiveState = function(active) {
   if (this.active_ != active) {
     this.active_ = active;
     this.update();
@@ -332,7 +332,7 @@ pstj.ui.SelectionItem.prototype.setActiveState = function(active) {
 /**
  * Updates the UI state of the component.
  */
-pstj.ui.SelectionItem.prototype.update = function() {
+pstj.widget.SelectionItem.prototype.update = function() {
   if (this.active_) {
     goog.dom.classlist.add(this.getElement(), goog.getCssName('active'));
   } else {
@@ -341,10 +341,10 @@ pstj.ui.SelectionItem.prototype.update = function() {
 };
 
 /** @inheritDoc */
-pstj.ui.SelectionItem.prototype.getTemplate = function() {
+pstj.widget.SelectionItem.prototype.getTemplate = function() {
   var thumb = this.getModel().getProp(this.thumnailPropertyName);
   if (!goog.isString(thumb) || goog.string.trim(thumb) == '') {
-    thumb = pstj.ui.SelectionItem.defaultThumbnail;
+    thumb = pstj.widget.SelectionItem.defaultThumbnail;
   }
   return pstj.select.SelectionItem({
     thumbnail: thumb,
@@ -353,7 +353,7 @@ pstj.ui.SelectionItem.prototype.getTemplate = function() {
 };
 
 /** @inheritDoc */
-pstj.ui.SelectionItem.prototype.enterDocument = function() {
+pstj.widget.SelectionItem.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
     this.handleClick);
@@ -365,7 +365,7 @@ pstj.ui.SelectionItem.prototype.enterDocument = function() {
  * @param {goog.events.Event} e The click event.
  * @protected
  */
-pstj.ui.SelectionItem.prototype.handleClick = function(e) {
+pstj.widget.SelectionItem.prototype.handleClick = function(e) {
   var ts = goog.now();
   if ((ts - this.lastTs_) < 500) {
     this.dispatchEvent(goog.ui.Component.EventType.SELECT);
