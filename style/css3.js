@@ -211,8 +211,12 @@ pstj.lab.style.css.getTranslationAsText = function(x, y, unit) {
  * @param {!number} y The Y translation value.
  * @param {string=} unit The units to use to calculate the translation. If not
  *   provided pixels will be used.
+ * @param {string=} appendage Additional string to append to the
+ *   transformation value (for example if you want to combine several
+ *   transformations, you can provide them here as string). Note that those
+ *   will NOT be aplpied if transformation is not supported.
  */
-pstj.lab.style.css.setTranslation = function(el, x, y, unit) {
+pstj.lab.style.css.setTranslation = function(el, x, y, unit, appendage) {
   // If the provided element is not really a DOM element, do nothing.
   if (!goog.dom.isElement(el)) return;
 
@@ -220,9 +224,15 @@ pstj.lab.style.css.setTranslation = function(el, x, y, unit) {
 
   if (pstj.lab.style.css.canUseTransform) {
     el.style[pstj.lab.style.css.transformPrefix] = pstj.lab.style.css
-      .getTranslationAsValue(x, y, unit);
+      .getTranslationAsValue(x, y, unit) + (goog.isString(appendage) ?
+        ' ' + appendage : '');
   } else {
     el.style.top = y + unit;
     el.style.left = x + unit;
   }
 };
+
+/**
+ * Clean up as we do not need the div anymore and it is retained...
+ */
+pstj.lab.style.css.testDiv_ = null;
