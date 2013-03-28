@@ -21,6 +21,8 @@ goog.require('pstj.ui.Templated');
  */
 
 /**
+ * Provides a basic sheet frame, intended to host an implementation of the
+ *   ISheet interface.
  * @constructor
  * @extends {pstj.ui.Templated}
  */
