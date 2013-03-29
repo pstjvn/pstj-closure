@@ -302,30 +302,72 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
     this.size.scaleToFit(this.getViewportSize());
   }
 
-  if (this.size.width <= this.getViewportSize().width && this.offsetx_ > 0) {
-    this.offsetx_ = ((this.getViewportSize().width - this.size.width) / 2) * -1;
-    result = true;
-  } else {
-    if (this.size.width > this.getViewportSize().width && this.offsetx_ < 0) {
+  if (this.size.width > this.getViewportSize().width &&
+    this.size.height > this.getViewportSize().height) {
+
+    if (this.offsetx_ < 0) {
       this.offsetx_ = 0;
       result = true;
-    } else if (this.size.width - this.offsetx_ < this.getViewportSize().width) {
+    }
+    if (this.offsety_ < 0) {
+      this.offsety_ = 0;
+      result = true;
+    }
+    if (this.size.width - this.offsetx_ < this.getViewportSize().width) {
+      this.offsetx_ = this.size.width - this.getViewportSize().width;
+      result = true;
+    }
+    if (this.size.height - this.offsety_ < this.getViewportSize().height) {
+      this.offsety_ = this.size.height - this.getViewportSize().height;
+      result = true;
+    }
+  }
+
+  if (this.size.width >= this.getViewportSize().width) {
+    if (this.offsetx_ * -1 > this.getViewportSize().width / 2) {
+      this.offsetx_ = 0;
+      result = true;
+    }
+    if (this.offsetx_ > 0 &&
+      this.size.width - this.offsetx_ < this.getViewportSize().width / 2) {
+
       this.offsetx_ = this.size.width - this.getViewportSize().width;
       result = true;
     }
   }
 
-  if (this.size.height <= this.getViewportSize().height && this.offsety_ > 0) {
-    this.offsety_ = ((this.getViewportSize().height - this.size.height) / 2) *
-      -1;
-    result = true;
-  } else {
-    if (this.size.height > this.getViewportSize().height && this.offsety_ < 0) {
+  if (this.size.height >= this.getViewportSize().height) {
+    if (this.offsety_ * -1 > this.getViewportSize().height / 2) {
       this.offsety_ = 0;
       result = true;
-    } else if (this.size.height - this.offsety_ < this.getViewportSize()
-        .height) {
+    }
+    if (this.offsety_ > 0 &&
+      this.size.height - this.offsety_ < this.getViewportSize().height / 2) {
+
       this.offsety_ = this.size.height - this.getViewportSize().height;
+      result = true;
+    }
+  }
+
+
+  if (this.size.width < this.getViewportSize().width) {
+    if (this.offsetx_ > 0) {
+      this.offsetx_ = (this.getViewportSize().width - this.size.width) / -2;
+      result = true;
+    }
+    if (this.offsetx_ * -1  > this.getViewportSize().width - this.size.width) {
+      this.offsetx_ = (this.getViewportSize().width - this.size.width) / -2;
+      result = true;
+    }
+  }
+
+  if (this.size.height < this.getViewportSize().height) {
+    if (this.offsety_ > 0) {
+      this.offsety_ = (this.getViewportSize().height - this.size.height) / -2;
+      result = true;
+    }
+    if (this.offsety_ * -1 > this.getViewportSize().height - this.size.height) {
+      this.offsety_ = (this.getViewportSize().height - this.size.height) / -2;
       result = true;
     }
   }
