@@ -10,6 +10,7 @@ goog.require('pstj.math.utils');
 goog.require('pstj.ui.ISheet');
 goog.require('pstj.ui.Touchable');
 goog.require('pstj.ui.Touchable.EventType');
+goog.require('pstj.ui.Touchable.PubSub');
 
 /**
  * @fileoverview Provides touch enabled sheet implementation. It is also mouse
@@ -355,7 +356,7 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
       this.offsetx_ = (this.getViewportSize().width - this.size.width) / -2;
       result = true;
     }
-    if (this.offsetx_ * -1  > this.getViewportSize().width - this.size.width) {
+    if (this.offsetx_ * -1 > this.getViewportSize().width - this.size.width) {
       this.offsetx_ = (this.getViewportSize().width - this.size.width) / -2;
       result = true;
     }
