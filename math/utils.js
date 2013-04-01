@@ -28,7 +28,6 @@ pstj.math.utils.distanceOfSegment = function(a, b) {
     a[1] - b[1])));
 };
 
-
 /**
  * Calculates the middle of a segment and returns a new point representing it.
  * @param {Array.<number>} a The x ([0]) and y ([1]) of the first point of the
