@@ -145,6 +145,13 @@ pstj.ui.TouchSheet.prototype.updateParentSize = function(size) {
  *   channel of the touchable interface. It is used to intercept double
  *   movement events that originates from different points (possible also
  *   different branches) of the dom tree and have a cohesive reaction to them.
+ *   For this to work correctly you need to have touchable listeners covering
+ *   all possible areas where the user might press and also you need to have
+ *   not more than one reactor subscribed to the double movement event. If you
+ *   have more than one all will react to the same movement events!
+ *
+ * TODO: Fix leaky code here. The leak is caused by creating arrays to publish
+ *   the points of movement.
  * @protected
  */
 pstj.ui.TouchSheet.prototype.subscribeToTouchablePubSub = function() {
@@ -196,7 +203,6 @@ pstj.ui.TouchSheet.prototype.setSize = function(size) {
     if (this.isInDocument()) {
       this.update();
     }
-    // check if we are still within the viewport.
   }
 };
 
@@ -300,7 +306,8 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
     this.size.height < this.getViewportSize().height / 3) {
     this.needsPostFitInFrameQuirk_ = true;
     result = true;
-    this.size.scaleToFit(this.getViewportSize());
+    this.size.scaleToFit(/** @type {!goog.math.Size} */ (
+      this.getViewportSize()));
   }
 
   if (this.size.width > this.getViewportSize().width &&
@@ -460,7 +467,7 @@ pstj.ui.TouchSheet.prototype.handleDoubleMove = function(p1, p2) {
  * Handles the end of double movement.
  */
 pstj.ui.TouchSheet.prototype.handleEndDoubleMove = function() {
-
+  this.update();
   this.doubleMovement_ = false;
 
   this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
@@ -482,7 +489,7 @@ pstj.ui.TouchSheet.prototype.handleEndDoubleMove = function() {
     this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.needsSizeApplication_ = true;
-  this.update();
+
   this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = 0;
 };
 
@@ -490,10 +497,10 @@ pstj.ui.TouchSheet.prototype.handleEndDoubleMove = function() {
  * Completes the zooming for both touch double move and wheel.
  */
 pstj.ui.TouchSheet.prototype.endZooming = function() {
+  this.update();
   this.doubleMovement_ = false;
   this.inWheelSequence_ = false;
   this.needsSizeApplication_ = true;
-  this.update();
 
   this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
     pstj.math.utils.getValueFromPercent(
@@ -524,6 +531,7 @@ pstj.ui.TouchSheet.prototype.endZooming = function() {
  * @protected
  */
 pstj.ui.TouchSheet.prototype.applySizeAfterWheel = function() {
+  this.update();
 
   this.size.width = this.size.width + pstj.math.utils.getValueFromPercent(
     this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
@@ -545,7 +553,6 @@ pstj.ui.TouchSheet.prototype.applySizeAfterWheel = function() {
 
   this.needsSizeApplication_ = true;
   this.inWheelSequence_ = false;
-  this.update();
 
   this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = 0;
 };
@@ -611,8 +618,8 @@ pstj.ui.TouchSheet.prototype.draw = function() {
  * @protected
  */
 pstj.ui.TouchSheet.prototype.handleWheel = function(e) {
-  e.preventDefault();
   this.update();
+  e.preventDefault();
   this.endZoomingBound_.start();
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = e.getBrowserEvent()['layerX'];
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = e.getBrowserEvent()['layerY'];
