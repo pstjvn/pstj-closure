@@ -5,6 +5,7 @@ goog.require('goog.dom.classlist');
 goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
+goog.require('goog.style');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.math.utils');
 goog.require('pstj.ui.ISheet');
@@ -215,6 +216,7 @@ pstj.ui.TouchSheet.prototype.updateMaxOffsets = function() {
   if (this.isInDocument() && !goog.isNull(this.getViewportSize())) {
     this.maxoffsetx_ = this.size.width - this.getViewportSize().width;
     this.maxoffsety_ = this.size.height - this.getViewportSize().height;
+    this.clientOffset_ = goog.style.getPageOffset(this.getElement());
   }
 };
 
@@ -621,8 +623,10 @@ pstj.ui.TouchSheet.prototype.handleWheel = function(e) {
   this.update();
   e.preventDefault();
   this.endZoomingBound_.start();
-  this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = e.getBrowserEvent()['layerX'];
-  this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = e.getBrowserEvent()['layerY'];
+  this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = e.getBrowserEvent(
+    )['clientX'] - this.clientOffset_.x;
+  this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = e.getBrowserEvent(
+    )['clientY'] - this.clientOffset_.y;
   if (!this.inWheelSequence_) {
     this.inWheelSequence_ = true;
     this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] = this.cache_[
