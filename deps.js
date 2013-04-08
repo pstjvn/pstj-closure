@@ -5,6 +5,7 @@ goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test']
 goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], []);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string']);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], []);
+goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj.ds.ImageList', 'pstj.ds.ImageList.EventType'], ['goog.async.Delay', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.net.ImageLoader', 'pstj.ds.List', 'pstj.ds.ListItem']);
 goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.List.Event', 'pstj.ds.List.EventType'], ['goog.array', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.ListItem']);
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.events.EventTarget', 'goog.string', 'pstj.object']);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable']);
