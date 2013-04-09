@@ -16,3 +16,23 @@
   </div>
 {/template}
 
+/**
+ * Provides the default template for static pager.
+ */
+{template .pager}
+  <div class="{css pstj-pager-wrapper}">
+    <div class="{css pstj-pager-items}">
+      <div class="{css pstj-pager-item}">
+        <div class="{css pstj-pager-item-vertical-adjustment}">
+          <div class="{css pstj-pager-item-text}" data-model="description"></div>
+        </div>
+      </div>
+    </div>
+    <div class="{css pstj-pager-page-indicator}">
+      {msg desc="The word page in the page N of number of X pages"}Page{/msg}{sp}
+      <span class="{css pstj-pager-page}"></span>
+      {sp}{msg desc="the word of in page N of X pages"}of{/msg}{sp}
+      <span class="{css pstj-pager-pages}"></span>
+    </div>
+  </div>
+{/template}
