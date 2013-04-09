@@ -4,9 +4,9 @@ goog.require('goog.array');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('goog.dom.query');
+goog.require('pstj.ds.ListItem');
 goog.require('pstj.ng.filters');
 goog.require('pstj.ui.Templated');
-goog.require('pstj.ds.ListItem');
 
 /**
  * @fileoverview Provides easy to use html templating with declarative data
@@ -64,8 +64,7 @@ goog.scope(function() {
   _.decorateInternal = function(el) {
     goog.base(this, 'decorateInternal', el);
     // call 1 way data bindings
-    this.templateElements_ = query('[data-model]');
-    classlist.remove(el, goog.getCssName('cloak'));
+    this.templateElements_ = query('[data-model]', this.getElement());
     this.applyTemplate();
   };
 
@@ -95,7 +94,23 @@ goog.scope(function() {
   _.applyTemplate = function() {
     if (goog.isDefAndNotNull(this.getModel())) {
       this.applyModel();
+      if (classlist.contains(this.getElement(), goog.getCssName(
+        'pstj-ng-cloak'))) {
+
+        classlist.remove(this.getElement(), goog.getCssName('pstj-ng-cloak'));
+      }
+    } else {
+      this.handleEmptyModel();
     }
+  };
+
+  /**
+   * Handles cases where there was not avilable data for this template.
+   *   Default implementation simply puts the cloack back as class.
+   * @protected
+   */
+  _.handleEmptyModel = function() {
+    classlist.add(this.getElement(), goog.getCssName('pstj-ng-cloak'));
   };
 
   /**
