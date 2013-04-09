@@ -19,7 +19,7 @@ goog.addDependency('../../../apps/pstj/graphics/timeline.js', ['pstj.graphics.Ti
 goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], []);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
-goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.dom.classlist', 'goog.dom.dataset', 'goog.dom.query', 'pstj.ng.filters', 'pstj.ui.Templated']);
+goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.dom.classlist', 'goog.dom.dataset', 'goog.dom.query', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object']);
 goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.json.NativeJsonProcessor', 'goog.net.XhrIo', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory', 'goog.string', 'goog.uri.utils', 'pstj.configure']);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product']);

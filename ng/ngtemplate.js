@@ -1,10 +1,13 @@
 goog.provide('pstj.ng.Template');
+
 goog.require('goog.array');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('goog.dom.query');
 goog.require('pstj.ng.filters');
 goog.require('pstj.ui.Templated');
+goog.require('pstj.ds.ListItem');
+
 /**
  * @fileoverview Provides easy to use html templating with declarative data
  * binding similar to what angular JS is doing but much more simple to use and
