@@ -71,11 +71,10 @@ goog.scope(function() {
   /** @inheritDoc */
   _.setModel = function(model) {
     if (!(model instanceof pstj.ds.ListItem)) {
-      if (goog.isObject(model)) {
+      if (goog.isObject(model) && !goog.isNull(model)) {
         model = new pstj.ds.ListItem(/** @type {!Object} */(model));
-      } else {
-        throw new Error('The model of ngtemplate instance must be an object');
       }
+      if (!goog.isDef(model)) model = null;
     }
     goog.base(this, 'setModel', model);
     this.applyTemplate();
