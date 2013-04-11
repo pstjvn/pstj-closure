@@ -160,6 +160,48 @@ goog.scope(function() {
   };
 
   /**
+   * Loads the next page if one is available.
+   */
+  _.selectNextPage = function() {
+    if (this.loadPage(this.page_ + 1)) {
+
+      var ci = this.getModel().getCurrentIndex();
+      if (ci + this.items_.length > (this.getModel().getCount() - 1)) {
+        goog.dom.classlist.remove(
+          this.items_[this.activePageIndex_].getElement(),
+          goog.getCssName('active'));
+
+        this.getModel().setCurrent(goog.asserts.assertInstanceof(
+          this.getModel().getByIndex(
+          this.getModel().getCount() - 1), pstj.ds.ListItem,
+          'This code should be removed by the compiler.'));
+
+        this.activePageIndex_ = this.activePageIndex_ - (
+          (ci + this.items_.length) - (this.getModel().getCount() - 1));
+
+        goog.dom.classlist.add(this.items_[this.activePageIndex_].getElement(),
+          goog.getCssName('active'));
+      } else {
+        this.getModel().setCurrent(goog.asserts.assertInstanceof(
+          this.getModel().getByIndex(ci + this.items_.length),
+          pstj.ds.ListItem, 'This code should have been removed'));
+      }
+    }
+  };
+
+  /**
+   * Loads the previous page if one is avilable.
+   */
+  _.selectPreviousPage = function() {
+    if (this.loadPage(this.page_ - 1)) {
+      this.getModel().setCurrent(goog.asserts.assertInstanceof(
+        this.getModel().getByIndex(
+        this.getModel().getCurrentIndex() - this.items_.length),
+        pstj.ds.ListItem, 'Again - remove this code!'));
+    }
+  };
+
+  /**
    * Updates the number of pages matching the current combination of page
    *   items and data items.
    * @private
@@ -201,13 +243,16 @@ goog.scope(function() {
    * Loads a page into the pager's view.
    * @param {number} pageIndex The page to load.
    * @protected
+   * @return {boolean} True if the page was loded, fale otherwise.
    */
   _.loadPage = function(pageIndex) {
     if (this.isValidPageIndex(pageIndex)) {
       this.page_ = pageIndex;
       goog.array.forEach(this.items_, this.setTemplateData, this);
       this.pageEl_.innerHTML = this.page_.toString();
+      return true;
     }
+    return false;
   };
 
   /** @inheritDoc */
