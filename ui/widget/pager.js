@@ -2,6 +2,7 @@ goog.provide('pstj.widget.Pager');
 
 goog.require('goog.array');
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 goog.require('pstj.ds.List');
 goog.require('pstj.ng.Template');
 goog.require('pstj.templates');
@@ -80,21 +81,8 @@ goog.scope(function() {
     goog.base(this, 'setModel', model);
     if (this.isInDocument()) {
       this.updatePagesNumber_();
-      this.loadPage(1);
+      this.initState_();
     }
-  };
-
-  /**
-   * Updates the number of pages matching the current combination of page
-   *   items and data items.
-   * @private
-   */
-  _.updatePagesNumber_ = function() {
-    if (goog.isDefAndNotNull(this.getModel())) {
-      this.pagesCount_ = Math.ceil(this.getModel().getCount() /
-        this.items_.length);
-    }
-    this.pagesEl_.innerHTML = this.pagesCount_.toString();
   };
 
   /** @inheritDoc */
@@ -117,10 +105,71 @@ goog.scope(function() {
     goog.base(this, 'enterDocument');
     this.updatePagesNumber_();
     if (goog.isDefAndNotNull(this.getModel())) {
-      this.loadPage(1);
+      this.initState_();
     } else {
       this.pageEl_.innerHTML = this.page_.toString();
     }
+  };
+  /**
+   * Sets the pager to the first page and the first item in the page.
+   * @private
+   */
+  _.initState_ = function() {
+    this.loadPage(1);
+    this.activePageIndex_ = 0;
+    goog.dom.classlist.add(this.items_[0].getElement(),
+      goog.getCssName('active'));
+  };
+
+  /**
+   * Selects the next item in the pager.
+   */
+  _.selectNext = function() {
+    var next_record = this.getModel().getNext();
+    if (goog.isNull(next_record)) return;
+    // at this stage we know that the item is available as data record, now we
+    // need to figure out how to show it in the pager.
+    goog.dom.classlist.remove(this.items_[this.activePageIndex_].getElement(),
+      goog.getCssName('active'));
+    this.activePageIndex_++;
+    if (this.activePageIndex_ >= this.items_.length) {
+      this.activePageIndex_ = 0;
+      this.loadPage(this.page_ + 1);
+    }
+    this.getModel().setCurrent(next_record);
+    goog.dom.classlist.add(this.items_[this.activePageIndex_].getElement(),
+      goog.getCssName('active'));
+  };
+
+  /**
+   * Selects the previous item in the pager.
+   */
+  _.selectPrevious = function() {
+    var item = this.getModel().getPrevious();
+    if (goog.isNull(item)) return;
+    goog.dom.classlist.remove(this.items_[this.activePageIndex_].getElement(),
+      goog.getCssName('active'));
+    this.activePageIndex_--;
+    if (this.activePageIndex_ < 0) {
+      this.loadPage(this.page_ - 1);
+      this.activePageIndex_ = this.items_.length - 1;
+    }
+    this.getModel().setCurrent(item);
+    goog.dom.classlist.add(this.items_[this.activePageIndex_].getElement(),
+      goog.getCssName('active'));
+  };
+
+  /**
+   * Updates the number of pages matching the current combination of page
+   *   items and data items.
+   * @private
+   */
+  _.updatePagesNumber_ = function() {
+    if (goog.isDefAndNotNull(this.getModel())) {
+      this.pagesCount_ = Math.ceil(this.getModel().getCount() /
+        this.items_.length);
+    }
+    this.pagesEl_.innerHTML = this.pagesCount_.toString();
   };
 
   /**
