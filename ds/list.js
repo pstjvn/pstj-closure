@@ -17,7 +17,9 @@ goog.require('pstj.ds.ListItem');
 
 /**
  * List that keeps track of the current index. Access is optimized with maps
- *   of the indexes and ids.
+ *   of the indexes and ids. This means that the list does not support
+ *   duplicates, error is throwsn if you attempt to add items with ID that is
+ *   already in the list.
  * @constructor
  * @param {Array.<pstj.ds.ListItem>=} opt_nodes Optionally, array of list
  *   items to initialize the list with.
@@ -108,6 +110,9 @@ pstj.ds.List.prototype.canRewind_ = false;
 pstj.ds.List.prototype.add = function(node, reverse) {
   var index = null;
   var dataName = node.getId();
+  if (!goog.isNull(this.getById(dataName))) {
+    throw new Error('Item is duplicate in the list: ' + dataName);
+  }
   if (reverse) {
     this.list_.unshift(node);
     if (dataName && dataName != '') {
