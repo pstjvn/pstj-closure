@@ -37,13 +37,27 @@ pstj.ui.MoveTouch.prototype.isMoveEnabled = function() {
 pstj.ui.MoveTouch.prototype.addListeners = function() {
   goog.base(this, 'addListeners');
   this.getHandler().listen(this, pstj.ui.Touchable.EventType.LONG_PRESS,
-    function(e) {
-      e.stopPropagation();
-      this.moveEnabled_ = true;
-    });
+    this.handleLongPress);
 
   this.getHandler().listen(this, pstj.ui.Touchable.EventType.RELEASE,
-    function(e) {
-      this.moveEnabled_ = false;
-    });
+    this.handleRelease);
+};
+
+/**
+ * Handles the long press event for this subclass, enabling the movement.
+ * @param {pstj.ui.Touchable.Event} e The long press touchable event.
+ * @protected
+ */
+pstj.ui.MoveTouch.prototype.handleLongPress = function(e) {
+  e.stopPropagation();
+  this.moveEnabled_ = true;
+};
+
+/**
+ * Handles the release event from touchables.
+ * @param {pstj.ui.Touchable.Event} e The release touchable event.
+ * @protected
+ */
+pstj.ui.MoveTouch.prototype.handleRelease = function(e) {
+  this.moveEnabled_ = false;
 };
