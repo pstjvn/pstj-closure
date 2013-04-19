@@ -61,3 +61,22 @@ pstj.ui.Templated.prototype.getEls = function(selector) {
   if (el == null) throw Error('The element does not exists in the component');
   return el;
 };
+
+/**
+ * Queries the root element of the component for a specific query pattern and
+ *   returns the first match.
+ * @param {string} query The query to look up.
+ * @return {Element} The first matching element or null if none matches.
+ */
+pstj.ui.Templated.prototype.querySelector = function(query) {
+  return this.getElement().querySelector(query);
+};
+
+/**
+ * Queries the component's root node for elements mathicng the query string.
+ * @param {string} query Css query string.
+ * @return {!NodeList} The node collection. Collection could be empty.
+ */
+pstj.ui.Templated.prototype.querySelectorAll = function(query) {
+  return this.getElement().querySelectorAll(query);
+};
