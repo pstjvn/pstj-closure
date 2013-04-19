@@ -148,10 +148,24 @@ goog.scope(function() {
 
     // first of all, get our filter
     var filter = dataset.get(el, 'filter');
-    if (goog.isString(filter)) {
-      el.innerHTML = this.applyFilterOnData_(data, filter);
-    } else {
-      el.innerHTML = data.toString();
+    this.applyOnElement_(el, (goog.isString(filter)) ?
+      this.applyFilterOnData_(data, filter) :
+      data.toString());
+  };
+
+  /**
+   * Applies the data on the correct place.
+   * @param {Element} el The element to alter.
+   * @param {string} filteredData The filteret data to apply.
+   * @private
+   */
+  _.applyOnElement_ = function(el, filteredData) {
+    switch (el.tagName.toUpperCase()) {
+      case goog.dom.TagName.IMG:
+        el.src = filteredData;
+        break;
+      default:
+        el.innerHTML = filteredData;
     }
   };
 
