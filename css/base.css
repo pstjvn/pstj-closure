@@ -13,6 +13,18 @@ html, body {
  	margin: 0;
 }
 
+.float-left {
+  float: left;
+}
+
+.d-table {
+  display: table;
+}
+
+.d-table-cell {
+  display: table-cell;
+}
+
 /* Separate the retina display rules here */
 @media (min--moz-device-pixel-ratio: 1.5),
        (-o-min-device-pixel-ratio: 3/2),
