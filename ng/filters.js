@@ -113,6 +113,24 @@ goog.scope(function() {
   };
 
   /**
+   * Makes a price out of a value. Values are always assumed to be in cents
+   *   and are calculated based on that assumption.
+   * @param {number|string|boolean} data The data to parse as price.
+   * @param {string} format The formating information.
+   * @return {string} The formatted price.
+   */
+  _.makePrice = function(data, format) {
+    var fixed = +format;
+    if (isNaN(fixed)) {
+      fixed = 2;
+    }
+    if (!goog.isNumber(data)) data = +data;
+    if (isNaN(data)) data = 0;
+
+    return (data / 100).toFixed(fixed).toString();
+  };
+
+  /**
    * The registry of the filter function names to match with actual filters.
    * @type {Object}
    * @private
@@ -120,6 +138,7 @@ goog.scope(function() {
   _.registry_ = {
     'timeoffset': _.timeoffset,
     'append': _.append,
-    'prepend': _.prepend
+    'prepend': _.prepend,
+    'price': _.makePrice
   };
 });
