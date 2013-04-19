@@ -2,6 +2,7 @@ goog.provide('pstj.lab.style.css');
 
 goog.require('goog.array');
 goog.require('goog.dom');
+goog.require('goog.userAgent');
 
 /**
  * @fileoverview Provides transform / translate helpers based on real features
@@ -86,6 +87,11 @@ pstj.lab.style.css.transitions_ = [
  * @type {!boolean}
  */
 pstj.lab.style.css.supports3d = (function() {
+  // if we are using firefox it has some issues on linux drivers,
+  if (goog.userAgent.GECKO && (goog.userAgent.LINUX || goog.userAgent.X11)) {
+    // alert(goog.userAgent.LINUX + ' ' + goog.userAgent.X11);
+    return false;
+  }
   var res = pstj.lab.style.css.getSupportedName_([
                                   'perspective',
                                   'perspectiveProperty',
