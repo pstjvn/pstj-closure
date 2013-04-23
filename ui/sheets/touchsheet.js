@@ -2,6 +2,8 @@ goog.provide('pstj.ui.TouchSheet');
 
 goog.require('goog.async.Delay');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.KeyCodes');
+goog.require('goog.events.KeyHandler');
 goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
@@ -96,6 +98,21 @@ pstj.ui.TouchSheet = function() {
    */
   this.mouseWheelHandler_ = null;
   /**
+   * @private
+   * @type {boolean}
+   */
+  this.doubleMovement_ = false;
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.inWheelSequence_ = false;
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.keyZoom_ = false;
+  /**
    * Internal flag, if it is up we need to apply the size out of the call
    *   stack of the transition adding class.
    * @type {boolean}
@@ -119,7 +136,11 @@ pstj.ui.TouchSheet = function() {
    * @private
    */
   this.fintInFrameDelayed_ = new goog.async.Delay(this.fitInFrame, 20, this);
-
+  /**
+   * @private
+   * @type {goog.events.KeyHandler}
+   */
+  this.keyHandler_ = new goog.events.KeyHandler(document);
   this.subscribeToTouchablePubSub();
 };
 goog.inherits(pstj.ui.TouchSheet, pstj.ui.Touchable);
@@ -247,7 +268,30 @@ pstj.ui.TouchSheet.prototype.enterDocument = function() {
   this.getHandler().listen(this.mouseWheelHandler_,
     goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.handleWheel);
 
+  this.getHandler().listen(this.keyHandler_,
+    goog.events.KeyHandler.EventType.KEY, this.handleZoomByKeys);
+
   this.updateMaxOffsets();
+};
+
+/**
+ * Handles the keyboard controls for zoom levels.
+ * @param {goog.events.KeyEvent} e The normlized keyboard event.
+ * @protected
+ */
+pstj.ui.TouchSheet.prototype.handleZoomByKeys = function(e) {
+  if (e.platformModifierKey == true) {
+    switch (e.keyCode) {
+      case goog.events.KeyCodes.DASH:
+      case goog.events.KeyCodes.EQUALS:
+      case goog.events.KeyCodes.ZERO:
+      case 173:
+        e.stopPropagation();
+        e.preventDefault();
+        this.handleKey(e.keyCode);
+        break;
+    }
+  }
 };
 
 /**
@@ -502,6 +546,7 @@ pstj.ui.TouchSheet.prototype.endZooming = function() {
   this.update();
   this.doubleMovement_ = false;
   this.inWheelSequence_ = false;
+  this.keyZoom_ = false;
   this.needsSizeApplication_ = true;
 
   this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
@@ -563,7 +608,7 @@ pstj.ui.TouchSheet.prototype.applySizeAfterWheel = function() {
 pstj.ui.TouchSheet.prototype.draw = function() {
   var scale = 'scale(1)';
 
-  if (this.doubleMovement_ || this.inWheelSequence_) {
+  if (this.doubleMovement_ || this.inWheelSequence_ || this.keyZoom_) {
     if (this.doubleMovement_) {
       this.doubleMovement_ = false;
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = pstj.math.utils
@@ -642,6 +687,36 @@ pstj.ui.TouchSheet.prototype.handleWheel = function(e) {
     this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
       pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] - this.wheelEventChangeImpact;
   }
+};
+
+/**
+ * Handles the key codes directly and zooms always centered.
+ * @param {number} keycode The keycode from the event.
+ * @protected
+ */
+pstj.ui.TouchSheet.prototype.handleKey = function(keycode) {
+  this.update();
+  this.keyZoom_ = true;
+  this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = Math.abs(
+    this.getViewportSize().width / 2);
+
+  this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = Math.abs(
+    this.getViewportSize().height / 2);
+
+  this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] = this.cache_[
+    pstj.ui.TouchSheet.CACHE.CFOCALX] + this.offsetx_;
+
+  this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] = this.cache_[
+    pstj.ui.TouchSheet.CACHE.CFOCALY] + this.offsety_;
+
+  if (keycode == goog.events.KeyCodes.EQUALS) {
+    this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
+      pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] + this.wheelEventChangeImpact;
+} else if (keycode == goog.events.KeyCodes.DASH || keycode == 173) {
+    this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
+      pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] - this.wheelEventChangeImpact;
+  }
+  this.endZoomingBound_.start();
 };
 
 /**
