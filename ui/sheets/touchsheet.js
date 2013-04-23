@@ -284,7 +284,6 @@ pstj.ui.TouchSheet.prototype.handleZoomByKeys = function(e) {
     switch (e.keyCode) {
       case goog.events.KeyCodes.DASH:
       case goog.events.KeyCodes.EQUALS:
-      case goog.events.KeyCodes.ZERO:
       case 173:
         e.stopPropagation();
         e.preventDefault();
