@@ -43,6 +43,7 @@ pstj.ds.ListItem = function(data, id_property) {
   if (goog.isString(id_property)) {
     this.id_property_ = id_property;
   }
+  this.convert();
 };
 goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
 
@@ -121,6 +122,13 @@ pstj.ds.ListItem.prototype.update = function(node) {
   }
 };
 
+/**
+ * Coerce the raw data if needed. This includes permutations over the ojbect
+ *   literal to make complex object abide the application logic. By default it
+ *   does nothing.
+ * @protected
+ */
+pstj.ds.ListItem.prototype.convert = function() {};
 
 /**
  * Method that should return the unique ID of the data.
