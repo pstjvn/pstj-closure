@@ -212,6 +212,6 @@ pstj.ds.ListItem.prototype.set_ = function(data) {
  *   data objects.
  * @override
  */
-pstj.ds.ListItem.prototype.toJSON = function() {
+pstj.ds.ListItem.prototype['toJSON'] = function() {
   return this.getRawData();
 };

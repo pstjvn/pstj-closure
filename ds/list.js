@@ -331,7 +331,7 @@ pstj.ds.List.prototype.getPrevious = function() {
 };
 
 /** @inheritDoc */
-pstj.ds.List.prototype.toJSON = function() {
+pstj.ds.List.prototype['toJSON'] = function() {
   return this.list_;
 };
 
