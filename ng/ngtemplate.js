@@ -3,7 +3,6 @@ goog.provide('pstj.ng.Template');
 goog.require('goog.array');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
-goog.require('goog.dom.query');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.ng.filters');
 goog.require('pstj.ui.Templated');
@@ -32,7 +31,6 @@ goog.inherits(pstj.ng.Template, pstj.ui.Templated);
 goog.scope(function() {
   var Template = pstj.ng.Template;
   var _ = pstj.ng.Template.prototype;
-  var query = goog.dom.query;
   var dataset = goog.dom.dataset;
   var array = goog.array;
   var ngfilter = pstj.ng.filters;
@@ -64,7 +62,7 @@ goog.scope(function() {
   _.decorateInternal = function(el) {
     goog.base(this, 'decorateInternal', el);
     // call 1 way data bindings
-    this.templateElements_ = query('[data-model]', this.getElement());
+    this.templateElements_ = this.querySelectorAll('[data-model]');
     this.applyTemplate();
   };
 
