@@ -1,6 +1,6 @@
 goog.provide('pstj.ui.CustomButtonRenderer');
 
-goog.require('goog.dom.a11y');
+goog.require('goog.a11y.aria.Role');
 goog.require('goog.dom.classes');
 goog.require('goog.ui.ButtonRenderer');
 
@@ -33,12 +33,9 @@ goog.addSingletonGetter(pstj.ui.CustomButtonRenderer);
  */
 pstj.ui.CustomButtonRenderer.CSS_CLASS = goog.getCssName('pstj-button');
 
-/**
- * Returns the Aria role of the button.
- * @return {goog.dom.a11y.Role.<string>|undefined} Basic button artia role.
- */
+/** @inheritDoc */
 pstj.ui.CustomButtonRenderer.prototype.getAriaRole = function() {
-  return goog.dom.a11y.Role.BUTTON;
+  return goog.a11y.aria.Role.BUTTON;
 };
 
 /**
