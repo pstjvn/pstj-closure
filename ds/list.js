@@ -331,6 +331,11 @@ pstj.ds.List.prototype.getPrevious = function() {
 };
 
 /** @inheritDoc */
+pstj.ds.List.prototype.toJSON = function() {
+  return this.list_;
+};
+
+/** @inheritDoc */
 pstj.ds.List.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   delete this.map_;
