@@ -30,7 +30,7 @@ goog.addDependency('../../../apps/pstj/ui/async.js', ['pstj.ui.Async'], ['goog.f
 goog.addDependency('../../../apps/pstj/ui/clock.js', ['pstj.ui.Clock'], ['goog.ui.Component', 'pstj.ds.IClock', 'pstj.ds.TimeProvider']);
 goog.addDependency('../../../apps/pstj/ui/coupledinput.js', ['pstj.ui.CoupledInput'], ['goog.Disposable', 'goog.dom', 'goog.dom.classes', 'goog.dom.forms', 'goog.events', 'goog.events.EventType', 'goog.ui.LabelInput']);
 goog.addDependency('../../../apps/pstj/ui/custombutton.js', ['pstj.ui.Button'], ['goog.events.EventType', 'goog.ui.CustomButton', 'pstj.ui.CustomButtonRenderer']);
-goog.addDependency('../../../apps/pstj/ui/custombuttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.dom.a11y', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);
+goog.addDependency('../../../apps/pstj/ui/custombuttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.a11y.aria.Role', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);
 goog.addDependency('../../../apps/pstj/ui/elementids.js', ['pstj.ui.IdGenerator'], []);
 goog.addDependency('../../../apps/pstj/ui/scrollarea.js', ['pstj.ui.CustomScrollArea'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventType', 'goog.style', 'goog.ui.Component.EventType', 'goog.ui.Slider', 'pstj.style.css', 'pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/scrolllist.js', ['pstj.ui.ScrollList'], ['goog.style', 'pstj.ui.CustomScrollArea', 'pstj.ui.IdGenerator']);
