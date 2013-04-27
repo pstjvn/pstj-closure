@@ -1,8 +1,9 @@
 goog.provide('pstj.ui.Button');
 
+goog.require('goog.dom.dataset');
+goog.require('goog.events.EventType');
 goog.require('goog.ui.CustomButton');
 goog.require('pstj.ui.CustomButtonRenderer');
-goog.require('goog.events.EventType')
 
 /**
  * Provides shorthand for our button.
@@ -23,7 +24,7 @@ goog.inherits(pstj.ui.Button, goog.ui.CustomButton);
  * Custom method to allow the templates to give names to the actions and thus
  *   allow controllers to bind indirectly to component and sub-component
  *   actions.
- * @return {string|null} The action name if any, null if none.
+ * @return {?string} The action name if any, null if none.
  */
 pstj.ui.Button.prototype.getActionName = function() {
   return goog.dom.dataset.get(this.getElement(), 'action');
