@@ -1,0 +1,16 @@
+{namespace pstj.widget}
+
+/**
+ * Template for a control group. Just edit the template to add you control
+ * buttons.
+ * @oaram actions The actions to insert.
+ */
+{template .controlgroup}
+  <div class="{css pstj-control-group-buttons} {css d-table}">
+    <div class="{css pstj-control-group-button} {css d-table-cell}" data-action="namedaction">
+      <div class="{css d-table} {css margin-auto}">
+        <img src="assets/left-arrow.png" class="{css d-table-cell} {css pstj-control-group-button-image}" />
+      </div>
+    </div>
+  </div>
+{/template}
