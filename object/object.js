@@ -91,3 +91,62 @@ pstj.object.deepEquals = function(actual, expected, comparer) {
     }
   }
 };
+
+/**
+ * Encodes a JSON object as URL encoded paload for sending over the wire for
+ *   PHP implementation as of 158ltd.
+ * @param {Object} data The object to encode.
+ * @return {string} The encoded object as string.
+ */
+pstj.object.encode = function(data) {
+  var s = [];
+  if (goog.isArray(data)) {
+    throw Error('Not implemented');
+  }
+  for (var prefix in data) {
+    pstj.object.buildParams_(s, prefix, data[prefix]);
+  }
+  return s.join('&').replace(/%20/g, '+');
+};
+
+/**
+ * Builds up the parameters for the JSON URL encoding.
+ * @param {!Array.<string>} arr The array to push evenrything in.
+ * @param {string} prefix The data prefix (nexted objects are presented as
+ *   string prefixes).
+ * @param {?} data The data to encode, could be any type.
+ * @private
+ */
+pstj.object.buildParams_ = function(arr, prefix, data) {
+  var name = null;
+  if (goog.isArray(data)) {
+    goog.array.forEach(/** @type {!Array} */(data), function(el, index) {
+      if (/\[\]$/.test(prefix)) {
+        pstj.object.add_(arr, prefix, el);
+      } else {
+        pstj.object.buildParams_(arr, prefix + '[' +
+          (typeof el == 'object' ? index : '') + ']', el);
+      }
+    });
+  } else if (goog.isObject(data)) {
+    for (name in data) {
+      pstj.object.buildParams_(arr, prefix + '[' + name + ']', data[name]);
+    }
+  } else {
+    pstj.object.add_(arr, prefix, data);
+  }
+};
+
+/**
+ * Adds the value to the url encoded string.
+ * @param {Array.<string>} arr The array collecting the resulting encoded
+ *   value pairs.
+ * @param {string} key The key to add.
+ * @param {?} value The value to add.
+ * @private
+ */
+pstj.object.add_ = function(arr, key, value) {
+  value = goog.isFunction(value) ? value() : (
+    goog.isNull(value) ? '' : value);
+  arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+};
