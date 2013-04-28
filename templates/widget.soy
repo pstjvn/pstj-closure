@@ -14,3 +14,20 @@
     </div>
   </div>
 {/template}
+
+/**
+ * Provides the progress bar widget's html
+ * @param text The text to show for the progress if any.
+ */
+{template .progress}
+  <div class="{css pstj-widget-progress}">
+    {if $text != ''}
+      <div class="{css pstj-widget-progress-text}">
+        {$text}
+      </div>
+    {/if}
+    <div class="{css pstj-widget-progress-container}">
+      <div class="{css pstj-widget-progress-bar}"></div>
+    </div>
+  </div>
+{/template}
