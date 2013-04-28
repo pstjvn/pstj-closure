@@ -1,7 +1,7 @@
 @def PSTJ_WIDGET_PROGRESS_BG #EEEEEE;
 @def PSTJ_WIDGET_PROGRESS_BORDER 2px solid black;
 @def PSTJ_WIDGET_PROGRESS_HEIGHT 20px;
-@def PSTJ_WIDGET_PROGRESS_BAR_BG #0065FF;
+@def PSTJ_WIDGET_PROGRESS_BAR_BG #0070C0;
 
 .pstj-widget-progress {
   position: absolute;
@@ -12,6 +12,7 @@
   margin: 0;
   padding: 50px 0 0 0;
   background: PSTJ_WIDGET_PROGRESS_BG;
+  z-index: 9999;
 }
 
 .pstj-widget-progress-container {
