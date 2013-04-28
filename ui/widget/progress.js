@@ -39,7 +39,6 @@ pstj.widget.Progress = function() {
    */
   this.delay_ = new goog.async.Delay(function() {
     this.dispatchEvent(goog.events.EventType.LOAD);
-    goog.dispose(this);
   }, 800, this);
 
   this.registerDisposable(this.delay_);
