@@ -11,7 +11,9 @@
 goog.provide('pstj.ds.ListItem');
 goog.provide('pstj.ds.ListItem.EventType');
 
+goog.require('goog.asserts');
 goog.require('goog.events.EventTarget');
+goog.require('goog.object');
 goog.require('goog.string');
 goog.require('pstj.object');
 
@@ -211,7 +213,18 @@ pstj.ds.ListItem.prototype.set_ = function(data) {
  * Overrides the default behavior to allow easier serialization of wrapped
  *   data objects.
  * @override
+ * @this {pstj.ds.ListItem}
  */
 pstj.ds.ListItem.prototype['toJSON'] = function() {
   return this.getRawData();
+};
+
+
+/**
+ * Returns a new item that is a raw data clone of this item.
+ * @return {pstj.ds.ListItem} The clones item.
+ */
+pstj.ds.ListItem.prototype.clone = function() {
+  return new pstj.ds.ListItem(goog.asserts.assertObject(
+    goog.object.unsafeClone(this.getRawData())));
 };
