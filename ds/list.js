@@ -330,6 +330,17 @@ pstj.ds.List.prototype.getPrevious = function() {
   return this.getByIndex(nextIndex);
 };
 
+/**
+ * Executes a function for each item in the list.
+ * @param {function(this: S, pstj.ds.ListItem, number,
+ *   Array.<pstj.ds.ListItem>): ?} fn The function to execute.
+ * @param {S=} opt_obj The object in which context to execute the function.
+ * @template S
+ */
+pstj.ds.List.prototype.forEach = function(fn, opt_obj) {
+  goog.array.forEach(this.list_, fn, opt_obj);
+};
+
 /** @inheritDoc */
 pstj.ds.List.prototype['toJSON'] = function() {
   return this.list_;
