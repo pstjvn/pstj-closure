@@ -6,7 +6,9 @@ goog.require('goog.ui.CustomButton');
 goog.require('pstj.ui.CustomButtonRenderer');
 
 /**
- * Provides shorthand for our button.
+ * Provides shorthand for our button. The button is also optimized for touch
+ *   events (i.e. it handles the touches directly and thus is much more
+ *   responsive than regular buttons that awai the click simulation).
  * @constructor
  * @extends {goog.ui.CustomButton}
  */
@@ -54,6 +56,7 @@ pstj.ui.Button.prototype.handleTouchStart = function(e) {
   e.preventDefault();
   this.cache_[0] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
   this.cache_[1] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
+  this.setActive(true);
 };
 
 /**
@@ -63,10 +66,14 @@ pstj.ui.Button.prototype.handleTouchStart = function(e) {
  */
 pstj.ui.Button.prototype.handleTouchEnd = function(e) {
   e.preventDefault();
-  if (Math.abs(this.cache_[0] -
-    e.getBrowserEvent()['changedTouches'][0]['clientX']) < 10 &&
-    Math.abs(this.cache_[1] -
-      e.getBrowserEvent()['changedTouches'][0]['clientY']) < 10) {
-    this.performActionInternal(e);
+  if (this.isActive()) {
+    if (Math.abs(this.cache_[0] -
+      e.getBrowserEvent()['changedTouches'][0]['clientX']) < 10 &&
+      Math.abs(this.cache_[1] -
+        e.getBrowserEvent()['changedTouches'][0]['clientY']) < 10) {
+
+      this.performActionInternal(e);
+    }
+    this.setActive(false);
   }
 };
