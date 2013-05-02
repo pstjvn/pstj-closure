@@ -25,6 +25,7 @@ pstj.ui.Async = function() {
    * @type {pstj.graphics.Smooth}
    */
   this.smooth_ = new pstj.graphics.Smooth(this.draw, this);
+  this.registerDisposable(this.smooth_);
 };
 goog.inherits(pstj.ui.Async, pstj.ui.Templated);
 
@@ -48,6 +49,5 @@ pstj.ui.Async.prototype.update = function() {
 /** @inheritDoc */
 pstj.ui.Async.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
-  goog.dispose(this.smooth_);
   this.smooth_ = null;
 };
