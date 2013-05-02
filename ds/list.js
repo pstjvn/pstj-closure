@@ -21,8 +21,9 @@ goog.require('pstj.ds.ListItem');
  *   duplicates, error is throwsn if you attempt to add items with ID that is
  *   already in the list.
  * @constructor
- * @param {Array.<pstj.ds.ListItem>=} opt_nodes Optionally, array of list
- *   items to initialize the list with.
+ * @param {Array.<pstj.ds.ListItem>|Array.<Object>=} opt_nodes Optionally,
+ *   array of list items to initialize the list with or array of literal
+ *   record objects to convert to list items.
  * @extends {goog.events.EventTarget}
  */
 pstj.ds.List = function(opt_nodes) {
@@ -30,9 +31,17 @@ pstj.ds.List = function(opt_nodes) {
   this.list_ = [];
   this.map_ = {};
   this.indexMap_ = {};
+  var convert = false;
   if (opt_nodes) {
+    if (opt_nodes.length > 0 && !(opt_nodes[0] instanceof pstj.ds.ListItem)) {
+      convert = true;
+    }
     for (var i = 0, len = opt_nodes.length; i < len; i++) {
-      this.add(/** @type {!pstj.ds.ListItem} */ (opt_nodes[i]));
+      if (convert) {
+        this.add(new pstj.ds.ListItem(opt_nodes[i]));
+      } else {
+        this.add(/** @type {!pstj.ds.ListItem} */ (opt_nodes[i]));
+      }
     }
   }
 };
