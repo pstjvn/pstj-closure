@@ -344,6 +344,7 @@ pstj.ui.Touchable.prototype.handleAllTouchables_ = function(e) {
 
     case pstj.ui.Touchable.EventType.LONG_PRESS:
       this.lpressed_ = true;
+      break;
   }
 };
 
