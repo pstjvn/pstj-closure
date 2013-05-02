@@ -73,9 +73,16 @@ goog.scope(function() {
     }, this);
   };
 
+  /**
+   * Looks up the content element starting from the root element of the
+   *   component. Notice that because the component can have chilren it is
+   *   possible that the content element might be found in one of the
+   *   children, so make sure to scope correctly your look up.
+   * @param {Element} element The root DOM node of the component.
+   * @return {Element}
+   */
   _.getContentElement = function(element) {
     return element;
   };
 
 });
-
