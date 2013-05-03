@@ -3,6 +3,7 @@ goog.provide('pstj.ui.Button');
 goog.require('goog.dom.dataset');
 goog.require('goog.events.EventType');
 goog.require('goog.ui.CustomButton');
+goog.require('goog.ui.registry');
 goog.require('pstj.ui.CustomButtonRenderer');
 
 /**
@@ -10,10 +11,12 @@ goog.require('pstj.ui.CustomButtonRenderer');
  *   events (i.e. it handles the touches directly and thus is much more
  *   responsive than regular buttons that awai the click simulation).
  * @constructor
+ * @param {goog.ui.ButtonRenderer=} opt_renderer Optional renderer to use.
  * @extends {goog.ui.CustomButton}
  */
-pstj.ui.Button = function() {
-  goog.base(this, '', pstj.ui.CustomButtonRenderer.getInstance());
+pstj.ui.Button = function(opt_renderer) {
+  goog.base(this, '', opt_renderer ||
+    pstj.ui.CustomButtonRenderer.getInstance());
   /**
    * @private
    * @type {Array.<number>}
@@ -77,3 +80,9 @@ pstj.ui.Button.prototype.handleTouchEnd = function(e) {
     this.setActive(false);
   }
 };
+
+// Register a decorator factory function for pstj.ui.Button
+goog.ui.registry.setDecoratorByClassName(pstj.ui.CustomButtonRenderer.CSS_CLASS,
+  function() {
+    return new pstj.ui.Button();
+  });
