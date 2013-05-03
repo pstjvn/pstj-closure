@@ -3,6 +3,7 @@ goog.provide('pstj.ds.List.Event');
 goog.provide('pstj.ds.List.EventType');
 
 goog.require('goog.array');
+goog.require('goog.async.Delay');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('pstj.ds.ListItem');
@@ -31,6 +32,9 @@ pstj.ds.List = function(opt_nodes) {
   this.list_ = [];
   this.map_ = {};
   this.indexMap_ = {};
+  this.dispatchFilterApplied_ = new goog.async.Delay(goog.bind(function() {
+    this.dispatchEvent(pstj.ds.List.EventType.FILTERED);
+  }, this), 100);
   var convert = false;
   if (opt_nodes) {
     if (opt_nodes.length > 0 && !(opt_nodes[0] instanceof pstj.ds.ListItem)) {
@@ -54,7 +58,8 @@ goog.inherits(pstj.ds.List, goog.events.EventTarget);
 pstj.ds.List.EventType = {
   ADD: goog.events.getUniqueId('add'),
   UPDATE: goog.events.getUniqueId('update'),
-  DELETE: goog.events.getUniqueId('delete')
+  DELETE: goog.events.getUniqueId('delete'),
+  FILTERED: goog.events.getUniqueId('filtered')
 };
 
 // Implement list interface.
@@ -377,6 +382,7 @@ pstj.ds.List.prototype.applyFilter_ = function() {
       if (this.filterFn_(item)) this.filteredOutIndexes_.push(index);
     }, this);
   }
+  this.dispatchFilterApplied_.start();
 };
 
 /**
