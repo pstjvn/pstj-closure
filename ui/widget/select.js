@@ -33,10 +33,8 @@ goog.require('pstj.ui.Templated');
 pstj.widget.Select = function() {
   goog.base(this);
   this.smooth = new pstj.graphics.Smooth(this.draw, this);
-  this.selectButton = new goog.ui.CustomButton('',
-    pstj.ui.CustomButtonRenderer.getInstance());
-  this.cancelButton = new goog.ui.CustomButton('',
-    pstj.ui.CustomButtonRenderer.getInstance());
+  this.selectButton = new pstj.ui.Button();
+  this.cancelButton = new pstj.ui.Button();
   this.addChild(this.cancelButton);
   this.addChild(this.selectButton);
 
@@ -85,14 +83,19 @@ pstj.widget.Select.prototype.disposeInternal = function() {
  */
 pstj.widget.Select.prototype.setModel = function(model) {
   // expect an array and convert internally to list.
-  if (!goog.isArray(model)) {
-    throw new Error('The model should be an array of objects');
+  if (!(model instanceof pstj.ds.List)) {
+    if (!goog.isArray(model)) {
+      throw new Error('Model for select widget should be either pstj.ds.List ' +
+        ' instance or an array or literal objects');
+    }
+    var list = new pstj.ds.List();
+    goog.array.forEach(/** @type {Array} */ (model), function(item) {
+      var listitem = new pstj.ds.ListItem(item);
+      list.add(listitem);
+    });
+  } else {
+    list = model;
   }
-  var list = new pstj.ds.List();
-  goog.array.forEach(/** @type {Array} */ (model), function(item) {
-    var listitem = new pstj.ds.ListItem(item);
-    list.add(listitem);
-  });
   goog.base(this, 'setModel', list);
   this.visualizeModel();
 };
