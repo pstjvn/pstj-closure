@@ -26,28 +26,32 @@ goog.scope(function() {
 
   /**
    * Returns the constructed DOM for the create dom cycle in the component.
-   * @param {*} model The model to pass to the template.
+   * @param {goog.ui.Component} templated The component to use as model.
    * @return {!Element} The element to be used as root node.
    */
-  _.getDOM = function(model) {
-    return this.getCompiledTemplate_(model);
+  _.createDom = function(templated) {
+    return /** @type {!Element} */ (
+      this.getCompiledTemplate_(this.generateTemplateData(templated)));
   };
 
+
   /**
-   * Returns the content element based on the assumption that the element
-   *   passes in is the same element that was returned as s DOM structure by
-   *   the getDOM method.
-   * @param {Element} element The root element.
-   * @return {Element} The content dom element.
+   * Method to generate data that the template will understand from the model
+   *   data of the component.
+   * @param {goog.ui.Component} component The model of the component.
+   * @return {Object.<string, *>} The generated template model.
+   * @protected
    */
-  _.getContentElement = function(element) {
-    return element;
+  _.generateTemplateData = function(component) {
+    return {
+      data: component.getModel()
+    };
   };
 
   /**
    * Returns the compiled DOM from the html template. This is required to
    *   allow the component to have referrence to a root DOM node.
-   * @param {*} model The model of the component if any to use in building the
+   * @param {Object.<string, *>} model The model of the component if any to use in building the
    *   template.
    * @return {Element} The constructed element.
    * @private
@@ -59,7 +63,7 @@ goog.scope(function() {
 
   /**
    * Returns the html sring to be the DOM for a component instance.
-   * @param {*} model The component's model if any.
+   * @param {Object.<string, *>} model The component's model if any.
    * @return {string} The HTML of the component.
    * @protected
    */

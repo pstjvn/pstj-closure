@@ -47,3 +47,17 @@
     </div>
   </div>
 {/template}
+
+/**
+ * Provides the default template for the list item representation.
+ * @param thumbnail The image to use as thumbnail.
+ * @param name The name of the item.
+ */
+{template .listitem}
+  <div class="{css pstj-list-item}">
+    <div class="{css pstj-list-item-image-holder}">
+      <img src="{$thumbnail}" class="{css pstj-list-item-thumbnail}" />
+    </div>
+    <div class="{css pstj-list-item-name}">{$name}</div>
+  </div>
+{/template}
