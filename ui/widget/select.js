@@ -43,67 +43,60 @@ pstj.widget.Select = function(opt_template, opt_item_template) {
 };
 goog.inherits(pstj.widget.Select, pstj.ui.Templated);
 
-goog.scope(function() {
+/**
+ * @override
+ */
+pstj.widget.Select.prototype.setModel = function(model) {
+  this.list_.setModel(model);
+};
 
-  var _ = pstj.widget.Select.prototype;
+/**
+ * Retrtieves the currently selected data.
+ * @return {pstj.ds.ListItem}
+ */
+pstj.widget.Select.prototype.getSelection = function() {
+  return this.list_.getSelectionData();
+};
 
-  /**
-   * @override
-   */
-  _.setModel = function(model) {
-    this.list_.setModel(model);
-  };
+/** @inheritDoc */
+pstj.widget.Select.prototype.decorateInternal = function(el) {
+  goog.base(this, 'decorateInternal', el);
+  this.cancelButton_.decorate(this.querySelector('[data-action="cancel"]'));
+  this.selectButton_.decorate(this.querySelector('[data-action="select"]'));
+  this.list_.decorate(this.querySelector('.' + goog.getCssName('pstj-list')));
+};
 
-  /**
-   * Retrtieves the currently selected data.
-   * @return {pstj.ds.ListItem}
-   */
-  _.getSelection = function() {
-    return this.list_.getSelectionData();
-  };
+/** @inheritDoc */
+pstj.widget.Select.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  this.getHandler().listen(this, [
+    goog.ui.Component.EventType.HIGHLIGHT,
+    goog.ui.Component.EventType.SELECT,
+    goog.ui.Component.EventType.ACTION], this.handleSubcomponentEvent);
+  this.selectButton_.setEnabled(false);
+};
 
-  /** @inheritDoc */
-  _.decorateInternal = function(el) {
-    goog.base(this, 'decorateInternal', el);
-    this.cancelButton_.decorate(this.querySelector('[data-action="cancel"]'));
-    this.selectButton_.decorate(this.querySelector('[data-action="select"]'));
-    this.list_.decorate(this.querySelector('.' + goog.getCssName('pstj-list')));
-  };
-
-  /** @inheritDoc */
-  _.enterDocument = function() {
-    goog.base(this, 'enterDocument');
-    this.getHandler().listen(this, [
-      goog.ui.Component.EventType.HIGHLIGHT,
-      goog.ui.Component.EventType.SELECT,
-      goog.ui.Component.EventType.ACTION], this.handleSubcomponentEvent);
-    this.selectButton_.setEnabled(false);
-  };
-
-  /**
-   * Handles for the events coming from the sub components.
-   * @param {goog.events.Event} e The Component events.
-   * @protected
-   */
-  _.handleSubcomponentEvent = function(e) {
-    switch (e.type) {
-      case goog.ui.Component.EventType.HIGHLIGHT:
+/**
+ * Handles for the events coming from the sub components.
+ * @param {goog.events.Event} e The Component events.
+ * @protected
+ */
+pstj.widget.Select.prototype.handleSubcomponentEvent = function(e) {
+  switch (e.type) {
+    case goog.ui.Component.EventType.HIGHLIGHT:
+      e.stopPropagation();
+      this.selectButton_.setEnabled(true);
+      break;
+    case goog.ui.Component.EventType.SELECT:
+      // let it propagate!
+      break;
+    case goog.ui.Component.EventType.ACTION:
+      if (e.target == this.cancelButton_) {
+        this.dispatchEvent(goog.ui.Component.EventType.CLOSE);
+      } else if (e.target == this.selectButton_) {
         e.stopPropagation();
-        this.selectButton_.setEnabled(true);
-        break;
-      case goog.ui.Component.EventType.SELECT:
-        // let it propagate!
-        break;
-      case goog.ui.Component.EventType.ACTION:
-        if (e.target == this.cancelButton_) {
-          this.dispatchEvent(goog.ui.Component.EventType.CLOSE);
-        } else if (e.target == this.selectButton_) {
-          e.stopPropagation();
-          this.dispatchEvent(goog.ui.Component.EventType.SELECT);
-        }
-        break;
-    }
-  };
-
-});
-
+        this.dispatchEvent(goog.ui.Component.EventType.SELECT);
+      }
+      break;
+  }
+};
