@@ -37,9 +37,11 @@ goog.require('pstj.ui.Touchable.PubSub');
  * @constructor
  * @extends {pstj.ui.Touchable}
  * @implements {pstj.ui.ISheet}
+ * @param {pstj.ui.Template} opt_template Optional template to if constructing
+ *   DOM.
  */
-pstj.ui.TouchSheet = function() {
-  goog.base(this);
+pstj.ui.TouchSheet = function(opt_template) {
+  goog.base(this, opt_template);
 
   /**
    * Reference to the last known parent size. Used to calculate in-frame sheet
@@ -129,6 +131,7 @@ pstj.ui.TouchSheet = function() {
    */
   this.endZoomingBound_ = new goog.async.Delay(
     this.endZooming, 250, this);
+  this.registerDisposable(this.endZoomingBound_);
 
   /**
    * Cached delayed refit, better memory management and no garbage at each run.
@@ -136,14 +139,37 @@ pstj.ui.TouchSheet = function() {
    * @private
    */
   this.fintInFrameDelayed_ = new goog.async.Delay(this.fitInFrame, 20, this);
+  this.registerDisposable(this.fintInFrameDelayed_);
   /**
    * @private
    * @type {goog.events.KeyHandler}
    */
   this.keyHandler_ = new goog.events.KeyHandler(document);
+  this.registerDisposable(this.keyHandler_);
   this.subscribeToTouchablePubSub();
+
+  /**
+   * We need reference to those bound functions used to subscribe to pubsub in
+   *   order to be able to unsibscibe
+   * @type {Array.<function(this: pstj.ui.TouchSheet, goog.events.Event):
+   *   undefined>}
+   */
+  this.bounds_ = [];
 };
 goog.inherits(pstj.ui.TouchSheet, pstj.ui.Touchable);
+
+/** @inheritDoc */
+pstj.ui.TouchSheet.prototype.disposeInternal = function() {
+  this.unsibscibeToTouchPubSub();
+  goog.base(this, 'disposeInternal');
+  this.bounds_ = null;
+  this.keyHandler_ = null;
+  this.size = null;
+  this.fintInFrameDelayed_ = null;
+  this.endZoomingBound_ = null;
+  this.cache_ = null;
+  this.viewportsize_ = null;
+};
 
 /**
  * This is a imaginary impact percentile for the wheel handler. 10 seems to
@@ -178,14 +204,12 @@ pstj.ui.TouchSheet.prototype.updateParentSize = function(size) {
  */
 pstj.ui.TouchSheet.prototype.subscribeToTouchablePubSub = function() {
   // subscribe for the double moves as we use it extensively
-  pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DCLEAR,
-    goog.bind(function(e) {
+  this.bounds_[0] = goog.bind(function(e) {
     if (this.isInDocument()) {
       this.endZooming();
     }
-  }, this));
-  pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DOUBLE,
-    goog.bind(function(e) {
+  }, this);
+  this.bounds_[1] = goog.bind(function(e) {
       if (!this.isInDocument()) return;
       this.handleDoubleMove(
         [e.getBrowserEvent()['touches'][0]['clientX'],
@@ -193,16 +217,34 @@ pstj.ui.TouchSheet.prototype.subscribeToTouchablePubSub = function() {
         [e.getBrowserEvent()['touches'][1]['clientX'],
         e.getBrowserEvent()['touches'][1]['clientY']]);
 
-  }, this));
-  pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DINIT,
-    goog.bind(function(e) {
+  }, this);
+  this.bounds_[2] = goog.bind(function(e) {
       if (!this.isInDocument()) return;
       this.startDoubleMove(
         [e.getBrowserEvent()['touches'][0]['clientX'],
         e.getBrowserEvent()['touches'][0]['clientY']],
         [e.getBrowserEvent()['touches'][1]['clientX'],
         e.getBrowserEvent()['touches'][1]['clientY']]);
-    }, this));
+    }, this);
+  pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DCLEAR,
+    this.bounds_[0]);
+  pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DOUBLE,
+    this.bounds_[1]);
+  pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DINIT,
+    this.bounds_[2]);
+};
+
+/**
+ * Unsubscribe from PUBSUB in case we want to dispose the component this is
+ *   important in order to free the memory.
+ */
+pstj.ui.TouchSheet.prototype.unsibscibeToTouchPubSub = function() {
+  pstj.ui.Touchable.PubSub.unsubscribe(pstj.ui.Touchable.PubSub.DCLEAR,
+    this.bounds_[0]);
+  pstj.ui.Touchable.PubSub.unsubscribe(pstj.ui.Touchable.PubSub.DOUBLE,
+    this.bounds_[1]);
+  pstj.ui.Touchable.PubSub.unsubscribe(pstj.ui.Touchable.PubSub.DINIT,
+    this.bounds_[2]);
 };
 
 /**

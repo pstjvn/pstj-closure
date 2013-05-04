@@ -20,56 +20,59 @@ goog.require('goog.dom');
 pstj.ui.Template = function() {};
 goog.addSingletonGetter(pstj.ui.Template);
 
-goog.scope(function() {
+/**
+ * Returns the constructed DOM for the create dom cycle in the component.
+ * @param {goog.ui.Component} templated The component to use as model.
+ * @return {!Element} The element to be used as root node.
+ */
+pstj.ui.Template.prototype.createDom = function(templated) {
+  return /** @type {!Element} */ (
+    this.getCompiledTemplate_(this.generateTemplateData(templated)));
+};
 
-  var _ = pstj.ui.Template.prototype;
 
-  /**
-   * Returns the constructed DOM for the create dom cycle in the component.
-   * @param {goog.ui.Component} templated The component to use as model.
-   * @return {!Element} The element to be used as root node.
-   */
-  _.createDom = function(templated) {
-    return /** @type {!Element} */ (
-      this.getCompiledTemplate_(this.generateTemplateData(templated)));
+/**
+ * Method to generate data that the template will understand from the model
+ *   data of the component.
+ * @param {goog.ui.Component} component The model of the component.
+ * @return {Object.<string, *>} The generated template model.
+ * @protected
+ */
+pstj.ui.Template.prototype.generateTemplateData = function(component) {
+  return {
+    data: component.getModel()
   };
+};
 
+/**
+ * Returns the compiled DOM from the html template. This is required to
+ *   allow the component to have referrence to a root DOM node.
+ * @param {Object.<string, *>} model The model of the component if any to
+ *   use in building the template.
+ * @return {Element} The constructed element.
+ * @private
+ */
+pstj.ui.Template.prototype.getCompiledTemplate_ = function(model) {
+  return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
+    this.getTemplate(model)));
+};
 
-  /**
-   * Method to generate data that the template will understand from the model
-   *   data of the component.
-   * @param {goog.ui.Component} component The model of the component.
-   * @return {Object.<string, *>} The generated template model.
-   * @protected
-   */
-  _.generateTemplateData = function(component) {
-    return {
-      data: component.getModel()
-    };
-  };
+/**
+ * Returns the html sring to be the DOM for a component instance.
+ * @param {Object.<string, *>} model The component's model if any.
+ * @return {string} The HTML of the component.
+ * @protected
+ */
+pstj.ui.Template.prototype.getTemplate = function(model) {
+  return '<div></div>';
+};
 
-  /**
-   * Returns the compiled DOM from the html template. This is required to
-   *   allow the component to have referrence to a root DOM node.
-   * @param {Object.<string, *>} model The model of the component if any to use in building the
-   *   template.
-   * @return {Element} The constructed element.
-   * @private
-   */
-  _.getCompiledTemplate_ = function(model) {
-    return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
-      this.getTemplate(model)));
-  };
-
-  /**
-   * Returns the html sring to be the DOM for a component instance.
-   * @param {Object.<string, *>} model The component's model if any.
-   * @return {string} The HTML of the component.
-   * @protected
-   */
-  _.getTemplate = function(model) {
-    return '<div></div>';
-  };
-
-});
-
+/**
+ * Getter for the component's content element.
+ * @param {goog.ui.Component} component The component who's content element
+ *   to look up.
+ * @return {Element}
+ */
+pstj.ui.Template.prototype.getContentElement = function(component) {
+  return component.getElement();
+};

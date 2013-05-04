@@ -1,11 +1,13 @@
 goog.provide('pstj.ui.Upload');
 goog.provide('pstj.ui.Upload.Event');
+goog.provide('pstj.ui.UploadTemplate');
 
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.net.EventType');
 goog.require('goog.net.IframeIo');
+goog.require('pstj.templates');
 goog.require('pstj.ui.Templated');
 
 /**
@@ -49,24 +51,29 @@ goog.require('pstj.ui.Templated');
  * @extends {pstj.ui.Templated}
  * @param {!string} url The url of the form to configure.
  * @param {string=} name Optional name for the input that holds the file.
+ * @param {pstj.ui.Template=} opt_template Optional template to use.
  */
-pstj.ui.Upload = function(url, name) {
-  goog.base(this);
+pstj.ui.Upload = function(url, name, opt_template) {
+  goog.base(this, opt_template || pstj.ui.UploadTemplate.getInstance());
+  /**
+   * The URL to upload the file to.
+   * @type {string}
+   * @private
+   */
   this.url_ = url;
+  /**
+   * Reference to the IframeIO used to make the actual upload.
+   * @type {goog.net.IframeIo}
+   * @private
+   */
   this.io_ = new goog.net.IframeIo();
+  this.registerDisposable(this.io_);
   this.getHandler().listen(this.io_, goog.net.EventType.COMPLETE,
     this.handleFormComplete);
 
   if (goog.isString(name)) this.name_ = name;
 };
 goog.inherits(pstj.ui.Upload, pstj.ui.Templated);
-
-/**
- * Reference to the IframeIO used to make the actual upload.
- * @type {goog.net.IframeIo}
- * @private
- */
-pstj.ui.Upload.prototype.io_;
 
 /**
  * The name of the input that holds the file. If not provided a default one
@@ -77,21 +84,21 @@ pstj.ui.Upload.prototype.io_;
 pstj.ui.Upload.prototype.name_ = 'upload';
 
 /**
- * The URL to upload the file to.
- * @type {string}
- * @private
+ * Getter for the URL so that the template instance can use it to construct
+ *   the form.
+ * @return {string}
  */
-pstj.ui.Upload.prototype.url_;
+pstj.ui.Upload.prototype.getUrl = function() {
+  return this.url_;
+};
 
-/** @inheritDoc */
-pstj.ui.Upload.prototype.getTemplate = function() {
-  // Provide default template.
-  return '<div class="' + goog.getCssName('hidden-form') +
-    '"><form method="post" enctype="multipart/form-data" action="' +
-    this.url_ +
-    '" name="uploadform"><input name="' + this.name_ +
-    '" type="file" style="display: none;" class="' +
-    goog.getCssName('monitor') + '" id="attachment" /></form></div>';
+/**
+ * Getter for the name of the input so that the template instance can use it
+ *   to contruct the form.
+ * @return {string}
+ */
+pstj.ui.Upload.prototype.getInputName = function() {
+  return this.name_;
 };
 
 /**
@@ -127,8 +134,8 @@ pstj.ui.Upload.prototype.handleFileChange = function(e) {
  */
 pstj.ui.Upload.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  goog.array.forEach(dom.getElementsByClass(goog.getCssName('monitor'),
-    this.getElement()), function(el) {
+  goog.array.forEach(goog.dom.getElementsByClass(goog.getCssName(
+    'pstj-upload-form-input'), this.getElement()), function(el) {
       this.getHandler().listen(el, goog.events.EventType.CHANGE,
         this.handleFileChange);
     }, this);
@@ -136,6 +143,9 @@ pstj.ui.Upload.prototype.enterDocument = function() {
 
 /**
  * Activates the file selector in the browser.
+ *
+ * FIXME: this is badly resolvable to a unique ID and if the document has more
+ *   than one form it will fail.
  */
 pstj.ui.Upload.prototype.trigger = function() {
   goog.dom.getElement('attachment').click();
@@ -143,11 +153,31 @@ pstj.ui.Upload.prototype.trigger = function() {
 
 /** @inheritDoc */
 pstj.ui.Upload.prototype.disposeInternal = function() {
-  goog.dispose(this.io_);
-  this.io_ = null;
-  delete this.url_;
-  delete this.name_;
   goog.base(this, 'disposeInternal');
+  this.io_ = null;
+};
+
+/**
+ * @constructor
+ * @extends {pstj.ui.Template}
+ */
+pstj.ui.UploadTemplate = function() {
+  goog.base(this);
+};
+goog.inherits(pstj.ui.UploadTemplate, pstj.ui.Template);
+goog.addSingletonGetter(pstj.ui.UploadTemplate);
+
+/** @inheritDoc */
+pstj.ui.UploadTemplate.prototype.generateTemplateData = function(comp) {
+  return {
+    url: comp.getUrl(),
+    inputname: comp.getInputName()
+  };
+};
+
+/** @inheritDoc */
+pstj.ui.UploadTemplate.prototype.getTemplate = function(model) {
+  return pstj.templates.upload(model);
 };
 
 /**

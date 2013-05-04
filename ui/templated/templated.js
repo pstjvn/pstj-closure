@@ -1,7 +1,8 @@
 goog.provide('pstj.ui.Templated');
 
-goog.require('goog.ui.Component');
 goog.require('goog.dom');
+goog.require('goog.ui.Component');
+goog.require('pstj.ui.Template');
 
 /**
  * @fileoverview Provides a class that automatically provides handing for a
@@ -19,35 +20,35 @@ goog.require('goog.dom');
  *   use complex DOM structured.
  * @constructor
  * @extends {goog.ui.Component}
+ * @param {pstj.ui.Template=} opt_template The template to use in the component.
  */
-pstj.ui.Templated = function() {
+pstj.ui.Templated = function(opt_template) {
   goog.base(this);
+  /**
+   * @private
+   * @type {pstj.ui.Template}
+   */
+  this.template_ = opt_template || pstj.ui.Template.getInstance();
 };
 goog.inherits(pstj.ui.Templated, goog.ui.Component);
 
-/**
- * @inheritDoc
- */
+/** @inheritDoc */
 pstj.ui.Templated.prototype.createDom = function() {
-  this.decorateInternal(/** @type {Element} */ (this.getTemplateCompiled()));
+  this.decorateInternal(this.getTemplate().createDom(this));
 };
 
 /**
- * Returns the widget's HTML.
+ * Returns the component's template generating instance.
  * @protected
- * @return {string} The HTML of the template used to generate the DOM tree.
+ * @return {pstj.ui.Template} The templating instance used by this component.
  */
 pstj.ui.Templated.prototype.getTemplate = function() {
-  return '<div></div>';
+  return this.template_;
 };
 
-/**
- * The Node generate from the HTML of the template.
- * @protected
- * @return {Node} The DOM node the widget tree is attached to.
- */
-pstj.ui.Templated.prototype.getTemplateCompiled = function() {
-  return goog.dom.htmlToDocumentFragment(this.getTemplate());
+/** @inheritDoc */
+pstj.ui.Templated.prototype.getContentElement = function() {
+  return this.getTemplate().getContentElement(this);
 };
 
 /**
@@ -79,4 +80,10 @@ pstj.ui.Templated.prototype.querySelector = function(query) {
  */
 pstj.ui.Templated.prototype.querySelectorAll = function(query) {
   return this.getElement().querySelectorAll(query);
+};
+
+/** @inheritDoc */
+pstj.ui.Templated.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.template_ = null;
 };

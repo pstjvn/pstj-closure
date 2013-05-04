@@ -24,8 +24,8 @@ goog.scope(function() {
   /** @inheritDoc */
   _.createDom = function(control) {
     var element;
-    if (!goog.isNull(contro.getTemplate())) {
-      element = control.getTemplate().getDOM(control.getModel());
+    if (!goog.isNull(control.getTemplate())) {
+      element = control.getTemplate().createDom(control);
       this.setAriaStates(control, element);
       return element;
     } else {
@@ -36,6 +36,6 @@ goog.scope(function() {
   /** @inheritDoc */
   _.getCssClass = function() {
     return pstj.ui.ControlRenderer.CSS_CLASS;
-  }
+  };
 });
 

@@ -45,15 +45,11 @@ pstj.ui.CustomScrollArea = function(dh) {
 };
 goog.inherits(pstj.ui.CustomScrollArea, pstj.ui.Sizeable);
 
-
-
-
 /**
  * @type {goog.ui.Slider}
  * @private
  */
 pstj.ui.CustomScrollArea.prototype.scrollBar_;
-
 
 /**
  * @type {Element}
@@ -61,13 +57,11 @@ pstj.ui.CustomScrollArea.prototype.scrollBar_;
  */
 pstj.ui.CustomScrollArea.prototype.scrollDiv_;
 
-
 /**
  * @type {Element}
  * @private
  */
 pstj.ui.CustomScrollArea.prototype.scrollContainer_;
-
 
 /**
  * How many milliseconds to wait before restoring the scroll event reads.
@@ -75,7 +69,6 @@ pstj.ui.CustomScrollArea.prototype.scrollContainer_;
  * @private
  */
 pstj.ui.CustomScrollArea.prototype.restoreSuppersedScrollTimeout_ = 500;
-
 
 /**
  * Sets the transitions direction. By default the transition will be applied
@@ -160,7 +153,6 @@ pstj.ui.CustomScrollArea.prototype.calculateScrollNominalWidth = function() {
   return this.getWidth() - offset;
 };
 
-
 /**
  * Returns the width (in pixels) that should be set directly on the scroll area
  * of the composite widget.
@@ -184,7 +176,6 @@ pstj.ui.CustomScrollArea.prototype.setScrollInsideTheWidget = function(enable) {
   this.scrollIsInside_ = enable;
 };
 
-
 /**
  * Handle the resize event. The main element's size has been set, so just
  * handle other elements.
@@ -201,7 +192,6 @@ pstj.ui.CustomScrollArea.prototype.onResize = function() {
   // probably store the height of the scrollDiv
   // probably also store the scrollContainerHeight - true for % sizeables.
 };
-
 
 /**
  * @inheritDoc
@@ -224,7 +214,6 @@ pstj.ui.CustomScrollArea.prototype.disposeInternal = function() {
   delete this.restoreSliderReadsDelayed_;
 };
 
-
 /**
  * Override the getContentElement method to allow the children to be added in
  * the right place.
@@ -233,7 +222,6 @@ pstj.ui.CustomScrollArea.prototype.disposeInternal = function() {
 pstj.ui.CustomScrollArea.prototype.getContentElement = function() {
   return this.scrollDiv_;
 };
-
 
 /**
  * Override the method as we are using template for the DOM.
@@ -264,7 +252,6 @@ pstj.ui.CustomScrollArea.prototype.createDom = function() {
   this.decorateInternal(tmp);
 };
 
-
 /**
  * Enable / disable transitions. These should be OFF by default, as in some
  * cases the translate3d is not working properly in some environments and thus
@@ -284,7 +271,6 @@ pstj.ui.CustomScrollArea.prototype.createDom = function() {
  *
  * @param {!boolean} enable True if the animations should be used.
  *
- * @public
  */
 pstj.ui.CustomScrollArea.prototype.enableTransitions = function(enable) {
   this.transitionsEnabled_ = enable;
@@ -317,7 +303,6 @@ pstj.ui.CustomScrollArea.prototype.decorateInternal = function(element) {
   }
 };
 
-
 /**
  * @inheritDoc
  */
@@ -337,7 +322,7 @@ pstj.ui.CustomScrollArea.prototype.enterDocument = function() {
 
   if (this.transitionsEnabled_ && pstj.style.css.canUseTransform) {
     var el = this.getElement();
-    var style = pstj.style.css.getTranslation(0,0);
+    var style = pstj.style.css.getTranslation(0, 0);
     setTimeout(function() {
       el.style.cssText = style;
     }, 50);
@@ -345,7 +330,6 @@ pstj.ui.CustomScrollArea.prototype.enterDocument = function() {
     this.getElement().style.display = 'block';
   }
 };
-
 
 /**
  * Override this to clear the listener for the native scroll event set when the
@@ -363,9 +347,7 @@ pstj.ui.CustomScrollArea.prototype.exitDocument = function() {
   } else {
     this.getElement().style.display = 'none';
   }
-
 };
-
 
 /**
  * Handler for the native scroll event.
@@ -388,7 +370,6 @@ pstj.ui.CustomScrollArea.prototype.handleNativeScroll_ = function() {
   this.scrollBar_.setValue(100 - percent);
 };
 
-
 /**
  * Return cached version of the scroll cotnainer height
  * @private
@@ -397,7 +378,6 @@ pstj.ui.CustomScrollArea.prototype.handleNativeScroll_ = function() {
 pstj.ui.CustomScrollArea.prototype.getScrollContainerHeight_ = function() {
   return goog.style.getSize(this.scrollContainer_).height;
 };
-
 
 /**
  * Handler for the slider scroll updates event.
@@ -425,7 +405,6 @@ pstj.ui.CustomScrollArea.prototype.handleSliderScroll_ = function() {
   this.scrollDiv_.scrollTop = newScroll >> 0;
 };
 
-
 /**
  * Restore the read-ability of the slider change events.
  * @private
@@ -433,7 +412,6 @@ pstj.ui.CustomScrollArea.prototype.handleSliderScroll_ = function() {
 pstj.ui.CustomScrollArea.prototype.restoreSliderReads_ = function() {
   this.suppresSliderScrollReads_ = false;
 };
-
 
 /**
  * Restore the native scroll events read coming from the scroll div.
@@ -443,9 +421,8 @@ pstj.ui.CustomScrollArea.prototype.restoreNativeScrollReads_ = function() {
   this.suppresNativeScrollReads_ = false;
 };
 
-
 /**
- * @final
+ * @const
  * @private
  * @type {number}
  */

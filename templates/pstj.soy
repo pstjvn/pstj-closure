@@ -61,3 +61,79 @@
     <div class="{css pstj-list-item-name}">{$name}</div>
   </div>
 {/template}
+
+/**
+ * Provides the list container for list items to roll.
+ */
+{template .list}
+  <div class="{css pstj-list}">
+    <div class="{css pstj-list-container}">
+    </div>
+  </div>
+{/template}
+
+/**
+ * The upload form template used by the pstj.ui.Upload helper component.
+ * @param url The url of the ACTIOn for the form.
+ * @param inputname The name to set on the input for it to be recognized on
+ *   the backend.
+ */
+{template .upload}
+  <div class="{css pstj-upload-form}">
+    <form method="post" enctype="multipart/form-data" action="{$url}" name="uploadform">
+      <input id="attachment" name="{$inputname}" type="file" style="display:none" class="{css pstj-upload-form-input}" />
+    </form>
+  </div>
+{/template}
+
+/**
+ * Template for a control group. Just edit the template to add you control
+ *   buttons. This is an example template! You will need to make one of your
+ *   own and wrap it in pstj.ui.Template and pass it to the constructor. in
+ *   order to have usable instance.
+ */
+{template .controlgroup}
+  <div class="{css pstj-control-group} {css d-table}">
+    <div class="{css pstj-control-group-button} {css d-table-cell}" data-action="namedaction">
+      <div class="{css d-table} {css margin-auto}">
+        <img src="assets/left-arrow.png" class="{css d-table-cell} {css pstj-control-group-button-image}" />
+      </div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Provides the progress bar widget's html
+ * @param text The text to show for the progress if any.
+ */
+{template .progress}
+  <div class="{css pstj-widget-progress}">
+    {if $text != ''}
+      <div class="{css pstj-widget-progress-text}">
+        {$text}
+      </div>
+    {/if}
+    <div class="{css pstj-widget-progress-container}">
+      <div class="{css pstj-widget-progress-bar}"></div>
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the selection widget.
+ */
+{template .select}
+  <div class="{css pstj-widget-select}">
+    <div class="{css pstj-widget-select-view}">
+      <div class="{css pstj-widget-select-title}">{msg desc="Select item"}Select item{/msg}</div>
+      <div class="{css pstj-widget-select-body}">
+        {call .list /}
+      </div>
+      <div class="{css pstj-widget-select-footer}">
+        <div class="{css form-button} {css text-button} {css pstj-widget-select-text-button} {css pstj-action-select}" data-action="select">{msg desc="Select"}Select{/msg}</div>
+        <div class="{css form-button} {css text-button} {css pstj-widget-select-text-button} {css pstj-action-cancel}" data-action="cancel">{msg desc="Cancel"}Cancel{/msg}</div>
+      </div>
+    </div>
+  </div>
+{/template}

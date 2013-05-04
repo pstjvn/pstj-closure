@@ -33,7 +33,7 @@ goog.scope(function() {
 
   /**
    * Registers a component that can be automatically applied to a DOM node.
-   * @param {!function(new: pstj.ui.TemplatedComponent)} ctor The constructor
+   * @param {!function(new: pstj.ui.Templated)} ctor The constructor
    *   function for the component.
    * @param {!string} classname The class name to match for this component.
    */
@@ -52,7 +52,7 @@ goog.scope(function() {
   _.findDecorator = function(element) {
     var ctor = null;
     var classes = classlist.get(element);
-    for (var i = 0, len = classes.length, i < len; i++) {
+    for (var i = 0, len = classes.length; i < len; i++) {
       ctor = goog.object.get(_.registry_, classes[i], null);
       if (!goog.isNull(ctor)) return ctor;
     }
@@ -61,16 +61,16 @@ goog.scope(function() {
 
   /**
    * Decorate a DOM subtree.
-   * @param {!String|Element} el The element to decorate or an ID to find an
+   * @param {!string|Element} el The element to decorate or an ID to find an
    *   element by.
    * @param {boolean=} recursive If the decoration should be recursive.
    */
   _.decorate = function(el, recursive) {
     var mainComponent;
 
-    if (goog.isString(el)) el = goog.dom.getElement(el);
+    el = goog.dom.getElement(el);
     if (goog.dom.isElement(el) &&
-      classlist.contains(pstj.ui.DecorateClassName)) {
+      classlist.contains(el, pstj.ui.DecorateClassName)) {
 
       var decorator = _.findDecorator(el);
 
@@ -100,6 +100,7 @@ goog.scope(function() {
 
     var ctor = null;
     var comp = null;
+    /** @type {Array.<goog.ui.Component>} */
     var components = [mainComponent];
     var elements = [baseElement];
 
@@ -113,7 +114,7 @@ goog.scope(function() {
         ctor = null;
         comp = null;
       }
-    }
+    });
 
     var node = null;
     var index = -1;
@@ -130,7 +131,7 @@ goog.scope(function() {
           node = node.parentNode;
         }
       }
-    }
+    });
   };
 
 });

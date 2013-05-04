@@ -17,9 +17,10 @@ goog.require('pstj.ui.Templated');
  *   the actual drawing.
  * @constructor
  * @extends {pstj.ui.Templated}
+ * @param {pstj.ui.Template=} template The template to use.
  */
-pstj.ui.Async = function() {
-  goog.base(this);
+pstj.ui.Async = function(template) {
+  goog.base(this, template);
   /**
    * @private
    * @type {pstj.graphics.Smooth}

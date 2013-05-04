@@ -25,15 +25,17 @@ goog.require('pstj.ui.Templated');
  *   ISheet interface.
  * @constructor
  * @extends {pstj.ui.Templated}
+ * @param {pstj.ui.Template} opt_template Optional template to use.
  */
-pstj.ui.SheetFrame = function() {
-  goog.base(this);
+pstj.ui.SheetFrame = function(opt_template) {
+  goog.base(this, opt_template);
   /**
    * @private
    * @type {goog.async.Throttle}
    */
   this.throttle_ = new goog.async.Throttle(this.handleResize,
     this.resizehandlerThreshold, this);
+  this.registerDisposable(this.throttle_);
   /**
    * The size that is currently recorded in memory
    * @type {goog.math.Size}
@@ -100,14 +102,8 @@ pstj.ui.SheetFrame.prototype.decorateInternal = function(el) {
 /** @inheritDoc */
 pstj.ui.SheetFrame.prototype.addChild = function(child, render) {
   goog.base(this, 'addChild', child, render);
-  var transpiled  = /** @type {pstj.ui.ISheet} */ (child);
+  var transpiled = /** @type {pstj.ui.ISheet} */ (child);
   transpiled.updateParentSize(this.size);
-};
-
-/** @inheritDoc */
-pstj.ui.SheetFrame.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
-  goog.dispose(this.throttle_);
 };
 
 /** @inheritDoc */
@@ -116,6 +112,13 @@ pstj.ui.SheetFrame.prototype.enterDocument = function() {
   this.handleResize();
   this.getHandler().listen(goog.dom.ViewportSizeMonitor.getInstanceForWindow(),
     goog.events.EventType.RESIZE, this.handleOriginalResizeEvent_);
+};
+
+/** @inheritDoc */
+pstj.ui.SheetFrame.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.throttle_ = null;
+  this.size = null;
 };
 
 /**

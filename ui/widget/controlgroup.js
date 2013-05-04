@@ -1,8 +1,11 @@
 goog.provide('pstj.ui.widget.ControlGroup');
+goog.provide('pstj.ui.widget.ControlGroupTemplate');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
+goog.require('pstj.templates');
 goog.require('pstj.ui.Button');
+goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Templated');
 
 /**
@@ -17,46 +20,52 @@ goog.require('pstj.ui.Templated');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+ /**
+  * Special template for control group of buttons.
+  * @constructor
+  * @extends {pstj.ui.Template}
+  */
+ pstj.ui.widget.ControlGroupTemplate = function() {
+   goog.base(this);
+ };
+ goog.inherits(pstj.ui.widget.ControlGroupTemplate, pstj.ui.Template);
+ goog.addSingletonGetter(pstj.ui.widget.ControlGroupTemplate);
+
+ /** @inheritDoc */
+ pstj.ui.widget.ControlGroupTemplate.prototype.getTemplate = function(model) {
+   return pstj.templates.controlgroup({});
+ };
+
 /**
  * The base control group class.
  * @constructor
  * @extends {pstj.ui.Templated}
+ * @param {pstj.ui.Template} opt_template Optional template to use for DOM
+ *   construction.
  */
-pstj.ui.widget.ControlGroup = function() {
-  goog.base(this);
+pstj.ui.widget.ControlGroup = function(opt_template) {
+  goog.base(this, opt_template ||
+    pstj.ui.widget.ControlGroupTemplate.getInstance());
 };
 goog.inherits(pstj.ui.widget.ControlGroup, pstj.ui.Templated);
 
-goog.scope(function() {
+/** @inheritDoc */
+pstj.ui.widget.ControlGroup.prototype.decorateInternal = function(el) {
+  goog.base(this, 'decorateInternal', el);
+  goog.array.forEach(this.querySelectorAll('[data-action]'),
+    this.createActionButton, this);
+};
 
-  var _ = pstj.ui.widget.ControlGroup.prototype;
-
-  /** @inheritDoc */
-  _.getTemplate = function() {
-    return pstj.widget.controlgroup({});
-  };
-
-  /** @inheritDoc */
-  _.decorateInternal = function(el) {
-    goog.base(this, 'decorateInternal', el);
-    goog.array.forEach(this.querySelectorAll('.' +
-      goog.getCssName('pstj-control-group-buttons') +
-      '[data-action]'), this.createActionButton, this);
-  };
-
-  /**
-   * Adds a new control button to the group from an element. The method should
-   *   be called only from the decorate internal method.
-   * @param {Element} element The lement to set up as button in the group.
-   * @protected
-   */
-  _.createActionButton = function(element) {
-    goog.asserts.assertInstanceof(element, Element,
-      'Satisfy compiler greedy type algorythm');
-    var button = new pstj.ui.Button();
-    this.addChild(button);
-    button.decorate(element);
-  };
-
-});
-
+/**
+ * Adds a new control button to the group from an element. The method should
+ *   be called only from the decorate internal method.
+ * @param {Element} element The lement to set up as button in the group.
+ * @protected
+ */
+pstj.ui.widget.ControlGroup.prototype.createActionButton = function(element) {
+  goog.asserts.assertInstanceof(element, Element,
+    'Satisfy compiler greed for types');
+  var button = new pstj.ui.Button();
+  this.addChild(button);
+  button.decorate(element);
+};

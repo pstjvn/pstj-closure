@@ -25,9 +25,10 @@ goog.require('pstj.ui.Async');
  *   with touch and mouse in the same manner.
  * @constructor
  * @extends {pstj.ui.Async}
+ * @param {pstj.ui.Template} opt_template Optional template.
  */
-pstj.ui.Touchable = function() {
-  goog.base(this);
+pstj.ui.Touchable = function(opt_template) {
+  goog.base(this, opt_template);
 
   /**
    * @private
@@ -51,7 +52,7 @@ pstj.ui.Touchable = function() {
   this.ignoringEvents_ = 0x00;
 
   /**
-   * @type {function(): undefined}
+   * @type {?function(): undefined}
    * @private
    */
   this.longTouchHandlerBound_ = goog.bind(function() {
@@ -375,7 +376,7 @@ pstj.ui.Touchable.prototype.enterDocument = function() {
 /** @inheritDoc */
 pstj.ui.Touchable.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
-  delete this.longTouchHandlerBound_;
+  this.longTouchHandlerBound_ = null;
 };
 
 /**

@@ -1,0 +1,23 @@
+/**
+ * Provides the default styling for the list and list items.
+ */
+
+.pstj-list {
+  padding: 3px;
+}
+
+.pstj-list-container {
+  overflow-x: scroll;
+}
+
+.pstj-list-item {
+  width: 60px;
+  height: 85px;
+  padding: 2px;
+}
+
+.pstj-list-item-thumbnail {
+  width: 50px;
+  height: 50px;
+}
+

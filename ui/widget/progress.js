@@ -1,11 +1,13 @@
 goog.provide('pstj.widget.Progress');
+goog.provide('pstj.widget.ProgressTemplate');
 
 goog.require('goog.asserts');
 goog.require('goog.async.Delay');
 goog.require('goog.events.EventType');
 goog.require('pstj.math.utils');
+goog.require('pstj.templates');
 goog.require('pstj.ui.Async');
-goog.require('pstj.widget');
+goog.require('pstj.ui.Template');
 
 /**
  * @fileoverview Provides initial loading progress bar to be used during
@@ -16,12 +18,42 @@ goog.require('pstj.widget');
  */
 
 /**
- * My new class description
+ * Provides the default progress bar template implementation.
+ * @constructor
+ * @extends {pstj.ui.Template}
+ */
+pstj.widget.ProgressTemplate = function() {
+  goog.base(this);
+};
+goog.inherits(pstj.widget.ProgressTemplate, pstj.ui.Template);
+goog.addSingletonGetter(pstj.widget.ProgressTemplate);
+
+/** @inheritDoc */
+pstj.widget.ProgressTemplate.prototype.getTemplate = function(model) {
+  return pstj.templates.progress(model);
+};
+
+/** @inheritDoc */
+pstj.widget.ProgressTemplate.prototype.generateTemplateData = function(comp) {
+  return {
+    text: comp.getContent()
+  };
+};
+
+/** @inheritDoc */
+pstj.widget.ProgressTemplate.prototype.getContentElement = function(comp) {
+  return comp.querySelector('.' + goog.getCssName('pstj-widget-progress-bar'));
+};
+
+/**
+ * Provides an application loading progress bar widget.
  * @constructor
  * @extends {pstj.ui.Async}
+ * @param {pstj.ui.Template=} opt_template Options template to use to construct
+ *   the DOM.
  */
-pstj.widget.Progress = function() {
-  goog.base(this);
+pstj.widget.Progress = function(opt_template) {
+  goog.base(this, opt_template || pstj.widget.ProgressTemplate.getInstance());
   /**
    * @private
    * @type {number}
@@ -45,57 +77,47 @@ pstj.widget.Progress = function() {
 };
 goog.inherits(pstj.widget.Progress, pstj.ui.Async);
 
-goog.scope(function() {
 
-  var _ = pstj.widget.Progress.prototype;
+/** @inheritDoc */
+pstj.widget.Progress.prototype.setModel = function(model) {
+  goog.asserts.assertNumber(model,
+    'Model should always be number for this widget');
+  this.delay_.stop();
+  goog.base(this, 'setModel', model);
+};
 
-  /** @inheritDoc */
-  _.getTemplate = function() {
-    return pstj.widget.progress({
-      text: this.text_
-    });
-  };
+/**
+ * Notify the widget that one item has been completed.
+ */
+pstj.widget.Progress.prototype.progress = function() {
+  this.itemsDone_++;
+  this.update();
+  if (this.itemsDone_ == this.getModel()) {
+    this.delay_.start();
+  }
+};
 
-  /** @inheritDoc */
-  _.setModel = function(model) {
-    goog.asserts.assertNumber(model,
-      'Model should always be number for this widget');
-    this.delay_.stop();
-    goog.base(this, 'setModel', model);
-  };
+/**
+ * Allows the developer to set custom text on top of the progress bar.
+ * @param {string} text The text to use.
+ */
+pstj.widget.Progress.prototype.setContent = function(text) {
+  this.text_ = text;
+};
 
-  /**
-   * Notify the widget that one item has been completed.
-   */
-  _.progress = function() {
-    this.itemsDone_++;
-    this.update();
-    if (this.itemsDone_ == this.getModel()) {
-      this.delay_.start();
-    }
-  };
+/**
+ * Getter for the content of the progress.
+ * @return {string}
+ */
+pstj.widget.Progress.prototype.getContent = function() {
+  return this.text_;
+};
 
-  /**
-   * Allows the developer to set custom text on top of the progress bar.
-   * @param {string} text The text to use.
-   */
-  _.setContent = function(text) {
-    this.text_ = text;
-  };
-
-  /** @inheritDoc */
-  _.getContentElement = function() {
-    return /** @type {!Element} */ (
-      this.querySelector('.' + goog.getCssName('pstj-widget-progress-bar')));
-  };
-
-  /** @inheritDoc */
-  _.draw = function(ms) {
-    var model = goog.asserts.assertNumber(this.getModel(),
-      'Model should be a number!');
-    var percent = pstj.math.utils.getPercentFromValue(this.itemsDone_, model);
-    this.getContentElement().style.width = percent + '%';
-    return false;
-  };
-
-});
+/** @inheritDoc */
+pstj.widget.Progress.prototype.draw = function(ms) {
+  var model = goog.asserts.assertNumber(this.getModel(),
+    'Model should be a number!');
+  var percent = pstj.math.utils.getPercentFromValue(this.itemsDone_, model);
+  this.getContentElement().style.width = percent + '%';
+  return false;
+};
