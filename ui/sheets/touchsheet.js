@@ -146,8 +146,6 @@ pstj.ui.TouchSheet = function(opt_template) {
    */
   this.keyHandler_ = new goog.events.KeyHandler(document);
   this.registerDisposable(this.keyHandler_);
-  this.subscribeToTouchablePubSub();
-
   /**
    * We need reference to those bound functions used to subscribe to pubsub in
    *   order to be able to unsibscibe
@@ -155,6 +153,8 @@ pstj.ui.TouchSheet = function(opt_template) {
    *   undefined>}
    */
   this.bounds_ = [];
+
+  this.subscribeToTouchablePubSub();
 };
 goog.inherits(pstj.ui.TouchSheet, pstj.ui.Touchable);
 
