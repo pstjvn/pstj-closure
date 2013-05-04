@@ -4,16 +4,20 @@
 
 .pstj-list {
   padding: 3px;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .pstj-list-container {
-  overflow-x: scroll;
+  width: 100%;
 }
 
 .pstj-list-item {
   width: 60px;
   height: 85px;
   padding: 2px;
+  float: left;
 }
 
 .pstj-list-item-thumbnail {

@@ -1,0 +1,15 @@
+.pstj-widget-select {
+  width: 600px;
+  height: 450px;
+}
+
+.pstj-widget-select-body {
+  width: 90%;
+  margin: 0 auto;
+  height: 390px;
+}
+
+.pstj-widget-select-footer {
+  height: 30px;
+  float: right;
+}
