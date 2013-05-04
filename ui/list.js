@@ -50,6 +50,7 @@ pstj.ui.List = function(opt_template, opt_item_template) {
    * @private
    */
   this.currentSelectedUIItem_ = null;
+  this.xoffset_ = [0, 0];
 };
 goog.inherits(pstj.ui.List, pstj.ui.Async);
 
@@ -127,8 +128,39 @@ pstj.ui.List.prototype.enterDocument = function() {
   if (goog.isDefAndNotNull(this.getModel())) {
     this.visualizeModel();
   }
-  this.getHandler().listen(this, goog.ui.Component.EventType.HIGHLIGHT,
-    this.handleItemHighlight);
+  this.getHandler()
+  .listen(this, goog.ui.Component.EventType.HIGHLIGHT,
+    this.handleItemHighlight)
+  .listen(this, [pstj.ui.Touchable.EventType.MOVE,
+    pstj.ui.Touchable.EventType.PRESS], this.handleMoveByChild);
+};
+
+/**
+ * Handles move events in children of the list so that we can emulate the
+ *   scroll events in the list when we have touch only (becasue the touches
+ *   are stopped always in touchable components we need to intercept the move
+ *   event abstraction and scroll from javascript.).
+ * @param {pstj.ui.Touchable.Event} e The touch event abstraction from
+ *   Touchable components.
+ * @protected
+ */
+pstj.ui.List.prototype.handleMoveByChild = function(e) {
+  if (e.type == pstj.ui.Touchable.EventType.PRESS) {
+    this.xoffset_[0] = e.y;
+  } else {
+    this.xoffset_[1] = e.y;
+    this.update();
+  }
+};
+
+/** @inheritDoc */
+pstj.ui.List.prototype.draw = function(ts) {
+  if (this.xoffset_[0] - this.xoffset_[1]) {
+    this.getElement().scrollTop = this.getElement().scrollTop + (
+      this.xoffset_[0] - this.xoffset_[1]);
+    this.xoffset_[0] = this.xoffset_[1];
+  }
+  return goog.base(this, 'draw', ts);
 };
 
 /**
