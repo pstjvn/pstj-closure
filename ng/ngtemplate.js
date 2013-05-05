@@ -17,13 +17,16 @@ goog.require('pstj.ui.Templated');
  */
 
 /**
+ *
  * @constructor
  * @extends {pstj.ui.Templated}
+ * @param {pstj.ui.Template=} opt_template Template to use for constructing the
+ *   DOM when not using decoration.
  * @param {string=} opt_nullvalue The default value to apply to models when
- * there is no relevant data.
+ *   there is no relevant data.
  */
-pstj.ng.Template = function(opt_nullvalue) {
-  goog.base(this);
+pstj.ng.Template = function(opt_template, opt_nullvalue) {
+  goog.base(this, opt_template);
   if (goog.isString(opt_nullvalue)) this.nullValue = opt_nullvalue;
 };
 goog.inherits(pstj.ng.Template, pstj.ui.Templated);

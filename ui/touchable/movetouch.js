@@ -17,7 +17,7 @@ goog.require('pstj.ui.Touchable.EventType');
  *   enabled flag is up.
  * @constructor
  * @extends {pstj.ui.Touchable}
- * @param {pstj.ui.Template} opt_template Optional template.
+ * @param {pstj.ui.Template=} opt_template Optional template.
  */
 pstj.ui.MoveTouch = function(opt_template) {
   goog.base(this, opt_template);

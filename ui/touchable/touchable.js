@@ -25,7 +25,7 @@ goog.require('pstj.ui.Async');
  *   with touch and mouse in the same manner.
  * @constructor
  * @extends {pstj.ui.Async}
- * @param {pstj.ui.Template} opt_template Optional template.
+ * @param {pstj.ui.Template=} opt_template Optional template.
  */
 pstj.ui.Touchable = function(opt_template) {
   goog.base(this, opt_template);

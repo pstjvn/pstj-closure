@@ -37,6 +37,7 @@ goog.addDependency('../../../apps/pstj/ui/coupledinput.js', ['pstj.ui.CoupledInp
 goog.addDependency('../../../apps/pstj/ui/elementids.js', ['pstj.ui.IdGenerator'], []);
 goog.addDependency('../../../apps/pstj/ui/list.js', ['pstj.ui.List', 'pstj.ui.ListTemplate'], ['pstj.ds.List', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.ListItem', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/listitem.js', ['pstj.ui.ListItem', 'pstj.ui.ListItemTemplate'], ['goog.asserts', 'goog.dom.classlist', 'pstj.configure', 'pstj.ds.ListItem', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Touchable']);
+goog.addDependency('../../../apps/pstj/ui/popoverlayer.js', ['pstj.ui.PopOverLayer', 'pstj.ui.PopOverLayerTemplate'], ['pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/scrollarea.js', ['pstj.ui.CustomScrollArea'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventType', 'goog.style', 'goog.ui.Component.EventType', 'goog.ui.Slider', 'pstj.style.css', 'pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/scrolllist.js', ['pstj.ui.ScrollList'], ['goog.style', 'pstj.ui.CustomScrollArea', 'pstj.ui.IdGenerator']);
 goog.addDependency('../../../apps/pstj/ui/sheets/isheet.js', ['pstj.ui.ISheet'], []);
@@ -51,7 +52,7 @@ goog.addDependency('../../../apps/pstj/ui/templated/templated.js', ['pstj.ui.Tem
 goog.addDependency('../../../apps/pstj/ui/touchable/movetouch.js', ['pstj.ui.MoveTouch'], ['pstj.ui.Touchable', 'pstj.ui.Touchable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/touchable/touchable.js', ['pstj.ui.Touchable', 'pstj.ui.Touchable.Event', 'pstj.ui.Touchable.EventType', 'pstj.ui.Touchable.PubSub'], ['goog.events', 'goog.functions', 'goog.pubsub.PubSub', 'goog.ui.Component.EventType', 'pstj.ui.Async']);
 goog.addDependency('../../../apps/pstj/ui/uploads.js', ['pstj.ui.Upload', 'pstj.ui.Upload.Event', 'pstj.ui.UploadTemplate'], ['goog.dom', 'goog.events', 'goog.events.Event', 'goog.net.EventType', 'goog.net.IframeIo', 'pstj.templates', 'pstj.ui.Templated']);
-goog.addDependency('../../../apps/pstj/ui/widget/controlgroup.js', ['pstj.ui.widget.ControlGroup', 'pstj.ui.widget.ControlGroupTemplate'], ['goog.array', 'goog.asserts', 'pstj.templates', 'pstj.ui.Button', 'pstj.ui.Template', 'pstj.ui.Templated']);
+goog.addDependency('../../../apps/pstj/ui/widget/controlgroup.js', ['pstj.widget.ControlGroup', 'pstj.widget.ControlGroupTemplate'], ['goog.array', 'goog.asserts', 'pstj.templates', 'pstj.ui.Button', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/widget/pager.js', ['pstj.widget.Pager', 'pstj.widget.PagerTemplate'], ['goog.array', 'goog.dom', 'goog.dom.classlist', 'pstj.ds.List', 'pstj.ds.ListItem', 'pstj.ng.Template', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/widget/progress.js', ['pstj.widget.Progress', 'pstj.widget.ProgressTemplate'], ['goog.asserts', 'goog.async.Delay', 'goog.events.EventType', 'pstj.math.utils', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/widget/select.js', ['pstj.widget.Select', 'pstj.widget.SelectTemplate'], ['goog.ui.Component.EventType', 'pstj.templates', 'pstj.ui.Button', 'pstj.ui.List', 'pstj.ui.Template', 'pstj.ui.Templated']);

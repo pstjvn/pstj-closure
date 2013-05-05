@@ -37,7 +37,7 @@ goog.require('pstj.ui.Touchable.PubSub');
  * @constructor
  * @extends {pstj.ui.Touchable}
  * @implements {pstj.ui.ISheet}
- * @param {pstj.ui.Template} opt_template Optional template to if constructing
+ * @param {pstj.ui.Template=} opt_template Optional template to if constructing
  *   DOM.
  */
 pstj.ui.TouchSheet = function(opt_template) {
