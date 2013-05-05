@@ -1,5 +1,5 @@
-goog.provide('pstj.ui.widget.ControlGroup');
-goog.provide('pstj.ui.widget.ControlGroupTemplate');
+goog.provide('pstj.widget.ControlGroup');
+goog.provide('pstj.widget.ControlGroupTemplate');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
@@ -20,21 +20,23 @@ goog.require('pstj.ui.Templated');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
- /**
-  * Special template for control group of buttons.
-  * @constructor
-  * @extends {pstj.ui.Template}
-  */
- pstj.ui.widget.ControlGroupTemplate = function() {
-   goog.base(this);
- };
- goog.inherits(pstj.ui.widget.ControlGroupTemplate, pstj.ui.Template);
- goog.addSingletonGetter(pstj.ui.widget.ControlGroupTemplate);
+/**
+ * The template for the control group. Notice that this default template does
+ *   not provide the actions, you should provide your own template for this
+ *   widget class.
+ * @constructor
+ * @extends {pstj.ui.Template}
+ */
+pstj.widget.ControlGroupTemplate = function() {
+  goog.base(this);
+};
+goog.inherits(pstj.widget.ControlGroupTemplate, pstj.ui.Template);
+goog.addSingletonGetter(pstj.widget.ControlGroupTemplate);
 
- /** @inheritDoc */
- pstj.ui.widget.ControlGroupTemplate.prototype.getTemplate = function(model) {
-   return pstj.templates.controlgroup({});
- };
+/** @inheritDoc */
+pstj.widget.ControlGroupTemplate.prototype.getTemplate = function(model) {
+  return pstj.templates.controlgroup({});
+};
 
 /**
  * The base control group class.
@@ -43,17 +45,29 @@ goog.require('pstj.ui.Templated');
  * @param {pstj.ui.Template} opt_template Optional template to use for DOM
  *   construction.
  */
-pstj.ui.widget.ControlGroup = function(opt_template) {
+pstj.widget.ControlGroup = function(opt_template, opt_button_renderer) {
   goog.base(this, opt_template ||
-    pstj.ui.widget.ControlGroupTemplate.getInstance());
+    pstj.widget.ControlGroupTemplate.getInstance());
+  /**
+   * @private
+   * @type {goog.ui.ButtonRenderer}
+   */
+  this.buttonRenderer_ = opt_button_renderer ||
+    pstj.ui.CustomButtonRenderer.getInstance();
 };
-goog.inherits(pstj.ui.widget.ControlGroup, pstj.ui.Templated);
+goog.inherits(pstj.widget.ControlGroup, pstj.ui.Templated);
 
 /** @inheritDoc */
-pstj.ui.widget.ControlGroup.prototype.decorateInternal = function(el) {
+pstj.widget.ControlGroup.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
   goog.array.forEach(this.querySelectorAll('[data-action]'),
     this.createActionButton, this);
+};
+
+/** @inheritDoc */
+pstj.widget.ControlGroup.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.buttonRenderer_ = null;
 };
 
 /**
@@ -62,10 +76,10 @@ pstj.ui.widget.ControlGroup.prototype.decorateInternal = function(el) {
  * @param {Element} element The lement to set up as button in the group.
  * @protected
  */
-pstj.ui.widget.ControlGroup.prototype.createActionButton = function(element) {
+pstj.widget.ControlGroup.prototype.createActionButton = function(element) {
   goog.asserts.assertInstanceof(element, Element,
     'Satisfy compiler greed for types');
-  var button = new pstj.ui.Button();
+  var button = new pstj.ui.Button(this.buttonRenderer_);
   this.addChild(button);
   button.decorate(element);
 };
