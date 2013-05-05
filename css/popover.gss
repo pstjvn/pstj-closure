@@ -1,0 +1,21 @@
+@def DIALOG_LAYER 1000;
+@def DIALOG_BACKGROUND #EEEEEE;
+@def DIALOG_PADDING 10px;
+@def DIALOG_BORDER_COLOR #0070C0;
+@def DIALOG_BORDER 3px solid DIALOG_BORDER_COLOR;
+
+.pstj-popover-event-blocker {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: DIALOG_LAYER;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.pstj-popover-frame {
+  display: table-cell;
+  vertical-align: middle;
+}
