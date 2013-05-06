@@ -36,7 +36,7 @@ pstj.ui.PopOverLayerTemplate.prototype.getContentElement = function(comp) {
  * My new class description
  * @constructor
  * @extends {pstj.ui.Templated}
- * @param {pstj.ui.Template} opt_template Optional alternative template to use.
+ * @param {pstj.ui.Template=} opt_template Optional alternative template to use.
  */
 pstj.ui.PopOverLayer = function(opt_template) {
   goog.base(this, opt_template || pstj.ui.PopOverLayerTemplate.getInstance());

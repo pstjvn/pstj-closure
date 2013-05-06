@@ -25,7 +25,7 @@ goog.require('pstj.ui.Templated');
  *   ISheet interface.
  * @constructor
  * @extends {pstj.ui.Templated}
- * @param {pstj.ui.Template} opt_template Optional template to use.
+ * @param {pstj.ui.Template=} opt_template Optional template to use.
  */
 pstj.ui.SheetFrame = function(opt_template) {
   goog.base(this, opt_template);
