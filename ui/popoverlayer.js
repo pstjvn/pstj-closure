@@ -28,7 +28,7 @@ pstj.ui.PopOverLayerTemplate.prototype.getTemplate = function(model) {
 };
 /** @inheritDoc */
 pstj.ui.PopOverLayerTemplate.prototype.getContentElement = function(comp) {
-  return comp.getEls(goog.getCssName('popover-frame'));
+  return comp.getEls(goog.getCssName('pstj-popover-frame'));
 };
 
 
@@ -62,13 +62,24 @@ goog.scope(function() {
   };
 
   /** @inheritDoc */
-  _.addChild = function(component, opt_render) {
+  _.enterDocument = function() {
+    goog.base(this, 'enterDocument');
+    this.getHandler().listen(this, goog.ui.Component.EventType.CLOSE,
+      function() {
+        this.setVisible(false);
+      });
+  };
+
+  /** @inheritDoc */
+  _.addChild = function(component) {
     if (this.hasChildren()) {
       if (component != this.getChildAt(0)) {
+        this.getChildAt(0).getElement().style.display = 'none';
         this.removeChildren();
       }
     }
-    goog.base(this, 'addChild', component, opt_render);
+    goog.base(this, 'addChild', component);
+    component.getElement().style.display = 'block';
   };
 
 });
