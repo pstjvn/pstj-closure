@@ -51,7 +51,16 @@ pstj.ui.MoveTouch.prototype.addListeners = function() {
  */
 pstj.ui.MoveTouch.prototype.handleLongPress = function(e) {
   e.stopPropagation();
-  this.moveEnabled_ = true;
+  this.setMoveEnabled(true);
+};
+
+/**
+ * Sets the move enabled state.
+ * @param {boolean} enable True to enable move events (checked via
+ *   isMoveEnabled).
+ */
+pstj.ui.MoveTouch.prototype.setMoveEnabled = function(enable) {
+  this.moveEnabled_ = enable;
 };
 
 /**
@@ -60,5 +69,5 @@ pstj.ui.MoveTouch.prototype.handleLongPress = function(e) {
  * @protected
  */
 pstj.ui.MoveTouch.prototype.handleRelease = function(e) {
-  this.moveEnabled_ = false;
+  this.setMoveEnabled(false);
 };
