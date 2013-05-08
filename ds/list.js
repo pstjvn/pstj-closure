@@ -228,10 +228,11 @@ pstj.ds.List.prototype.getCount = function() {
 
 /**
  * Getter for the index of an item.
- * @param {!pstj.ds.ListItem} node The node to find the index of.
+ * @param {pstj.ds.ListItem} node The node to find the index of.
  * @return {number} The index of the item in the list.
  */
 pstj.ds.List.prototype.getIndexByItem = function(node) {
+  if (goog.isNull(node)) return -1;
   return this.getIndexById(node.getId());
 };
 
