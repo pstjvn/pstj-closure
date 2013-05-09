@@ -55,10 +55,12 @@
  */
 {template .listitem}
   <div class="{css pstj-list-item}">
-    <div class="{css pstj-list-item-image-holder}">
-      <img src="{$thumbnail}" class="{css pstj-list-item-thumbnail}" />
+    <div class="{css pstj-list-item-container}">
+      <div class="{css pstj-list-item-image-holder}">
+        <img src="{$thumbnail}" class="{css pstj-list-item-thumbnail}" />
+      </div>
+      <div class="{css pstj-list-item-name}">{$name}</div>
     </div>
-    <div class="{css pstj-list-item-name}">{$name}</div>
   </div>
 {/template}
 
