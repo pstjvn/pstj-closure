@@ -144,16 +144,51 @@ pstj.ds.ListItem.prototype.getId = function() {
 
 
 /**
- * Universal getter for properties of the raw data. The return type could be
- *   any type supported by JSON (i.e. string, number or boolean).
- * @param  {string} prop The property name to look up.
- * @return {?pstj.ds.RecordValue} The found property name or null.
+ * Method to mutate the raw data directly. While the 'update' method expects
+ *   the raw data (lliteral object) as a parameter and make sure only that the
+ *   ids matche and overrides the raw data reference entierly, this method
+ *   mutates the raw data record property by property. It will also check the
+ *   type of the data to be the same. Note that complext references cannot be
+ *   mutated with this method, only primitive types are supported. Also one
+ *   cannot mutate the ID of the raw data object and thus the id of the list
+ *   item.
+ * @param {string} property The name of the property in the raw data to
+ *   update.
+ * @param {pstj.ds.RecordValue} value The value to update to.
+ * @return {boolean} True if the object was mutated, false otherwise.
  */
-pstj.ds.ListItem.prototype.getProp = function(prop) {
-  var props = prop.split('.');
-  var result = this.getRawData();
-  var len = props.length;
+pstj.ds.ListItem.prototype.mutate = function(property, value) {
+  if (property == this.getIdProperty()) {
+    throw new Error('Cannot mutate the item id');
+  }
+  var props = property.split('.');
+  var name = goog.asserts.assertString(goog.array.peek(props));
+  var result = this.getNestedProperty_(props);
 
+  if (goog.isNull(result)) return false;
+
+  var oldvalue = goog.object.get(result, name);
+
+  if (goog.typeOf(oldvalue) != 'object' &&
+    goog.typeOf(value) == goog.typeOf(oldvalue)) {
+
+    result[name] = value;
+    this.dispatchEvent(pstj.ds.ListItem.EventType.UPDATE);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * Finds the raw data recod matching the looked up nested name.
+ * @private
+ * @param {Array.<string>} props The names to search.
+ * @return {?Object}
+ */
+pstj.ds.ListItem.prototype.getNestedProperty_ = function(props) {
+  var result = this.getRawData();
+  var len = props.length - 1;
   for (var i = 0; i < len; i++) {
     if (goog.isDefAndNotNull(result[props[i]])) {
       result = result[props[i]];
@@ -163,6 +198,23 @@ pstj.ds.ListItem.prototype.getProp = function(prop) {
     }
   }
   return result;
+};
+
+/**
+ * Universal getter for properties of the raw data. The return type could be
+ *   any type supported by JSON (i.e. string, number or boolean).
+ * @param  {string} prop The property name to look up.
+ * @return {?pstj.ds.RecordValue} The found property name or null.
+ */
+pstj.ds.ListItem.prototype.getProp = function(prop) {
+  var props = prop.split('.');
+  var result = this.getNestedProperty_(props);
+  if (goog.isNull(result)) return result;
+  if (goog.isDef(result[goog.array.peek(props)])) {
+    return result[goog.array.peek(props)];
+  } else {
+    return null;
+  }
 };
 
 /** @inheritDoc */
