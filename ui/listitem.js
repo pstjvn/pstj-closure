@@ -57,6 +57,12 @@ pstj.ui.ListItem = function(opt_template) {
 goog.inherits(pstj.ui.ListItem, pstj.ui.Touchable);
 
 /**
+ * @const
+ * @type {string}
+ */
+pstj.ui.ListItem.CSS_CLASS = goog.getCssName('pstj-list-item');
+
+/**
  * @override
  * @return {pstj.ds.ListItem}
  */
@@ -127,15 +133,20 @@ pstj.ui.ListItem.prototype.isEnabled = function() {
 pstj.ui.ListItem.prototype.draw = function(ts) {
 
   if (!this.enabled_) {
-    goog.dom.classlist.add(this.getElement(), goog.getCssName('disabled'));
+    goog.dom.classlist.add(this.getElement(), goog.getCssName(
+      pstj.ui.ListItem.CSS_CLASS, 'disabled'));
+
   } else {
-    goog.dom.classlist.remove(this.getElement(), goog.getCssName('disabled'));
+    goog.dom.classlist.remove(this.getElement(), goog.getCssName(
+      pstj.ui.ListItem.CSS_CLASS, 'disabled'));
   }
 
   if (this.active_) {
-    goog.dom.classlist.add(this.getElement(), goog.getCssName('active'));
+    goog.dom.classlist.add(this.getElement(), goog.getCssName(
+      pstj.ui.ListItem.CSS_CLASS, 'active'));
   } else {
-    goog.dom.classlist.remove(this.getElement(), goog.getCssName('active'));
+    goog.dom.classlist.remove(this.getElement(), goog.getCssName(
+      pstj.ui.ListItem.CSS_CLASS, 'active'));
   }
 
   return goog.base(this, 'draw', ts);
