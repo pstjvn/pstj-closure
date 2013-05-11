@@ -116,6 +116,28 @@ pstj.ds.List.prototype.currentIndex_ = 0;
 pstj.ds.List.prototype.canRewind_ = false;
 
 /**
+ * Flag: if the dispatching of the filter applied event should be delayed. By
+ *   default the flag is down which means the event is dispatched right after
+ *   the filter has been applied. However some applications tend to apply lots
+ *   of filters in sequence and the components that utilize the data structure
+ *   tend to bind the UI work to the event, in which case excessive work is
+ *   done for no practical reason, this is why should the developer decide the
+ *   event could be delayed and dispatched outside of the event loop.
+ * @type {boolean}
+ * @private
+ */
+pstj.ds.List.prototype.delayFilterAppliedEvent_ = true;
+
+/**
+ * Sets the flag for delaying the filter applied event dispatching.
+ * @param {boolean} delay True if the event should be delayed for this
+ *   instance.
+ */
+pstj.ds.List.prototype.setDelayFilterAppliedEvent = function(delay) {
+  this.delayFilterAppliedEvent_ = delay;
+};
+
+/**
  * Add a node to the list. Use dataId for map.
  * @param {!pstj.ds.ListItem} node The node to add.
  * @param {boolean=} reverse If the addition should be perfoemed in reverse (
@@ -376,14 +398,21 @@ pstj.ds.List.prototype.disposeInternal = function() {
  * @private
  */
 pstj.ds.List.prototype.applyFilter_ = function() {
-  if (!goog.isArray(this.filteredOutIndexes_)) this.filteredOutIndexes_ = [];
-  goog.array.clear(this.filteredOutIndexes_);
+  if (!goog.isArray(this.filteredOutIndexes_)) {
+    this.filteredOutIndexes_ = [];
+  } else {
+    goog.array.clear(this.filteredOutIndexes_);
+  }
   if (goog.isFunction(this.filterFn_)) {
     goog.array.forEach(this.list_, function(item, index) {
       if (this.filterFn_(item)) this.filteredOutIndexes_.push(index);
     }, this);
   }
-  this.dispatchFilterApplied_.start();
+  if (this.delayFilterAppliedEvent_) {
+    this.dispatchFilterApplied_.start();
+  } else {
+    this.dispatchFilterApplied_.fire();
+  }
 };
 
 /**
