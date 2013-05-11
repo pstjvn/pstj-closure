@@ -100,3 +100,13 @@ pstj.widget.Select.prototype.handleSubcomponentEvent = function(e) {
       break;
   }
 };
+
+/**
+ * Set the filter to the list's model directly (helper method to access the
+ *   model of the select).
+ * @param {function(pstj.ds.ListItem): boolean=} fn Function that accepts each
+ *   list item and returns true if the item should be removed (filtered out).
+ */
+pstj.widget.Select.prototype.setFilter = function(fn) {
+  this.list_.getModel().setFilter(fn)
+};
