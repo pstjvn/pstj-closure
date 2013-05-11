@@ -90,8 +90,14 @@ pstj.ui.ListItem.prototype.enterDocument = function() {
 pstj.ui.ListItem.prototype.handleActivateEvent = function(e) {
   e.stopPropagation();
   var ts = goog.now();
+  // We still need to fire the HIGHLIGHT event because the item could be
+  // 'visible' for the UI and we want to detect when it is pressed and moved (to
+  // implement scrolling the view) even if the item itself is disabled. Thus we
+  // stop only the select event.
   if (ts - this.lastTs_ < 450) {
-    this.dispatchEvent(goog.ui.Component.EventType.SELECT);
+    if (this.isEnabled()) {
+      this.dispatchEvent(goog.ui.Component.EventType.SELECT);
+    }
   } else {
     this.lastTs_ = ts;
     this.dispatchEvent(goog.ui.Component.EventType.HIGHLIGHT);
