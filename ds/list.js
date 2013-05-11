@@ -139,7 +139,7 @@ pstj.ds.List.prototype.setDelayFilterAppliedEvent = function(delay) {
 /**
  * Add a node to the list. Use dataId for map.
  * @param {!pstj.ds.ListItem} node The node to add.
- * @param {boolean=} reverse If the addition should be perfoemed in reverse (
+ * @param {boolean=} reverse If the addition should be perfumed in reverse (
  *   i.e. put the element on the first place instead of last).
  */
 pstj.ds.List.prototype.add = function(node, reverse) {
