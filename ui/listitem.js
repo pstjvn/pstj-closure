@@ -123,7 +123,7 @@ pstj.ui.ListItem.prototype.setEnabled = function(enable) {
 
 /**
  * Getter for the enable / disbaled state.
- * @return {boolean} True if the item is enabled
+ * @return {boolean} True if the item is enabled.
  */
 pstj.ui.ListItem.prototype.isEnabled = function() {
   return this.enabled_;
