@@ -32,6 +32,12 @@ pstj.ds.List = function(opt_nodes) {
   this.list_ = [];
   this.map_ = {};
   this.indexMap_ = {};
+  /**
+   * The list of indexes that are currently filtered out.
+   * @type {Array.<number>}
+   * @private
+   */
+  this.filteredOutIndexes_ = [];
   this.dispatchFilterApplied_ = new goog.async.Delay(goog.bind(function() {
     this.dispatchEvent(pstj.ds.List.EventType.FILTERED);
   }, this), 100);
@@ -85,13 +91,6 @@ pstj.ds.List.prototype.map_;
  * @private
  */
 pstj.ds.List.prototype.indexMap_;
-
-/**
- * The list of indexes that are currently filtered out.
- * @type {Array.<number>}
- * @private
- */
-pstj.ds.List.prototype.filteredOutIndexes_;
 
 /**
  * The filter function.
