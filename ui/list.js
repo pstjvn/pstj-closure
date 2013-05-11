@@ -93,9 +93,45 @@ pstj.ui.List.prototype.setModel = function(model) {
   } else {
     list = model;
   }
+  if (goog.isDefAndNotNull(this.getModel())) {
+    this.getHandler().unlisten(this.getModel(), [
+      pstj.ds.List.EventType.ADD,
+      pstj.ds.List.EventType.DELETE,
+      pstj.ds.List.EventType.FILTERED
+    ], this.handleModelChange);
+  }
+
   goog.base(this, 'setModel', list);
+
+  this.getHandler().listen(this.getModel(), [
+    pstj.ds.List.EventType.ADD,
+    pstj.ds.List.EventType.DELETE,
+    pstj.ds.List.EventType.FILTERED
+  ], this.handleModelChange);
+
   if (this.isInDocument()) {
     this.visualizeModel();
+  }
+};
+
+/**
+ * Handler for the events from the currently applied model. By default we
+ *   handle only the FILTERED event and we simply set the child's state to
+ *   disabled if it is filtered out.
+ * @param {pstj.ds.List.Event|goog.events.Event} e The event from the list. It
+ *   could be a complex (ADD) event ot a regular event with type only.
+ * @protected
+ */
+pstj.ui.List.prototype.handleModelChange = function(e) {
+  if (e.type == pstj.ds.List.EventType.FILTERED) {
+    var ids = this.getModel().getFilteredIndexes();
+    this.forEachChild(function(child, index) {
+      if (goog.array.contains(ids, index)) {
+        child.setEnabled(false);
+      } else {
+        child.setEnabled(true);
+      }
+    });
   }
 };
 
