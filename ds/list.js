@@ -287,7 +287,9 @@ pstj.ds.List.prototype.getCurrent = function() {
 };
 
 /**
- * TODO: finish filtering
+ * Sets the filter function for the list. If the filter function returns true
+ *   the item should be filtered OUT, i.e. if true -> remove element. TODO:
+ *   finish filtering
  * @param {function(pstj.ds.ListItem): boolean=} fn The function to use for
  *   filtering out elements from the list. Note that after the new filter is
  *   set the list will be filtered out and you can get the indexes of the
@@ -393,15 +395,13 @@ pstj.ds.List.prototype.disposeInternal = function() {
 };
 
 /**
- * Applies the filter on the current list.
+ * Applies the filter on the current list. It executes the filter function and
+ *   if the element matches the remove filter the function should return true
+ *   to signify removing the item.
  * @private
  */
 pstj.ds.List.prototype.applyFilter_ = function() {
-  if (!goog.isArray(this.filteredOutIndexes_)) {
-    this.filteredOutIndexes_ = [];
-  } else {
-    goog.array.clear(this.filteredOutIndexes_);
-  }
+  goog.array.clear(this.filteredOutIndexes_);
   if (goog.isFunction(this.filterFn_)) {
     goog.array.forEach(this.list_, function(item, index) {
       if (this.filterFn_(item)) this.filteredOutIndexes_.push(index);
