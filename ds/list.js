@@ -19,7 +19,7 @@ goog.require('pstj.ds.ListItem');
 /**
  * List that keeps track of the current index. Access is optimized with maps
  *   of the indexes and ids. This means that the list does not support
- *   duplicates, error is throwsn if you attempt to add items with ID that is
+ *   duplicates, error is throws if you attempt to add items with ID that is
  *   already in the list.
  * @constructor
  * @param {Array.<pstj.ds.ListItem>|Array.<Object>=} opt_nodes Optionally,
@@ -108,7 +108,7 @@ pstj.ds.List.prototype.filterFn_ = null;
 pstj.ds.List.prototype.currentIndex_ = 0;
 
 /**
- * If the list can be rewinded, i.e. if the end is reached, it should start
+ * If the list can be re-winded, i.e. if the end is reached, it should start
  * again from the other end.
  * @type {boolean}
  * @private
