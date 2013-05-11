@@ -50,7 +50,16 @@ pstj.ui.List = function(opt_template, opt_item_template) {
    * @private
    */
   this.currentSelectedUIItem_ = null;
-  this.xoffset_ = [0, 0];
+  /**
+   * Cache Y coordinates of the touch / move events. When we want to simulate
+   *   scroll in touch environment the children eat up the touch / move events
+   *   and thus the scroll is not happenings, this is why we need to cache the
+   *   Y coordinates of the children events and simulate scrolling if
+   *   applicable. The native scroll bar is assumed.
+   * @type {Array.<number>}
+   * @private
+   */
+  this.yoffset_ = [0, 0];
 };
 goog.inherits(pstj.ui.List, pstj.ui.Async);
 
@@ -146,19 +155,19 @@ pstj.ui.List.prototype.enterDocument = function() {
  */
 pstj.ui.List.prototype.handleMoveByChild = function(e) {
   if (e.type == pstj.ui.Touchable.EventType.PRESS) {
-    this.xoffset_[0] = e.y;
+    this.yoffset_[0] = e.y;
   } else {
-    this.xoffset_[1] = e.y;
+    this.yoffset_[1] = e.y;
     this.update();
   }
 };
 
 /** @inheritDoc */
 pstj.ui.List.prototype.draw = function(ts) {
-  if (this.xoffset_[0] - this.xoffset_[1]) {
+  if (this.yoffset_[0] - this.yoffset_[1]) {
     this.getElement().scrollTop = this.getElement().scrollTop + (
-      this.xoffset_[0] - this.xoffset_[1]);
-    this.xoffset_[0] = this.xoffset_[1];
+      this.yoffset_[0] - this.yoffset_[1]);
+    this.yoffset_[0] = this.yoffset_[1];
   }
   return goog.base(this, 'draw', ts);
 };
