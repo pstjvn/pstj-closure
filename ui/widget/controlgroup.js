@@ -42,8 +42,10 @@ pstj.widget.ControlGroupTemplate.prototype.getTemplate = function(model) {
  * The base control group class.
  * @constructor
  * @extends {pstj.ui.Templated}
- * @param {pstj.ui.Template} opt_template Optional template to use for DOM
+ * @param {pstj.ui.Template=} opt_template Optional template to use for DOM
  *   construction.
+ * @param {goog.ui.ButtonRenderer=} opt_button_renderer Optional renderer to
+ *   use for the control buttons.
  */
 pstj.widget.ControlGroup = function(opt_template, opt_button_renderer) {
   goog.base(this, opt_template ||
