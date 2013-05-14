@@ -108,5 +108,7 @@ pstj.widget.Select.prototype.handleSubcomponentEvent = function(e) {
  *   list item and returns true if the item should be removed (filtered out).
  */
 pstj.widget.Select.prototype.setFilter = function(fn) {
-  this.list_.getModel().setFilter(fn)
+  if (goog.isDefAndNotNull(this.list_.getModel())) {
+    this.list_.getModel().setFilter(fn);
+  }
 };

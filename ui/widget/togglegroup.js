@@ -1,10 +1,13 @@
 goog.provide('pstj.widget.ToggleGroup');
 
-goog.require('pstj.widget.ControlGroup');
-goog.require('goog.ui.Component.State');
 goog.require('goog.ui.Component.EventType');
+goog.require('goog.ui.Component.State');
+goog.require('pstj.widget.ControlGroup');
+
 /**
- * My new class description
+ * Provides button group with indication on the last activated button. Can be
+ *   used as a toggle-exclusive button group. All child buttons are emiting
+ *   the select event and the widget remembers the last selected item.
  * @constructor
  * @extends {pstj.widget.ControlGroup}
  * @param {pstj.ui.Template=} opt_template Optional template to use for DOM
@@ -30,9 +33,16 @@ goog.scope(function() {
   /** @inheritDoc */
   _.decorateInternal = function(el) {
     goog.base(this, 'decorateInternal', el);
+
+    this.forEachChild(function(child) {
+      child.setSupportedState(goog.ui.Component.State.SELECTED, true);
+      child.setDispatchTransitionEvents(goog.ui.Component.State.SELECTED, true);
+    });
+
     this.currentActive_ = /** @type {pstj.ui.Button} */ (
       this.getChildAt(0));
-    this.currentActive_.setState(goog.ui.Component.State.SELECTED, true);
+
+    this.currentActive_.setSelected(true);
   };
 
   /** @inheritDoc */
@@ -43,17 +53,27 @@ goog.scope(function() {
   };
 
   /**
+   * Retrieves the action name of the selected / toggled button.
+   * @return {string} The action name.
+   */
+  _.getCheckedAction = function() {
+    return this.currentActive_.getActionName() || '';
+  };
+
+  /**
    * Handles the toggle event of a button and makes sure the other buttons are
    *   not left toggled.
    * @param {goog.events.Event} e The ACTION button event.
    * @protected
    */
   _.handleButtonAction = function(e) {
+    e.stopPropagation();
     var button = /** @type {pstj.ui.Button} */ (e.target);
     if (button != this.currentActive_) {
-      this.currentActive_.setState(goog.ui.Component.State.SELECTED, false);
+      this.currentActive_.setSelected(false);
       this.currentActive_ = button;
-      this.currentActive_.setState(goog.ui.Component.State.SELECTED, true);
+      this.currentActive_.setSelected(true);
+    }
   };
 
 });
