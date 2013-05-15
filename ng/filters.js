@@ -92,7 +92,23 @@ goog.scope(function() {
    * @return {boolean} Will be true if such filter exists.
    */
   _.hasFilter = function(fname) {
-    return !!(_.registry_[fname]);
+    return !goog.isNull(_.getFilterByName(fname));
+  };
+
+  /**
+   * Retrieves a filter by its name, if one exists.
+   * @param {string} fname The filter name.
+   * @return {?function((number|string|boolean),string=): string}
+   */
+  _.getFilterByName = function(fname) {
+    var filter = _.registry_[fname];
+    if (!goog.isFunction(filter)) {
+      filter = goog.global['ngf' + fname];
+      if (!goog.isFunction(filter)) {
+        filter = null;
+      }
+    }
+    return filter;
   };
 
   /**
@@ -106,7 +122,7 @@ goog.scope(function() {
   _.apply = function(fname, data, format) {
     if (_.hasFilter(fname)) {
       var f = /** @type {function((number|string|boolean),string=): string} */ (
-        _.registry_[fname]);
+        _.getFilterByName(fname));
       return f(data, format);
     }
     throw new Error('There is no filter registered with this name:' + fname);
