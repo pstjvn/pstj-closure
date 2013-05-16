@@ -272,6 +272,13 @@ pstj.ui.Touchable.prototype.handleMouseEvent = function(e) {
 
       break;
 
+    case goog.events.EventType.MOUSEOUT:
+      if (this.moved_) {
+        this.dispatchEvent(pstj.ui.Touchable.EventType.RELEASE);
+      }
+      this.setIgnoreEvent(pstj.ui.Touchable.IGNORING_EVENT_NAME.TOUCH, false);
+      break;
+
   }
 };
 
@@ -339,6 +346,7 @@ pstj.ui.Touchable.prototype.handleAllTouchables_ = function(e) {
       break;
 
     case pstj.ui.Touchable.EventType.RELEASE:
+      this.moved_ = false;
       this.pressed_ = false;
       this.cancelLongTouch_();
       break;
@@ -427,7 +435,8 @@ pstj.ui.Touchable.EVENTS = [
   goog.events.EventType.TOUCHCANCEL,
   goog.events.EventType.MOUSEDOWN,
   goog.events.EventType.MOUSEMOVE,
-  goog.events.EventType.MOUSEUP
+  goog.events.EventType.MOUSEUP,
+  goog.events.EventType.MOUSEOUT
 ];
 
 /**
