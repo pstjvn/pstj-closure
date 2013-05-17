@@ -60,6 +60,18 @@ pstj.ui.List = function(opt_template, opt_item_template) {
    * @private
    */
   this.yoffset_ = [0, 0];
+  /**
+   * Message to show in the list body if all the items are filtered.
+   * @type {string}
+   * @private
+   */
+  this.emptyListNotice_ = '';
+  /**
+   * The notice ready element.
+   * @type {Element}
+   * @private
+   */
+  this.noticeElement_ = null;
 };
 goog.inherits(pstj.ui.List, pstj.ui.Async);
 
@@ -67,6 +79,7 @@ goog.inherits(pstj.ui.List, pstj.ui.Async);
 pstj.ui.List.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   this.listItemTemplate_ = null;
+  this.noticeElement_ = null;
 };
 
 /**
@@ -76,6 +89,15 @@ pstj.ui.List.prototype.disposeInternal = function() {
  * @return {pstj.ds.List} The list of items.
  */
 pstj.ui.List.prototype.getModel;
+
+/**
+ * Sets the notice to be showing if no items are left after the list after
+ *   filtering.
+ * @param {string} notice The notice.
+ */
+pstj.ui.List.prototype.setEmptyListNotice = function(notice) {
+  this.emptyListNotice_ = notice;
+};
 
 /** @inheritDoc */
 pstj.ui.List.prototype.setModel = function(model) {
@@ -123,6 +145,7 @@ pstj.ui.List.prototype.setModel = function(model) {
  * @protected
  */
 pstj.ui.List.prototype.handleModelChange = function(e) {
+  this.noticeElement_.innerHTML = '';
   if (e.type == pstj.ds.List.EventType.FILTERED) {
     var ids = this.getModel().getFilteredIndexes();
     this.forEachChild(function(child, index) {
@@ -132,6 +155,12 @@ pstj.ui.List.prototype.handleModelChange = function(e) {
         child.setEnabled(true);
       }
     });
+    // no items left in the list.
+    if (this.getModel().getCount() > 0 &&
+      ids.length == this.getModel().getCount()) {
+
+      this.noticeElement_.innerHTML = this.emptyListNotice_;
+    }
   }
 };
 
@@ -165,6 +194,13 @@ pstj.ui.List.prototype.createListItem = function(listitem) {
 pstj.ui.List.prototype.getSelectionData = function() {
   if (goog.isNull(this.currentSelectedUIItem_)) return null;
   return this.currentSelectedUIItem_.getModel();
+};
+
+/** @inheritDoc */
+pstj.ui.List.prototype.decorateInternal = function(el) {
+  goog.base(this, 'decorateInternal', el);
+  this.noticeElement_ = this.getEls(goog.getCssName(
+    'pstj-list-notice'));
 };
 
 /** @inheritDoc */

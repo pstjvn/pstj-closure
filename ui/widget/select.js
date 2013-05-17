@@ -44,6 +44,14 @@ pstj.widget.Select = function(opt_template, opt_item_template) {
 goog.inherits(pstj.widget.Select, pstj.ui.Templated);
 
 /**
+ * Sets the text to be shown when list is empty.
+ * @param {string} str String.
+ */
+pstj.widget.Select.prototype.setEmptyListText = function(str) {
+  this.list_.setEmptyListNotice(str);
+};
+
+/**
  * @override
  */
 pstj.widget.Select.prototype.setModel = function(model) {
