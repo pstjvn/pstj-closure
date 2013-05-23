@@ -117,6 +117,7 @@ pstj.widget.Select.prototype.handleSubcomponentEvent = function(e) {
  */
 pstj.widget.Select.prototype.setFilter = function(fn) {
   if (goog.isDefAndNotNull(this.list_.getModel())) {
+    this.selectButton_.setEnabled(false);
     this.list_.getModel().setFilter(fn);
   }
 };

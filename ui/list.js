@@ -146,7 +146,14 @@ pstj.ui.List.prototype.setModel = function(model) {
  */
 pstj.ui.List.prototype.handleModelChange = function(e) {
   this.noticeElement_.innerHTML = '';
+
   if (e.type == pstj.ds.List.EventType.FILTERED) {
+    // If filtering is performed remove reference to the currently selected
+    // item.
+    if (!goog.isNull(this.currentSelectedUIItem_)) {
+      this.currentSelectedUIItem_.setActive(false);
+      this.currentSelectedUIItem_ = null;
+    }
     var ids = this.getModel().getFilteredIndexes();
     this.forEachChild(function(child, index) {
       if (goog.array.contains(ids, index)) {
