@@ -147,6 +147,15 @@ goog.scope(function() {
   };
 
   /**
+   * Separates the thousands with a comma (standard money practice).
+   * @param {number|string|boolean} data The data to parse.
+   * @return {string}
+   */
+  _.money = function(data) {
+    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  /**
    * The registry of the filter function names to match with actual filters.
    * @type {Object}
    * @private
@@ -155,6 +164,7 @@ goog.scope(function() {
     'timeoffset': _.timeoffset,
     'append': _.append,
     'prepend': _.prepend,
-    'price': _.makePrice
+    'price': _.makePrice,
+    'money': _.money
   };
 });
