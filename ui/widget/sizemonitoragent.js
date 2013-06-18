@@ -116,7 +116,12 @@ goog.scope(function() {
    */
   _.attach = function(component) {
     if (!goog.array.contains(this.components_, component)) {
-      this.components_.push(component);
+      var nullindex = goog.array.indexOf(this.components_, null);
+      if (nullindex != -1) {
+        this.components_[nullindex] = component;
+      } else {
+        this.components_.push(component);
+      }
       component.addOnDisposeCallback(goog.bind(this.detach, this, component));
       if (component.isInDocument()) {
         goog.object.set(this.sizeCache_, component.getId(),
