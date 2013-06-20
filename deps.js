@@ -20,7 +20,7 @@ goog.addDependency('../../../apps/pstj/graphics/timeline.js', ['pstj.graphics.Ti
 goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], []);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
-goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Templated']);
+goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable']);
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object']);
 goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.json.NativeJsonProcessor', 'goog.net.XhrIo', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory', 'goog.string', 'goog.uri.utils', 'pstj.configure']);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product']);
@@ -56,4 +56,5 @@ goog.addDependency('../../../apps/pstj/ui/widget/controlgroup.js', ['pstj.widget
 goog.addDependency('../../../apps/pstj/ui/widget/pager.js', ['pstj.widget.Pager', 'pstj.widget.PagerTemplate'], ['goog.array', 'goog.dom', 'goog.dom.classlist', 'pstj.ds.List', 'pstj.ds.ListItem', 'pstj.ng.Template', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/widget/progress.js', ['pstj.widget.Progress', 'pstj.widget.ProgressTemplate'], ['goog.asserts', 'goog.async.Delay', 'goog.events.EventType', 'pstj.math.utils', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/widget/select.js', ['pstj.widget.Select', 'pstj.widget.SelectTemplate'], ['goog.ui.Component.EventType', 'pstj.templates', 'pstj.ui.Button', 'pstj.ui.List', 'pstj.ui.Template', 'pstj.ui.Templated']);
+goog.addDependency('../../../apps/pstj/ui/widget/sizemonitoragent.js', ['pstj.ui.SizeMonitorAgent'], ['goog.array', 'goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.object', 'goog.style']);
 goog.addDependency('../../../apps/pstj/ui/widget/togglegroup.js', ['pstj.widget.ToggleGroup'], ['goog.ui.Component.EventType', 'goog.ui.Component.State', 'pstj.widget.ControlGroup']);

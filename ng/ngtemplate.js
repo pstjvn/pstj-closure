@@ -1,11 +1,12 @@
 goog.provide('pstj.ng.Template');
 
 goog.require('goog.array');
+goog.require('goog.async.nextTick');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.ng.filters');
-goog.require('pstj.ui.Templated');
+goog.require('pstj.ui.Touchable');
 
 /**
  * @fileoverview Provides easy to use html templating with declarative data
@@ -19,7 +20,7 @@ goog.require('pstj.ui.Templated');
 /**
  *
  * @constructor
- * @extends {pstj.ui.Templated}
+ * @extends {pstj.ui.Touchable}
  * @param {pstj.ui.Template=} opt_template Template to use for constructing the
  *   DOM when not using decoration.
  * @param {string=} opt_nullvalue The default value to apply to models when
@@ -29,7 +30,7 @@ pstj.ng.Template = function(opt_template, opt_nullvalue) {
   goog.base(this, opt_template);
   if (goog.isString(opt_nullvalue)) this.nullValue = opt_nullvalue;
 };
-goog.inherits(pstj.ng.Template, pstj.ui.Templated);
+goog.inherits(pstj.ng.Template, pstj.ui.Touchable);
 
 goog.scope(function() {
   var Template = pstj.ng.Template;
@@ -78,7 +79,7 @@ goog.scope(function() {
       if (!goog.isDef(model)) model = null;
     }
     goog.base(this, 'setModel', model);
-    this.applyTemplate();
+    goog.async.nextTick(this.applyTemplate, this);
   };
 
   /**
