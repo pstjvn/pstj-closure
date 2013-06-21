@@ -3,10 +3,18 @@ goog.provide('pstj.ui.ControlRenderer');
 goog.require('goog.asserts');
 goog.require('goog.ui.Control');
 goog.require('goog.ui.ControlRenderer');
+goog.require('pstj.ds.ListItem');
 goog.require('pstj.templates');
 
 /**
- * My new class description
+ * Provides basic renderer that has the following advantages over the default
+ *   control renderer:
+ *   - provides abstraction of template
+ *   - provides abstraction off the model:
+ *
+ * Basically it allow the widget author to extend by either chaning the
+ *   template, changing the model tunneling to the template ot both.
+ *
  * @constructor
  * @extends {goog.ui.ControlRenderer}
  */
@@ -48,9 +56,12 @@ goog.scope(function() {
    * @protected
    */
   _.generateTemplateData = function(component) {
-    return {
-      data: component.getModel()
-    };
+    var model = component.getModel();
+    if (model instanceof pstj.ds.ListItem) {
+      return model.getRawData();
+    }
+    if (model instanceof Object) return model;
+    return {};
   };
 
   /** @inheritDoc */
