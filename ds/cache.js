@@ -6,7 +6,7 @@ goog.require('goog.object');
  * Provides conventient cache object.
  * @constructor
  */
-pstj.ds.Cache = function(type) {
+pstj.ds.Cache = function() {
   this.cache_ = {};
 };
 
@@ -37,7 +37,7 @@ goog.scope(function() {
    * @param {string} key The key to lookup.
    * @return {*}
    */
-  _.get = function(key, type) {
+  _.get = function(key) {
     if (this.has(key)) {
       return goog.object.get(this.cache_, key);
     }
