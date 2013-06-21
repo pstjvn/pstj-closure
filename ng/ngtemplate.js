@@ -49,7 +49,7 @@ goog.scope(function() {
 
   /**
    * The list of elements that has model attached to them declaratively.
-   * @type {{length: number}}
+   * @type {{length: number}|null}
    * @private
    */
   _.templateElements_;
@@ -135,6 +135,12 @@ goog.scope(function() {
         }
       }
     }
+  };
+
+  /** @inheritDoc */
+  _.disposeInternal = function() {
+    goog.base(this, 'disposeInternal');
+    this.templateElements_ = null;
   };
 
   /**
