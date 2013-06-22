@@ -59,3 +59,13 @@ pstj.math.utils.getPercentFromValue = function(value, of_value) {
 pstj.math.utils.getValueFromPercent = function(value, percent) {
   return (value * percent) / 100;
 };
+
+/**
+ * Picks random item(s) from an array.
+ * @param {Array.<T>} arr The array to pick from.
+ * @return {T} The item picked at random.
+ * @template T
+ */
+pstj.math.utils.pick = function(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
