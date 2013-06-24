@@ -13,8 +13,17 @@ goog.require('pstj.ui.Agent');
  */
 pstj.ui.ClockAgent = function() {
   goog.base(this, null);
+  /**
+   * @protected
+   * @type {number}
+   */
   this.time = 0;
-  pstj.ds.TimeProvider.getInstance().addSubscriber(this);
+  /**
+   * @private
+   * @type {pstj.ds.TimeProvider}
+   */
+  this.timeprovier_ = pstj.ds.TimeProvider.getInstance();
+  this.setTimeProvider(this.timeprovider_);
 };
 goog.inherits(pstj.ui.ClockAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.ClockAgent);
@@ -22,6 +31,16 @@ goog.addSingletonGetter(pstj.ui.ClockAgent);
 goog.scope(function() {
 
   var _ = pstj.ui.ClockAgent.prototype;
+
+  /**
+   * Allows the developer to set prefered time provider.
+   * @param {pstj.ds.TimeProvider} time_provider The time provider to use.
+   */
+  _.setTimeProvider = function(time_provider) {
+    this.timeprovider_.removeSubscriber(this);
+    this.timeprovider_ = time_provider;
+    this.timeprovider_.addSubscriber(this);
+  };
 
   /**
    * Implements the interface for time provider.
