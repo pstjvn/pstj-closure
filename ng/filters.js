@@ -30,17 +30,12 @@ goog.scope(function() {
   _.timeOffsetDefaultFormat_ = 'hh:mm';
 
   /**
-   * Filter a time offset and presents it as a time. The calculated time is
-   * offset by minutes and time zone differences are removed.
+   * Parses value into time value.
    * @param {number|string|boolean} data The time to use.
-   * @param {string} format The formatting to apply. The format is 1:1 with the
-   * goog.date formatting options.
-   * @return {string} The result of the offset.
+   * @return {number}
    */
-  _.timeoffset = function(data, format) {
+  _.makeDateTime_ = function(data) {
     var time;
-    // we expect the data in seconds (most server side applications use seconds
-    // and not milliseconds like JavaScript so we need to compensate for that.
     if (!goog.isNumber(data)) {
       time = +data;
       if (isNaN(time)) {
@@ -56,6 +51,22 @@ goog.scope(function() {
     } else {
       time = data;
     }
+    return time;
+  };
+
+  /**
+   * Filter a time offset and presents it as absolute time value. The
+   *   calculated time is offset by minutes and time zone differences are
+   *   removed.
+   * @param {number|string|boolean} data The time to use.
+   * @param {string} format The formatting to apply. The format is 1:1 with
+   *   the goog.date formatting options.
+   * @return {string} The result of the offset.
+   */
+  _.timeoffset = function(data, format) {
+    var time = _.makeDateTime_(data);
+    // we expect the data in seconds (most server side applications use seconds
+    // and not milliseconds like JavaScript so we need to compensate for that.
     // transform seconds to milliseconds.
     time = time * 1000;
     // compensate for time zone.
@@ -63,6 +74,18 @@ goog.scope(function() {
     // ready to apply filter
     return dutils.renderTimeSafe(time, format || _.timeOffsetDefaultFormat_);
 
+  };
+
+  /**
+   * Formatting for regular date-time objects.
+   * @param {number|string|boolean} data The time to use.
+   * @param {string} format The formatting to apply. The format is 1:1 with
+   *   the goog.date formatting options.
+   * @return {string} The result of the offset.
+   */
+  _.datetime = function(data, format) {
+    return dutils.renderTimeSafe(_.makeDateTime_(data),
+      format || _.timeOffsetDefaultFormat_);
   };
 
   /**
@@ -161,6 +184,7 @@ goog.scope(function() {
    * @private
    */
   _.registry_ = {
+    'datetime': _.datetime,
     'timeoffset': _.timeoffset,
     'append': _.append,
     'prepend': _.prepend,

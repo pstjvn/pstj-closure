@@ -35,6 +35,8 @@ goog.addDependency('../../../apps/pstj/ui/async.js', ['pstj.ui.Async'], ['goog.f
 goog.addDependency('../../../apps/pstj/ui/button/button.js', ['pstj.ui.Button'], ['goog.dom.dataset', 'goog.events.EventType', 'goog.ui.CustomButton', 'goog.ui.registry', 'pstj.ui.CustomButtonRenderer']);
 goog.addDependency('../../../apps/pstj/ui/button/buttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.a11y.aria.Role', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);
 goog.addDependency('../../../apps/pstj/ui/clock.js', ['pstj.ui.Clock'], ['goog.ui.Component', 'pstj.ds.IClock', 'pstj.ds.TimeProvider']);
+goog.addDependency('../../../apps/pstj/ui/controls/clock-renderer.js', ['pstj.widget.ClockRenderer'], ['pstj.templates', 'pstj.ui.ControlRenderer']);
+goog.addDependency('../../../apps/pstj/ui/controls/clock.js', ['pstj.widget.Clock'], ['goog.ui.Component.State', 'goog.ui.Control', 'pstj.ds.ListItem', 'pstj.ui.ClockAgent', 'pstj.ui.ngAgent', 'pstj.widget.ClockRenderer']);
 goog.addDependency('../../../apps/pstj/ui/controls/control.js', ['pstj.ui.TouchControl'], ['goog.ui.Component.EventType', 'goog.ui.Component.State', 'goog.ui.Control', 'goog.ui.registry', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/controls/controlrenderer.js', ['pstj.ui.ControlRenderer'], ['goog.asserts', 'goog.ui.Control', 'goog.ui.ControlRenderer', 'pstj.ds.ListItem', 'pstj.templates']);
 goog.addDependency('../../../apps/pstj/ui/controls/listitem.js', ['pstj.ui.ListItemControl'], ['goog.ui.Control', 'pstj.ui.ListItemRenderer']);

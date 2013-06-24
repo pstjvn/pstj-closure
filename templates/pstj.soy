@@ -157,3 +157,14 @@
 {template .Control}
   <div></div>
 {/template}
+
+
+/**
+ * The clock example template.
+ * Demoes the data filtering and data binding (one way).
+ */
+{template .clock}
+  <div class="{css pstj-widget-clock}">
+    <div class="{css pstj-widget-clock-time}" data-model="time" data-filter="datetime(HH:mm:ss)"></div>
+  </div>
+{/template}

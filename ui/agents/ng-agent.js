@@ -81,6 +81,7 @@ goog.scope(function() {
   _.apply_ = function(component) {
     if (goog.isDefAndNotNull(component.getModel())) {
       this.attach(component);
+      if (!component.isInDocument()) return;
       this.applyModel(component);
       goog.dom.classlist.remove(component.getElement(), goog.getCssName(
         'pstj-ng-cloak'));
@@ -192,7 +193,7 @@ goog.scope(function() {
       if (pstj.ng.filters.hasFilter(fname)) {
         result = pstj.ng.filters.apply(fname, result, fvalue);
       }
-    });
+    }, this);
     return result.toString();
   };
 
@@ -231,7 +232,7 @@ goog.scope(function() {
    */
   _.getNGElements = function(component) {
     if (!goog.isNull(component.getElement())) {
-      return component.getElement().querySelector('[data-model]');
+      return component.getElement().querySelectorAll('[data-model]');
     } else {
       return [];
     }
