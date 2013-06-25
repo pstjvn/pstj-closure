@@ -3,6 +3,7 @@ goog.provide('pstj.resource.Local');
 goog.provide('pstj.resource.Resource');
 
 goog.require('goog.json.NativeJsonProcessor');
+goog.require('goog.net.Jsonp');
 goog.require('goog.net.XhrIo');
 goog.require('goog.storage.Storage');
 goog.require('goog.storage.mechanism.mechanismfactory');
@@ -53,11 +54,19 @@ pstj.resource.run_ = 'run';
 pstj.resource.execPath_ = '/cgi-bin/if.cgi';
 
 /**
+ * Flag telling the resource loader if some of the resources are to be loaded
+ *   cross domain (i.e. with JSONP)
+ * @type {boolean}
+ * @private
+ */
+pstj.resource.corssDomain_ = false;
+
+/**
  * Configures the resource loader factory. Note that once an instance is
  *   created, configuration cannot be applied any longer, so make sure you
  *   configure it before you require the instance.
- * @param {{run:string, execPath:string}} options The configuration
- *   options to apply to the instance to be created.
+ * @param {{run:string, execPath:string, corssdomain: boolean}} options The
+ *   configuration options to apply to the instance to be created.
  */
 pstj.resource.configure = function(options) {
   if (!goog.isNull(pstj.resource.instance_)) {
@@ -69,6 +78,9 @@ pstj.resource.configure = function(options) {
   }
   if (goog.isString(options.execPath)) {
     pstj.resource.execPath_ = options.execPath;
+  }
+  if (goog.isBoolean(options)) {
+    pstj.resource.corssDomain_ = options.corssdomain;
   }
 };
 
@@ -237,7 +249,7 @@ pstj.resource.Resource.prototype.get = function(data, callback,
   if (this.useCache_ && opt_cache_request == true) {
     if (goog.isDefAndNotNull(this.cache_.get(url))) {
       setTimeout(goog.bind(function() {
-        callback(null, this.cache_.get(url));
+        callback(null, goog.asserts.assertObject(this.cache_.get(url)));
       }, this), 10);
       return;
     }
@@ -284,8 +296,14 @@ pstj.resource.Resource.prototype.post = function(data, callback) {
  */
 pstj.resource.Resource.prototype.sendRequest = function(url,
     callback, method, data, cache_response) {
-  goog.net.XhrIo.send(url, goog.bind(this.handleResponse, this, callback,
-    cache_response, url), method, data);
+  var bound = goog.bind(this.handleResponse, this, callback, cache_response,
+    url);
+  if (pstj.resource.corssDomain_) {
+    (new goog.net.Jsonp(url)).send(goog.isObject(data) ? data : null,
+      bound, bound);
+  } else {
+    goog.net.XhrIo.send(url, bound, method, data);
+  }
 };
 
 /**
