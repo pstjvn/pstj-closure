@@ -12,6 +12,7 @@ goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.Li
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.object']);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable']);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure']);
+goog.addDependency('../../../apps/pstj/error/errorhandler.js', ['pstj.error.ErrorHandler', 'pstj.error.ErrorHandler.Errors ', 'pstj.error.throw'], ['goog.pubsub.PubSub', 'pstj.control.Base']);
 goog.addDependency('../../../apps/pstj/fx/dragdropgroup.js', ['pstj.fx.DragDropGroup'], ['goog.dom.classlist', 'goog.fx.DragDropGroup', 'pstj.fx.Dragger']);
 goog.addDependency('../../../apps/pstj/fx/dragger.js', ['pstj.fx.Dragger'], ['goog.async.AnimationDelay', 'goog.fx.Dragger', 'pstj.style.css']);
 goog.addDependency('../../../apps/pstj/graphics/canvas.js', ['pstj.graphics.Canvas'], ['goog.events.EventTarget', 'goog.events.EventType', 'goog.style']);
@@ -23,7 +24,7 @@ goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRo
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable']);
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object']);
-goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.json.NativeJsonProcessor', 'goog.net.XhrIo', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory', 'goog.string', 'goog.uri.utils', 'pstj.configure']);
+goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory', 'goog.string', 'goog.uri.utils', 'pstj.configure']);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product']);
 goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.dom', 'goog.userAgent']);
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub']);

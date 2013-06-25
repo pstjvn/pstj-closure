@@ -133,7 +133,7 @@ pstj.ds.TimeProvider.prototype.defaultInterval = 60000;
 pstj.ds.TimeProvider.prototype.start = function() {
   this.running_ = true;
   this.lastIssuedTime_ = goog.now();
-  goog.global.setInterval(goog.bind(this.onTick, this),
-    /** @type {number} */ +(pstj.configure.getRuntimeValue(
+  var num = (/** type {number} */ +(pstj.configure.getRuntimeValue(
       pstj.ds.TimeProvider.GLOB, this.defaultInterval)));
+  goog.global.setInterval(goog.bind(this.onTick, this), num);
 };
