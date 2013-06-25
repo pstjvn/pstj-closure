@@ -30,4 +30,3 @@ goog.scope(function() {
   };
 
 });
-
