@@ -56,16 +56,16 @@ pstj.resource.execPath_ = '/cgi-bin/if.cgi';
 /**
  * Flag telling the resource loader if some of the resources are to be loaded
  *   cross domain (i.e. with JSONP)
- * @type {boolean}
+ * @type {!boolean}
  * @private
  */
-pstj.resource.corssDomain_ = false;
+pstj.resource.crossDomain_ = false;
 
 /**
  * Configures the resource loader factory. Note that once an instance is
  *   created, configuration cannot be applied any longer, so make sure you
  *   configure it before you require the instance.
- * @param {{run:string, execPath:string, corssdomain: boolean}} options The
+ * @param {{run:string, execPath:string, crossdomain: boolean}} options The
  *   configuration options to apply to the instance to be created.
  */
 pstj.resource.configure = function(options) {
@@ -79,8 +79,8 @@ pstj.resource.configure = function(options) {
   if (goog.isString(options.execPath)) {
     pstj.resource.execPath_ = options.execPath;
   }
-  if (goog.isBoolean(options)) {
-    pstj.resource.corssDomain_ = options.corssdomain;
+  if (goog.isBoolean(options.crossdomain)) {
+    pstj.resource.crossDomain_ = options.crossdomain;
   }
 };
 
@@ -298,7 +298,7 @@ pstj.resource.Resource.prototype.sendRequest = function(url,
     callback, method, data, cache_response) {
   var bound = goog.bind(this.handleResponse, this, callback, cache_response,
     url);
-  if (pstj.resource.corssDomain_) {
+  if (pstj.resource.crossDomain_) {
     (new goog.net.Jsonp(url)).send(goog.isObject(data) ? data : null,
       bound, bound);
   } else {
