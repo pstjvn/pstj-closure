@@ -12,30 +12,10 @@ goog.require('pstj.ui.Template');
  * @extends {goog.ui.Control}
  * @param {?string} content The content to use, this is not really used here.
  * @param {pstj.ui.ControlRenderer=} opt_renderer The renderer to use, it
- *   should understand templates.
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
- *   document interaction.
- * @param {pstj.ui.Template=} opt_template Optional template to use.
+ *   should understand templates.se.
  */
-pstj.ui.TouchControl = function(content, opt_renderer, opt_domHelper,
-  opt_template) {
-
+pstj.ui.TouchControl = function(content, opt_renderer) {
   goog.base(this, content, opt_renderer, opt_domHelper);
-  /**
-   * The template used by the custom control. Notice that the controls do not
-   *   inherit from the templated component type, but still can use the
-   *   Template interface as it is much more convenient.
-   * @type {pstj.ui.Template}
-   * @private
-   */
-  this.template_ = opt_template || pstj.ui.Template.getInstance();
-  /**
-   * Flag: if the touch events should be listened for. By default we listen
-   *   for it.
-   * @type {boolean}
-   * @private
-   */
-  this.handleTouchEvents_ = true;
   /**
    * The cache to use to store touch coordinates without touching the DOM.
    * @type {Array.<number>}
@@ -43,13 +23,39 @@ pstj.ui.TouchControl = function(content, opt_renderer, opt_domHelper,
    */
   this.touchCoordinatesCache_ = [0, 0];
   /**
+   * The events that should be ignored.
+   * @type {pstj.ui.TouchControl.Ignore}
+   * @private
+   */
+  this.ignoring_ = pstj.ui.TouchControl.Ignore.NONE;
+  /**
    * Flag if an activation is pending.
    * @type {boolean}
    * @private
    */
   this.pendingActivation_ = false;
+  /**
+   * The current touch state of the control.
+   * @type {pstj.ui.TouchControl.TouchState}
+   * @private
+   */
+  this.touchState_ = pstj.ui.TouchControl.TouchState.NONE;
 };
 goog.inherits(pstj.ui.TouchControl, goog.ui.Control);
+
+pstj.ui.TouchControl.TouchState = {
+  NONE: 0x00,
+  PRESSED: 0x01,
+  MOVED: 0x02,
+  LONG_PRESSED: 0x04,
+};
+
+pstj.ui.TouchControl.Ignore = {
+  NONE: 0x00,
+  TOUCH: 0x01,
+  MOUSE: 0x02
+  ALL: 0xFF
+};
 
 goog.scope(function() {
 
