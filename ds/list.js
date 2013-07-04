@@ -65,7 +65,8 @@ pstj.ds.List.EventType = {
   ADD: goog.events.getUniqueId('add'),
   UPDATE: goog.events.getUniqueId('update'),
   DELETE: goog.events.getUniqueId('delete'),
-  FILTERED: goog.events.getUniqueId('filtered')
+  FILTERED: goog.events.getUniqueId('filtered'),
+  SELECTED: goog.events.getUniqueId('selected')
 };
 
 // Implement list interface.
@@ -322,6 +323,7 @@ pstj.ds.List.prototype.setCurrent = function(item) {
   var index = this.getIndexById(item.getId());
   if (goog.isNumber(index)) {
     this.currentIndex_ = index;
+    this.dispatchEvent(pstj.ds.List.EventType.SELECTED);
   }
 };
 
