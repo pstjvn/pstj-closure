@@ -322,8 +322,12 @@ pstj.ds.List.prototype.getFilteredIndexes = function() {
 pstj.ds.List.prototype.setCurrent = function(item) {
   var index = this.getIndexById(item.getId());
   if (goog.isNumber(index)) {
+    if (!goog.isNull(this.getCurrent())) {
+      if (this.getCurrentIndex() == index) return;
+    }
     this.currentIndex_ = index;
     this.dispatchEvent(pstj.ds.List.EventType.SELECTED);
+
   }
 };
 

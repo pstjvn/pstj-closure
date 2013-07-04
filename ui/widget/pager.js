@@ -71,12 +71,6 @@ pstj.widget.Pager = function(opt_items_per_page, opt_template) {
    */
   this.page_ = 0;
   /**
-   * The index of the currently active element. It is offsetted for the page!
-   * @type {number}
-   * @private
-   */
-  this.activePageIndex_ = 0;
-  /**
    * @private
    * @type {Element}
    */
@@ -86,13 +80,6 @@ pstj.widget.Pager = function(opt_items_per_page, opt_template) {
    * @type {Element}
    */
   this.pagesEl_ = null;
-  /**
-   * The number of pages that are needed to visualize the whole list in regard
-   *   of the current visible elements.
-   * @type {number}
-   * @private
-   */
-  this.pagesCount_ = 0;
 };
 goog.inherits(pstj.widget.Pager, pstj.ui.Templated);
 
@@ -114,24 +101,46 @@ pstj.widget.Pager.prototype.getNumberOfItemsRequired = function() {
 pstj.widget.Pager.prototype.setModel = function(model) {
   goog.asserts.assertInstanceof(model, pstj.ds.List,
     'Should be a list data structure');
+
+  this.bindModel(model);
   goog.base(this, 'setModel', model);
+
   if (this.isInDocument()) {
     this.updatePagesNumber_();
-    this.initState_();
+    this.handleSelectionChange(null);
   }
+};
+
+/**
+ * Bind handler to the selection change in current model.
+ * @param {pstj.ds.List} model The model to bind to.
+ * @protected
+ */
+pstj.widget.Pager.prototype.bindModel = function(model) {
+  if (!goog.isNull(this.getModel())) {
+    this.getHandler().unlisten(this.getModel(), pstj.ds.List.EventType.SELECTED,
+      this.handleSelectionChange);
+  }
+  this.getHandler().listen(model, pstj.ds.List.EventType.SELECTED,
+    this.handleSelectionChange);
 };
 
 /** @inheritDoc */
 pstj.widget.Pager.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
-  // find all instances and apply them as templates.
+
   var items = goog.dom.getElementsByClass(goog.getCssName('pstj-pager-item'));
+
+  this.itemsPerPage_ = items.length;
+
   goog.array.forEach(items, function(el) {
     var template = new pstj.ng.Template();
     this.addChild(template);
     this.items_.push(template);
     template.decorate(el);
+    this.registerDisposable(template);
   }, this);
+
   this.pageEl_ = this.getEls(goog.getCssName('pstj-pager-page'));
   this.pagesEl_ = this.getEls(goog.getCssName('pstj-pager-pages'));
 };
@@ -141,100 +150,36 @@ pstj.widget.Pager.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.updatePagesNumber_();
   if (goog.isDefAndNotNull(this.getModel())) {
-    this.initState_();
+    this.handleSelectionChange(null);
   } else {
     this.pageEl_.innerHTML = this.page_.toString();
   }
 };
-/**
- * Sets the pager to the first page and the first item in the page.
- * @private
- */
-pstj.widget.Pager.prototype.initState_ = function() {
-  this.loadPage(1);
-  this.activePageIndex_ = 0;
-  goog.dom.classlist.add(this.items_[0].getElement(),
-    goog.getCssName('active'));
-};
 
 /**
- * Selects the next item in the pager.
+ * Handles the change of selection item in the underlying model.
+ * @param {goog.events.Event} e The SELECTED type event from list model.
+ * @protected
  */
-pstj.widget.Pager.prototype.selectNext = function() {
-  var next_record = this.getModel().getNext();
-  if (goog.isNull(next_record)) return;
-  // at this stage we know that the item is available as data record, now we
-  // need to figure out how to show it in the pager.
-  goog.dom.classlist.remove(this.items_[this.activePageIndex_].getElement(),
-    goog.getCssName('active'));
-  this.activePageIndex_++;
-  if (this.activePageIndex_ >= this.items_.length) {
-    this.activePageIndex_ = 0;
-    this.loadPage(this.page_ + 1);
+pstj.widget.Pager.prototype.handleSelectionChange = function(e) {
+
+  // Remove the highlight from the current item.
+  var item = this.getElementByClass(goog.getCssName('active'));
+  var index = 0;
+  if (!goog.isNull(item)) {
+    goog.dom.classlist.remove(item, goog.getCssName('active'));
   }
-  this.getModel().setCurrent(next_record);
-  goog.dom.classlist.add(this.items_[this.activePageIndex_].getElement(),
-    goog.getCssName('active'));
-};
 
-/**
- * Selects the previous item in the pager.
- */
-pstj.widget.Pager.prototype.selectPrevious = function() {
-  var item = this.getModel().getPrevious();
-  if (goog.isNull(item)) return;
-  goog.dom.classlist.remove(this.items_[this.activePageIndex_].getElement(),
-    goog.getCssName('active'));
-  this.activePageIndex_--;
-  if (this.activePageIndex_ < 0) {
-    this.loadPage(this.page_ - 1);
-    this.activePageIndex_ = this.items_.length - 1;
+  // find the new active index.
+  if (this.getModel().getCount() == 0) {
+    this.loadPage(0);
+  } else {
+    index = this.getModel().getCurrentIndex();
+    this.loadPage(Math.floor(index / this.itemsPerPage_) + 1);
   }
-  this.getModel().setCurrent(item);
-  goog.dom.classlist.add(this.items_[this.activePageIndex_].getElement(),
+  // Add highlight for current item.
+  goog.dom.classlist.add(this.items_[index % this.itemsPerPage_].getElement(),
     goog.getCssName('active'));
-};
-
-/**
- * Loads the next page if one is available.
- */
-pstj.widget.Pager.prototype.selectNextPage = function() {
-  if (this.loadPage(this.page_ + 1)) {
-
-    var ci = this.getModel().getCurrentIndex();
-    if (ci + this.items_.length > (this.getModel().getCount() - 1)) {
-      goog.dom.classlist.remove(
-        this.items_[this.activePageIndex_].getElement(),
-        goog.getCssName('active'));
-
-      this.getModel().setCurrent(goog.asserts.assertInstanceof(
-        this.getModel().getByIndex(
-        this.getModel().getCount() - 1), pstj.ds.ListItem,
-        'This code should be removed by the compiler.'));
-
-      this.activePageIndex_ = this.activePageIndex_ - (
-        (ci + this.items_.length) - (this.getModel().getCount() - 1));
-
-      goog.dom.classlist.add(this.items_[this.activePageIndex_].getElement(),
-        goog.getCssName('active'));
-    } else {
-      this.getModel().setCurrent(goog.asserts.assertInstanceof(
-        this.getModel().getByIndex(ci + this.items_.length),
-        pstj.ds.ListItem, 'This code should have been removed'));
-    }
-  }
-};
-
-/**
- * Loads the previous page if one is avilable.
- */
-pstj.widget.Pager.prototype.selectPreviousPage = function() {
-  if (this.loadPage(this.page_ - 1)) {
-    this.getModel().setCurrent(goog.asserts.assertInstanceof(
-      this.getModel().getByIndex(
-      this.getModel().getCurrentIndex() - this.items_.length),
-      pstj.ds.ListItem, 'Again - remove this code!'));
-  }
 };
 
 /**
@@ -243,11 +188,11 @@ pstj.widget.Pager.prototype.selectPreviousPage = function() {
  * @private
  */
 pstj.widget.Pager.prototype.updatePagesNumber_ = function() {
+  var pagesCount = 0;
   if (goog.isDefAndNotNull(this.getModel())) {
-    this.pagesCount_ = Math.ceil(this.getModel().getCount() /
-      this.items_.length);
+    pagesCount = Math.ceil(this.getModel().getCount() / this.itemsPerPage_);
   }
-  this.pagesEl_.innerHTML = this.pagesCount_.toString();
+  this.pagesEl_.innerHTML = pagesCount.toString();
 };
 
 /**
@@ -262,27 +207,13 @@ pstj.widget.Pager.prototype.setTemplateData = function(template, index) {
 };
 
 /**
- * Checks if the index is a valid page index in the context of the data
- *   loaded in the component.
- * @param {number} number The page index to use.
- * @return {boolean} True if the index is valid, false otherwise.
- * @protected
- */
-pstj.widget.Pager.prototype.isValidPageIndex = function(number) {
-  if (number < 1 || number > this.pagesCount_) {
-    return false;
-  }
-  return true;
-};
-
-/**
  * Loads a page into the pager's view.
  * @param {number} pageIndex The page to load.
  * @protected
  * @return {boolean} True if the page was loded, fale otherwise.
  */
 pstj.widget.Pager.prototype.loadPage = function(pageIndex) {
-  if (this.isValidPageIndex(pageIndex)) {
+  if (pageIndex != this.page_) {
     this.page_ = pageIndex;
     goog.array.forEach(this.items_, this.setTemplateData, this);
     this.pageEl_.innerHTML = this.page_.toString();
@@ -293,9 +224,7 @@ pstj.widget.Pager.prototype.loadPage = function(pageIndex) {
 
 /** @inheritDoc */
 pstj.widget.Pager.prototype.disposeInternal = function() {
-  goog.array.forEach(this.items_, function(template) {
-    goog.dispose(template);
-  });
+  goog.base(this, 'disposeInternal');
   this.pageEl_ = null;
   this.pagesEl_ = null;
   this.items_ = null;
