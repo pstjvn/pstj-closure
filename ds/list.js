@@ -316,10 +316,11 @@ pstj.ds.List.prototype.getFilteredIndexes = function() {
 
 /**
  * Sets the current item in the list.
- * @param {!pstj.ds.ListItem} item The node to become the active one, its
+ * @param {pstj.ds.ListItem} item The node to become the active one, its
  *   index will be recorded in the structure as current index.
  */
 pstj.ds.List.prototype.setCurrent = function(item) {
+  if (goog.isNull(item)) return;
   var index = this.getIndexById(item.getId());
   if (goog.isNumber(index)) {
     if (!goog.isNull(this.getCurrent())) {
