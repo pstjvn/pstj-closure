@@ -7,6 +7,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.math.Size');
 goog.require('goog.net.ImageLoader');
+goog.require('goog.string');
 goog.require('pstj.ds.List');
 goog.require('pstj.ds.ListItem');
 
@@ -108,6 +109,7 @@ pstj.ds.ImageList.prototype.addImage = function(e) {
  * @param {string} src The source of the image.
  */
 pstj.ds.ImageList.prototype.loadImage = function(src) {
+  if (goog.string.trim(src) == '') return;
   this.loader_.addImage(this.counter_.toString(), src);
   this.counter_++;
   this.delayed_.start();
