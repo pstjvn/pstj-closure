@@ -312,26 +312,34 @@ pstj.resource.Resource.prototype.sendRequest = function(url,
  *   for this particular request.
  * @param {boolean} cache If true - cache the result and use it subsequently.
  * @param {string} url The URL served, used for the cache key.
- * @param {goog.events.Event} ev The XHR complete event.
+ * @param {goog.events.Event|Object|Array} ev The XHR complete event or the
+ *  result from JSONP.
  * @protected
  */
 pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
   url, ev) {
-
-  var xhr = /** @type {goog.net.XhrIo} */ (ev.target);
   var response = null;
   var error = null;
-  try {
-    response = pstj.resource.getJsonProcessor().parse(xhr.getResponseText());
-    if (this.useCache_ && cache) {
-      this.cache_.set(url, response);
+  if (goog.isNull(ev)) {
+    error = new Error('Error receiving from JSONP');
+  } else if (ev instanceof goog.events.Event) {
+    var xhr = /** @type {goog.net.XhrIo} */ (ev.target);
+    try {
+      response = pstj.resource.getJsonProcessor().parse(xhr.getResponseText());
+      if (this.useCache_ && cache) {
+        this.cache_.set(url, response);
+      }
+    } catch (e) {
+      error = e;
     }
-  } catch (e) {
-    error = e;
+  } else {
+    response = ev;
   }
+
   if (!goog.isDefAndNotNull(response) || goog.isString(response)) {
     error = new Error('The result of JSON evaluation was not useful');
   }
+
   if (goog.isFunction(callback)) {
     callback(error, /** @type {Array|Object} */ (response));
   }
