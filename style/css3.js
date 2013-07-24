@@ -240,5 +240,6 @@ pstj.lab.style.css.setTranslation = function(el, x, y, unit, appendage) {
 
 /**
  * Clean up as we do not need the div anymore and it is retained...
+ * @private
  */
 pstj.lab.style.css.testDiv_ = null;

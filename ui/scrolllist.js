@@ -7,9 +7,9 @@
  */
 goog.provide('pstj.ui.ScrollList');
 
+goog.require('goog.style');
 goog.require('pstj.ui.CustomScrollArea');
 goog.require('pstj.ui.IdGenerator');
-goog.require('goog.style');
 
 
 /**

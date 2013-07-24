@@ -43,13 +43,19 @@ pstj.ui.TouchControl = function(content, opt_renderer) {
 };
 goog.inherits(pstj.ui.TouchControl, goog.ui.Control);
 
+/**
+ * @enum {number}
+ */
 pstj.ui.TouchControl.TouchState = {
   NONE: 0x00,
   PRESSED: 0x01,
   MOVED: 0x02,
-  LONG_PRESSED: 0x04,
+  LONG_PRESSED: 0x04
 };
 
+/**
+ * @enum {number}
+ */
 pstj.ui.TouchControl.Ignore = {
   NONE: 0x00,
   TOUCH: 0x01,

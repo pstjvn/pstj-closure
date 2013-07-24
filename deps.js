@@ -32,7 +32,7 @@ goog.addDependency('../../../apps/pstj/ui/agents/agent.js', ['pstj.ui.Agent'], [
 goog.addDependency('../../../apps/pstj/ui/agents/clock-agent.js', ['pstj.ui.ClockAgent'], ['pstj.ds.IClock', 'pstj.ds.TimeProvider', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/agents/ng-agent.js', ['pstj.ui.ngAgent'], ['goog.array', 'goog.asserts', 'goog.async.nextTick', 'goog.dom', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/agents/sizemonitor-agent.js', ['pstj.ui.SizeMonitorAgent'], ['goog.array', 'goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.object', 'goog.style', 'pstj.ui.Agent']);
-goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.async.nextTick', 'goog.events', 'goog.events.EventType', 'pstj.ui.Agent']);
+goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.async.AnimationDelay', 'goog.async.nextTick', 'goog.events', 'goog.events.EventType', 'goog.events.Key', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/async.js', ['pstj.ui.Async'], ['goog.functions', 'pstj.graphics.Smooth', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/button/button.js', ['pstj.ui.Button'], ['goog.dom.dataset', 'goog.events.EventType', 'goog.ui.CustomButton', 'goog.ui.registry', 'pstj.ui.CustomButtonRenderer']);
 goog.addDependency('../../../apps/pstj/ui/button/buttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.a11y.aria.Role', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);

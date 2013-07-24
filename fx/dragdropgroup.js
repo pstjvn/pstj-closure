@@ -1,8 +1,8 @@
 goog.provide('pstj.fx.DragDropGroup');
 
+goog.require('goog.dom.classlist');
 goog.require('goog.fx.DragDropGroup');
 goog.require('pstj.fx.Dragger');
-goog.require('goog.dom.classlist');
 
 /**
  * Overloads the drag drop group of closure library to allow us to use more
@@ -11,7 +11,7 @@ goog.require('goog.dom.classlist');
  * @extends {goog.fx.DragDropGroup}
  */
 pstj.fx.DragDropGroup = function() {
-	goog.base(this);
+  goog.base(this);
 };
 goog.inherits(pstj.fx.DragDropGroup, goog.fx.DragDropGroup);
 
@@ -21,17 +21,16 @@ goog.inherits(pstj.fx.DragDropGroup, goog.fx.DragDropGroup);
  * @type {string}
  * @protected
  */
-pstj.fx.DragDropGroup.prototype.templateClassName = goog.getCssName(
-  'drag-template');
+pstj.fx.DragDropGroup.prototype.templateClassName = goog.getCssName('drag-template');
 
 /** @inheritDoc */
 pstj.fx.DragDropGroup.prototype.createDraggerFor = function(sourceEl, el,
-	event) {
-	// position the new element absolutely
-	el.style.position = 'absolute';
-	el.style.left = event.clientX + 'px';
-	el.style.top = event.clientY + 'px';
-	return new pstj.fx.Dragger(el);
+event) {
+  // position the new element absolutely
+  el.style.position = 'absolute';
+  el.style.left = event.clientX + 'px';
+  el.style.top = event.clientY + 'px';
+  return new pstj.fx.Dragger(el);
 };
 
 /**
@@ -45,13 +44,13 @@ pstj.fx.DragDropGroup.prototype.createDraggerFor = function(sourceEl, el,
  * @override
  */
 pstj.fx.DragDropGroup.prototype.createDragElement = function(srcElement) {
-	var el = srcElement;
-	while (el != document.body) {
-		if (goog.dom.classlist.contains(el, this.templateClassName)) {
-			return goog.base(this, 'createDragElement', el);
-		} else {
-			el = el.parentElement;
-		}
-	}
-	return goog.base(this, 'createDragElement', srcElement);
+  var el = srcElement;
+  while (el != document.body) {
+    if (goog.dom.classlist.contains(el, this.templateClassName)) {
+      return goog.base(this, 'createDragElement', el);
+    } else {
+      el = el.parentElement;
+    }
+  }
+  return goog.base(this, 'createDragElement', srcElement);
 };

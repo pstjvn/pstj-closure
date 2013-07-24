@@ -32,6 +32,7 @@ goog.scope(function() {
   /**
    * Parses value into time value.
    * @param {number|string|boolean} data The time to use.
+   * @private
    * @return {number}
    */
   _.makeDateTime_ = function(data) {
@@ -175,7 +176,7 @@ goog.scope(function() {
    * @return {string}
    */
   _.money = function(data) {
-    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
   /**

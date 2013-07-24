@@ -14,6 +14,10 @@ pstj.widget.ClockRenderer = function() {
 goog.inherits(pstj.widget.ClockRenderer, pstj.ui.ControlRenderer);
 goog.addSingletonGetter(pstj.widget.ClockRenderer);
 
+/**
+ * @const
+ * @type {string}
+ */
 pstj.widget.ClockRenderer.CSS_CLASS = goog.getCssName('pstj-widget-clock');
 
 goog.scope(function() {

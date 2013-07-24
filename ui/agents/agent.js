@@ -39,7 +39,7 @@ pstj.ui.Agent = function(type) {
   this.type_ = type || null;
 };
 
-goog.scope( function() {
+goog.scope(function() {
 
   var _ = pstj.ui.Agent.prototype;
 
@@ -85,7 +85,7 @@ goog.scope( function() {
    * @param {*} val The value to check for type.
    */
   _.checkValue = function(val) {
-    if (goog.isDefAndNotNull(this.type_)  &&
+    if (goog.isDefAndNotNull(this.type_) &&
       goog.asserts.assertFunction(this.type_)) {
       goog.asserts.assertInstanceof(val, this.type_);
     }
@@ -120,5 +120,4 @@ goog.scope( function() {
       this.components_[goog.array.indexOf(this.components_, component)] = null;
     }
   };
-
 });

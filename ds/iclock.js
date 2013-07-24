@@ -7,7 +7,7 @@ goog.provide('pstj.ds.IClock');
  *   time interval for the new time. An instance implementing this interface
  *   is guaranteed to receive the same time as all other instances that
  *   implement it and subscribe to the time provider as well. {@see
- *   pstj.ds.TimeProvider}
+ *   pstj.ds.TimeProvider}.
  * @author regardingscot@gmail.com (Peter StJ)
  */
 

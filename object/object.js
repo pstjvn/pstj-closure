@@ -73,15 +73,17 @@ pstj.object.deepEquals = function(actual, expected, comparer) {
       // Compare Date objects, they are the same if the date time matches.
       return actual.getTime() === expected.getTime();
   } else if (goog.isArray(actual) && goog.isArray(expected)) {
-    // If both objects are arrays compare them using the closure library comparer or the one provided with the
-    // call if any.
+    // If both objects are arrays compare them using the closure library
+    // comparer or the one provided with the call if any.
     return goog.array.equals(/** @type {Array} */(actual),
       /** @type {Array} */ (expected), comparer);
   } else if (typeof actual != 'object' && typeof expected != 'object') {
-    // If the parameters are both not instances of the Object object, make a value comparison.
+    // If the parameters are both not instances of the Object object,
+    // make a value comparison.
     return actual == expected;
   } else {
-    // They are both objects, if comparer is provided run them with it, else use our deep object comparison helper.
+    // They are both objects, if comparer is provided run them with it, else use
+    // our deep object comparison helper.
     if (comparer) {
       return comparer(actual, expected);
     } else {

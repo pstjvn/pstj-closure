@@ -6,21 +6,13 @@ goog.require('goog.userAgent.product');
 
 /**
  * @fileoverview Provides utilities for CSS declarative interface handling. Main
- * usage could be as follow.
-  <code>
-    css.getTranslation(Xoffset, Yoffset)
-  </code>
-
-  should return:
-
-  <pre>
-    [-*-]transform[3d]: translate*:(Xpx,Ypx[,Zpx]);
-  </pre>
-
+ * usage could be as follow.<code>css.getTranslation(Xoffset, Yoffset)</code> should return:
+ *  <pre>
+ *    [-*-]transform[3d]: translate*:(Xpx,Ypx[,Zpx]);
+ * </pre>
  * NOTE: capabilities are declaratively determined using the caniuse.com
  * lists. No actual checks are performed to be use if a property actually
  * works.
- *
  * @author  regardingscot@gmail.com (Peter StJ)
  */
 

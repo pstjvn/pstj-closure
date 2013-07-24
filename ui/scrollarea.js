@@ -243,7 +243,7 @@ pstj.ui.CustomScrollArea.prototype.createDom = function() {
         'style': 'outline:0;position:absolute;right:0;'
       }, goog.dom.createDom('div', goog.getCssName('custom-scroll-bar-line')),
       goog.dom.createDom('div', {
-        'class':goog.getCssName('goog-slider-thumb') + ' ' + goog.getCssName('custom-scroll-bar-thumb'),
+        'class': goog.getCssName('goog-slider-thumb') + ' ' + goog.getCssName('custom-scroll-bar-thumb'),
         'style': 'left:0;position:absolute;overflow:hidden;'
       })
     )

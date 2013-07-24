@@ -1,8 +1,8 @@
 goog.provide('pstj.fx.Dragger');
 
+goog.require('goog.async.AnimationDelay');
 goog.require('goog.fx.Dragger');
 goog.require('pstj.style.css');
-goog.require('goog.async.AnimationDelay');
 
 /**
  * A class that allows mouse or touch-based dragging (moving) of an element.
@@ -15,8 +15,8 @@ goog.require('goog.async.AnimationDelay');
  * @constructor
  */
 pstj.fx.Dragger = function(target, opt_handle, opt_limits) {
-	goog.base(this, target, opt_handle, opt_limits);
-	this.raf_ = new goog.async.AnimationDelay(goog.bind(this.updateUI, this));
+  goog.base(this, target, opt_handle, opt_limits);
+  this.raf_ = new goog.async.AnimationDelay(goog.bind(this.updateUI, this));
 };
 goog.inherits(pstj.fx.Dragger, goog.fx.Dragger);
 
@@ -58,19 +58,27 @@ pstj.fx.Dragger.prototype.paintY_;
  */
 pstj.fx.Dragger.prototype.isDirty_ = false;
 
+/**
+ * Notifies the state machine of the dragger that the paint is required at a
+ *  later stage.
+ */
 pstj.fx.Dragger.prototype.repaint = function() {
-	this.isDirty_ = true;
-	if (!this.raf_.isActive()) this.raf_.start();
+  this.isDirty_ = true;
+  if (!this.raf_.isActive()) this.raf_.start();
 };
 
+/**
+ * The repaint method of the dragger. It is called by the RAF.
+ * @protected
+ */
 pstj.fx.Dragger.prototype.updateUI = function() {
-	if (!this.isDirty_) {
+  if (!this.isDirty_) {
     this.onUpdateCycleEnd();
     return;
   }
-	this.isDirty_ = false;
-	this.raf_.start();
-	pstj.style.css.setTranslation(this.target, this.paintX_, this.paintY_);
+  this.isDirty_ = false;
+  this.raf_.start();
+  pstj.style.css.setTranslation(this.target, this.paintX_, this.paintY_);
 };
 
 /**
@@ -83,22 +91,28 @@ pstj.fx.Dragger.prototype.onUpdateCycleEnd = goog.nullFunction;
 
 /** @inheritDoc */
 pstj.fx.Dragger.prototype.defaultAction = function(x, y) {
-	if (pstj.style.css.canUseTransform) {
-		this.calculatePaintPositions(x, y);
-		this.repaint();
-	} else {
-		goog.base(this, 'defaultAction', x, y);
-	}
+  if (pstj.style.css.canUseTransform) {
+    this.calculatePaintPositions(x, y);
+    this.repaint();
+  } else {
+    goog.base(this, 'defaultAction', x, y);
+  }
 };
 
+/**
+ * Calculates the next paint positions.
+ * @param {number} x The X of the coordinate.
+ * @param {number} y The Y of the coordinate.
+ * @protected
+ */
 pstj.fx.Dragger.prototype.calculatePaintPositions = function(x, y) {
-	this.paintX_ = ((this.startX - x) * -1) + this.dragPadding;
-	this.paintY_ = ((this.startY - y) * -1) + this.dragPadding;
+  this.paintX_ = ((this.startX - x) * -1) + this.dragPadding;
+  this.paintY_ = ((this.startY - y) * -1) + this.dragPadding;
 };
 
 /** @inheritDoc */
 pstj.fx.Dragger.prototype.disposeInternal = function() {
-	this.raf_.dispose();
+  this.raf_.dispose();
   goog.base(this, 'disposeInternal');
 };
 

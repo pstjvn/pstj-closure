@@ -16,17 +16,15 @@ pstj.ui.ListItemControl = function(opt_renderer) {
 goog.inherits(pstj.ui.ListItemControl, goog.ui.Control);
 
 goog.scope(function() {
-
   var _ = pstj.ui.ListItemControl.prototype;
-
+  /** @inheritDoc */
   _.enterDocument = function() {
     goog.base(this, 'enterDocument');
     this.getHandler().listen(this, goog.ui.Component.EventType.ACTIVATE,
       this.onActivate);
   };
-
+  /** @inheritDoc */
   _.onActivate = function(e) {
     this.setSelected(true);
   };
-
 });

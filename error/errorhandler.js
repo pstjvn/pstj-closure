@@ -1,9 +1,9 @@
-goog.provide('pstj.error.throw');
 goog.provide('pstj.error.ErrorHandler');
 goog.provide('pstj.error.ErrorHandler.Errors ');
+goog.provide('pstj.error.throw');
 
-goog.require('pstj.control.Base');
 goog.require('goog.pubsub.PubSub');
+goog.require('pstj.control.Base');
 
 /**
  * @fileoverview Provides unified mechanizm for hanling errors in the code
@@ -37,7 +37,7 @@ goog.require('goog.pubsub.PubSub');
  */
 pstj.error.ErrorHandler = function() {
   goog.base(this);
-  pstj.error.Bus.subscibe(pstj.error.Bus.Topic.ERROR, goog.bind
+  pstj.error.Bus.subscibe(pstj.error.Bus.Topic.ERROR, goog.bind(
     this.handleError, this));
 };
 goog.inherits(pstj.error.ErrorHandler, pstj.control.Base);
@@ -78,7 +78,7 @@ goog.scope(function() {
    *   to be overriden by application logic class.
    * @param {pstj.error.ErrorHandler.Errors} error_index The type of the
    *   error.
-   * @param {number=} status_id The status of the error (for json statuses)
+   * @param {number=} status_id The status of the error (for json statuses).
    * @param {string=} message The mesage of the error if any.
    * @protected
    */
@@ -88,7 +88,7 @@ goog.scope(function() {
 /**
  * Specialized method to notify the error handler instance for an error.
  * @param {pstj.error.ErrorHandler.Errors} error_index The type of the error.
- * @param {number=} status_id The status of the error (for json statuses)
+ * @param {number=} status_id The status of the error (for json statuses).
  * @param {string=} message The mesage of the error if any.
  */
 pstj.error.throw = function(error_index, status_id, message) {

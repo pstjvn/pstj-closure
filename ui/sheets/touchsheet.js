@@ -151,6 +151,7 @@ pstj.ui.TouchSheet = function(opt_template) {
    *   order to be able to unsibscibe
    * @type {Array.<function(this: pstj.ui.TouchSheet, goog.events.Event):
    *   undefined>}
+   * @private
    */
   this.bounds_ = [];
 
