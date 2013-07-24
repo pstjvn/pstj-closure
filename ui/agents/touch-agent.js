@@ -29,9 +29,10 @@ goog.scope(function() {
   /** @inheritDoc */
   _.updateCache = function(control) {
     // little hack
-    this.getCache().set(control.getId(), goog.events.listen(control.getElement(),
+    this.getCache().set(control.getId(),
+      goog.events.listen(control.getElement(),
       [goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHEND],
-      goog.bind(this.handleTouchEvents, this, control));
+      goog.bind(this.handleTouchEvents, this, control)));
   };
 
   /** @inheritDoc */
