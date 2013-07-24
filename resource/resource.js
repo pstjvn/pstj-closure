@@ -377,7 +377,7 @@ pstj.resource.Local.prototype.get = function(data, callback, use_cache) {
     this.run_registry_[data[pstj.resource.run_]];
   var run = data[pstj.resource.run_];
   setTimeout(goog.bind(function() {
-    cb(undefined, this.stubs[run]);
+    cb(null, this.stubs[run]);
   }, this), 20);
 };
 
