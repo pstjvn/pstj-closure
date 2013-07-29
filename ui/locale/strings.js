@@ -2,20 +2,25 @@ goog.provide('pstj.ui.Strings');
 
 /**
  * Generates the static strings for an application.
- * @param {function(Object): string} template The template to generate the strings from.
+ * @param {string} str
  * @constructor
  */
-pstj.ui.Strings = function(template) {
-  this.strings_ = template({}).split('|');
+pstj.ui.Strings = function(str) {
+  /**
+   * @type {!Array.<string>}
+   * @private
+   */
+  this.strings_ = str.split('|');
 };
 
 /**
  * Getter for the index string. If such index does not exists an empty string is returned.
  * @param {number} stringIndex The index of the string, usually coming from an enum in your app.
+ * @returm {string}
  */
 pstj.ui.Strings.prototype.get = function(stringIndex)  {
   var result = this.strings_[stringIndex];
-  if (!goog.isDef(result)) {
+  if (!goog.isString(result)) {
     result = '';
   }
   return result;
