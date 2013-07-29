@@ -16,7 +16,7 @@ pstj.ui.Strings = function(str) {
 /**
  * Getter for the index string. If such index does not exists an empty string is returned.
  * @param {number} stringIndex The index of the string, usually coming from an enum in your app.
- * @returm {string}
+ * @return {string}
  */
 pstj.ui.Strings.prototype.get = function(stringIndex)  {
   var result = this.strings_[stringIndex];
