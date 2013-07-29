@@ -47,6 +47,7 @@ goog.addDependency('../../../apps/pstj/ui/coupledinput.js', ['pstj.ui.CoupledInp
 goog.addDependency('../../../apps/pstj/ui/elementids.js', ['pstj.ui.IdGenerator'], []);
 goog.addDependency('../../../apps/pstj/ui/list.js', ['pstj.ui.List', 'pstj.ui.ListTemplate'], ['pstj.ds.List', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.ListItem', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/listitem.js', ['pstj.ui.ListItem', 'pstj.ui.ListItemTemplate'], ['goog.asserts', 'goog.dom.classlist', 'pstj.configure', 'pstj.ds.ListItem', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Touchable']);
+goog.addDependency('../../../apps/pstj/ui/locale/strings.js', ['pstj.ui.Strings'], []);
 goog.addDependency('../../../apps/pstj/ui/popoverlayer.js', ['pstj.ui.PopOverLayer', 'pstj.ui.PopOverLayerTemplate'], ['pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/scrollarea.js', ['pstj.ui.CustomScrollArea'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventType', 'goog.style', 'goog.ui.Component.EventType', 'goog.ui.Slider', 'pstj.style.css', 'pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/scrolllist.js', ['pstj.ui.ScrollList'], ['goog.style', 'pstj.ui.CustomScrollArea', 'pstj.ui.IdGenerator']);
