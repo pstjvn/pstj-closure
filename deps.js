@@ -3,13 +3,15 @@
 goog.addDependency('../../../apps/pstj/color/color.js', ['pstj.color'], ['goog.color']);
 goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test'], ['goog.testing.PropertyReplacer', 'goog.testing.PseudoRandom', 'goog.testing.jsunit', 'pstj.color']);
 goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], []);
+goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configure_test'], ['pstj.configure']);
 goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], ['goog.Disposable', 'goog.asserts', 'goog.events.EventHandler']);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string']);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object']);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], []);
+goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], []);
 goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj.ds.ImageList', 'pstj.ds.ImageList.EventType'], ['goog.async.Delay', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.net.ImageLoader', 'goog.string', 'pstj.ds.List', 'pstj.ds.ListItem']);
 goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.List.Event', 'pstj.ds.List.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.ListItem']);
-goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.object']);
+goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.ds.IListItem', 'pstj.object']);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable']);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure']);
 goog.addDependency('../../../apps/pstj/error/errorhandler.js', ['pstj.error.ErrorHandler', 'pstj.error.ErrorHandler.Errors ', 'pstj.error.throw'], ['goog.pubsub.PubSub', 'pstj.control.Base']);

@@ -15,6 +15,7 @@ goog.require('goog.asserts');
 goog.require('goog.events.EventTarget');
 goog.require('goog.object');
 goog.require('goog.string');
+goog.require('pstj.ds.IListItem');
 goog.require('pstj.object');
 
 
@@ -36,6 +37,7 @@ goog.require('pstj.object');
  *   structure for its presentation.
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @implements {pstj.ds.IListItem}
  * @param {Object} data The data to use as source for the item.
  * @param {string=} id_property The name of the ID property to look up.
 */
@@ -48,19 +50,6 @@ pstj.ds.ListItem = function(data, id_property) {
   this.convert();
 };
 goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
-
-
-/**
- * Defines a custom type that can be the record ID.
- * @typedef {(string|number)}
- */
-pstj.ds.RecordID;
-
-/**
- * Defines a custom type that can be a value retrieved from record.
- * @typedef {(boolean|pstj.ds.RecordID)}
- */
-pstj.ds.RecordValue;
 
 
 /**
@@ -113,7 +102,7 @@ pstj.ds.ListItem.prototype.getRawData = function() {
  * Method to update the data on the record type with new literal object. It
  *   will check if the ID of the record type provided for the update of this
  *   record type is the same.
- * @param  {pstj.ds.ListItem} node The record type to use for the update.
+ * @param  {pstj.ds.IListItem} node The record type to use for the update.
  * @return {boolean} True if an update has been performed, otherwise false.
  */
 pstj.ds.ListItem.prototype.update = function(node) {
@@ -232,7 +221,7 @@ pstj.ds.ListItem.prototype.disposeInternal = function() {
  *   property. If at least one property has changed the change event will be
  *   fired.
  * @private
- * @param {pstj.ds.ListItem} data The raw data to use for the overriding.
+ * @param {pstj.ds.IListItem} data The raw data to use for the overriding.
  * @return {boolean} True if the item has been updated, false otherwise.
  */
 pstj.ds.ListItem.prototype.set_ = function(data) {
