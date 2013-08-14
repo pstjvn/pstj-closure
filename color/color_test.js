@@ -9,6 +9,9 @@ var stubs;
 var pseudoRandom = new goog.testing.PseudoRandom(100);
 pseudoRandom.install();
 
+/**
+ * Make sure we are not actually testing the goog provided functions, stub them!
+ */
 var setUp = function() {
   stubs = new goog.testing.PropertyReplacer();
   stubs.replace(goog.color, 'hexToRgb', function() {
@@ -16,7 +19,15 @@ var setUp = function() {
   });
 };
 
+/**
+ * Dummy variables
+ * @type {string} Our dummy color
+ */
 var color = '#000000';
+/**
+ * Our comparison value
+ * @type {string}
+ */
 var part = 'rgba(0,0,0,';
 
 function testGet() {
