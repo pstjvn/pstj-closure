@@ -34,18 +34,18 @@ pstj.ds.MapRotator = function(list) {
    * @private
    */
   this.listIndex_ = 0;
+  /**
+   * Contains the map to use and rotate over.
+   * @type {Array.<number|string>}
+   * @private
+   */
+  this.list_ = null;
+
   if (goog.isArray(list)) {
-    this.list_ = list;
+    this.loadMap(list);
   }
 };
 goog.inherits(pstj.ds.MapRotator, goog.Disposable);
-
-/**
- * Contains the map to use and rotate over.
- * @type {Array.<number|string>}
- * @private
- */
-pstj.ds.MapRotator.prototype.list_ = null;
 
 /**
  * Loads a map to be used by the instance.
