@@ -27,4 +27,3 @@ pstj.color.hexToRgba = function(hex_color, alpha) {
   rgb.push(alpha);
   return 'rgba(' + rgb.join(',') + ')';
 };
-
