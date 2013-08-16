@@ -1,5 +1,6 @@
 goog.provide('pstj.graphics.Canvas');
 
+goog.require('goog.dom');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
 goog.require('goog.style');
@@ -13,56 +14,48 @@ goog.require('goog.style');
 
 /**
  * Provides abstracted access to canvas element. Expecting an element and
- *   renders the canvas with the size of the element. It will emit the resize
- *   event. You should call {#fit} method if the parent element size ever
- *   changes.
+ * renders the canvas with the size of the element. It will emit the resize
+ * event. You should call {#fit} method if the parent element size ever
+ * changes.
  * @constructor
  * @extends {goog.events.EventTarget}
  * @param {Element} parent The parent element to seed the canvas is.
  */
 pstj.graphics.Canvas = function(parent) {
+  /**
+   * @type {goog.math.Size}
+   * @private
+   */
+  this.size_ = null;
+  /**
+   * The parent element of the canvas, used only as reference to recalculate the
+   * size of the canvas.
+   * @type {Element}
+   * @private
+   */
   this.element_ = parent;
-
+  /**
+   * The canvas element reference.
+   * @type {HTMLCanvasElement}
+   * @private
+   */
   this.canvas_ = /** @type {!HTMLCanvasElement} */ (document.createElement(
     'canvas'));
-
+  if (goog.isNull(this.canvas_)) {
+    throw new Error('Cannot create canvas element');
+  }
+  /**
+   * The context for drawing.
+   * @type {CanvasRenderingContext2D}
+   * @private
+   */
   this.context_ = /** @type {!CanvasRenderingContext2D} */ (
     this.canvas_.getContext('2d'));
 
   this.element_.appendChild(this.canvas_);
-  this.size_ = null;
   this.fit();
-
 };
 goog.inherits(pstj.graphics.Canvas, goog.events.EventTarget);
-
-/**
- * The parent element of the canvas, used only as reference to recalculate the
- *   size of the canvas.
- * @type {Element}
- * @private
- */
-pstj.graphics.Canvas.prototype.element_;
-
-/**
- * The canvas element reference.
- * @type {HTMLCanvasElement}
- * @private
- */
-pstj.graphics.Canvas.prototype.canvas_;
-
-/**
- * The context for drawing.
- * @type {CanvasRenderingContext2D}
- * @private
- */
-pstj.graphics.Canvas.prototype.context_;
-
-/**
- * @type {goog.math.Size}
- * @private
- */
-pstj.graphics.Canvas.prototype.size_;
 
 /**
  * Getter for the drawing context.
@@ -83,8 +76,8 @@ pstj.graphics.Canvas.prototype.getCanvas = function() {
 
 /**
  * Getter for the last stored size of the element / canvas. It will return
- *   cached values (ones set the list time the fit method was called or the
- *   values determined at instantiation time).
+ * cached values (ones set the list time the fit method was called or the
+ * values determined at instantiation time).
  * @return {goog.math.Size} The size (width / height).
  */
 pstj.graphics.Canvas.prototype.getSize = function() {
@@ -93,7 +86,7 @@ pstj.graphics.Canvas.prototype.getSize = function() {
 
 /**
  * Forces the canvas to fit inside the container. This method should be called
- *   when the parent element has been resized.
+ * when the parent element has been resized.
  */
 pstj.graphics.Canvas.prototype.fit = function() {
   this.size_ = goog.style.getSize(this.element_);
@@ -104,9 +97,7 @@ pstj.graphics.Canvas.prototype.fit = function() {
 
 /** @inheritDoc */
 pstj.graphics.Canvas.prototype.disposeInternal = function() {
-  if (!goog.isNull(this.canvas_.parentNode)) {
-    this.canvas_.parentNode.removeChild(this.canvas_);
-  }
+  goog.dom.removeNode(this.canvas_);
   this.element_ = null;
   this.context_ = null;
   this.canvas_ = null;
