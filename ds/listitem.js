@@ -235,7 +235,7 @@ pstj.ds.ListItem.prototype.getIdProperty = function() {
  * Finds the raw data recod matching the looked up nested name.
  * @private
  * @param {Array.<string>} props The names to search.
- * @return {?Object|?Array}
+ * @return {Object|Array|null}
  */
 pstj.ds.ListItem.prototype.getNestedProperty_ = function(props) {
   var result = this.getRawData();
