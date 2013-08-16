@@ -19,17 +19,15 @@ goog.require('goog.Disposable');
  */
 pstj.graphics.Draw = function(context) {
   goog.base(this);
+  /**
+   * Reference to the drawing context in which to execute the drawing
+   *   operations.
+   * @type {CanvasRenderingContext2D}
+   * @private
+   */
   this.context_ = context;
 };
 goog.inherits(pstj.graphics.Draw, goog.Disposable);
-
-/**
- * Reference to the drawing context in which to execute the drawing
- *   operations.
- * @type {CanvasRenderingContext2D}
- * @private
- */
-pstj.graphics.Draw.prototype.context_;
 
 /**
  * @type {string}
@@ -104,8 +102,7 @@ pstj.graphics.Draw.prototype.line = function(x1, y1, x2, y2, color) {
 };
 
 /**
- * Draws a rectangle on the canvas, optionally using a border line around
- *   it.
+ * Draws a rectangle on the canvas, optionally using a border line around it.
  * @param {!number} x The X coordinate for start of shape (left).
  * @param {!number} y The Y coordinate for start of shape (top).
  * @param {!number} w The width of the shape.
