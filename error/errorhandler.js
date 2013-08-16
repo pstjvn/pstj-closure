@@ -10,7 +10,7 @@ goog.require('pstj.control.Base');
  *   that happen after successful initialization (i.e. errors related to the
  *   network stack and user interaction). The model is designed in such a way
  *   as to allow the developer to direct the error to the throw method and
- *   exoect the developer to initialize an error handling class and over ride
+ *   expect the developer to initialize an error handling class and over ride
  *   its hanleError method in order to implement hadling for all known errors.
  *
  * Example:
@@ -69,21 +69,17 @@ pstj.error.ErrorHandler.bus = new goog.pubsub.PubSub();
  */
 pstj.error.ErrorHandler.Topic = 'ERROR';
 
-goog.scope(function() {
-
-  var _ = pstj.error.ErrorHandler.prototype;
-
-  /**
-   * Handles for the errors coming on the message bus. This method is designed
-   *   to be overriden by application logic class.
-   * @param {pstj.error.ErrorHandler.Errors} error_index The type of the
-   *   error.
-   * @param {number=} status_id The status of the error (for json statuses).
-   * @param {string=} message The mesage of the error if any.
-   * @protected
-   */
-  _.handleError = function(error_index, status_id, message) {};
-});
+/**
+ * Handles for the errors coming on the message bus. This method is designed
+ *   to be overriden by application logic class.
+ * @param {pstj.error.ErrorHandler.Errors} error_index The type of the
+ *   error.
+ * @param {number=} status_id The status of the error (for json statuses).
+ * @param {string=} message The mesage of the error if any.
+ * @protected
+ */
+pstj.error.ErrorHandler.prototype.handleError = function(error_index,
+  status_id, message) {};
 
 /**
  * Specialized method to notify the error handler instance for an error.
