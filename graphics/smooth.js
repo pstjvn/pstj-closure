@@ -24,33 +24,30 @@ goog.require('goog.async.AnimationDelay');
  */
 pstj.graphics.Smooth = function(callback, handler) {
   goog.base(this);
-  this.callback_ = goog.bind(callback, handler);
+  /**
+   * Flag to denote if the state of the composite has been altered since the
+   * last drawing operation.
+   * @type {boolean}
+   * @private
+   */
+  this.dirty_ = false;
+  /**
+   * The bound handler of the update trigger. This function will be called on
+   * each frame until it returns false.
+   * @type {function(number): boolean|null}
+   * @private
+   */
+  this.callback_ = goog.isDefAndNotNull(handler) ?
+    goog.bind(callback, handler) : callback;
+  /**
+   * The delayed handler of updates.
+   * @type { goog.async.AnimationDelay}
+   * @private
+   */
   this.raf_ = new goog.async.AnimationDelay(this.onRaf_, undefined, this);
+  this.registerDisposable(this.raf_);
 };
 goog.inherits(pstj.graphics.Smooth, goog.Disposable);
-
-/**
- * Flag to denote if the state of the composite has been altered since the
- *   last drawing operation.
- * @type {boolean}
- * @private
- */
-pstj.graphics.Smooth.prototype.dirty_ = false;
-
-/**
- * The delayed handler of updates.
- * @type { goog.async.AnimationDelay}
- * @private
- */
-pstj.graphics.Smooth.prototype.raf_;
-
-/**
- * The bound handler of the update trigger. This function will be called on
- *   each frame until it returns false.
- * @type {function(number): boolean|null}
- * @private
- */
-pstj.graphics.Smooth.prototype.callback_ = null;
 
 /**
  * Resets the dirty state of the composite and forces a redraw if one is not
@@ -61,12 +58,6 @@ pstj.graphics.Smooth.prototype.update = function() {
   if (!this.raf_.isActive()) {
     this.raf_.start();
   }
-};
-
-/** @inheritDoc */
-pstj.graphics.Smooth.prototype.disposeInternal = function() {
-  goog.dispose(this.raf_);
-  this.callback_ = null;
 };
 
 /**
@@ -80,4 +71,3 @@ pstj.graphics.Smooth.prototype.onRaf_ = function(time_stamp) {
   this.raf_.start();
   this.dirty_ = !!(this.callback_(time_stamp));
 };
-
