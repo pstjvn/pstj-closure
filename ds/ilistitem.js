@@ -26,7 +26,7 @@ pstj.ds.RecordValue;
  * listings it should abide this interface.
  * @interface
  */
-pstj.ds.IListItem = function(data, id_property) {};
+pstj.ds.IListItem = function() {};
 
 /**
  * Getter for the raw data object used to instanciate the class. It could be
