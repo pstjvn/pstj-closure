@@ -58,6 +58,7 @@ goog.require('goog.ui.Component');
  * problems.
  *
  * @constructor
+ * @deprecated
  * @extends {goog.ui.Component}
  * @param {goog.dom.DomHelper=} dh Optional dom helper.
  */
