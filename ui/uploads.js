@@ -11,10 +11,10 @@ goog.require('pstj.templates');
 goog.require('pstj.ui.Templated');
 
 /**
- * @fileoverview Provides a custom file upload utility. ONly a single file
+ * @fileoverview Provides a custom file upload utility. Only a single file
  * upload is supported and the widget has no visual representation, instead it
  * is expected to be triggered from the program (i.e. not from direct user
- * action on the firm itself) in the handle chain of a real click event.
+ * action on the form itself) in the handle chain of a real click event.
  * Allows to mask a file upload as a single action button when the UI requires
  * it.
  *
@@ -134,21 +134,16 @@ pstj.ui.Upload.prototype.handleFileChange = function(e) {
  */
 pstj.ui.Upload.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  goog.array.forEach(goog.dom.getElementsByClass(goog.getCssName(
-    'pstj-upload-form-input'), this.getElement()), function(el) {
-      this.getHandler().listen(el, goog.events.EventType.CHANGE,
-        this.handleFileChange);
-    }, this);
+  this.getHandler().listen(
+    this.getEls(goog.getCssName('pstj-upload-form-input')),
+    goog.events.EventType.CHANGE, this.handleFileChange);
 };
 
 /**
  * Activates the file selector in the browser.
- *
- * FIXME: this is badly resolvable to a unique ID and if the document has more
- *   than one form it will fail.
  */
 pstj.ui.Upload.prototype.trigger = function() {
-  goog.dom.getElement('attachment').click();
+  this.getEls(goog.getCssName('pstj-upload-form-input')).click();
 };
 
 /** @inheritDoc */
