@@ -59,7 +59,7 @@ pstj.ui.TouchControl.TouchState = {
 pstj.ui.TouchControl.Ignore = {
   NONE: 0x00,
   TOUCH: 0x01,
-  MOUSE: 0x02
+  MOUSE: 0x02,
   ALL: 0xFF
 };
 
