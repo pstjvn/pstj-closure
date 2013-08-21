@@ -21,7 +21,7 @@ var setUp = function() {
 
 /**
  * Dummy variables
- * @type {string} Our dummy color
+ * @type {string}
  */
 var color = '#000000';
 /**
