@@ -9,21 +9,43 @@ goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Templated');
 
 /**
- * @fileoverview Provides a control gruop for buttons. The widget is designed
- *   to be used as a container for several control action buttons, each button
- *   having an action attribute in the html. The button when activated will
- *   propagate the action event to the widget and controls can listen on
- *   Component's ACTION event and find the action by looking at the target of
- *   the event. The abstraction allows to have named actions from the template
- *   mapped to actions in the compiled code.
+ * @fileoverview Provides a control group for buttons. The widget is designed
+ * to be used as a container for several control action buttons, each button
+ * having an action attribute in the html. The button when activated will
+ * propagate the action event to the widget and controls can listen on
+ * Component's ACTION event and find the action by looking at the target of
+ * the event. The abstraction allows to have named actions from the template
+ * mapped to actions in the compiled code.
+ *
+ * Example:
+ * Template:
+ * <pre>
+ * <div class="container">
+ *   <div class="pstj-button" data-action="ok">OK</div>
+ *   <div class="pstj-button" data-action="cancel">Cancel</div>
+ * </div>
+ * </pre>
+ * JavaScript:
+ * <pre>
+ * var controls = new pstj.widget.ControlGroup();
+ * controls.decorate(document.querySelector('.container');
+ * goog.events.listen(controls, goog.ui.Component.EventType.ACTION, function(e){
+ *   // our action name
+ *   var action = e.target.getActionName();
+ * });
+ * </pre>
+ *
+ * If you are looking for more simple group of buttons (i.e. control state is
+ * not needed, consider ButtonPanel).
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
 /**
  * The template for the control group. Notice that this default template does
- *   not provide the actions, you should provide your own template for this
- *   widget class.
+ * not provide the actions, you should provide your own template for this
+ * widget class.
+ *
  * @constructor
  * @extends {pstj.ui.Template}
  */
@@ -40,12 +62,13 @@ pstj.widget.ControlGroupTemplate.prototype.getTemplate = function(model) {
 
 /**
  * The base control group class.
+ *
  * @constructor
  * @extends {pstj.ui.Templated}
  * @param {pstj.ui.Template=} opt_template Optional template to use for DOM
- *   construction.
+ * construction.
  * @param {goog.ui.ButtonRenderer=} opt_button_renderer Optional renderer to
- *   use for the control buttons.
+ * use for the control buttons.
  */
 pstj.widget.ControlGroup = function(opt_template, opt_button_renderer) {
   goog.base(this, opt_template ||
@@ -74,7 +97,8 @@ pstj.widget.ControlGroup.prototype.disposeInternal = function() {
 
 /**
  * Adds a new control button to the group from an element. The method should
- *   be called only from the decorate internal method.
+ * be called only from the decorate internal method.
+ *
  * @param {Element} element The lement to set up as button in the group.
  * @protected
  */
