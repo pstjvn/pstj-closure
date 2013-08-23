@@ -7,13 +7,15 @@ goog.require('pstj.ui.Templated');
 
 /**
  * @fileoverview Provides pop over layer (input blocker) with the ability to
- *   embed a single item to display. The item is expected to be a component.
+ * embed a single item to display. The item is expected to be a component.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
 /**
- * My new class description
+ * Template specific for the popover layer component. It uses the template from
+ * the library.
+ *
  * @constructor
  * @extends {pstj.ui.Template}
  */
@@ -22,6 +24,7 @@ pstj.ui.PopOverLayerTemplate = function() {
 };
 goog.inherits(pstj.ui.PopOverLayerTemplate, pstj.ui.Template);
 goog.addSingletonGetter(pstj.ui.PopOverLayerTemplate);
+
 /** @inheritDoc */
 pstj.ui.PopOverLayerTemplate.prototype.getTemplate = function(model) {
   return pstj.templates.popover({});
@@ -33,13 +36,20 @@ pstj.ui.PopOverLayerTemplate.prototype.getContentElement = function(comp) {
 
 
 /**
- * My new class description
+ * Provides very simple component that supports only one child to be embeeded in
+ * it at a time and supports visibility state. Designed to be used as popover.
  * @constructor
  * @extends {pstj.ui.Templated}
  * @param {pstj.ui.Template=} opt_template Optional alternative template to use.
  */
 pstj.ui.PopOverLayer = function(opt_template) {
   goog.base(this, opt_template || pstj.ui.PopOverLayerTemplate.getInstance());
+  /**
+   * Flag if the UI component is currently visible.
+   * @type {boolean}
+   * @private
+   */
+  this.visible_ = false;
 };
 goog.inherits(pstj.ui.PopOverLayer, pstj.ui.Templated);
 
@@ -83,4 +93,3 @@ goog.scope(function() {
   };
 
 });
-
