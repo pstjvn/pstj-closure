@@ -58,7 +58,7 @@ goog.require('goog.ui.Component');
  * problems.
  *
  * @constructor
- * @deprecated
+ * @deprecated Use the sizeable ua agent instead.
  * @extends {goog.ui.Component}
  * @param {goog.dom.DomHelper=} dh Optional dom helper.
  */
