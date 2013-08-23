@@ -1,10 +1,10 @@
 goog.provide('pstj.ui.Button');
 
 goog.require('goog.dom.dataset');
-goog.require('goog.events.EventType');
 goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.registry');
 goog.require('pstj.ui.CustomButtonRenderer');
+goog.require('pstj.ui.TouchAgent');
 
 /**
  * Provides shorthand for our button. The button is also optimized for touch
@@ -17,11 +17,6 @@ goog.require('pstj.ui.CustomButtonRenderer');
 pstj.ui.Button = function(opt_renderer) {
   goog.base(this, '', opt_renderer ||
     pstj.ui.CustomButtonRenderer.getInstance());
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.cache_ = [0, 0];
 };
 goog.inherits(pstj.ui.Button, goog.ui.CustomButton);
 
@@ -38,51 +33,12 @@ pstj.ui.Button.prototype.getActionName = function() {
 /** @inheritDoc */
 pstj.ui.Button.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  this.getHandler().listen(this.getElement(),
-    goog.events.EventType.TOUCHSTART, this.handleTouchStart);
-  this.getHandler().listen(this.getElement(),
-    goog.events.EventType.TOUCHEND, this.handleTouchEnd);
-};
-
-/** @inheritDoc */
-pstj.ui.Button.prototype.disposeInternal = function() {
-  this.cache_ = null;
-  goog.base(this, 'disposeInternal');
-};
-
-/**
- * Handles the touch start on buttons.
- * @param {goog.events.Event} e The touchstart event.
- * @protected
- */
-pstj.ui.Button.prototype.handleTouchStart = function(e) {
-  e.preventDefault();
-  this.cache_[0] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
-  this.cache_[1] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
-  this.setActive(true);
-};
-
-/**
- * Handles the touch end event.
- * @param {goog.events.Event} e The touchend event.
- * @protected
- */
-pstj.ui.Button.prototype.handleTouchEnd = function(e) {
-  e.preventDefault();
-  if (this.isActive()) {
-    if (Math.abs(this.cache_[0] -
-      e.getBrowserEvent()['changedTouches'][0]['clientX']) < 10 &&
-      Math.abs(this.cache_[1] -
-        e.getBrowserEvent()['changedTouches'][0]['clientY']) < 10) {
-
-      this.performActionInternal(e);
-    }
-    this.setActive(false);
-  }
+  pstj.ui.TouchAgent.getInstance().attach(this);
 };
 
 // Register a decorator factory function for pstj.ui.Button
 goog.ui.registry.setDecoratorByClassName(pstj.ui.CustomButtonRenderer.CSS_CLASS,
   function() {
     return new pstj.ui.Button();
-  });
+  }
+);
