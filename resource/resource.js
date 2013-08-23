@@ -371,7 +371,7 @@ pstj.resource.Resource.prototype.sendRequest = function(url,
  * Override in subclasses to handle different types of data and convert it to
  * whatever is needed/expected.
  *
- * @param {!goog.net.XhrIo} The xhr request, note that it is passed along to
+ * @param {!goog.net.XhrIo} xhr The xhr request, note that it is passed along to
  * allow subclasses to extract the data as fit is seen.
  * @return {Object}
  */
@@ -401,7 +401,7 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
   } else if (ev instanceof goog.events.Event) {
     var xhr = /** @type {!goog.net.XhrIo} */ (ev.target);
     try {
-      response = this.parseResponse(xhr));
+      response = this.parseResponse(xhr);
       if (this.useCache_ && cache) {
         this.cache_.set(url, response);
       }
@@ -423,9 +423,9 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
  * Check to make over the recieved response after it was parsed to make sure
  * that the data received is in a format that is expected by the application.
  *
- * @param {?}
+ * @param {?} response The response from the server.
  * @protected
- * @return {Error|null}
+ * @return {?Error}
  */
 pstj.resource.Resource.prototype.checkResponseValidity = function(response) {
   if (goog.isDefAndNotNull(response)) {
