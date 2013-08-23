@@ -1,5 +1,6 @@
 goog.provide('pstj.ui.TouchAgent');
 
+goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -60,7 +61,12 @@ goog.define('pstj.ui.TouchAgent.TOUCH_TRESHOLD', 10);
 
 /** @inheritDoc */
 pstj.ui.TouchAgent.prototype.updateCache = function(control) {
-  // little hack
+  // little hack, we need this to be a control instance as we use the 'set*'
+  // methods from it.
+  // At compile time with DEBUG turned off this will be stripped out.
+  goog.asserts.assertInstanceof(control, goog.ui.Control,
+    'The touch agent is designed for Control elements');
+
   // make sure there is actually such element.
   if (goog.isDefAndNotNull(control.getElement())) {
     this.getCache().set(control.getId(),
