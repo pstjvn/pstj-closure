@@ -44,10 +44,10 @@ goog.scope(function() {
   _.setModel = function(model) {
     if (goog.isNumber(model)) {
       this.getModel().mutate('time', model);
-      pstj.ui.ngAgent.getInstance().apply(this);
     } else {
       goog.base(this, 'setModel', model);
     }
+    pstj.ui.ngAgent.getInstance().apply(this);
   };
 
 });
