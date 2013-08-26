@@ -21,6 +21,8 @@ goog.require('goog.ui.LabelInput');
  *   match. Used for 'pass + confirm pass' or 'mail + confirm mail' type of
  *   interfaces.
  * @constructor
+ * @deprecated The construct is not well designed and should be avoided in new
+ * code.
  * @extends {goog.Disposable}
  * @param {!Element} el1 The first of the input elements.
  * @param {!Element} el2 The second input element.
