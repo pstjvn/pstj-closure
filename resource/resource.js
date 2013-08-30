@@ -373,7 +373,7 @@ pstj.resource.Resource.prototype.sendRequest = function(url,
  *
  * @param {!goog.net.XhrIo} xhr The xhr request, note that it is passed along to
  * allow subclasses to extract the data as fit is seen.
- * @return {Object}
+ * @return {*}
  */
 pstj.resource.Resource.prototype.parseResponse = function(xhr) {
   return pstj.resource.getJsonProcessor().parse(xhr.getResponseText());
