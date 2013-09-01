@@ -6,6 +6,10 @@ goog.require('pstj.ui.ControlRenderer');
 goog.require('pstj.ui.ngAgent');
 
 /**
+ * Provides the default renderer for the table view item (cell).
+ * Note that the renderer should be provided as to understands the data
+ * structire that will be used as model.
+ *
  * @constructor
  * @extends {pstj.ui.ControlRenderer}
  */
