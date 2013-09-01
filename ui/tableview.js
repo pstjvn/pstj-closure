@@ -130,6 +130,11 @@ goog.scope(function() {
       this.cache_[CP.HANDLER_LAST_Y] = 0;
       this.cache_[CP.HANDLER_CURRENT_Y] = 0;
       this.ignoreEndEvents_ = true;
+      var modellength = this.getModel().getCount();
+      for (var i = 0, len = this.getChildCount(); i < len; i++) {
+        this.getChildAt(i).getElement().style.display =
+          (i < modellength) ? 'block' : 'none';
+      }
       this.updateContentForCount(this.getChildCount());
       this.applyStyles();
     }
@@ -306,18 +311,17 @@ goog.scope(function() {
         // If touch lasted for less than 300 ms and there was movement
         if (this.cache_[CP.TOUCH_DURATION] < 300 && Math.abs(
               this.getTouchDistance_()) > 10) {
-          console.log('YYY');
+
           this.cache_[CP.NEEDS_MOMENTUM] = 1;
           if (!this.movementRaf_.isActive()) {
             this.movementRaf_.start();
           }
         } else if (this.isBeyoundEdge()) {
-            console.log('RRR');
-            this.cache_[CP.TOUCH_DURATION] = 160;
-            this.cache_[CP.NEEDS_MOMENTUM] = 1;
-            if (!this.movementRaf_.isActive()) {
-              this.movementRaf_.start();
-            }
+          this.cache_[CP.TOUCH_DURATION] = 160;
+          this.cache_[CP.NEEDS_MOMENTUM] = 1;
+          if (!this.movementRaf_.isActive()) {
+            this.movementRaf_.start();
+          }
         }
       }
     }
@@ -347,11 +351,16 @@ goog.scope(function() {
 
     this.cache_[CP.ANIMATION_START_TIME] = this.cache_[CP.TOUCH_END_TIME];
 
+    var isSmaller = this.getModel().getCount() *
+        this.childHeight_ < this.elementHeight_;
+
     // if we have scrolled down.
-    if (distance > 0) {
-      // if the distance to travel is larger than allowed
+    if (distance > 0 || isSmaller) {
+
+      // if the distance to travel is larger than allowed or the visible
+      // items are less than the height of the view scroll to top.
       if (this.cache_[CP.ANIMATION_DESTINATION_Y] -
-        this.cache_[CP.TOUCH_CURRENT_Y] > this.pixelsToTop()) {
+        this.cache_[CP.TOUCH_CURRENT_Y] > this.pixelsToTop() || isSmaller) {
 
         this.cache_[CP.ANIMATION_DESTINATION_Y] =
             this.cache_[CP.TOUCH_CURRENT_Y] + this.pixelsToTop();
