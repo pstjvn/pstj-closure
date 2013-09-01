@@ -71,8 +71,10 @@ pstj.ui.TableView = function() {
    */
   this.ignoreEndEvents_ = false;
 
-  this.momentumRaf_ = new goog.async.AnimationDelay(this.handleMomentum, undefined, this);
-  this.movementRaf_ = new goog.async.AnimationDelay(this.handleMovement, undefined, this);
+  this.momentumRaf_ = new goog.async.AnimationDelay(
+      this.handleMomentum, undefined, this);
+  this.movementRaf_ = new goog.async.AnimationDelay(
+      this.handleMovement, undefined, this);
   this.paintNotifyDelay_ = new goog.async.Delay(this.paintNotify, 450, this);
 };
 goog.inherits(pstj.ui.TableView, goog.ui.Component);
@@ -128,9 +130,20 @@ goog.scope(function() {
       this.cache_[CP.HANDLER_LAST_Y] = 0;
       this.cache_[CP.HANDLER_CURRENT_Y] = 0;
       this.ignoreEndEvents_ = true;
-      this.setChildHeight(this.getChildCount());
+      this.updateContentForCount(this.getChildCount());
       this.applyStyles();
     }
+  };
+
+  /**
+   * Method designed to be overriden on subclasses. It generates a single
+   * instance of the TableViewItem widget and is used internally to create the
+   * rows of the view as well as to determine the size of the children.
+   *
+   * @return {goog.ui.Component}
+   */
+  _.createRowCell = function() {
+    return new pstj.ui.TableViewItem();
   };
 
   /**
@@ -147,23 +160,46 @@ goog.scope(function() {
     var height = (w > h) ? w : h;
     var elscount = Math.ceil(height / this.childHeight_);
     for (var i = 0; i < elscount; i++) {
-      this.addChild((new pstj.ui.TableViewItem()), true);
+      this.addChild(this.createRowCell(), true);
+    }
+  };
+
+  /**
+   * Attempts to calculate the child height automatically from an instance  of
+   * the child constructor.
+   *
+   * @protected
+   */
+  _.calculateChildHeight = function() {
+    if (this.getChildCount() == 0) {
+      var tmp = this.createRowCell();
+      this.addChild(tmp, true);
+      var height = goog.style.getSize(tmp.getElement()).height;
+      this.setChildHeight(height);
+      this.removeChild(tmp, true);
+      goog.dispose(tmp);
     }
   };
 
   /** @inheritDoc */
   _.enterDocument = function() {
-    console.log('enter document');
     goog.base(this, 'enterDocument');
     this.getHandler()
-      .listen(this.getElement(), goog.events.EventType.TOUCHSTART, this.handleTouchStart)
-      .listen(this.getElement(), goog.events.EventType.TOUCHMOVE, this.handleTouchMove)
-      .listen(this.getElement(), goog.events.EventType.TOUCHEND, this.handleTouchEnd);
+      .listen(this.getElement(), goog.events.EventType.TOUCHSTART,
+          this.handleTouchStart)
+      .listen(this.getElement(), goog.events.EventType.TOUCHMOVE,
+          this.handleTouchMove)
+      .listen(this.getElement(), goog.events.EventType.TOUCHEND,
+          this.handleTouchEnd);
     this.elementHeight_ = goog.style.getSize(this.getElement()).height;
+    if (this.childHeight_ == 0) {
+      this.calculateChildHeight();
+    }
     if (!goog.isNull(this.getModel())) {
       this.updateContentForCount(this.getChildCount());
     }
     this.applyStyles();
+
   };
 
   /**
@@ -240,7 +276,9 @@ goog.scope(function() {
     if (e.target != this.getElement()) {
       e.stopPropagation();
       e.preventDefault();
-      this.cache_[CP.HANDLER_CURRENT_Y] = e.getBrowserEvent().touches[0].clientY;
+      this.cache_[CP.HANDLER_CURRENT_Y] = e.getBrowserEvent()
+          .touches[0].clientY;
+
       this.movementRaf_.start();
     }
   };
@@ -261,15 +299,20 @@ goog.scope(function() {
       if (be.touches.length == 0) {
         e.stopPropagation();
         this.cache_[CP.TOUCH_END_TIME] = be.timeStamp;
-        this.cache_[CP.TOUCH_DURATION] = this.cache_[CP.TOUCH_END_TIME] - this.cache_[CP.TOUCH_START_TIME];
+        this.cache_[CP.TOUCH_DURATION] = this.cache_[CP.TOUCH_END_TIME] -
+            this.cache_[CP.TOUCH_START_TIME];
+
         this.cache_[CP.TOUCH_CURRENT_Y] = this.cache_[CP.HANDLER_CURRENT_Y];
         // If touch lasted for less than 300 ms and there was movement
-        if (this.cache_[CP.TOUCH_DURATION] < 300 && Math.abs(this.getTouchDistance_()) > 10) {
+        if (this.cache_[CP.TOUCH_DURATION] < 300 && Math.abs(
+              this.getTouchDistance_()) > 10) {
+          console.log('YYY');
           this.cache_[CP.NEEDS_MOMENTUM] = 1;
           if (!this.movementRaf_.isActive()) {
             this.movementRaf_.start();
           }
         } else if (this.isBeyoundEdge()) {
+            console.log('RRR');
             this.cache_[CP.TOUCH_DURATION] = 160;
             this.cache_[CP.NEEDS_MOMENTUM] = 1;
             if (!this.movementRaf_.isActive()) {
@@ -292,26 +335,47 @@ goog.scope(function() {
     // The speed that the touch traveled that distance.
     var speed = Math.abs(distance) / this.cache_[CP.TOUCH_DURATION];
 
-    this.cache_[CP.ANIMATION_DESTINATION_Y] = Math.round(this.cache_[CP.TOUCH_CURRENT_Y] + ((speed * speed) / (
+    this.cache_[CP.ANIMATION_DESTINATION_Y] =
+        Math.round(this.cache_[CP.TOUCH_CURRENT_Y] + ((speed * speed) / (
         2 * pstj.ui.TableView.DECELERATION) * (distance < 0 ? -1 : 1)));
 
-    this.cache_[CP.ANIMATION_DURATION] = Math.abs(speed / pstj.ui.TableView.DECELERATION);
-    this.cache_[CP.ANIMATION_DESIRED_END_TIME] = this.cache_[CP.TOUCH_END_TIME] + this.cache_[CP.ANIMATION_DURATION];
+    this.cache_[CP.ANIMATION_DURATION] =
+        Math.abs(speed / pstj.ui.TableView.DECELERATION);
+
+    this.cache_[CP.ANIMATION_DESIRED_END_TIME] =
+        this.cache_[CP.TOUCH_END_TIME] + this.cache_[CP.ANIMATION_DURATION];
+
     this.cache_[CP.ANIMATION_START_TIME] = this.cache_[CP.TOUCH_END_TIME];
 
     // if we have scrolled down.
     if (distance > 0) {
       // if the distance to travel is larger than allowed
-      if (this.cache_[CP.ANIMATION_DESTINATION_Y] - this.cache_[CP.TOUCH_CURRENT_Y] > this.pixelsToTop()) {
-        this.cache_[CP.ANIMATION_DESTINATION_Y] = this.cache_[CP.TOUCH_CURRENT_Y] + this.pixelsToTop();
-        this.cache_[CP.ANIMATION_DURATION] = (Math.abs(this.pixelsToTop()) / speed) << 0;
-        this.cache_[CP.ANIMATION_DESIRED_END_TIME] = this.cache_[CP.ANIMATION_START_TIME] + this.cache_[CP.ANIMATION_DURATION];
+      if (this.cache_[CP.ANIMATION_DESTINATION_Y] -
+        this.cache_[CP.TOUCH_CURRENT_Y] > this.pixelsToTop()) {
+
+        this.cache_[CP.ANIMATION_DESTINATION_Y] =
+            this.cache_[CP.TOUCH_CURRENT_Y] + this.pixelsToTop();
+
+        this.cache_[CP.ANIMATION_DURATION] =
+            (Math.abs(this.pixelsToTop()) / speed) << 0;
+
+        this.cache_[CP.ANIMATION_DESIRED_END_TIME] =
+            this.cache_[CP.ANIMATION_START_TIME] +
+            this.cache_[CP.ANIMATION_DURATION];
       }
     } else {
-      if (this.cache_[CP.TOUCH_CURRENT_Y] - this.cache_[CP.ANIMATION_DESTINATION_Y] > this.pixelsToBottom()) {
-        this.cache_[CP.ANIMATION_DESTINATION_Y] = this.cache_[CP.TOUCH_CURRENT_Y] - this.pixelsToBottom();
-        this.cache_[CP.ANIMATION_DURATION] = (Math.abs(this.pixelsToBottom()) / speed) << 0;
-        this.cache_[CP.ANIMATION_DESIRED_END_TIME] = this.cache_[CP.ANIMATION_START_TIME] + this.cache_[CP.ANIMATION_DURATION];
+      if (this.cache_[CP.TOUCH_CURRENT_Y] -
+        this.cache_[CP.ANIMATION_DESTINATION_Y] > this.pixelsToBottom()) {
+
+        this.cache_[CP.ANIMATION_DESTINATION_Y] =
+            this.cache_[CP.TOUCH_CURRENT_Y] - this.pixelsToBottom();
+
+        this.cache_[CP.ANIMATION_DURATION] =
+            (Math.abs(this.pixelsToBottom()) / speed) << 0;
+
+        this.cache_[CP.ANIMATION_DESIRED_END_TIME] =
+            this.cache_[CP.ANIMATION_START_TIME] +
+            this.cache_[CP.ANIMATION_DURATION];
       }
     }
     this.isAnimating = true;
@@ -326,11 +390,16 @@ goog.scope(function() {
    * @protected
    */
   _.isBeyoundEdge = function() {
-    var next_visual_offset = this.visualOffset_ + this.cache_[CP.HANDLER_CURRENT_Y] - this.cache_[CP.HANDLER_LAST_Y];
+    var next_visual_offset =
+        this.visualOffset_ + this.cache_[CP.HANDLER_CURRENT_Y] -
+        this.cache_[CP.HANDLER_LAST_Y];
+
     if (this.offset_ == 0 && next_visual_offset > 0) {
       return true;
     }
-    if (((this.getModel().getCount() - this.offset_) * this.childHeight_) - this.elementHeight_ > next_visual_offset) {
+    if ((((this.getModel().getCount() - this.offset_) *
+      this.childHeight_) - this.elementHeight_) * -1 > next_visual_offset) {
+
       return true;
     }
     return false;
@@ -343,17 +412,23 @@ goog.scope(function() {
    * @protected
    */
   _.handleMomentum = function(ts) {
-    console.log('handle momentum', this.isAnimating_);
     if (this.isAnimating_) {
       this.momentumRaf_.start();
       if (ts >= this.cache_[CP.ANIMATION_DESIRED_END_TIME]) {
         this.isAnimating_ = false;
-        this.cache_[CP.HANDLER_CURRENT_Y] = this.cache_[CP.ANIMATION_DESTINATION_Y];
+        this.cache_[CP.HANDLER_CURRENT_Y] =
+            this.cache_[CP.ANIMATION_DESTINATION_Y];
+
       } else {
-        var nn = (ts - this.cache_[CP.ANIMATION_START_TIME]) / this.cache_[CP.ANIMATION_DURATION];
+        var nn = (ts - this.cache_[CP.ANIMATION_START_TIME]) /
+            this.cache_[CP.ANIMATION_DURATION];
+
         var easing = (nn * (2 - nn));
-        this.cache_[CP.HANDLER_CURRENT_Y] = (
-          (this.cache_[CP.ANIMATION_DESTINATION_Y] - this.cache_[CP.TOUCH_CURRENT_Y]) * easing) + this.cache_[CP.TOUCH_CURRENT_Y];
+        this.cache_[CP.HANDLER_CURRENT_Y] =
+          ((this.cache_[CP.ANIMATION_DESTINATION_Y] -
+          this.cache_[CP.TOUCH_CURRENT_Y]) * easing) +
+          this.cache_[CP.TOUCH_CURRENT_Y];
+
       }
       this.handleMovement(ts);
     }
@@ -414,7 +489,10 @@ goog.scope(function() {
    * @protected
    */
   _.handleMovement = function(ts) {
-    this.visualOffset_ = this.visualOffset_ + this.cache_[CP.HANDLER_CURRENT_Y] - this.cache_[CP.HANDLER_LAST_Y];
+    this.visualOffset_ =
+        this.visualOffset_ + this.cache_[CP.HANDLER_CURRENT_Y] -
+        this.cache_[CP.HANDLER_LAST_Y];
+
     this.cache_[CP.HANDLER_LAST_Y] = this.cache_[CP.HANDLER_CURRENT_Y];
     this.shiftItems();
     this.applyStyles();
@@ -443,8 +521,12 @@ goog.scope(function() {
       // we need item(s) to go to from BOTTOM to TOP;
       // Make check if the element is 0 index!!!!
       if (this.offset_ > 0) {
-        to_trans = ((this.visualOffset_ + this.childHeight_) / this.childHeight_) << 0;
-        this.visualOffset_ = (this.visualOffset_ - (this.childHeight_ * to_trans)) % this.childHeight_;
+        to_trans = ((this.visualOffset_ + this.childHeight_) /
+            this.childHeight_) << 0;
+
+        this.visualOffset_ = (this.visualOffset_ - (this.childHeight_ *
+            to_trans)) % this.childHeight_;
+
         this.offset_ = this.offset_ + (to_trans * -1);
         this.updateContentForCount(to_trans);
       }
@@ -502,7 +584,6 @@ goog.scope(function() {
    * @protected
    */
   _.applyStyles = function() {
-    console.log('Apply styles');
     for (var i = 0, len = this.getChildCount(); i < len; i++) {
       _css.setTranslation(this.getChildByOffsetIndex(i).getElement(), 0,
         ((i * this.childHeight_) + this.visualOffset_));
