@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title>TableView demo</title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        /* @alternative */
+        -moz-box-sizing: border-box;
+        /* @alternative */
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        background-color: white;
+      }
+
+      .tableview {
+        width: 400px;
+        height: 500px;
+        background-color: #bfbfbf;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .tableviewitem {
+        width: 100%;
+        height: 55px;
+        position: absolute;
+        top:0;
+        left: 0;
+        background-color: #ebfffc;
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tableview"></div>
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script>goog.require('pstj.demos.tableview');</script>
+  </body>
+</html>

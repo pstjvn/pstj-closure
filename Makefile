@@ -278,7 +278,7 @@ libdeps:
 	--root_with_prefix="./ ../../../$(APPS_PATH)$(APPDIR)/" \
 	--output_file="deps.js"
 
+demos: tpl libdeps
+
 .PHONY: tpl css cssbuild deps all compile check
-
-
 

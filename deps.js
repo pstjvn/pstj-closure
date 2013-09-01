@@ -3,10 +3,9 @@
 goog.addDependency('../../../apps/pstj/color/color.js', ['pstj.color'], ['goog.color']);
 goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test'], ['goog.testing.PropertyReplacer', 'goog.testing.PseudoRandom', 'goog.testing.jsunit', 'pstj.color']);
 goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], []);
-goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configure_test'], ['pstj.configure']);
 goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], ['goog.Disposable', 'goog.asserts', 'goog.events.EventHandler']);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string']);
-goog.addDependency('../../../apps/pstj/demos/tableview/tableview.js', ['pstj.demos.tableview'], ['goog.dom.classlist', 'goog.dom.dataset', 'goog.ui.Component', 'pstj.ds.List', 'pstj.ui.TableView', 'pstj.ui.ngAgent']);
+goog.addDependency('../../../apps/pstj/demos/tableview/tableview_demo.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView']);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object']);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], []);
 goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], []);
