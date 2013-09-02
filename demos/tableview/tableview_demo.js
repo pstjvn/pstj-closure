@@ -27,6 +27,16 @@ pstj.demos.tableview = function() {
   tableview.generateRows();
   // Load the model
   tableview.setModel((new pstj.ds.List(data)));
+  setTimeout(function() {
+    var newdata = [];
+    for (var i = 0; i < 50; i++) {
+      newdata.push({
+        'id': i,
+        'name': 100 + i
+      });
+    }
+    tableview.setModel(new pstj.ds.List(newdata));
+  }, 20000);
 };
 
 pstj.demos.tableview();
