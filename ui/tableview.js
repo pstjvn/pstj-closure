@@ -196,7 +196,8 @@ goog.scope(function() {
           this.handleTouchMove)
       .listen(this.getElement(), goog.events.EventType.TOUCHEND,
           this.handleTouchEnd);
-    this.elementHeight_ = goog.style.getSize(this.getElement()).height;
+    this.recalculateSizes();
+    console.log('calculated element height', this.elementHeight_);
     if (this.childHeight_ == 0) {
       this.calculateChildHeight();
     }
@@ -204,7 +205,23 @@ goog.scope(function() {
       this.updateContentForCount(this.getChildCount());
     }
     this.applyStyles();
+  };
 
+  /**
+   * Forces recalculation of internally stored sizes.
+   */
+  _.recalculateSizes = function() {
+    this.elementHeight_ = goog.style.getSize(this.getElement()).height;
+    if (goog.isNull(this.getModel())) {
+      return;
+    }
+    if (this.isBeyoundEdge()) {
+      this.cache_[CP.TOUCH_DURATION] = 160;
+      this.cache_[CP.NEEDS_MOMENTUM] = 1;
+      if (!this.movementRaf_.isActive()) {
+        this.movementRaf_.start();
+      }
+    }
   };
 
   /**
