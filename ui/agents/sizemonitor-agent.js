@@ -40,10 +40,13 @@ goog.require('pstj.ui.Agent');
 pstj.ui.SizeMonitorAgent = function() {
   goog.base(this, goog.math.Size);
   // bind listener for resize monitoring.
+  this.throttled_ = new goog.async.Throttle(this.handleWindowResize_,
+    pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL, this);
+
   goog.events.listen(goog.dom.ViewportSizeMonitor.getInstanceForWindow(),
-    goog.events.EventType.RESIZE, (new goog.async.Throttle(
-      this.handleWindowResize_, pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL,
-      this)));
+    goog.events.EventType.RESIZE,
+    goog.bind(this.throttled_.fire, this.throttled_));
+
 };
 goog.inherits(pstj.ui.SizeMonitorAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.SizeMonitorAgent);
@@ -61,6 +64,7 @@ goog.define('pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL', 500);
  * @private
  */
 pstj.ui.SizeMonitorAgent.prototype.handleWindowResize_ = function() {
+  console.log('Size monitor agent triggerd');
   this.forEach(this.notifyResize_, this);
 };
 
@@ -73,13 +77,15 @@ pstj.ui.SizeMonitorAgent.prototype.handleWindowResize_ = function() {
  */
 pstj.ui.SizeMonitorAgent.prototype.notifyResize_ = function(item) {
   if (!goog.isNull(item) && item.isInDocument()) {
-    var newSize = goog.style.getSize(item);
-    if (!goog.math.Size.equals(
-      this.checkValue(this.getCache().get(item.getId())) || null, newSize)) {
-
+    var newSize = goog.style.getSize(item.getElement());
+    var oldValue = this.getCache().get(item.getId());
+    if (!goog.isNull(oldValue)) {
+      if (goog.math.Size.equals(this.checkValue(oldValue), newSize)) {
+        return;
+      }
+    } else {
       this.getCache().set(item.getId(), newSize);
       item.dispatchEvent(goog.events.EventType.RESIZE);
-
     }
   }
 };
