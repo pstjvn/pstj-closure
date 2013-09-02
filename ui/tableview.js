@@ -238,6 +238,7 @@ goog.scope(function() {
         // fire the 'ACTION' event when really pressed (so it is a
         // good idea to subscribe it to touchable agent)
         this.cache_[CP.HANDLER_LAST_Y] = e.getBrowserEvent().touches[0].clientY;
+        this.cache_[CP.HANDLER_CURRENT_Y] = this.cache_[CP.HANDLER_LAST_Y];
         this.cache_[CP.TOUCH_START_TIME] = e.getBrowserEvent().timeStamp;
         this.cache_[CP.TOUCH_START_Y] = this.cache_[CP.HANDLER_LAST_Y];
       }
