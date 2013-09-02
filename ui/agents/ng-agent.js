@@ -204,12 +204,16 @@ goog.scope(function() {
    * @private
    */
   _.applyOnElement_ = function(el, filteredData) {
-    switch (el.tagName.toUpperCase()) {
-      case goog.dom.TagName.IMG:
-        el.src = filteredData;
-        break;
-      default:
-        el.innerHTML = filteredData;
+    if (el.tagName.toUpperCase() == goog.dom.TagName.IMG) {
+      el.src = filteredData;
+    } else if (goog.dom.dataset.has(el, 'switch')) {
+      // here we have a problem, we send '0', which is == true,
+      // while it should be 0 == false
+      // The solution is to use custom filter that returns directly the
+      // display value.
+      el.style.display = filteredData;
+    } else {
+      el.innerHTML = filteredData;
     }
   };
 
