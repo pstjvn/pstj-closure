@@ -1,3 +1,17 @@
+/**
+ * @fileoverview Provides implementation for NSTableView-like widget for the
+ * modern browsers (i.e. working with CSS transformation). NSTableView and
+ * similar widgets are used in mobile devices to visualise large sets of data
+ * without creating UI structures for all the data, but instead providing UI
+ * only to accomodate the currently visible part of the screen and dynamically
+ * rearranges the slices in such a way as to imitate scrolling of a large list.
+ * Our implementation works best if no image scaling is applied to the
+ * componentes that are use as cells as changing large portions of the cell will
+ * skew the RAF and will be registered as "shattering" in the UI.
+ *
+ * @author <regardingscot@gmail.com> PeterStJ
+ */
+
 goog.provide('pstj.ui.TableView');
 
 goog.require('goog.async.AnimationDelay');
