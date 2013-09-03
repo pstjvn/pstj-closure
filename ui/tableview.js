@@ -17,6 +17,9 @@ goog.provide('pstj.ui.TableView');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.events.EventType');
+goog.require('goog.events.MouseWheelEvent');
+goog.require('goog.events.MouseWheelHandler');
+goog.require('goog.events.MouseWheelHandler.EventType');
 goog.require('goog.ui.Component');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.ui.TableViewItem');
@@ -90,6 +93,8 @@ pstj.ui.TableView = function() {
   this.movementRaf_ = new goog.async.AnimationDelay(
       this.handleMovement, undefined, this);
   this.paintNotifyDelay_ = new goog.async.Delay(this.paintNotify, 450, this);
+  this.mousewheelhandler_ = null;
+  this.mouseAdaptation_ = new goog.async.Delay(this.mouseAdapt_, 500, this);
 };
 goog.inherits(pstj.ui.TableView, goog.ui.Component);
 
@@ -155,6 +160,27 @@ goog.scope(function() {
   };
 
   /**
+   * Runs adaptation based on the mouse wheel events. Basically it sets the
+   * properties needed for the momentum calculation to work and uses it to
+   * scroll back to edges when scroll events go over them. This is a hack, so do
+   * not rely on this code.
+   *
+   * @private
+   */
+  _.mouseAdapt_ = function() {
+    this.cache_[CP.TOUCH_END_TIME] = goog.now();
+    this.cache_[CP.TOUCH_DURATION] = this.cache_[CP.TOUCH_END_TIME] -
+      this.cache_[CP.TOUCH_START_TIME];
+    this.cache_[CP.TOUCH_CURRENT_Y] = this.cache_[CP.HANDLER_CURRENT_Y];
+    if (this.isBeyoundEdge()) {
+      this.cache_[CP.NEEDS_MOMENTUM] = 1;
+      if (!this.movementRaf_.isActive()) {
+        this.movementRaf_.start();
+      }
+    }
+  };
+
+  /**
    * Method designed to be overriden on subclasses. It generates a single
    * instance of the TableViewItem widget and is used internally to create the
    * rows of the view as well as to determine the size of the children.
@@ -203,13 +229,20 @@ goog.scope(function() {
   /** @inheritDoc */
   _.enterDocument = function() {
     goog.base(this, 'enterDocument');
+    this.mousewheelhandler_ = new goog.events.MouseWheelHandler(
+      this.getElement());
+
     this.getHandler()
       .listen(this.getElement(), goog.events.EventType.TOUCHSTART,
           this.handleTouchStart)
       .listen(this.getElement(), goog.events.EventType.TOUCHMOVE,
           this.handleTouchMove)
       .listen(this.getElement(), goog.events.EventType.TOUCHEND,
-          this.handleTouchEnd);
+          this.handleTouchEnd)
+      .listen(this.mousewheelhandler_,
+          goog.events.MouseWheelHandler.EventType.MOUSEWHEEL,
+          this.handleMouseWheel);
+
     this.recalculateSizes();
     console.log('calculated element height', this.elementHeight_);
     if (this.childHeight_ == 0) {
@@ -357,6 +390,31 @@ goog.scope(function() {
         }
       }
     }
+  };
+
+  /**
+   * Handles the wrapper mouse wheel events.
+   * TODO: add cap to scroll (optional) as it is not always appropriate to
+   * scroll over the borders of the list.
+   *
+   * @param {goog.events.MouseWheelHandler.Event} e The wheel event.
+   * @protected
+   */
+  _.handleMouseWheel = function(e) {
+    if (!this.mouseAdaptation_.isActive()) {
+      this.cache_[CP.TOUCH_START_TIME] = goog.now();
+      this.cache_[CP.TOUCH_START_Y] = 0;
+      this.cache_[CP.HANDLER_LAST_Y] = 0;
+      this.cache_[CP.HANDLER_CURRENT_Y] = 0;
+    }
+    this.cache_[CP.NEEDS_MOMENTUM] = 0;
+    this.cache_[CP.HANDLER_CURRENT_Y] = this.cache_[CP.HANDLER_LAST_Y] +
+      (e.deltaY * -18);
+
+    if (!this.movementRaf_.isActive()) {
+      this.movementRaf_.start();
+    }
+    this.mouseAdaptation_.start();
   };
 
   /**
