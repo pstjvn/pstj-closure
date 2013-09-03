@@ -244,7 +244,7 @@ goog.scope(function() {
           this.handleMouseWheel);
 
     this.recalculateSizes();
-    console.log('calculated element height', this.elementHeight_);
+
     if (this.childHeight_ == 0) {
       this.calculateChildHeight();
     }
