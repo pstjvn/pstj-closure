@@ -397,7 +397,7 @@ goog.scope(function() {
    * TODO: add cap to scroll (optional) as it is not always appropriate to
    * scroll over the borders of the list.
    *
-   * @param {goog.events.MouseWheelHandler.Event} e The wheel event.
+   * @param {goog.events.MouseWheelEvent} e The wheel event.
    * @protected
    */
   _.handleMouseWheel = function(e) {
