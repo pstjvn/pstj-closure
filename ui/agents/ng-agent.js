@@ -218,11 +218,8 @@ goog.scope(function() {
     if (el.tagName.toUpperCase() == goog.dom.TagName.IMG) {
       el.src = filteredData;
     } else if (goog.dom.dataset.has(el, 'switch')) {
-      // here we have a problem, we send '0', which is == true,
-      // while it should be 0 == false
-      // The solution is to use custom filter that returns directly the
-      // display value.
-      el.style.display = filteredData;
+      goog.dom.classlist.enable(el, goog.getCssName('pstj-switch-off'),
+        (filteredData == 'none') ? true : false);
     } else {
       el.innerHTML = filteredData;
     }
