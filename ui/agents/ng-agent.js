@@ -34,6 +34,13 @@ pstj.ui.ngAgent = function() {
 goog.inherits(pstj.ui.ngAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.ngAgent);
 
+/**
+ * @define {boolean} Controls if the ng agent will use the next tick in the
+ * engine to perform the updates on the component. By default the updates are
+ * performed immediately.
+ */
+goog.define('pstj.ui.ngAgent.USE_NEXT_TICK', false);
+
 goog.scope(function() {
 
   var _ = pstj.ui.ngAgent.prototype;
@@ -70,7 +77,11 @@ goog.scope(function() {
    * @param {goog.ui.Component} component The component to update.
    */
   _.apply = function(component) {
-    goog.async.nextTick(goog.bind(this.apply_, this, component));
+    if (pstj.ui.ngAgent.USE_NEXT_TICK) {
+      goog.async.nextTick(goog.bind(this.apply_, this, component));
+    } else {
+      this.apply_(component);
+    }
   };
 
   /**
