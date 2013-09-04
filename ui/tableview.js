@@ -92,7 +92,7 @@ pstj.ui.TableView = function() {
       this.handleMomentum, undefined, this);
   this.movementRaf_ = new goog.async.AnimationDelay(
       this.handleMovement, undefined, this);
-  this.paintNotifyDelay_ = new goog.async.Delay(this.paintNotify, 450, this);
+  this.paintNotifyDelay_ = new goog.async.Delay(this.paintNotify, 200, this);
   this.mousewheelhandler_ = null;
   this.mouseAdaptation_ = new goog.async.Delay(this.mouseAdapt_, 500, this);
 };
@@ -119,6 +119,15 @@ pstj.ui.TableView.Cache = {
   HANDLER_CURRENT_Y: 11,
   MODEL_LENGTH: 12,
   NEEDS_MOMENTUM: 13
+};
+
+
+/**
+ * Provides the event types for the table view.
+ * @enum {string}
+ */
+pstj.ui.TableView.EventType = {
+  RASTERIZE_READY: goog.events.getUniqueId('rasterize-ready')
 };
 
 /**
@@ -331,7 +340,7 @@ goog.scope(function() {
    * @protected
    */
   _.paintNotify = function() {
-    this.dispatchEvent('animation-end');
+    this.dispatchEvent(pstj.ui.TableView.EventType.RASTERIZE_READY);
   };
 
   /**
@@ -517,6 +526,7 @@ goog.scope(function() {
         this.isAnimating_ = false;
         this.cache_[CP.HANDLER_CURRENT_Y] =
             this.cache_[CP.ANIMATION_DESTINATION_Y];
+        this.paintNotifyDelay_.start();
 
       } else {
         var nn = (ts - this.cache_[CP.ANIMATION_START_TIME]) /
@@ -600,6 +610,8 @@ goog.scope(function() {
       this.isAnimating_ = true;
       this.setMomentum();
       this.momentumRaf_.start();
+    } else {
+      this.paintNotifyDelay_.start();
     }
   };
 
