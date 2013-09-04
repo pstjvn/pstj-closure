@@ -103,6 +103,10 @@ goog.scope(function() {
 
   /**
    * Applies the model on the template.
+   * TODO: add cache for element properties allowing determination of the needed
+   * filters and setters only one in the beginning, this will potentially speed
+   * up things a lot.
+   *
    * @protected
    * @param {goog.ui.Component} component The component to operate on.
    */
