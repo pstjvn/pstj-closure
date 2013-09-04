@@ -15,6 +15,12 @@ goog.require('goog.userAgent');
  */
 
 /**
+ * @define {boolean} If true 2d transforms will be used always regardless of its
+ * support on the host.
+ */
+goog.define('pstj.lab.style.css.FORCE_2D', false);
+
+/**
  * The DIV element to use for the tests. It will never be cleaned up, but is a
  *   good trade off compared to creating a new DIV for each test.
  * @type {Element}
@@ -92,6 +98,7 @@ pstj.lab.style.css.supports3d = (function() {
     // alert(goog.userAgent.LINUX + ' ' + goog.userAgent.X11);
     return false;
   }
+  if (pstj.lab.style.css.FORCE_2D) return false;
   var res = pstj.lab.style.css.getSupportedName_([
                                   'perspective',
                                   'perspectiveProperty',
