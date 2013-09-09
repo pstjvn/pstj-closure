@@ -1,5 +1,3 @@
-goog.provide('pstj.ds.IClock');
-
 /**
  * @fileoverview Provides the interface for a clock instance implementation.
  *   If a class implements this interface it will be able to subscribe for
@@ -10,6 +8,10 @@ goog.provide('pstj.ds.IClock');
  *   pstj.ds.TimeProvider}.
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ds.IClock');
+
+
 
 /**
  * @interface

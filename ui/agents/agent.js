@@ -1,9 +1,3 @@
-goog.provide('pstj.ui.Agent');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('pstj.ds.Cache');
-
 /**
  * @fileoverview Provides an 'agent' abstraction, basically storage / registry
  *   for components that need to store some values and cache them while they
@@ -11,6 +5,14 @@ goog.require('pstj.ds.Cache');
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.Agent');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('pstj.ds.Cache');
+
+
 
 /**
  * Basic agent implementation. The class is designed to add behaviour to
@@ -51,6 +53,7 @@ pstj.ui.Agent = function(type) {
   this.type_ = type || null;
 };
 
+
 /**
  * Accessor for the cache for subclasses.
  * @return {pstj.ds.Cache}
@@ -58,6 +61,7 @@ pstj.ui.Agent = function(type) {
 pstj.ui.Agent.prototype.getCache = function() {
   return this.cache_;
 };
+
 
 /**
  * Attaches a component to the agent. The cache will be set at this point. The
@@ -82,6 +86,7 @@ pstj.ui.Agent.prototype.attach = function(component) {
   }
 };
 
+
 /**
  * Checks internally the type of a cache value. The checks is performed only for
  * construct types and only if the type is set. If DEBUG is disbaled this
@@ -91,10 +96,11 @@ pstj.ui.Agent.prototype.attach = function(component) {
  */
 pstj.ui.Agent.prototype.checkValue = function(val) {
   if (goog.isDefAndNotNull(this.type_) &&
-    goog.asserts.assertFunction(this.type_)) {
+      goog.asserts.assertFunction(this.type_)) {
     goog.asserts.assertInstanceof(val, this.type_);
   }
 };
+
 
 /**
  * Protected method that should update whatever type of cache we have on the
@@ -105,16 +111,19 @@ pstj.ui.Agent.prototype.checkValue = function(val) {
  */
 pstj.ui.Agent.prototype.updateCache = function(component) {};
 
+
 /**
  * Call function for each cached component.
  *
- * @param {function(this: T, S, number, Array.<S>): undefined} fn The function to execute.
- * @param {T=} obj The this object.
+ * @param {function(this: T, S, number, Array.<S>): undefined} fn The function
+ * to execute.
+ * @param {T=} opt_obj The this object.
  * @template T,S
  */
-pstj.ui.Agent.prototype.forEach = function(fn, obj) {
-  goog.array.forEach(this.components_, fn, obj);
+pstj.ui.Agent.prototype.forEach = function(fn, opt_obj) {
+  goog.array.forEach(this.components_, fn, opt_obj);
 };
+
 
 /**
  * Removes the binding of the component to this agent.

@@ -1,17 +1,3 @@
-goog.provide('pstj.resource');
-goog.provide('pstj.resource.Local');
-goog.provide('pstj.resource.Resource');
-
-goog.require('goog.async.nextTick');
-goog.require('goog.json.NativeJsonProcessor');
-goog.require('goog.net.Jsonp');
-goog.require('goog.net.XhrIo');
-goog.require('goog.storage.Storage');
-goog.require('goog.storage.mechanism.mechanismfactory');
-goog.require('goog.string');
-goog.require('goog.uri.utils');
-goog.require('pstj.configure');
-
 /**
  * @fileoverview Provides abstracted resource management. The main use
  * case is remote data provider that utilizes only one execution path and a main
@@ -54,6 +40,21 @@ goog.require('pstj.configure');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.resource');
+goog.provide('pstj.resource.Local');
+goog.provide('pstj.resource.Resource');
+
+goog.require('goog.async.nextTick');
+goog.require('goog.json.NativeJsonProcessor');
+goog.require('goog.net.Jsonp');
+goog.require('goog.net.XhrIo');
+goog.require('goog.storage.Storage');
+goog.require('goog.storage.mechanism.mechanismfactory');
+goog.require('goog.string');
+goog.require('goog.uri.utils');
+goog.require('pstj.configure');
+
+
 /**
  * Configures the resource loader factory. Note that once an instance is
  *   created, configuration cannot be applied any longer, so make sure you
@@ -64,7 +65,7 @@ goog.require('pstj.configure');
 pstj.resource.configure = function(options) {
   if (!goog.isNull(pstj.resource.instance_)) {
     throw new Error('Once resource instance is created it cannot be ' +
-      'reconfigured');
+        'reconfigured');
   }
   if (goog.isString(options.run)) {
     pstj.resource.run_ = options.run;
@@ -76,6 +77,7 @@ pstj.resource.configure = function(options) {
     pstj.resource.crossDomain_ = options.crossdomain;
   }
 };
+
 
 /**
  * Getter for the storage provider. The provider is created the first time
@@ -93,12 +95,14 @@ pstj.resource.getStorageProvider = function() {
   return pstj.resource.storageProviderInstance_;
 };
 
+
 /**
  * The name of the 'run' parameter, defaults to 'run'.
  * @type {!string}
  * @private
  */
 pstj.resource.run_ = 'run';
+
 
 /**
  * The path to execute on the server.
@@ -107,6 +111,7 @@ pstj.resource.run_ = 'run';
  * @private
  */
 pstj.resource.execPath_ = '/cgi-bin/if.cgi';
+
 
 /**
  * Flag telling the resource loader if some of the resources are to be loaded
@@ -119,6 +124,7 @@ pstj.resource.execPath_ = '/cgi-bin/if.cgi';
  */
 pstj.resource.crossDomain_ = false;
 
+
 /**
  * Reference to the storage provider, lazily created to preserve memory.
  *
@@ -126,6 +132,7 @@ pstj.resource.crossDomain_ = false;
  * @private
  */
 pstj.resource.storageProviderInstance_ = null;
+
 
 /**
  * The Resource instance to provide to the whole application. This is
@@ -138,6 +145,7 @@ pstj.resource.storageProviderInstance_ = null;
  */
 pstj.resource.instance_ = null;
 
+
 /**
  * Getter for resource instance to be used in the session. If an instance
  * has already been created it will be returned (single instance). If not
@@ -148,7 +156,7 @@ pstj.resource.instance_ = null;
 pstj.resource.getInstance = function() {
   if (goog.isNull(pstj.resource.instance_)) {
     var resourceSource = pstj.configure.getRuntimeValue('DATASTREAM',
-      'remote').toString();
+        'remote').toString();
 
     // Decide which implementation to use. If you have other implementation you
     // want to use simply use it directly and hold reference to it.
@@ -164,6 +172,7 @@ pstj.resource.getInstance = function() {
   return pstj.resource.instance_;
 };
 
+
 /**
  * Instance of the JSON processor to use in the Resource package.
  *
@@ -171,6 +180,7 @@ pstj.resource.getInstance = function() {
  * @private
  */
 pstj.resource.jsonProcessor_ = null;
+
 
 /**
  * Getter for the JSON processor, lazily created. The instance is used to parse
@@ -188,6 +198,7 @@ pstj.resource.getJsonProcessor = function() {
   return pstj.resource.jsonProcessor_;
 };
 
+
 /**
  * Builds query data for an URL from map / object.
  *
@@ -197,6 +208,8 @@ pstj.resource.getJsonProcessor = function() {
 pstj.resource.buildRequestParams = function(data) {
   return goog.uri.utils.buildQueryDataFromMap(data);
 };
+
+
 
 /**
  * Implementation that can be used by the resource package.
@@ -226,6 +239,7 @@ pstj.resource.Resource = function() {
   this.useCache_ = false;
 };
 
+
 /**
  * Configures the cache. The basic idea here is to cache the results and
  * make actual calls to the server only after the cache is dumped. This
@@ -245,6 +259,7 @@ pstj.resource.Resource.prototype.enableCache = function(enable) {
   }
 };
 
+
 /**
  * Tells the resource to forget all the stored cache data (i.e. the next time
  * a resource is requested it will be retrieved from the server.
@@ -254,6 +269,7 @@ pstj.resource.Resource.prototype.dumpCache = function() {
     delete this.cache_[k];
   }
 };
+
 
 /**
  * Allows to predefine the call backs for the named 'run' method. This is
@@ -266,36 +282,37 @@ pstj.resource.Resource.prototype.dumpCache = function() {
  * for the named request if no other callback is provided with the request.
  */
 pstj.resource.Resource.prototype.registerRunCallback = function(run_name,
-  callback) {
+    callback) {
   this.run_registry_[run_name] = callback;
 };
+
 
 /**
  * Retrieves a resource by its name.
  *
  * @param  {Object} data Descriptior for the resource to retrieve. It should
  * contain property matching the 'run' property of the configuration.
- * @param  {function(Error, ?): void=} callback The callback to execute when a
- * reply arrives.
+ * @param  {function(Error, ?): void=} opt_callback The callback to execute
+ * when a reply arrives.
  * @param {boolean=} opt_cache_request If set to true the response will be
  * cached and will be dumped only when {@link #dumpCache} method is called,
  * otherwise it will be used for subsequent response value.
  */
-pstj.resource.Resource.prototype.get = function(data, callback,
-  opt_cache_request) {
+pstj.resource.Resource.prototype.get = function(data, opt_callback,
+    opt_cache_request) {
 
   if (!goog.isDefAndNotNull(data) || !goog.isString(data[pstj.resource.run_])) {
     throw new Error('Cannot create request without "run" value');
   }
 
   var url = pstj.resource.execPath_ + '?' + pstj.resource.buildRequestParams(
-    data);
+      data);
 
   // If no callback is specified and run registry has default callback
   // handler for this particular action use it instead.
-  if (!goog.isFunction(callback) && goog.isFunction(
-    this.run_registry_[data[pstj.resource.run_]])) {
-    callback = this.run_registry_[data[pstj.resource.run_]];
+  if (!goog.isFunction(opt_callback) && goog.isFunction(
+      this.run_registry_[data[pstj.resource.run_]])) {
+    opt_callback = this.run_registry_[data[pstj.resource.run_]];
   }
 
   // If cache is enabled and the request is specified as cachable check to
@@ -303,7 +320,7 @@ pstj.resource.Resource.prototype.get = function(data, callback,
   if (this.useCache_ && opt_cache_request == true) {
     if (goog.isDefAndNotNull(this.cache_.get(url))) {
       goog.async.nextTick(function() {
-        callback(null, goog.asserts.assertObject(this.cache_.get(url)));
+        opt_callback(null, goog.asserts.assertObject(this.cache_.get(url)));
       }, this);
       // we will use the local copy, do not send the request.
       return;
@@ -311,7 +328,8 @@ pstj.resource.Resource.prototype.get = function(data, callback,
   }
 
   // Finally send the request if needed.
-  this.sendRequest(url, callback, undefined, undefined, !!opt_cache_request);
+  this.sendRequest(url, opt_callback, undefined, undefined,
+      !!opt_cache_request);
 };
 
 
@@ -333,34 +351,36 @@ pstj.resource.Resource.prototype.post = function(data, callback) {
   }
 
   this.sendRequest(pstj.resource.execPath_, callback, 'POST',
-    pstj.resource.buildRequestParams(data), false);
+      pstj.resource.buildRequestParams(data), false);
 };
+
 
 /**
  * Sends the request using xhr or JSONP (depending on the configuration).
  * @param {!string} url The URL to send the request to.
  * @param {function(Error, ?):void} callback The callback to
  *   apply on the result.
- * @param {string=} method The HTTP method to use to place the request. The
+ * @param {string=} opt_method The HTTP method to use to place the request. The
  *   default is GET.
- * @param {ArrayBuffer|Blob|Document|FormData|GearsBlob|string=} data The data
- *   to send as part of the request.
- * @param {boolean=} cache_response If true the response will be cached and
+ * @param {ArrayBuffer|Blob|Document|FormData|GearsBlob|string=} opt_data The
+ * data to send as part of the request.
+ * @param {boolean=} opt_cache_response If true the response will be cached and
  *   used subsequently.
  * @protected
  */
 pstj.resource.Resource.prototype.sendRequest = function(url,
-    callback, method, data, cache_response) {
-  var bound = goog.bind(this.handleResponse, this, callback, cache_response,
-    url);
+    callback, opt_method, opt_data, opt_cache_response) {
+  var bound = goog.bind(this.handleResponse, this, callback, opt_cache_response,
+      url);
   // Branch depending on configuration.
   if (pstj.resource.crossDomain_) {
-    (new goog.net.Jsonp(url)).send(goog.isObject(data) ? data : null,
-      bound, bound);
+    (new goog.net.Jsonp(url)).send(goog.isObject(opt_data) ? opt_data : null,
+        bound, bound);
   } else {
-    goog.net.XhrIo.send(url, bound, method, data);
+    goog.net.XhrIo.send(url, bound, opt_method, opt_data);
   }
 };
+
 
 /**
  * Default implementation for parsing a server response from XHR request. Here
@@ -379,6 +399,7 @@ pstj.resource.Resource.prototype.parseResponse = function(xhr) {
   return pstj.resource.getJsonProcessor().parse(xhr.getResponseText());
 };
 
+
 /**
  * Handles the response from the server.
  *
@@ -391,7 +412,7 @@ pstj.resource.Resource.prototype.parseResponse = function(xhr) {
  * @protected
  */
 pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
-  url, ev) {
+    url, ev) {
 
   var response = null;
   var error = null;
@@ -419,6 +440,7 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
   }
 };
 
+
 /**
  * Check to make over the recieved response after it was parsed to make sure
  * that the data received is in a format that is expected by the application.
@@ -438,6 +460,7 @@ pstj.resource.Resource.prototype.checkResponseValidity = function(response) {
   }
 };
 
+
 /**
  * Provides mechanism for subclasses to load stub data and query it. The
  * stubs are expected to match only the run parameter by value so options
@@ -446,6 +469,8 @@ pstj.resource.Resource.prototype.checkResponseValidity = function(response) {
  * @param {Object} data The stubs to load and use to reply to queries.
  */
 pstj.resource.Resource.prototype.loadStubs = goog.nullFunction;
+
+
 
 /**
  * Provides stub-able implementation for the Resource class. The resource
@@ -461,15 +486,17 @@ pstj.resource.Local = function() {
 };
 goog.inherits(pstj.resource.Local, pstj.resource.Resource);
 
+
 /** @inheritDoc */
 pstj.resource.Local.prototype.loadStubs = function(stubs) {
   this.stubs = stubs;
 };
 
+
 /** @inheritDoc */
 pstj.resource.Local.prototype.get = function(data, callback, use_cache) {
   var cb = goog.isFunction(callback) ? callback :
-    this.run_registry_[data[pstj.resource.run_]];
+      this.run_registry_[data[pstj.resource.run_]];
   var run = data[pstj.resource.run_];
   setTimeout(goog.bind(function() {
     cb(null, this.stubs[run]);

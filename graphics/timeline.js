@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Provides the basic time line that can be used to draw unlimited
+ * time frame in fractions. Currently up to several days of time is supported,
+ * but additional steps can be provided to support much longer periods.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.graphics.Timeline');
 
 goog.require('goog.dom.classlist');
@@ -12,13 +20,7 @@ goog.require('pstj.graphics.Draw');
 goog.require('pstj.graphics.Smooth');
 goog.require('pstj.ui.Templated');
 
-/**
- * @fileoverview Provides the basic time line that can be used to draw unlimited
- * time frame in fractions. Currently up to several days of time is supported,
- * but additional steps can be provided to support much longer periods.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * @constructor
@@ -26,6 +28,39 @@ goog.require('pstj.ui.Templated');
  */
 pstj.graphics.Timeline = function() {
   goog.base(this);
+  /**
+   * @type {number}
+   * @private
+   */
+  this.scrollValue_ = 0;
+  /**
+   * @type {number}
+   * @private
+   */
+  this.scaleFactor_ = 1;
+  /**
+   * @type {number}
+   */
+  this.cursorHeight = 60;
+  /**
+   * @type {number}
+   * @private
+   */
+  this.currentTime_ = 0;
+  /**
+   * @type {number}
+   * @private
+   */
+  this.initialRatio_;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.enabled_ = true;
+  /**
+   * @type {pstj.graphics.Smooth}
+   * @private
+   */
   this.animation_ = new pstj.graphics.Smooth(this.draw, this);
 };
 goog.inherits(pstj.graphics.Timeline, pstj.ui.Templated);
@@ -38,6 +73,8 @@ goog.inherits(pstj.graphics.Timeline, pstj.ui.Templated);
 pstj.graphics.Timeline.EventType = {
   SCALE_CHANGE: goog.events.getUniqueId('scale-change')
 };
+
+
 /**
  * The steps to use to generate the time fractions.
  * @type {Array.<number>}
@@ -55,48 +92,64 @@ pstj.graphics.Timeline.STEPS = [3600, 1800, 600, 60, 30, 1];
  * @private
  */
 pstj.graphics.Timeline.PREFIX_ = 'SYSMASTER.TIMELINE.VIEW';
+
+
 /**
  * The default font to use to draw text in the canvas. Configurable at run time.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.FONT_FACE_ = 'normal 10px Arial';
+
+
 /**
  * The default background color to use when drawing the canvas.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.BACKGROUND_COLOR_ = '#306392';
+
+
 /**
  *  The default background for the scale portion of the time line.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.SCALE_BACKGROUND_COLOR_ = '#abcff1';
+
+
 /**
  * The default foreground color for the cursor.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.CURSOR_COLOR_ = '#ff0000';
+
+
 /**
  * The default background color to use for the cursor in the time line.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.CURSOR_BACKGROUND_COLOR_ = '#ffffff';
+
+
 /**
  * The default text color to use in the canvas.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.TEXT_COLOR_ = '#ffffff';
+
+
 /**
  * The default color to use for the delimiter.
  * @type {string}
  * @private
  */
 pstj.graphics.Timeline.DELIMITER_COLOR_ = '#06b3ec';
+
+
 /**
  * The default duration of time to be visualizes in the time line when scale is
  *   1.
@@ -104,18 +157,23 @@ pstj.graphics.Timeline.DELIMITER_COLOR_ = '#06b3ec';
  * @private
  */
 pstj.graphics.Timeline.MAIN_PERIOD_ = 86400;
+
+
 /**
  * The maximum scale factor to be applicable to the time line.
  * @type {number}
  * @private
  */
 pstj.graphics.Timeline.MAX_SCALE_FACTOR_ = 800;
+
+
 /**
  * The height of the scale portion of the time line.
  * @type {number}
  * @private
  */
 pstj.graphics.Timeline.SCALE_HEIGHT_ = 30;
+
 
 /**
  * The size in units for the height of time fraction delimiters.
@@ -136,120 +194,97 @@ pstj.graphics.Timeline.ANCHOR_SIZE_ = [
   5
 ];
 
-/**
- * @type {number}
- * @private
- */
-pstj.graphics.Timeline.prototype.scrollValue_ = 0;
-
-/**
- * @type {number}
- * @private
- */
-pstj.graphics.Timeline.prototype.scaleFactor_ = 1;
-
-/**
- * @type {number}
- */
-pstj.graphics.Timeline.prototype.cursorHeight = 60;
-
-/**
- * @type {number}
- * @private
- */
-pstj.graphics.Timeline.prototype.currentTime_ = 0;
-
-/**
- * @type {number}
- * @private
- */
-pstj.graphics.Timeline.prototype.initialRatio_;
-
-/**
- * @type {boolean}
- * @private
- */
-pstj.graphics.Timeline.prototype.enabled_ = true;
 
 // Define the properties of the instance based on configuration in runtime
 // (should have been provided before the compiled script) as a mixin of the
 // final configuration of items above (pstj.graphics.Timeline.*).
 
+
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlFontFace = goog.asserts.assertString(
-  pstj.configure.getRuntimeValue('FONT_FACE', pstj.graphics.Timeline.FONT_FACE_,
-  pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('FONT_FACE',
+    pstj.graphics.Timeline.FONT_FACE_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlBackgroundColor = goog.asserts.assertString(
-  pstj.configure.getRuntimeValue('BACKGROUND_COLOR',
-  pstj.graphics.Timeline.BACKGROUND_COLOR_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('BACKGROUND_COLOR',
+    pstj.graphics.Timeline.BACKGROUND_COLOR_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlScaleBackgroundColor = goog.asserts
-  .assertString(pstj.configure.getRuntimeValue('SCALE_BACKGROUND_COLOR',
-  pstj.graphics.Timeline.SCALE_BACKGROUND_COLOR_,
-  pstj.graphics.Timeline.PREFIX_));
+    .assertString(pstj.configure.getRuntimeValue('SCALE_BACKGROUND_COLOR',
+    pstj.graphics.Timeline.SCALE_BACKGROUND_COLOR_,
+    pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlCursorColor = goog.asserts.assertString(
-  pstj.configure.getRuntimeValue('CURSOR_COLOR',
-  pstj.graphics.Timeline.CURSOR_COLOR_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('CURSOR_COLOR',
+    pstj.graphics.Timeline.CURSOR_COLOR_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlCursorBackgroundColor = goog.asserts
-  .assertString(pstj.configure.getRuntimeValue('CURSOR_BACKGROUND_COLOR',
-  pstj.graphics.Timeline.CURSOR_BACKGROUND_COLOR_,
-  pstj.graphics.Timeline.PREFIX_));
+    .assertString(pstj.configure.getRuntimeValue('CURSOR_BACKGROUND_COLOR',
+    pstj.graphics.Timeline.CURSOR_BACKGROUND_COLOR_,
+    pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlTextColor = goog.asserts.assertString(
-  pstj.configure.getRuntimeValue('TEXT_COLOR',
-  pstj.graphics.Timeline.TEXT_COLOR_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('TEXT_COLOR',
+    pstj.graphics.Timeline.TEXT_COLOR_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {string}
  */
 pstj.graphics.Timeline.prototype.tlDelimiterColor = goog.asserts.assertString(
-  pstj.configure.getRuntimeValue('DELIMITER_COLOR',
-  pstj.graphics.Timeline.DELIMITER_COLOR_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('DELIMITER_COLOR',
+    pstj.graphics.Timeline.DELIMITER_COLOR_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {number}
  * @private
  */
 pstj.graphics.Timeline.prototype.duration_ = goog.asserts.assertNumber(
-  pstj.configure.getRuntimeValue('MAIN_PERIOD',
-  pstj.graphics.Timeline.MAIN_PERIOD_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('MAIN_PERIOD',
+    pstj.graphics.Timeline.MAIN_PERIOD_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {number}
  */
 pstj.graphics.Timeline.prototype.tlMaxScaleFactor = goog.asserts.assertNumber(
-  pstj.configure.getRuntimeValue('MAX_SCALE_FACTOR',
-  pstj.graphics.Timeline.MAX_SCALE_FACTOR_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('MAX_SCALE_FACTOR',
+    pstj.graphics.Timeline.MAX_SCALE_FACTOR_, pstj.graphics.Timeline.PREFIX_));
+
 
 /**
  * @type {number}
  */
 pstj.graphics.Timeline.prototype.tlScaleHeight = goog.asserts.assertNumber(
-  pstj.configure.getRuntimeValue('SCALE_HEIGHT',
-  pstj.graphics.Timeline.SCALE_HEIGHT_, pstj.graphics.Timeline.PREFIX_));
+    pstj.configure.getRuntimeValue('SCALE_HEIGHT',
+    pstj.graphics.Timeline.SCALE_HEIGHT_, pstj.graphics.Timeline.PREFIX_));
 
 // End runtime configuration.
 //
+
 
 /** @inheritDoc */
 pstj.graphics.Timeline.prototype.enterDocument = function() {
@@ -259,14 +294,15 @@ pstj.graphics.Timeline.prototype.enterDocument = function() {
   this.setupDrawOptions_();
 
   this.getHandler().listen(this.getCanvas(), goog.events.EventType.RESIZE,
-    this.createCache);
+      this.createCache);
 
   this.getHandler().listen(this.getContentElement(),
-    goog.events.EventType.CLICK, this.handleMouseClick);
+      goog.events.EventType.CLICK, this.handleMouseClick);
 
   this.createCache();
   this.update();
 };
+
 
 /**
  * Makes sure that the run time configurable drawing options are applyed to
@@ -277,6 +313,7 @@ pstj.graphics.Timeline.prototype.setupDrawOptions_ = function() {
   this.draw_.setFont(this.tlFontFace);
   this.draw_.setTextColor(this.tlTextColor);
 };
+
 
 /**
  * Sets the state of the timeline. In disabled mode it should not accept any
@@ -291,6 +328,7 @@ pstj.graphics.Timeline.prototype.setEnabled = function(enable) {
   }
 };
 
+
 /**
  * Getter for the maximum value possible to be set as scroll value in the
  *   view that matches the current scale factor (i.e. the larger the scale,
@@ -301,6 +339,7 @@ pstj.graphics.Timeline.prototype.getMaximumScrollValue = function() {
   return Math.max(0, this.getDuration() - this.getWindowVisibleTime_());
 };
 
+
 /**
  * Getter for the current duration that is fractioned in the view. This is the
  * duration that is the maximum time visualized (when scale factor == 1).
@@ -309,6 +348,7 @@ pstj.graphics.Timeline.prototype.getMaximumScrollValue = function() {
 pstj.graphics.Timeline.prototype.getDuration = function() {
   return this.duration_;
 };
+
 
 /**
  * Accessors for the canvas used, but abstracted to remove complexity from
@@ -319,6 +359,7 @@ pstj.graphics.Timeline.prototype.getCanvas = function() {
   return this.canvas_;
 };
 
+
 /**
  * Returns the actual canvas DOM element used.
  * @return {Element} The canvas element.
@@ -326,6 +367,7 @@ pstj.graphics.Timeline.prototype.getCanvas = function() {
 pstj.graphics.Timeline.prototype.getContentElement = function() {
   return this.canvas_.getCanvas();
 };
+
 
 /**
  * Getter for the drawing adapter. This might be useful for the overloading
@@ -339,6 +381,7 @@ pstj.graphics.Timeline.prototype.getDrawAdaptor = function() {
   return this.draw_;
 };
 
+
 /**
  * Getter for the current time in the time line. The time will match the
  *   cursor showing the current time stamp.
@@ -347,6 +390,7 @@ pstj.graphics.Timeline.prototype.getDrawAdaptor = function() {
 pstj.graphics.Timeline.prototype.getCurrentTime = function() {
   return this.currentTime_;
 };
+
 
 /**
  * Sets the current time in the time line. It will also update the view as
@@ -361,6 +405,7 @@ pstj.graphics.Timeline.prototype.setCurrentTime = function(time) {
     this.update();
   }
 };
+
 
 /**
  * Set the scale factor of the view using a percentage scale. This is a
@@ -378,6 +423,7 @@ pstj.graphics.Timeline.prototype.setScalePercent = function(percent) {
   }
 };
 
+
 /**
  * Sets the value of the scale factor. Should be between 1 and the maximum
  *   scale factor configured.
@@ -392,6 +438,7 @@ pstj.graphics.Timeline.prototype.setScaleFactor = function(value) {
   }
 };
 
+
 /**
  * Sets the current scroll value. The possible values should be bound to
  *   0..N where N is the maximum scroll value as calculated by
@@ -404,6 +451,7 @@ pstj.graphics.Timeline.prototype.setScrollValue = function(value) {
   this.update();
 };
 
+
 /**
  * Provides chance to subclasses to execute drawing operations before the
  *   current time marker is drawn.
@@ -414,6 +462,7 @@ pstj.graphics.Timeline.prototype.setScrollValue = function(value) {
  */
 pstj.graphics.Timeline.prototype.drawsBeforeMarker = goog.functions.FALSE;
 
+
 /**
  * Provides chance to subclasses to execute drawing operations after the
  *   current time marker is drawn.
@@ -423,6 +472,7 @@ pstj.graphics.Timeline.prototype.drawsBeforeMarker = goog.functions.FALSE;
  * @protected
  */
 pstj.graphics.Timeline.prototype.drawsAfterMarker = goog.functions.FALSE;
+
 
 /**
  * Perform the actual drawing on the canvas. This method should not be
@@ -437,10 +487,10 @@ pstj.graphics.Timeline.prototype.drawsAfterMarker = goog.functions.FALSE;
 pstj.graphics.Timeline.prototype.draw = function(ts) {
   // draw backgrounds.
   this.getDrawAdaptor().rect(0, 0, this.width_, this.height_,
-    this.tlBackgroundColor);
+      this.tlBackgroundColor);
 
   this.getDrawAdaptor().rect(0, 0, this.width_, this.tlScaleHeight,
-    this.tlScaleBackgroundColor);
+      this.tlScaleBackgroundColor);
   // actual timeline drawing.
   var x;
   var sec;
@@ -457,10 +507,10 @@ pstj.graphics.Timeline.prototype.draw = function(ts) {
   var usedStep = this.getSmallestStepApplicable();
   var first_step_position = this.timeToX(0);
   var step_size_in_pixels = this.timeToX(
-    pstj.graphics.Timeline.STEPS[usedStep]) - first_step_position;
+      pstj.graphics.Timeline.STEPS[usedStep]) - first_step_position;
 
   sec = Math.abs(((first_step_position / step_size_in_pixels) << 0) *
-    pstj.graphics.Timeline.STEPS[usedStep]);
+      pstj.graphics.Timeline.STEPS[usedStep]);
   x = this.timeToX(sec);
 
 
@@ -473,11 +523,11 @@ pstj.graphics.Timeline.prototype.draw = function(ts) {
         iter++;
       }
       this.getDrawAdaptor().line(x,
-        this.tlScaleHeight - pstj.graphics.Timeline.ANCHOR_SIZE_[iter],
-        x, y2, this.tlDelimiterColor);
+          this.tlScaleHeight - pstj.graphics.Timeline.ANCHOR_SIZE_[iter],
+          x, y2, this.tlDelimiterColor);
       if (drawDigitsIn >= iter) {
         this.getDrawAdaptor().text(pstj.date.utils.getTimestamp(sec), x - 20,
-          10, this.tlDelimiterColor);
+            10, this.tlDelimiterColor);
       }
     }
     x = x + step_size_in_pixels;
@@ -492,10 +542,10 @@ pstj.graphics.Timeline.prototype.draw = function(ts) {
   this.getDrawAdaptor().line(x, 0, x, this.height_, this.tlCursorColor);
 
   this.getDrawAdaptor().rect(x + 1, 11, 50, 11,
-    this.tlCursorBackgroundColor);
+      this.tlCursorBackgroundColor);
 
   this.getDrawAdaptor().text(pstj.date.utils.getTimestamp(
-    this.getCurrentTime()), x + 3, 20, this.tlCursorColor);
+      this.getCurrentTime()), x + 3, 20, this.tlCursorColor);
 
   var afterDraws = this.drawsAfterMarker(ts);
 
@@ -504,12 +554,14 @@ pstj.graphics.Timeline.prototype.draw = function(ts) {
   return beforeDraws || afterDraws || false;
 };
 
+
 /**
  * Hide the asynchronous implementation behind a common method.
  */
 pstj.graphics.Timeline.prototype.update = function() {
   this.animation_.update();
 };
+
 
 /**
  * Calculates the X position on the canvas for a certain time (in seconds),
@@ -525,6 +577,7 @@ pstj.graphics.Timeline.prototype.timeToX = function(time) {
   return time * this.scaleFactor_ * this.initialRatio_;
 };
 
+
 /**
  * Looks up the time based on a X value on the scale. This is used to find a
  *   time stamp that matches an X position on the canvas, on large scale the
@@ -536,8 +589,9 @@ pstj.graphics.Timeline.prototype.timeToX = function(time) {
 pstj.graphics.Timeline.prototype.xToTime = function(x) {
   var timeShift = Math.max(0, this.scrollValue_);
   return Math.round((x / (this.scaleFactor_ * this.initialRatio_)) +
-    timeShift);
+      timeShift);
 };
+
 
 /**
  * Handle the mouse clicks in the canvas. Method is public so it can be
@@ -548,6 +602,7 @@ pstj.graphics.Timeline.prototype.xToTime = function(x) {
 pstj.graphics.Timeline.prototype.handleMouseClick = function(ev) {
   this.setCurrentTime(this.xToTime(ev.offsetX));
 };
+
 
 /**
  * Utility function to figure out the smallest step that is applicable on
@@ -566,6 +621,7 @@ pstj.graphics.Timeline.prototype.getSmallestStepApplicable = function() {
   }
   return i - 1;
 };
+
 
 /**
  * Draws a period in the time line.
@@ -592,8 +648,9 @@ pstj.graphics.Timeline.prototype.drawPeriod = function(start, end, color) {
   if (x1 > this.width_) return;
 
   this.getDrawAdaptor().rect(x1, this.tlScaleHeight, x2 - x1,
-    this.height_, color, true);
+      this.height_, color, true);
 };
+
 
 /**
  * Intentionally export this as calculation function to ease overriding it.
@@ -604,6 +661,7 @@ pstj.graphics.Timeline.prototype.calculateScrollValue = function() {
   return this.scrollValue_;
 };
 
+
 /**
  * Returns the visible time i.e. the duration that can fit in the canvas at
  *   the current scale.
@@ -613,6 +671,7 @@ pstj.graphics.Timeline.prototype.calculateScrollValue = function() {
 pstj.graphics.Timeline.prototype.getWindowVisibleTime_ = function() {
   return this.getDuration() / this.scaleFactor_;
 };
+
 
 /**
  * Checks if a certain step (time interval) should be used (i.e. the canvas
@@ -625,6 +684,7 @@ pstj.graphics.Timeline.prototype.getWindowVisibleTime_ = function() {
 pstj.graphics.Timeline.prototype.shouldUseStep_ = function(step) {
   return step * this.scaleFactor_ * this.initialRatio_;
 };
+
 
 /**
  * Creates cached values to be used for faster calculation during drawing

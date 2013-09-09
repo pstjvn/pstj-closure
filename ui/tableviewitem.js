@@ -5,6 +5,8 @@ goog.require('pstj.templates');
 goog.require('pstj.ui.ControlRenderer');
 goog.require('pstj.ui.ngAgent');
 
+
+
 /**
  * Provides the default renderer for the table view item (cell).
  * Note that the renderer should be provided as to understands the data
@@ -19,21 +21,26 @@ pstj.ui.TableViewItemRenderer = function() {
 goog.inherits(pstj.ui.TableViewItemRenderer, pstj.ui.ControlRenderer);
 goog.addSingletonGetter(pstj.ui.TableViewItemRenderer);
 
+
 /**
  * @type {string}
  * @final
  */
 pstj.ui.TableViewItemRenderer.CSS_CLASS = goog.getCssName('tableviewitem');
 
+
 /** @inheritDoc */
 pstj.ui.TableViewItemRenderer.prototype.getTemplate = function(component) {
   return pstj.templates.TableViewItem({});
 };
 
+
 /** @inheritDoc */
 pstj.ui.TableViewItemRenderer.prototype.getCssClass = function() {
   return pstj.ui.TableViewItemRenderer.CSS_CLASS;
 };
+
+
 
 /**
  * @constructor
@@ -43,12 +50,13 @@ pstj.ui.TableViewItemRenderer.prototype.getCssClass = function() {
  */
 pstj.ui.TableViewItem = function(opt_renderer) {
   goog.base(this, '',
-    opt_renderer || pstj.ui.TableViewItemRenderer.getInstance());
+      opt_renderer || pstj.ui.TableViewItemRenderer.getInstance());
   // disable handling of events - we are going to deal with this from the
   // TableView instance.
   // this.setHandleMouseEvents(false);
 };
 goog.inherits(pstj.ui.TableViewItem, goog.ui.Control);
+
 
 /** @inheritDoc */
 pstj.ui.TableViewItem.prototype.setModel = function(model) {

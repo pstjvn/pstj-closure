@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Provides easy to use 'touch enabled' behaviour for controls
+ * to allow the controls to react fast on touch events / mobile (i.e. shortcuts
+ * the 300ms delays). It does not change the behaviour of the component in any
+ * way, it only fires the ACTION event.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.TouchAgent');
 
 goog.require('goog.asserts');
@@ -7,14 +16,7 @@ goog.require('goog.events.EventType');
 goog.require('goog.events.Key');
 goog.require('pstj.ui.Agent');
 
-/**
- * @fileoverview Provides easy to use 'touch enabled' behaviour for controls
- * to allow the controls to react fast on touch events / mobile (i.e. shortcuts
- * the 300ms delays). It does not change the behaviour of the component in any
- * way, it only fires the ACTION event.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Provides easy access to touch optimized behaviour for regular control
@@ -52,6 +54,7 @@ pstj.ui.TouchAgent = function() {
 goog.inherits(pstj.ui.TouchAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.TouchAgent);
 
+
 /**
  * @define {number} The minimum distance between the X or Y of the point of
  * starting a touch event and ending it to consider the gesture as 'move'. If
@@ -59,31 +62,35 @@ goog.addSingletonGetter(pstj.ui.TouchAgent);
  */
 goog.define('pstj.ui.TouchAgent.TOUCH_TRESHOLD', 10);
 
+
 /** @inheritDoc */
 pstj.ui.TouchAgent.prototype.updateCache = function(control) {
   // little hack, we need this to be a control instance as we use the 'set*'
   // methods from it.
   // At compile time with DEBUG turned off this will be stripped out.
   goog.asserts.assertInstanceof(control, goog.ui.Control,
-    'The touch agent is designed for Control elements');
+      'The touch agent is designed for Control elements');
 
   // make sure there is actually such element.
   if (goog.isDefAndNotNull(control.getElement())) {
     this.getCache().set(control.getId(),
-      goog.events.listen(control.getElement(),
-      [goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHMOVE,
-      goog.events.EventType.TOUCHEND],
-      goog.bind(this.handleTouchEvents, this, control)));
+        goog.events.listen(control.getElement(),
+        [
+          goog.events.EventType.TOUCHSTART,
+          goog.events.EventType.TOUCHMOVE,
+          goog.events.EventType.TOUCHEND],
+        goog.bind(this.handleTouchEvents, this, control)));
   } else {
     throw new Error('Touch agent should be attached only when component ' +
-      'already has its dom element.');
+        'already has its dom element.');
   }
 };
+
 
 /** @inheritDoc */
 pstj.ui.TouchAgent.prototype.detach = function(control) {
   goog.events.unlistenByKey(/** @type {goog.events.Key} */ (
-    this.getCache().get(control.getId())));
+      this.getCache().get(control.getId())));
 
   // prevent accessing controls that are no longer in the document.
   if (control == this.control_) {
@@ -95,6 +102,7 @@ pstj.ui.TouchAgent.prototype.detach = function(control) {
   goog.base(this, 'detach', control);
 };
 
+
 /**
  * Perform action when RAF-ing. Just monitor if the move treshold has been
  * passed and disable the component if yes.
@@ -104,19 +112,21 @@ pstj.ui.TouchAgent.prototype.detach = function(control) {
  */
 pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
   if (Math.abs(this.touchCache_[0] - this.touchCache_[2]) >
-    pstj.ui.TouchAgent.TOUCH_TRESHOLD ||
-    Math.abs(this.touchCache_[1] - this.touchCache_[3]) >
-    pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
+      pstj.ui.TouchAgent.TOUCH_TRESHOLD ||
+      Math.abs(this.touchCache_[1] - this.touchCache_[3]) >
+      pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
 
-      this.control_.setActive(false);
+    this.control_.setActive(false);
 
   }
 };
 
+
 /**
  * Handles the touch events from registered component.
  *
- * @param {goog.ui.Control} control The control instance that is bound to the event handler.
+ * @param {goog.ui.Control} control The control instance that is bound to the
+ * event handler.
  * @param {goog.events.Event} e The touch event wrapped by Closure.
  * @protected
  */
@@ -139,12 +149,12 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
     if (control.isActive()) {
       if (Math.abs(this.touchCache_[0] - this.touchCache_[2]) <
-        pstj.ui.TouchAgent.TOUCH_TRESHOLD &&
-        Math.abs(this.touchCache_[1] - this.touchCache_[3]) <
-        pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
+          pstj.ui.TouchAgent.TOUCH_TRESHOLD &&
+          Math.abs(this.touchCache_[1] - this.touchCache_[3]) <
+          pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
 
         control.dispatchEvent(new goog.events.Event(
-          goog.ui.Component.EventType.ACTION, control));
+            goog.ui.Component.EventType.ACTION, control));
 
       }
       control.setActive(false);

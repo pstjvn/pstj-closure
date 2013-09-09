@@ -9,11 +9,15 @@
  * everywhere and thus we want always recognizable URLs, however
  * we do not want to convert those URL (a la G+ management) thus
  * we want to enforce basic history api (fragment instead of
- * html5 version), thus we need the class tweaked, but it is
- * not designed for extendibility, thus we copy and alter it.
+ * html5 version), thus we need the class tweaked.
  *
- * @author  regardingscot@gmail.com (Peter StJ)
+ * Unfortunately the original implmentation as seen in PlastronJS was
+ * not designed for extendibility, thus we simply copy the behavior and will not
+ * use the original code.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
  */
+
 goog.provide('pstj.mvc.SimpleRouter');
 
 goog.require('goog.History');
@@ -23,6 +27,8 @@ goog.require('goog.events');
 
 
 /**
+ * Provides a simple routing infrastructure for managing URL like hierarchies of
+ * 'pages' inside the app.
  * @constructor
  */
 pstj.mvc.SimpleRouter = function() {
@@ -34,13 +40,14 @@ pstj.mvc.SimpleRouter = function() {
 
 
 /**
- * pass through the fragment for the URL
+ * Pass through the fragment for the URL
  *
  * @param {string} fragment to set for the history token.
  */
 pstj.mvc.SimpleRouter.prototype.navigate = function(fragment) {
   this.history_.setToken(fragment);
 };
+
 
 /**
  * For our needs the history should be anabled AFTER we have setup the routes,
@@ -50,6 +57,7 @@ pstj.mvc.SimpleRouter.prototype.navigate = function(fragment) {
 pstj.mvc.SimpleRouter.prototype.setEnabled = function(enable) {
   this.history_.setEnabled(enable);
 };
+
 
 /**
  * define route as string or regex. /:abc/ will pass "abc" through as an

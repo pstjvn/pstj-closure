@@ -7,6 +7,7 @@ goog.provide('pstj.configure');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+
 /**
  * Memorization utility for common prefixes. Allows for speeding up the
  *   lookups on runtime.
@@ -15,10 +16,12 @@ goog.provide('pstj.configure');
  */
 pstj.configure.pathCache_ = {};
 
+
 /**
  * @typedef {number|string|boolean}
  */
 pstj.configure.Value;
+
 
 /**
  * Figure out if a pre-defined value is over-ridden from a global
@@ -34,7 +37,6 @@ pstj.configure.Value;
  */
 pstj.configure.getRuntimeValue = function(value, default_value, opt_prefix) {
   var current = goog.global;
-  var temp;
   var paths;
   if (goog.isString(opt_prefix)) {
     if (goog.isDef(pstj.configure.pathCache_[opt_prefix])) {
@@ -61,6 +63,7 @@ pstj.configure.getRuntimeValue = function(value, default_value, opt_prefix) {
     return default_value;
   }
 };
+
 
 /**
  * Utility function that creates a bound prefix look up helper. Allows the use

@@ -1,5 +1,3 @@
-goog.provide('pstj.ui.Strings');
-
 /**
  * @fileoverview Utility class to handle translatable static strings from
  * templates. It is assumed that the strings are static (i.e no variables in
@@ -9,6 +7,10 @@ goog.provide('pstj.ui.Strings');
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.Strings');
+
+
 
 /**
  * Generates list of static strings from a given translatable string, usually
@@ -24,6 +26,7 @@ pstj.ui.Strings = function(str) {
    */
   this.strings_ = str.split('|');
 };
+
 
 /**
  * Getter for the index string. If such index does not exists an empty string

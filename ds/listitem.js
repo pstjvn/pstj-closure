@@ -7,7 +7,7 @@
 *
 * Update: 8/13 - allow the structure to use Arrays as data sources.
 *
-* @author  regardingscot@gmail.com (Peter StJ)
+* @author regardingscot@gmail.com (Peter StJ)
 */
 
 goog.provide('pstj.ds.ListItem');
@@ -19,6 +19,7 @@ goog.require('goog.object');
 goog.require('goog.string');
 goog.require('pstj.ds.IListItem');
 goog.require('pstj.object');
+
 
 
 /**
@@ -64,26 +65,27 @@ goog.require('pstj.object');
  * @extends {goog.events.EventTarget}
  * @implements {pstj.ds.IListItem}
  * @param {Object|Array} data The data to use as source for the item.
- * @param {string=} id_property The name of the ID property to look up.
+ * @param {string=} opt_id_proprety The name of the ID property to look up.
  */
-pstj.ds.ListItem = function(data, id_property) {
+pstj.ds.ListItem = function(data, opt_id_proprety) {
   goog.base(this);
   // because the data source could be either an object or an array and arrays
   // are objects, check only for object
   goog.asserts.assertObject(data,
-    'List item can use only object literals as data source');
+      'List item can use only object literals as data source');
   this.data_ = data;
   /**
    * @type {string}
    * @private
    */
   this.id_property_ = 'id';
-  if (goog.isString(id_property)) {
-    this.id_property_ = id_property;
+  if (goog.isString(opt_id_proprety)) {
+    this.id_property_ = opt_id_proprety;
   }
   this.convert();
 };
 goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
+
 
 /**
  * Provides the Event type to listen for in controllers that might use this
@@ -95,6 +97,7 @@ pstj.ds.ListItem.EventType = {
   DELETE: goog.events.getUniqueId('delete')
 };
 
+
 /**
  * Getter for the raw data model used in the type record.
  * @return {Object|Array} The raw data, should be single level object or an
@@ -103,6 +106,7 @@ pstj.ds.ListItem.EventType = {
 pstj.ds.ListItem.prototype.getRawData = function() {
   return this.data_;
 };
+
 
 /**
  * Method that should return the unique ID of the data.
@@ -119,6 +123,7 @@ pstj.ds.ListItem.prototype.getId = function() {
   return result;
 };
 
+
 /**
  * Universal getter for properties of the raw data. The return type could be
  * any type supported by JSON (i.e. string, number or boolean).
@@ -130,6 +135,7 @@ pstj.ds.ListItem.prototype.getProp = function(prop) {
   return this.getNestedValue_(props);
 };
 
+
 /**
  * Method to update the data on the record type with new literal object. It
  * will check if the ID of the record type provided for the update of this
@@ -140,12 +146,13 @@ pstj.ds.ListItem.prototype.getProp = function(prop) {
 pstj.ds.ListItem.prototype.update = function(node) {
   if (this.getId() == node.getId()) {
     goog.asserts.assertInstanceof(node, pstj.ds.ListItem,
-      'You should not mix implementation of list items');
+        'You should not mix implementation of list items');
     return this.set_(node);
   } else {
     return false;
   }
 };
+
 
 /**
  * Method to mutate the raw data directly. While the 'update' method expects
@@ -174,8 +181,7 @@ pstj.ds.ListItem.prototype.mutate = function(property, value) {
   var oldvalue = goog.object.get(result, name);
 
   if (goog.typeOf(oldvalue) != 'object' &&
-    goog.typeOf(value) == goog.typeOf(oldvalue)) {
-
+      goog.typeOf(value) == goog.typeOf(oldvalue)) {
     result[name] = value;
     this.dispatchEvent(pstj.ds.ListItem.EventType.UPDATE);
     return true;
@@ -184,14 +190,16 @@ pstj.ds.ListItem.prototype.mutate = function(property, value) {
   }
 };
 
+
 /**
  * Returns a new item that is a raw data clone of this item.
  * @return {pstj.ds.ListItem} The clones item.
  */
 pstj.ds.ListItem.prototype.clone = function() {
   return new pstj.ds.ListItem(goog.asserts.assertObject(
-    goog.object.unsafeClone(this.getRawData())));
+      goog.object.unsafeClone(this.getRawData())));
 };
+
 
 /**
  * Overrides the default behavior to allow easier serialization of wrapped
@@ -203,6 +211,7 @@ pstj.ds.ListItem.prototype['toJSON'] = function() {
   return this.getRawData();
 };
 
+
 /** @inheritDoc */
 pstj.ds.ListItem.prototype.disposeInternal = function() {
   // Notify controllers that use this about the deletion.
@@ -212,6 +221,7 @@ pstj.ds.ListItem.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 };
 
+
 /**
  * Coerce the raw data if needed. This includes permutations over the ojbect
  * literal to make complex object abide the application logic. By default it
@@ -219,6 +229,7 @@ pstj.ds.ListItem.prototype.disposeInternal = function() {
  * @protected
  */
 pstj.ds.ListItem.prototype.convert = function() {};
+
 
 /**
  * Getter for the property name that identifies the UID of the data record.
@@ -230,6 +241,7 @@ pstj.ds.ListItem.prototype.convert = function() {};
 pstj.ds.ListItem.prototype.getIdProperty = function() {
   return this.id_property_;
 };
+
 
 /**
  * Finds the raw data recod matching the looked up nested name.
@@ -251,6 +263,7 @@ pstj.ds.ListItem.prototype.getNestedProperty_ = function(props) {
   return result;
 };
 
+
 /**
  * Finds the raw data recod matching the looked up nested name.
  * @private
@@ -269,6 +282,7 @@ pstj.ds.ListItem.prototype.getNestedValue_ = function(props) {
   return result;
 };
 
+
 /**
  * Overrides the stored data. The implementation is not transparent, i.e.
  * the new data will only override existing data, omitting the ID
@@ -286,7 +300,7 @@ pstj.ds.ListItem.prototype.set_ = function(data) {
 
   if (data.getId() != this.getId()) {
     throw Error('Cannot update unique ID property, it is immutable and the' +
-      ' data provided does not match the record.');
+        ' data provided does not match the record.');
   }
 
   if (pstj.object.deepEquals(this.getRawData(), data.getRawData())) {

@@ -61,31 +61,35 @@ pstj.object.objEquiv_ = function(a, b) {
  *
  * @param  {*} actual The object to compare as first.
  * @param  {*} expected The object to compare as second.
- * @param {Function=} comparer How to compare array.
+ * @param {Function=} opt_comparer How to compare array.
  *
  * @return {!boolean} True if the objects are equal, false otherwise.
  */
-pstj.object.deepEquals = function(actual, expected, comparer) {
+pstj.object.deepEquals = function(actual, expected, opt_comparer) {
   // If it is the same object do not compare further
   if (actual === expected) {
     return true;
   } else if (actual instanceof Date && expected instanceof Date) {
-      // Compare Date objects, they are the same if the date time matches.
-      return actual.getTime() === expected.getTime();
+
+    // Compare Date objects, they are the same if the date time matches.
+    return actual.getTime() === expected.getTime();
   } else if (goog.isArray(actual) && goog.isArray(expected)) {
+
     // If both objects are arrays compare them using the closure library
     // comparer or the one provided with the call if any.
     return goog.array.equals(/** @type {Array} */(actual),
-      /** @type {Array} */ (expected), comparer);
+        /** @type {Array} */ (expected), opt_comparer);
   } else if (typeof actual != 'object' && typeof expected != 'object') {
+
     // If the parameters are both not instances of the Object object,
     // make a value comparison.
     return actual == expected;
   } else {
+
     // They are both objects, if comparer is provided run them with it, else use
     // our deep object comparison helper.
-    if (comparer) {
-      return comparer(actual, expected);
+    if (opt_comparer) {
+      return opt_comparer(actual, expected);
     } else {
       if (goog.isObject(actual) && goog.isObject(expected))
         return pstj.object.objEquiv_(actual, expected);
@@ -93,6 +97,7 @@ pstj.object.deepEquals = function(actual, expected, comparer) {
     }
   }
 };
+
 
 /**
  * Encodes a JSON object as URL encoded paload for sending over the wire for
@@ -111,6 +116,7 @@ pstj.object.encode = function(data) {
   return s.join('&').replace(/%20/g, '+');
 };
 
+
 /**
  * Builds up the parameters for the JSON URL encoding.
  * @param {!Array.<string>} arr The array to push evenrything in.
@@ -127,7 +133,7 @@ pstj.object.buildParams_ = function(arr, prefix, data) {
         pstj.object.add_(arr, prefix, el);
       } else {
         pstj.object.buildParams_(arr, prefix + '[' +
-          (typeof el == 'object' ? index : '') + ']', el);
+            (typeof el == 'object' ? index : '') + ']', el);
       }
     });
   } else if (goog.isObject(data)) {
@@ -139,6 +145,7 @@ pstj.object.buildParams_ = function(arr, prefix, data) {
   }
 };
 
+
 /**
  * Adds the value to the url encoded string.
  * @param {Array.<string>} arr The array collecting the resulting encoded
@@ -149,6 +156,6 @@ pstj.object.buildParams_ = function(arr, prefix, data) {
  */
 pstj.object.add_ = function(arr, key, value) {
   value = goog.isFunction(value) ? value() : (
-    goog.isNull(value) ? '' : value);
+      goog.isNull(value) ? '' : value);
   arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
 };

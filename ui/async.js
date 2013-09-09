@@ -1,14 +1,16 @@
+/**
+ * @fileoverview Provides basic asynchrnously updateable component.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.Async');
 
 goog.require('goog.functions');
 goog.require('pstj.graphics.Smooth');
 goog.require('pstj.ui.Templated');
 
-/**
- * @fileoverview Provides basic asynchrnously updateable component.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Widget base class that has a RAF bound method for redrawing its state. The
@@ -17,10 +19,10 @@ goog.require('pstj.ui.Templated');
  *   the actual drawing.
  * @constructor
  * @extends {pstj.ui.Templated}
- * @param {pstj.ui.Template=} template The template to use.
+ * @param {pstj.ui.Template=} opt_template The template to use.
  */
-pstj.ui.Async = function(template) {
-  goog.base(this, template);
+pstj.ui.Async = function(opt_template) {
+  goog.base(this, opt_template);
   /**
    * @private
    * @type {pstj.graphics.Smooth}
@@ -29,6 +31,7 @@ pstj.ui.Async = function(template) {
   this.registerDisposable(this.smooth_);
 };
 goog.inherits(pstj.ui.Async, pstj.ui.Templated);
+
 
 /**
  * The main drawing method. Default implementation always returns false as it
@@ -40,12 +43,14 @@ goog.inherits(pstj.ui.Async, pstj.ui.Templated);
  */
 pstj.ui.Async.prototype.draw = goog.functions.FALSE;
 
+
 /**
  * Umbrella method, internally it uses RAF to call the draw method.
  */
 pstj.ui.Async.prototype.update = function() {
   this.smooth_.update();
 };
+
 
 /** @inheritDoc */
 pstj.ui.Async.prototype.disposeInternal = function() {

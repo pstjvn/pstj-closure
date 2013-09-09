@@ -1,30 +1,45 @@
-// TODO: rename this to a sane namespace (pstj.ds.CyclicMap)
-goog.provide('pstj.ds.MapRotator');
-
-goog.require('goog.Disposable');
-
 /**
  * @fileoverview Provides cyclic mapping for value retrieval. Use case would
  *   be to have a limited set of values we want to assign to unlimited number
  *   of entities, once the available values are depleted, the values are
  *   reused in the same order.
+ *
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.ds.MapRotator');
+
+goog.require('goog.Disposable');
+
+
+
 /**
- * Provides means the use a limited number of record items to populate over a
- *   larger list mapping the longer list ids to the shorter list of available
- *   values on a rotational basis.
- * @param {Array.<number|string>=} list The list of value to use to assign to
- *   the id map.
+ * Provides means the use a limited number of record items to populate a larger
+ * list mapping the longer list ids to the shorter list of available values on
+ * a rotational basis.
+ *
+ * Example:
+ * <pre>
+ * var mylist = ['1.jpg', '2.jpg', '3.jpg'];
+ * var myCyleMap = new pstj.ds.MapRotator(mylist);
+ *
+ * // This will yeald  1,2,3,1,2,3,1,2,3,1;
+ * for (var i = 0, i < 10; i++) {
+ *   // use the image provided mapped to an id
+ *   myMap.get(i);
+ * }
+ * </pre>
+ *
+ * @param {Array.<number|string>=} opt_list The list of value to use to assign
+ * to the id map.
  * @constructor
  * @extends {goog.Disposable}
  */
-pstj.ds.MapRotator = function(list) {
+pstj.ds.MapRotator = function(opt_list) {
   goog.base(this);
   /**
    * The internal map instance.
-   * @type {Object}
+   * @type {Object.<string, *>}
    * @private
    */
   this.map_ = {};
@@ -41,11 +56,12 @@ pstj.ds.MapRotator = function(list) {
    */
   this.list_ = null;
 
-  if (goog.isArray(list)) {
-    this.loadMap(list);
+  if (goog.isArray(opt_list)) {
+    this.loadMap(opt_list);
   }
 };
 goog.inherits(pstj.ds.MapRotator, goog.Disposable);
+
 
 /**
  * Loads a map to be used by the instance.
@@ -54,6 +70,7 @@ goog.inherits(pstj.ds.MapRotator, goog.Disposable);
 pstj.ds.MapRotator.prototype.loadMap = function(list) {
   this.list_ = list;
 };
+
 
 /**
  * Registers an ID and maps a value from the list to it.
@@ -72,6 +89,7 @@ pstj.ds.MapRotator.prototype.register = function(id) {
   }
 };
 
+
 /**
  * Gets the mapped value for an ID.
  * @param {number|string} id The id to retrieve value for.
@@ -81,6 +99,7 @@ pstj.ds.MapRotator.prototype.get = function(id) {
   this.register(id);
   return this.map_[id];
 };
+
 
 /** @inheritDoc */
 pstj.ds.MapRotator.prototype.disposeInternal = function() {

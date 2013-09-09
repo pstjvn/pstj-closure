@@ -1,7 +1,3 @@
-goog.provide('pstj.ds.IListItem');
-goog.provide('pstj.ds.RecordID');
-goog.provide('pstj.ds.RecordValue');
-
 /**
  * @fileoverview Provides common interface for list item elements. This is
  * needed to accomodate the different types of server provided data.
@@ -9,17 +5,25 @@ goog.provide('pstj.ds.RecordValue');
  * @author <regardingscot@gmail.com> (PeterStJ)
  */
 
+goog.provide('pstj.ds.IListItem');
+goog.provide('pstj.ds.RecordID');
+goog.provide('pstj.ds.RecordValue');
+
+
 /**
  * Defines a custom type that can be the record ID.
  * @typedef {(string|number)}
  */
 pstj.ds.RecordID;
 
+
 /**
  * Defines a custom type that can be a value retrieved from record.
  * @typedef {(boolean|pstj.ds.RecordID)}
  */
 pstj.ds.RecordValue;
+
+
 
 /**
  * Interface for a list item object. If an object should be included in mapped
@@ -28,12 +32,14 @@ pstj.ds.RecordValue;
  */
 pstj.ds.IListItem = function() {};
 
+
 /**
  * Getter for the raw data object used to instanciate the class. It could be
  * an object or an array or a simple value, depending on the implementation.
  * @return {?}
  */
 pstj.ds.IListItem.prototype.getRawData = function() {};
+
 
 /**
  * Updates the row data that is used to create the class instance without
@@ -45,12 +51,14 @@ pstj.ds.IListItem.prototype.getRawData = function() {};
  */
 pstj.ds.IListItem.prototype.update = function(node) {};
 
+
 /**
  * This is strictrly not part of the interface, but is a usable thing to have
  * and enforcing implementors to have it even as an empty function will
  * allow for more flexible code.
  */
 pstj.ds.IListItem.prototype.convert = function() {};
+
 
 /**
  * Returns the ID property of the raw data object. If the object is an array the
@@ -59,11 +67,13 @@ pstj.ds.IListItem.prototype.convert = function() {};
  */
 pstj.ds.IListItem.prototype.getIdProperty = function() {};
 
+
 /**
  * Getter for the UID of the object.
  * @return {pstj.ds.RecordID}
  */
 pstj.ds.IListItem.prototype.getId = function() {};
+
 
 /**
  * Mutates/changes the underlying object in place. This allows to intercept
@@ -78,6 +88,7 @@ pstj.ds.IListItem.prototype.getId = function() {};
  */
 pstj.ds.IListItem.prototype.mutate = function(property, value) {};
 
+
 /**
  * Getter for a named property.
  * @param {!string} property The named property to get. In the case of arrays
@@ -86,6 +97,7 @@ pstj.ds.IListItem.prototype.mutate = function(property, value) {};
  * @return {?pstj.ds.RecordValue}
  */
 pstj.ds.IListItem.prototype.getProp = function(property) {};
+
 
 /**
  * Clones the list item by copying the raw data value and wrapping it in an

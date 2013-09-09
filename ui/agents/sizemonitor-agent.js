@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Size monitor agent is used to allow components to receive
+ * notifications about the window resize activities without actually
+ * inheriting this capability from ancestor and the behaviour could be
+ * applied to any component.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.SizeMonitorAgent');
 
 goog.require('goog.array');
@@ -10,14 +19,7 @@ goog.require('goog.object');
 goog.require('goog.style');
 goog.require('pstj.ui.Agent');
 
-/**
- * @fileoverview Size monitor agent is used to allow components to receive
- * notifications about the window resize activities without actually
- * inheriting this capability from ancestor and the behaviour could be
- * applied to any component.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Allows component instances to receive size change events from window size
@@ -41,15 +43,16 @@ pstj.ui.SizeMonitorAgent = function() {
   goog.base(this, goog.math.Size);
   // bind listener for resize monitoring.
   this.throttled_ = new goog.async.Throttle(this.handleWindowResize_,
-    pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL, this);
+      pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL, this);
 
   goog.events.listen(goog.dom.ViewportSizeMonitor.getInstanceForWindow(),
-    goog.events.EventType.RESIZE,
-    goog.bind(this.throttled_.fire, this.throttled_));
+      goog.events.EventType.RESIZE,
+      goog.bind(this.throttled_.fire, this.throttled_));
 
 };
 goog.inherits(pstj.ui.SizeMonitorAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.SizeMonitorAgent);
+
 
 /**
  * @define {number} Number of milliseconds to wait before allowsing invokation
@@ -57,6 +60,7 @@ goog.addSingletonGetter(pstj.ui.SizeMonitorAgent);
  * components.
  */
 goog.define('pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL', 500);
+
 
 /**
  * Handles the resize event from the viewport monitor after throttling.
@@ -67,6 +71,7 @@ pstj.ui.SizeMonitorAgent.prototype.handleWindowResize_ = function() {
   console.log('Size monitor agent triggerd');
   this.forEach(this.notifyResize_, this);
 };
+
 
 /**
  * Iterative callback for each component currently attached to listen for
@@ -90,12 +95,14 @@ pstj.ui.SizeMonitorAgent.prototype.notifyResize_ = function(item) {
   }
 };
 
+
 /** @inheritDoc */
 pstj.ui.SizeMonitorAgent.prototype.updateCache = function(comp) {
   if (comp.isInDocument()) {
     this.getCache().set(comp.getId(), goog.style.getSize(comp.getElement()));
   }
 };
+
 
 /**
  * Returns the cached size of a component. Notice that if the component is

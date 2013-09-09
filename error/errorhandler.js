@@ -1,10 +1,3 @@
-goog.provide('pstj.error.ErrorHandler');
-goog.provide('pstj.error.ErrorHandler.Errors ');
-goog.provide('pstj.error.throw');
-
-goog.require('goog.pubsub.PubSub');
-goog.require('pstj.control.Base');
-
 /**
  * @fileoverview Provides unified mechanizm for hanling errors in the code
  *   that happen after successful initialization (i.e. errors related to the
@@ -29,6 +22,15 @@ goog.require('pstj.control.Base');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.error.ErrorHandler');
+goog.provide('pstj.error.ErrorHandler.Errors ');
+goog.provide('pstj.error.throw');
+
+goog.require('goog.pubsub.PubSub');
+goog.require('pstj.control.Base');
+
+
+
 /**
  * Base class that provides error handling. For the handling to happen all
  *   errors must be directed to the message bus of the namespace.
@@ -38,10 +40,11 @@ goog.require('pstj.control.Base');
 pstj.error.ErrorHandler = function() {
   goog.base(this);
   pstj.error.Bus.subscibe(pstj.error.Bus.Topic.ERROR, goog.bind(
-    this.handleError, this));
+      this.handleError, this));
 };
 goog.inherits(pstj.error.ErrorHandler, pstj.control.Base);
 goog.addSingletonGetter(pstj.error.ErrorHandler);
+
 
 /**
  * The type of errors to handle.
@@ -52,16 +55,18 @@ pstj.error.ErrorHandler.Error = {
   SERVER: 1, // server logical error (i.e. 5xx)
   JSON: 2, // served json cannot be parsed
   STRUCTURE: 3, // errors coming from the status in the json message,
-                // application specific
+  // application specific
   RUNTIME: 4, // user action triggers something that we do not know how to
-              // handle automatically and needs user interaction for fixing it.
+  // handle automatically and needs user interaction for fixing it.
   NO_DATA: 5 // timeout on important requests, loading etc.
 };
+
 
 /**
  * @type {goog.pubsub.PubSub}
  */
 pstj.error.ErrorHandler.bus = new goog.pubsub.PubSub();
+
 
 /**
  * @const
@@ -69,25 +74,27 @@ pstj.error.ErrorHandler.bus = new goog.pubsub.PubSub();
  */
 pstj.error.ErrorHandler.Topic = 'ERROR';
 
+
 /**
  * Handles for the errors coming on the message bus. This method is designed
  *   to be overriden by application logic class.
  * @param {pstj.error.ErrorHandler.Errors} error_index The type of the
  *   error.
- * @param {number=} status_id The status of the error (for json statuses).
- * @param {string=} message The mesage of the error if any.
+ * @param {number=} opt_status_id The status of the error (for json statuses).
+ * @param {string=} opt_message The mesage of the error if any.
  * @protected
  */
 pstj.error.ErrorHandler.prototype.handleError = function(error_index,
-  status_id, message) {};
+    opt_status_id, opt_message) {};
+
 
 /**
  * Specialized method to notify the error handler instance for an error.
  * @param {pstj.error.ErrorHandler.Errors} error_index The type of the error.
- * @param {number=} status_id The status of the error (for json statuses).
- * @param {string=} message The mesage of the error if any.
+ * @param {number=} opt_status_id The status of the error (for json statuses).
+ * @param {string=} opt_message The mesage of the error if any.
  */
-pstj.error.throw = function(error_index, status_id, message) {
+pstj.error.throw = function(error_index, opt_status_id, opt_message) {
   pstj.error.ErrorHandler.bus.publish(pstj.error.ErrorHandler.Topic,
-    error_index, status_id, message);
+      error_index, opt_status_id, opt_message);
 };

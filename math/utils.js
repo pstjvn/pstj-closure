@@ -1,10 +1,11 @@
-goog.provide('pstj.math.utils');
-
 /**
  * @fileoverview Provides simple math functions and utilities.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.math.utils');
+
 
 /**
  * Generates a random number between two numbers.
@@ -16,6 +17,7 @@ pstj.math.utils.getRandomBetween = function(from, to) {
   return Math.floor(Math.random() * (to - from + 1) + from);
 };
 
+
 /**
  * Calculates the distance between two point in a coordinate system (segment).
  *   Distance is calculated using "Distance Formula".
@@ -25,8 +27,9 @@ pstj.math.utils.getRandomBetween = function(from, to) {
  */
 pstj.math.utils.distanceOfSegment = function(a, b) {
   return Math.sqrt(((a[0] - b[0]) * (a[0] - b[0])) + ((a[1] - b[1]) * (
-    a[1] - b[1])));
+      a[1] - b[1])));
 };
+
 
 /**
  * Calculates the middle of a segment and returns a new point representing it.
@@ -40,6 +43,7 @@ pstj.math.utils.middleOfSegment = function(a, b) {
   return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
 };
 
+
 /**
  * Calculates percintile of value of another value.
  * @param {number} value The value to calculate the percentage of.
@@ -50,6 +54,7 @@ pstj.math.utils.getPercentFromValue = function(value, of_value) {
   return (value / of_value) * 100;
 };
 
+
 /**
  * Calculates result as percent from a given value;
  * @param {number} value The value to calculate percent of.
@@ -59,6 +64,7 @@ pstj.math.utils.getPercentFromValue = function(value, of_value) {
 pstj.math.utils.getValueFromPercent = function(value, percent) {
   return (value * percent) / 100;
 };
+
 
 /**
  * Picks random item(s) from an array.

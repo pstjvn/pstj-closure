@@ -6,6 +6,8 @@ goog.require('goog.ui.registry');
 goog.require('pstj.ui.CustomButtonRenderer');
 goog.require('pstj.ui.TouchAgent');
 
+
+
 /**
  * Provides shorthand for our button. The button is also optimized for touch
  *   events (i.e. it handles the touches directly and thus is much more
@@ -16,9 +18,10 @@ goog.require('pstj.ui.TouchAgent');
  */
 pstj.ui.Button = function(opt_renderer) {
   goog.base(this, '', opt_renderer ||
-    pstj.ui.CustomButtonRenderer.getInstance());
+      pstj.ui.CustomButtonRenderer.getInstance());
 };
 goog.inherits(pstj.ui.Button, goog.ui.CustomButton);
+
 
 /**
  * Custom method to allow the templates to give names to the actions and thus
@@ -30,6 +33,7 @@ pstj.ui.Button.prototype.getActionName = function() {
   return goog.dom.dataset.get(this.getElement(), 'action');
 };
 
+
 /** @inheritDoc */
 pstj.ui.Button.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
@@ -38,7 +42,7 @@ pstj.ui.Button.prototype.enterDocument = function() {
 
 // Register a decorator factory function for pstj.ui.Button
 goog.ui.registry.setDecoratorByClassName(pstj.ui.CustomButtonRenderer.CSS_CLASS,
-  function() {
-    return new pstj.ui.Button();
-  }
+    function() {
+      return new pstj.ui.Button();
+    }
 );

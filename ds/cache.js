@@ -1,7 +1,3 @@
-goog.provide('pstj.ds.Cache');
-
-goog.require('goog.object');
-
 /**
  * @fileoverview Provides simplistic convenience key / value pair caching
  * implemented as literal object hash. The wrapper is only used for convenience
@@ -12,6 +8,11 @@ goog.require('goog.object');
  * @author regardingscot@gmail.com (PeterStJ)
  */
 
+goog.provide('pstj.ds.Cache');
+
+goog.require('goog.object');
+
+
 
 /**
  * Provides wrapper for the literal object hash table metaphor. Used to maintain
@@ -20,8 +21,13 @@ goog.require('goog.object');
  * @constructor
  */
 pstj.ds.Cache = function() {
+  /**
+   * @type {Object.<string, *>}
+   * @private
+   */
   this.cache_ = {};
 };
+
 
 /**
  * Sets the cache for key.
@@ -32,6 +38,7 @@ pstj.ds.Cache.prototype.set = function(key, data) {
   goog.object.set(this.cache_, key, data);
 };
 
+
 /**
  * Checks if the key exists in the cache.
  * @param {string} key The key.
@@ -40,6 +47,7 @@ pstj.ds.Cache.prototype.set = function(key, data) {
 pstj.ds.Cache.prototype.has = function(key) {
   return goog.object.containsKey(this.cache_, key);
 };
+
 
 /**
  * Getter for cached values.
@@ -52,6 +60,7 @@ pstj.ds.Cache.prototype.get = function(key) {
   }
   return null;
 };
+
 
 /**
  * Removes the cache for key.

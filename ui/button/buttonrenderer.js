@@ -1,9 +1,3 @@
-goog.provide('pstj.ui.CustomButtonRenderer');
-
-goog.require('goog.a11y.aria.Role');
-goog.require('goog.dom.classes');
-goog.require('goog.ui.ButtonRenderer');
-
 /**
  * @fileoverview Provide custom renderer on top of the simple button
  * renderer. This renderer is used with 'div' tags to make buttons out of
@@ -12,6 +6,14 @@ goog.require('goog.ui.ButtonRenderer');
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.CustomButtonRenderer');
+
+goog.require('goog.a11y.aria.Role');
+goog.require('goog.dom.classes');
+goog.require('goog.ui.ButtonRenderer');
+
+
 
 /**
  * Provides custom renderer for the text buttons to match our styling needs.
@@ -24,6 +26,7 @@ pstj.ui.CustomButtonRenderer = function() {
 goog.inherits(pstj.ui.CustomButtonRenderer, goog.ui.ButtonRenderer);
 goog.addSingletonGetter(pstj.ui.CustomButtonRenderer);
 
+
 /**
  * The class name to use when composing custom states for the button. Because
  *   the button is actually a DIV element, the states are composed as css
@@ -33,10 +36,12 @@ goog.addSingletonGetter(pstj.ui.CustomButtonRenderer);
  */
 pstj.ui.CustomButtonRenderer.CSS_CLASS = goog.getCssName('pstj-button');
 
+
 /** @inheritDoc */
 pstj.ui.CustomButtonRenderer.prototype.getAriaRole = function() {
   return goog.a11y.aria.Role.BUTTON;
 };
+
 
 /**
  * Sets the value for the button text.
@@ -46,6 +51,7 @@ pstj.ui.CustomButtonRenderer.prototype.getAriaRole = function() {
 pstj.ui.CustomButtonRenderer.prototype.setValue = function(el, value) {
   el.innerHTML = value;
 };
+
 
 /**
  * Simply forvide this for now, if we need to change content this might change
@@ -58,6 +64,7 @@ pstj.ui.CustomButtonRenderer.prototype.setValue = function(el, value) {
 pstj.ui.CustomButtonRenderer.prototype.getContentElement = function(element) {
   return element;
 };
+
 
 /**
  * Called internally when decorateInternal is called on the button component.
@@ -72,6 +79,7 @@ pstj.ui.CustomButtonRenderer.prototype.decorate = function(control, element) {
   goog.dom.classes.add(element, this.getCssClass());
   return goog.base(this, 'decorate', button, element);
 };
+
 
 /**
  * Returns the basic css class for this component, see CSS_CLASS description.

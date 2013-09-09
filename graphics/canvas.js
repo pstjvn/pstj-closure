@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Provides nice abstraction on creating and maintaining a
+ *   canvas with its context.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
 goog.provide('pstj.graphics.Canvas');
 
 goog.require('goog.dom');
@@ -5,18 +11,14 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
 goog.require('goog.style');
 
-/**
- * @fileoverview Provides nice abstraction on creating and maintaining a
- *   canvas with its context.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Provides abstracted access to canvas element. Expecting an element and
  * renders the canvas with the size of the element. It will emit the resize
  * event. You should call {#fit} method if the parent element size ever
  * changes.
+ *
  * @constructor
  * @extends {goog.events.EventTarget}
  * @param {Element} parent The parent element to seed the canvas is.
@@ -40,7 +42,7 @@ pstj.graphics.Canvas = function(parent) {
    * @private
    */
   this.canvas_ = /** @type {!HTMLCanvasElement} */ (document.createElement(
-    'canvas'));
+      'canvas'));
   if (goog.isNull(this.canvas_)) {
     throw new Error('Cannot create canvas element');
   }
@@ -50,12 +52,13 @@ pstj.graphics.Canvas = function(parent) {
    * @private
    */
   this.context_ = /** @type {!CanvasRenderingContext2D} */ (
-    this.canvas_.getContext('2d'));
+      this.canvas_.getContext('2d'));
 
   this.element_.appendChild(this.canvas_);
   this.fit();
 };
 goog.inherits(pstj.graphics.Canvas, goog.events.EventTarget);
+
 
 /**
  * Getter for the drawing context.
@@ -66,6 +69,7 @@ pstj.graphics.Canvas.prototype.getContext = function() {
   return this.context_;
 };
 
+
 /**
  * Getter for the canvas element.
  * @return {HTMLCanvasElement} The canvas element reference.
@@ -73,6 +77,7 @@ pstj.graphics.Canvas.prototype.getContext = function() {
 pstj.graphics.Canvas.prototype.getCanvas = function() {
   return this.canvas_;
 };
+
 
 /**
  * Getter for the last stored size of the element / canvas. It will return
@@ -84,6 +89,7 @@ pstj.graphics.Canvas.prototype.getSize = function() {
   return this.size_;
 };
 
+
 /**
  * Forces the canvas to fit inside the container. This method should be called
  * when the parent element has been resized.
@@ -94,6 +100,7 @@ pstj.graphics.Canvas.prototype.fit = function() {
   this.canvas_.height = this.size_.height;
   this.dispatchEvent(goog.events.EventType.RESIZE);
 };
+
 
 /** @inheritDoc */
 pstj.graphics.Canvas.prototype.disposeInternal = function() {

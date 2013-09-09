@@ -1,10 +1,4 @@
-goog.provide('pstj.ds.TimeProvider');
-
-goog.require('goog.array');
-goog.require('pstj.configure');
-
 /**
-  *
   * @fileoverview Provides global clock with the current system time. The time
   *   provider could be used to provide time at application level and multiple
   *   instances can register for update on it. It is guaranteed to populate the
@@ -19,8 +13,14 @@ goog.require('pstj.configure');
   *   being pushed to your instances, consider using the SpeedClock instead and
   *   use the speed of '1'.
   *
-  * @author  regardingscot@gmail.com (Peter StJ)
+  * @author regardingscot@gmail.com (Peter StJ)
   */
+
+goog.provide('pstj.ds.TimeProvider');
+
+goog.require('goog.array');
+goog.require('pstj.configure');
+
 
 
 /**
@@ -31,8 +31,22 @@ goog.require('pstj.configure');
  * @constructor
  */
 pstj.ds.TimeProvider = function() {
+  /**
+   * The objects that want to receive update of the time every 60 seconds.
+   * @type {Array.<pstj.ds.IClock>}
+   * @private
+   */
   this.subscribers_ = [];
+  /**
+   * The last detected time stamp, is a subscribed is added in between ticks it
+   *   will receive this time to be on the same time stamp as the rest of the
+   *   subscribers.
+   * @type {number}
+   * @private
+   */
+  this.lastIssuedTime_ = 0;
 };
+
 
 /**
  * The name of the global variable used to configure the behaviour on run time.
@@ -40,6 +54,68 @@ pstj.ds.TimeProvider = function() {
  * @protected
  */
 pstj.ds.TimeProvider.GLOB = 'TIMEPROVIDER_UPDATE_INTERVAL';
+
+
+/**
+ * The interval to use to update clocks in the system. The value is protected
+ *   in order to allow the developer to subtype the time provider with
+ *   different time value. Another option is to use global configuration for
+ *   the same purpose. Default value is 60 seconds.
+ * @type {number}
+ * @protected
+ */
+pstj.ds.TimeProvider.DefaultInterval = 60000;
+
+
+/**
+ * Subscribe an object that implements the Clock interface to the global
+ *   clock.
+ * @param {!pstj.ds.IClock} obj Object instance that has setTime method.
+ */
+pstj.ds.TimeProvider.prototype.addSubscriber = function(obj) {
+  goog.array.insert(this.subscribers_, obj);
+  obj.setTime(this.lastIssuedTime_);
+};
+
+
+/**
+ * Un-subscribe an object that implements the IClock interface from the global
+ *   clock provider.
+ * @param  {!pstj.ds.IClock} obj Object instance that has previously been
+ *   subscribed to the global clock.
+ */
+pstj.ds.TimeProvider.prototype.removeSubscriber = function(obj) {
+  goog.array.remove(this.subscribers_, obj);
+};
+
+
+/**
+ * Tick handler, this is a private method that is called each time the ticker
+ *   is run, it gets the current time and populates it to the subscribed
+ *   objects assuming all objects implement IClock interface correctly.
+ * @protected
+ */
+pstj.ds.TimeProvider.prototype.onTick = function() {
+  this.lastIssuedTime_ = goog.now();
+  var time = this.lastIssuedTime_;
+  goog.array.forEach(this.subscribers_, function(obj) {
+    obj.setTime(time);
+  });
+};
+
+
+/**
+ * Starts the clock, this is - enable its tick handler to run every N
+ *   milliseconds.
+ * @protected
+ */
+pstj.ds.TimeProvider.prototype.start = function() {
+  this.lastIssuedTime_ = goog.now();
+  var num = (/** type {number} */ +(pstj.configure.getRuntimeValue(
+      pstj.ds.TimeProvider.GLOB, pstj.ds.TimeProvider.DefaultInterval)));
+  goog.global.setInterval(goog.bind(this.onTick, this), num);
+};
+
 
 /**
  * Instance getter with custom implementation. It is provided in order to
@@ -57,83 +133,3 @@ pstj.ds.TimeProvider.getInstance = (function() {
     return instance_;
   };
 })();
-
-/**
- * The status of the clock.
- * @type {!boolean}
- * @private
- */
-pstj.ds.TimeProvider.prototype.running_ = false;
-
-/**
- * The last detected time stamp, is a subscribed is added in between ticks it
- *   will receive this time to be on the same time stamp as the rest of the
- *   subscribers.
- * @type {number}
- * @private
- */
-pstj.ds.TimeProvider.prototype.lastIssuedTime_;
-
-/**
- * The objects that want to receive update of the time every 60 seconds.
- * @type {Array.<pstj.ds.IClock>}
- * @private
- */
-pstj.ds.TimeProvider.prototype.subscribers_;
-
-/**
- * Subscribe an object that implements the Clock interface to the global
- *   clock.
- * @param {!pstj.ds.IClock} obj Object instance that has setTime method.
- */
-pstj.ds.TimeProvider.prototype.addSubscriber = function(obj) {
-  goog.array.insert(this.subscribers_, obj);
-  obj.setTime(this.lastIssuedTime_);
-};
-
-/**
- * Un-subscribe an object that implements the IClock interface from the global
- *   clock provider.
- * @param  {!pstj.ds.IClock} obj Object instance that has previously been
- *   subscribed to the global clock.
- */
-pstj.ds.TimeProvider.prototype.removeSubscriber = function(obj) {
-  goog.array.remove(this.subscribers_, obj);
-};
-
-/**
- * Tick handler, this is a private method that is called each time the ticker
- *   is run, it gets the current time and populates it to the subscribed
- *   objects assuming all objects implement IClock interface correctly.
- * @protected
- */
-pstj.ds.TimeProvider.prototype.onTick = function() {
-  this.lastIssuedTime_ = goog.now();
-  var time = this.lastIssuedTime_;
-  goog.array.forEach(this.subscribers_, function(obj) {
-    obj.setTime(time);
-  });
-};
-
-/**
- * The interval to use to update clocks in the system. The value is protected
- *   in order to allow the developer to subtype the time provider with
- *   different time value. Another option is to use global configuration for
- *   the same purpose. Default value is 60 seconds.
- * @type {number}
- * @protected
- */
-pstj.ds.TimeProvider.prototype.defaultInterval = 60000;
-
-/**
- * Starts the clock, this is - enable its tick handler to run every N
- *   milliseconds.
- * @protected
- */
-pstj.ds.TimeProvider.prototype.start = function() {
-  this.running_ = true;
-  this.lastIssuedTime_ = goog.now();
-  var num = (/** type {number} */ +(pstj.configure.getRuntimeValue(
-      pstj.ds.TimeProvider.GLOB, this.defaultInterval)));
-  goog.global.setInterval(goog.bind(this.onTick, this), num);
-};

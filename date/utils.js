@@ -8,8 +8,9 @@ goog.require('goog.string');
 /**
  * @fileoverview Provides utilities for the date / time. The collection of
  *   utilities seem to be not present in a easy to use way in closure library.
- * @author  regardingscot@gmail.com (Peter StJ)
+ * @author regardingscot@gmail.com (Peter StJ)
  */
+
 
 /**
  * Provides the full names of the months as array.
@@ -44,20 +45,24 @@ pstj.date.utils.months_ = [
  */
 pstj.date.utils.defaultFormat_ = 'mm/dd/yy';
 
+
 /**
  * Returns the time rendered as string.
  * @param {!number|Date} time The time to render.
- * @param {string=} format How the result should be formatted.
+ * @param {string=} opt_format How the result should be formatted.
  * @return {!string} The rendered time.
  * @deprecated The formatting does not match the goog provided one, this would
  *   be dropped in favour of {@link pstj.date.utils.renderTimeSafe}.
  */
-pstj.date.utils.renderTime = function(time, format) {
+pstj.date.utils.renderTime = function(time, opt_format) {
   if (!(time instanceof Date)) {
     time = new Date(time);
   }
-  var result = format.replace('mm', goog.string.padNumber(time.getMonth() +
-    1, 2))
+  if (!goog.isDef(opt_format)) {
+    opt_format = pstj.date.utils.defaultFormat_;
+  }
+  var result = opt_format.replace('mm', goog.string.padNumber(time.getMonth() +
+      1, 2))
   .replace('Month', pstj.date.utils.months_[time.getMonth()])
   .replace('Mon', pstj.date.utils.months_[time.getMonth()].substring(0, 3))
   .replace('dd', goog.string.padNumber(time.getDate(), 2))
@@ -69,12 +74,14 @@ pstj.date.utils.renderTime = function(time, format) {
   return result;
 };
 
+
 /**
  * The default formatting to apply to the save rendering path.
  * @type {!string}
  * @private
  */
 pstj.date.utils.defaultGoogFormat_ = 'dd/MM/yyyy';
+
 
 /**
  * Cache for the formatting functions used by the safe parser. The cache is
@@ -84,6 +91,7 @@ pstj.date.utils.defaultGoogFormat_ = 'dd/MM/yyyy';
  */
 pstj.date.utils.formattersCache_ = [];
 
+
 /**
  * Cache for the formatting strings used. The cache is not cleared until the
  *   application is reloaded
@@ -92,31 +100,34 @@ pstj.date.utils.formattersCache_ = [];
  */
 pstj.date.utils.stringCache_ = [];
 
+
 /**
  * Renders the time to a string. Differs from the {@link renderTime} by the
  *   fact that it uses closure library's formatting conventions.
  * @param {!number|Date} time The time to render.
- * @param {string=} format The formatting string to use.
+ * @param {string=} opt_format The formatting string to use.
  * @return {!string} The formatted time.
  */
-pstj.date.utils.renderTimeSafe = function(time, format) {
+pstj.date.utils.renderTimeSafe = function(time, opt_format) {
   if (!(time instanceof Date)) {
     time = new Date(time);
   }
   var len = -1;
-  if (!goog.isString(format)) format = pstj.date.utils.defaultGoogFormat_;
+  if (!goog.isString(opt_format)) opt_format =
+        pstj.date.utils.defaultGoogFormat_;
 
-  if (!goog.array.contains(pstj.date.utils.stringCache_, format)) {
+  if (!goog.array.contains(pstj.date.utils.stringCache_, opt_format)) {
     len = pstj.date.utils.stringCache_.length;
-    pstj.date.utils.stringCache_.push(format);
-    pstj.date.utils.formattersCache_.push(new goog.i18n.DateTimeFormat(format));
+    pstj.date.utils.stringCache_.push(opt_format);
+    pstj.date.utils.formattersCache_.push(
+        new goog.i18n.DateTimeFormat(opt_format));
   }
   if (len == -1) {
-    len = goog.array.indexOf(pstj.date.utils.stringCache_, format);
+    len = goog.array.indexOf(pstj.date.utils.stringCache_, opt_format);
   }
   if (len == -1) throw Error('Internal error occurred.');
-  return /** @type {!string} */ (pstj.date.utils.formattersCache_[len].format(
-    time));
+  return /** @type {!string} */ (
+      pstj.date.utils.formattersCache_[len].format(time));
 };
 
 
@@ -131,5 +142,5 @@ pstj.date.utils.getTimestamp = function(duration) {
   var minute = ((duration / 60) << 0) % 60;
   var seconds = duration % 60;
   return goog.string.padNumber(hour, 2) + ':' + goog.string.padNumber(minute,
-    2) + ':' + goog.string.padNumber(seconds, 2);
+      2) + ':' + goog.string.padNumber(seconds, 2);
 };
