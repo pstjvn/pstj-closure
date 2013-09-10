@@ -6,6 +6,8 @@ goog.require('pstj.ds.ListItem');
 goog.require('pstj.templates');
 goog.require('pstj.ui.ControlRenderer');
 
+
+
 /**
  * My new class description
  * @constructor
@@ -17,6 +19,7 @@ pstj.ui.ListItemRenderer = function() {
 goog.inherits(pstj.ui.ListItemRenderer, pstj.ui.ControlRenderer);
 goog.addSingletonGetter(pstj.ui.ListItemRenderer);
 
+
 /**
  * @const
  * @type {string}
@@ -25,36 +28,40 @@ pstj.ui.ListItemRenderer.CSS_CLASS = goog.getCssName('pstj-list-item');
 
 goog.scope(function() {
 
-  var _ = pstj.ui.ListItemRenderer.prototype;
+var _ = pstj.ui.ListItemRenderer.prototype;
 
-  /**
-   * The default thumbnail for the list item renderer.
-   * @type {string}
-   * @protected
-   */
-  _.defaultThumbnail = goog.asserts.assertString(pstj.configure.getRuntimeValue(
+
+/**
+ * The default thumbnail for the list item renderer.
+ * @type {string}
+ * @protected
+ */
+_.defaultThumbnail = goog.asserts.assertString(pstj.configure.getRuntimeValue(
     'THUMBNAIL', 'assets/default-select-image.png',
     'PSTJ.WIDGET.LISTITEM').toString());
 
-  /** @inheritDoc */
-  _.getTemplate = function(control) {
-    return pstj.templates.listitem(this.generateTemplateData(control));
-  };
 
-  /** @inheritDoc */
-  _.getCssClass = function() {
-    return pstj.ui.ListItemRenderer.CSS_CLASS;
-  };
+/** @inheritDoc */
+_.getTemplate = function(control) {
+  return pstj.templates.listitem(this.generateTemplateData(control));
+};
 
-  /** @inheritDoc */
-  _.generateTemplateData = function(comp) {
-    goog.asserts.assertInstanceof(comp.getModel(), pstj.ds.ListItem);
-    var model = goog.base(this, 'generateTemplateData', comp);
-    return {
-      thumbnail: model['thumbnail'] || this.defaultThumbnail,
-      name: model['publishName'] || '&nbsp;'
-    };
-  };
 
-});
+/** @inheritDoc */
+_.getCssClass = function() {
+  return pstj.ui.ListItemRenderer.CSS_CLASS;
+};
+
+
+/** @inheritDoc */
+_.generateTemplateData = function(comp) {
+  goog.asserts.assertInstanceof(comp.getModel(), pstj.ds.ListItem);
+  var model = goog.base(this, 'generateTemplateData', comp);
+  return {
+    thumbnail: model['thumbnail'] || this.defaultThumbnail,
+    name: model['publishName'] || '&nbsp;'
+  };
+};
+
+});  // goog.scope
 
