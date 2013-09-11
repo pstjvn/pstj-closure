@@ -327,6 +327,7 @@ _.handleTouchStart = function(e) {
       this.cache_[CP.HANDLER_CURRENT_Y] = this.cache_[CP.HANDLER_LAST_Y];
       this.cache_[CP.TOUCH_START_TIME] = e.getBrowserEvent().timeStamp;
       this.cache_[CP.TOUCH_START_Y] = this.cache_[CP.HANDLER_LAST_Y];
+      this.movementRaf_.start();
     }
   }
 };
@@ -376,6 +377,26 @@ _.handleTouchMove = function(e) {
 
     this.movementRaf_.start();
   }
+};
+
+
+/**
+ * Getter for the child height currently used in the view.
+ * @return {number}
+ * @protected
+ */
+_.getChildHeight = function() {
+  return this.childHeight_;
+};
+
+
+/**
+ * Getter for the current visual offset used in the view.
+ * @return {number}
+ * @protected
+ */
+_.getVisualOffset = function() {
+  return this.visualOffset_;
 };
 
 
