@@ -23,8 +23,8 @@
  */
 
 goog.provide('pstj.error.ErrorHandler');
-goog.provide('pstj.error.ErrorHandler.Errors ');
-goog.provide('pstj.error.throw');
+goog.provide('pstj.error.ErrorHandler.Error');
+goog.provide('pstj.error.throwError');
 
 goog.require('goog.pubsub.PubSub');
 goog.require('pstj.control.Base');
@@ -39,8 +39,8 @@ goog.require('pstj.control.Base');
  */
 pstj.error.ErrorHandler = function() {
   goog.base(this);
-  pstj.error.Bus.subscibe(pstj.error.Bus.Topic.ERROR, goog.bind(
-      this.handleError, this));
+  pstj.error.ErrorHandler.Bus.subscribe(pstj.error.ErrorHandler.Topic,
+      goog.bind(this.handleError, this));
 };
 goog.inherits(pstj.error.ErrorHandler, pstj.control.Base);
 goog.addSingletonGetter(pstj.error.ErrorHandler);
@@ -65,7 +65,7 @@ pstj.error.ErrorHandler.Error = {
 /**
  * @type {goog.pubsub.PubSub}
  */
-pstj.error.ErrorHandler.bus = new goog.pubsub.PubSub();
+pstj.error.ErrorHandler.Bus = new goog.pubsub.PubSub();
 
 
 /**
@@ -78,7 +78,7 @@ pstj.error.ErrorHandler.Topic = 'ERROR';
 /**
  * Handles for the errors coming on the message bus. This method is designed
  *   to be overriden by application logic class.
- * @param {pstj.error.ErrorHandler.Errors} error_index The type of the
+ * @param {pstj.error.ErrorHandler.Error} error_index The type of the
  *   error.
  * @param {number=} opt_status_id The status of the error (for json statuses).
  * @param {string=} opt_message The mesage of the error if any.
@@ -90,11 +90,11 @@ pstj.error.ErrorHandler.prototype.handleError = function(error_index,
 
 /**
  * Specialized method to notify the error handler instance for an error.
- * @param {pstj.error.ErrorHandler.Errors} error_index The type of the error.
+ * @param {pstj.error.ErrorHandler.Error} error_index The type of the error.
  * @param {number=} opt_status_id The status of the error (for json statuses).
  * @param {string=} opt_message The mesage of the error if any.
  */
-pstj.error.throw = function(error_index, opt_status_id, opt_message) {
-  pstj.error.ErrorHandler.bus.publish(pstj.error.ErrorHandler.Topic,
+pstj.error.throwError = function(error_index, opt_status_id, opt_message) {
+  pstj.error.ErrorHandler.Bus.publish(pstj.error.ErrorHandler.Topic,
       error_index, opt_status_id, opt_message);
 };
