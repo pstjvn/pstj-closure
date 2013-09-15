@@ -1,12 +1,15 @@
 @pstj-button-default-color: #6ea4e6;
 
-.pstj-button (@pstj-button-color: @pstj-button-default-color; @pstj-button-text-color: white; @pstj-button-border: 1px solid white;) {
+.pstj-button (@pstj-button-color: @pstj-button-default-color;
+    @pstj-button-text-color: white;
+    @pstj-button-border: 1px solid white;
+    @pstj-button-padding: 5px 11px;) {
   position: relative;
   background-color: @pstj-button-color;
   color: @pstj-button-text-color;
   cursor: pointer;
   display: inline-block;
-  padding: 5px 11px;
+  padding: @pstj-button-padding;
   outline: none;
   border: @pstj-button-border;
   font-weight: bold;
