@@ -418,7 +418,7 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
   var error = null;
 
   if (goog.isNull(ev)) {
-    error = new Error('Error receiving from JSONP');
+    error = new Error('Error receiving data on jsonp channel (500)');
   } else if (ev instanceof goog.events.Event) {
     var xhr = /** @type {!goog.net.XhrIo} */ (ev.target);
     try {
@@ -433,7 +433,9 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
     response = ev;
   }
 
-  error = this.checkResponseValidity(response);
+  if (goog.isNull(error)) {
+    error = this.checkResponseValidity(response);
+  }
 
   if (goog.isFunction(callback)) {
     callback(error, response);
@@ -456,7 +458,7 @@ pstj.resource.Resource.prototype.checkResponseValidity = function(response) {
     if (goog.DEBUG) {
       console.log('Received invalid response', response);
     }
-    return new Error('The server result is not valid after evaluation');
+    return new Error('The server result is not valid (null)');
   }
 };
 
