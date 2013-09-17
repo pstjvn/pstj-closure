@@ -30,16 +30,12 @@ pstj.ui.ClockAgent = function() {
 goog.inherits(pstj.ui.ClockAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.ClockAgent);
 
-goog.scope(function() {
-
-var _ = pstj.ui.ClockAgent.prototype;
-
 
 /**
  * Allows the developer to set prefered time provider.
  * @param {pstj.ds.TimeProvider} time_provider The time provider to use.
  */
-_.setTimeProvider = function(time_provider) {
+pstj.ui.ClockAgent.prototype.setTimeProvider = function(time_provider) {
   this.timeprovider_.removeSubscriber(this);
   this.timeprovider_ = time_provider;
   this.timeprovider_.addSubscriber(this);
@@ -50,14 +46,14 @@ _.setTimeProvider = function(time_provider) {
  * Implements the interface for time provider.
  * @param {!number} time The current system time.
  */
-_.setTime = function(time) {
+pstj.ui.ClockAgent.prototype.setTime = function(time) {
   this.time = time;
   this.forEach(this.set_, this);
 };
 
 
 /** @inheritDoc */
-_.updateCache = function(component) {
+pstj.ui.ClockAgent.prototype.updateCache = function(component) {
   component.setModel(this.time);
 };
 
@@ -67,8 +63,7 @@ _.updateCache = function(component) {
  * @param {goog.ui.Component} component The component to update.
  * @private
  */
-_.set_ = function(component) {
+pstj.ui.ClockAgent.prototype.set_ = function(component) {
   this.updateCache(component);
 };
 
-});  // goog.scope

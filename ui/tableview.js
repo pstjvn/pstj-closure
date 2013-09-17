@@ -21,6 +21,7 @@ goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
 goog.require('goog.ui.Component');
+goog.require('pstj.configure');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.ui.TableViewItem');
 
@@ -135,19 +136,15 @@ pstj.ui.TableView.EventType = {
 
 
 /**
- * @define {number} The deceleration for the table view momentum.
+ * The deceleration for the animation in ns view
+ * @type {number}
  */
-goog.define('pstj.ui.TableView.DECELERATION', 0.001);
-
-goog.scope(function() {
-
-var _ = pstj.ui.TableView.prototype;
-var CP = pstj.ui.TableView.Cache; // CacheProperties
-var _css = pstj.lab.style.css;
+pstj.ui.TableView.DECELERATION = goog.asserts.assertNumber(
+    pstj.configure.getRuntimeValue('DECELERATION', 0.001, 'PSTJ.NSTABLEVIEW'));
 
 
 /** @inheritDoc */
-_.setModel = function(model) {
+pstj.ui.TableView.prototype.setModel = function(model) {
   if (!(model instanceof pstj.ds.List)) {
     throw new Error('The widget is designed to use List instance as source');
   }
@@ -159,9 +156,9 @@ _.setModel = function(model) {
     this.momentumRaf_.stop();
     this.movementRaf_.stop();
     this.isAnimating_ = false;
-    this.cache_[CP.NEEDS_MOMENTUM] = 0;
-    this.cache_[CP.HANDLER_LAST_Y] = 0;
-    this.cache_[CP.HANDLER_CURRENT_Y] = 0;
+    this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
+    this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = 0;
+    this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = 0;
     this.ignoreEndEvents_ = true;
     var modellength = this.getModel().getCount();
     for (var i = 0, len = this.getChildCount(); i < len; i++) {
@@ -182,13 +179,13 @@ _.setModel = function(model) {
  *
  * @private
  */
-_.mouseAdapt_ = function() {
-  this.cache_[CP.TOUCH_END_TIME] = goog.now();
-  this.cache_[CP.TOUCH_DURATION] = this.cache_[CP.TOUCH_END_TIME] -
-      this.cache_[CP.TOUCH_START_TIME];
-  this.cache_[CP.TOUCH_CURRENT_Y] = this.cache_[CP.HANDLER_CURRENT_Y];
+pstj.ui.TableView.prototype.mouseAdapt_ = function() {
+  this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] = goog.now();
+  this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] -
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME];
+  this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
   if (this.isBeyoundEdge()) {
-    this.cache_[CP.NEEDS_MOMENTUM] = 1;
+    this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 1;
     if (!this.movementRaf_.isActive()) {
       this.movementRaf_.start();
     }
@@ -203,7 +200,7 @@ _.mouseAdapt_ = function() {
  *
  * @return {goog.ui.Component}
  */
-_.createRowCell = function() {
+pstj.ui.TableView.prototype.createRowCell = function() {
   return new pstj.ui.TableViewItem();
 };
 
@@ -216,7 +213,7 @@ _.createRowCell = function() {
  * count on every resize.
  * FIXME: make this work in desktop browsers as well.
  */
-_.generateRows = function() {
+pstj.ui.TableView.prototype.generateRows = function() {
   var w = window.innerWidth;
   var h = window.innerHeight;
   var height = (w > h) ? w : h;
@@ -233,7 +230,7 @@ _.generateRows = function() {
  *
  * @protected
  */
-_.calculateChildHeight = function() {
+pstj.ui.TableView.prototype.calculateChildHeight = function() {
   if (this.getChildCount() == 0) {
     var tmp = this.createRowCell();
     this.addChild(tmp, true);
@@ -246,7 +243,7 @@ _.calculateChildHeight = function() {
 
 
 /** @inheritDoc */
-_.enterDocument = function() {
+pstj.ui.TableView.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.mousewheelhandler_ = new goog.events.MouseWheelHandler(
       this.getElement());
@@ -277,14 +274,14 @@ _.enterDocument = function() {
 /**
  * Forces recalculation of internally stored sizes.
  */
-_.recalculateSizes = function() {
+pstj.ui.TableView.prototype.recalculateSizes = function() {
   this.elementHeight_ = goog.style.getSize(this.getElement()).height;
   if (goog.isNull(this.getModel())) {
     return;
   }
   if (this.isBeyoundEdge()) {
-    this.cache_[CP.TOUCH_DURATION] = 160;
-    this.cache_[CP.NEEDS_MOMENTUM] = 1;
+    this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = 160;
+    this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 1;
     if (!this.movementRaf_.isActive()) {
       this.movementRaf_.start();
     }
@@ -298,7 +295,7 @@ _.recalculateSizes = function() {
  *
  * @param {number} height The height that will be used.
  */
-_.setChildHeight = function(height) {
+pstj.ui.TableView.prototype.setChildHeight = function(height) {
   this.childHeight_ = height;
 };
 
@@ -310,10 +307,10 @@ _.setChildHeight = function(height) {
  * @param {goog.events.Event} e The wrapped browser event.
  * @protected
  */
-_.handleTouchStart = function(e) {
+pstj.ui.TableView.prototype.handleTouchStart = function(e) {
   if (e.target != this.getElement()) {
     this.isAnimating_ = false;
-    this.cache_[CP.NEEDS_MOMENTUM] = 0;
+    this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
     this.momentumRaf_.stop();
     this.movementRaf_.stop();
     if (e.getBrowserEvent().touches.length == 1) {
@@ -323,10 +320,10 @@ _.handleTouchStart = function(e) {
       // we do not need to record the child element, assuming it will
       // fire the 'ACTION' event when really pressed (so it is a
       // good idea to subscribe it to touchable agent)
-      this.cache_[CP.HANDLER_LAST_Y] = e.getBrowserEvent().touches[0].clientY;
-      this.cache_[CP.HANDLER_CURRENT_Y] = this.cache_[CP.HANDLER_LAST_Y];
-      this.cache_[CP.TOUCH_START_TIME] = e.getBrowserEvent().timeStamp;
-      this.cache_[CP.TOUCH_START_Y] = this.cache_[CP.HANDLER_LAST_Y];
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = e.getBrowserEvent().touches[0].clientY;
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME] = e.getBrowserEvent().timeStamp;
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
       this.movementRaf_.start();
     }
   }
@@ -341,7 +338,7 @@ _.handleTouchStart = function(e) {
  *
  * @return {boolean}
  */
-_.hasAnimationPending = function() {
+pstj.ui.TableView.prototype.hasAnimationPending = function() {
   return (!this.movementRaf_.isActive() && !this.momentumRaf_.isActive());
 };
 
@@ -355,7 +352,7 @@ _.hasAnimationPending = function() {
  *
  * @protected
  */
-_.paintNotify = function() {
+pstj.ui.TableView.prototype.paintNotify = function() {
   this.dispatchEvent(pstj.ui.TableView.EventType.RASTERIZE_READY);
 };
 
@@ -367,12 +364,12 @@ _.paintNotify = function() {
  * @param {goog.events.Event} e The wrapped browser event.
  * @protected
  */
-_.handleTouchMove = function(e) {
+pstj.ui.TableView.prototype.handleTouchMove = function(e) {
   if (this.ignoreEndEvents_) return;
   if (e.target != this.getElement()) {
     e.stopPropagation();
     e.preventDefault();
-    this.cache_[CP.HANDLER_CURRENT_Y] = e.getBrowserEvent()
+    this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = e.getBrowserEvent()
         .touches[0].clientY;
 
     this.movementRaf_.start();
@@ -385,7 +382,7 @@ _.handleTouchMove = function(e) {
  * @return {number}
  * @protected
  */
-_.getChildHeight = function() {
+pstj.ui.TableView.prototype.getChildHeight = function() {
   return this.childHeight_;
 };
 
@@ -395,7 +392,7 @@ _.getChildHeight = function() {
  * @return {number}
  * @protected
  */
-_.getVisualOffset = function() {
+pstj.ui.TableView.prototype.getVisualOffset = function() {
   return this.visualOffset_;
 };
 
@@ -408,29 +405,29 @@ _.getVisualOffset = function() {
  * @param {goog.events.Event} e The wrapped browser event.
  * @protected
  */
-_.handleTouchEnd = function(e) {
+pstj.ui.TableView.prototype.handleTouchEnd = function(e) {
   if (this.ignoreEndEvents_) return;
   if (e.target != this.getElement()) {
     var be = e.getBrowserEvent();
     // Only if we are the last touch (i.e. released)
     if (be.touches.length == 0) {
       e.stopPropagation();
-      this.cache_[CP.TOUCH_END_TIME] = be.timeStamp;
-      this.cache_[CP.TOUCH_DURATION] = this.cache_[CP.TOUCH_END_TIME] -
-          this.cache_[CP.TOUCH_START_TIME];
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] = be.timeStamp;
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] -
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME];
 
-      this.cache_[CP.TOUCH_CURRENT_Y] = this.cache_[CP.HANDLER_CURRENT_Y];
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
       // If touch lasted for less than 300 ms and there was movement
-      if (this.cache_[CP.TOUCH_DURATION] < 300 && Math.abs(
+      if (this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] < 300 && Math.abs(
           this.getTouchDistance_()) > 10) {
 
-        this.cache_[CP.NEEDS_MOMENTUM] = 1;
+        this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 1;
         if (!this.movementRaf_.isActive()) {
           this.movementRaf_.start();
         }
       } else if (this.isBeyoundEdge()) {
-        this.cache_[CP.TOUCH_DURATION] = 160;
-        this.cache_[CP.NEEDS_MOMENTUM] = 1;
+        this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = 160;
+        this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 1;
         if (!this.movementRaf_.isActive()) {
           this.movementRaf_.start();
         }
@@ -448,15 +445,15 @@ _.handleTouchEnd = function(e) {
  * @param {goog.events.MouseWheelEvent} e The wheel event.
  * @protected
  */
-_.handleMouseWheel = function(e) {
+pstj.ui.TableView.prototype.handleMouseWheel = function(e) {
   if (!this.mouseAdaptation_.isActive()) {
-    this.cache_[CP.TOUCH_START_TIME] = goog.now();
-    this.cache_[CP.TOUCH_START_Y] = 0;
-    this.cache_[CP.HANDLER_LAST_Y] = 0;
-    this.cache_[CP.HANDLER_CURRENT_Y] = 0;
+    this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME] = goog.now();
+    this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y] = 0;
+    this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = 0;
+    this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = 0;
   }
-  this.cache_[CP.NEEDS_MOMENTUM] = 0;
-  this.cache_[CP.HANDLER_CURRENT_Y] = this.cache_[CP.HANDLER_LAST_Y] +
+  this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
+  this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] +
       (e.deltaY * -18);
 
   if (!this.movementRaf_.isActive()) {
@@ -472,23 +469,23 @@ _.handleMouseWheel = function(e) {
  *
  * @protected
  */
-_.setMomentum = function() {
+pstj.ui.TableView.prototype.setMomentum = function() {
   // distance traveled from beginning of touch event
   var distance = this.getTouchDistance_();
   // The speed that the touch traveled that distance.
-  var speed = Math.abs(distance) / this.cache_[CP.TOUCH_DURATION];
+  var speed = Math.abs(distance) / this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION];
 
-  this.cache_[CP.ANIMATION_DESTINATION_Y] =
-      Math.round(this.cache_[CP.TOUCH_CURRENT_Y] + ((speed * speed) / (
+  this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] =
+      Math.round(this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] + ((speed * speed) / (
       2 * pstj.ui.TableView.DECELERATION) * (distance < 0 ? -1 : 1)));
 
-  this.cache_[CP.ANIMATION_DURATION] =
+  this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION] =
       Math.abs(speed / pstj.ui.TableView.DECELERATION);
 
-  this.cache_[CP.ANIMATION_DESIRED_END_TIME] =
-      this.cache_[CP.TOUCH_END_TIME] + this.cache_[CP.ANIMATION_DURATION];
+  this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESIRED_END_TIME] =
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] + this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION];
 
-  this.cache_[CP.ANIMATION_START_TIME] = this.cache_[CP.TOUCH_END_TIME];
+  this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME] = this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME];
 
   var isSmaller = this.getModel().getCount() *
       this.childHeight_ < this.elementHeight_;
@@ -498,32 +495,32 @@ _.setMomentum = function() {
 
     // if the distance to travel is larger than allowed or the visible
     // items are less than the height of the view scroll to top.
-    if (this.cache_[CP.ANIMATION_DESTINATION_Y] -
-        this.cache_[CP.TOUCH_CURRENT_Y] > this.pixelsToTop() || isSmaller) {
+    if (this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] -
+        this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] > this.pixelsToTop() || isSmaller) {
 
-      this.cache_[CP.ANIMATION_DESTINATION_Y] =
-          this.cache_[CP.TOUCH_CURRENT_Y] + this.pixelsToTop();
+      this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] =
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] + this.pixelsToTop();
 
-      this.cache_[CP.ANIMATION_DURATION] =
+      this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION] =
           (Math.abs(this.pixelsToTop()) / speed) << 0;
 
-      this.cache_[CP.ANIMATION_DESIRED_END_TIME] =
-          this.cache_[CP.ANIMATION_START_TIME] +
-          this.cache_[CP.ANIMATION_DURATION];
+      this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESIRED_END_TIME] =
+          this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME] +
+          this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION];
     }
   } else {
-    if (this.cache_[CP.TOUCH_CURRENT_Y] -
-        this.cache_[CP.ANIMATION_DESTINATION_Y] > this.pixelsToBottom()) {
+    if (this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] -
+        this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] > this.pixelsToBottom()) {
 
-      this.cache_[CP.ANIMATION_DESTINATION_Y] =
-          this.cache_[CP.TOUCH_CURRENT_Y] - this.pixelsToBottom();
+      this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] =
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] - this.pixelsToBottom();
 
-      this.cache_[CP.ANIMATION_DURATION] =
+      this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION] =
           (Math.abs(this.pixelsToBottom()) / speed) << 0;
 
-      this.cache_[CP.ANIMATION_DESIRED_END_TIME] =
-          this.cache_[CP.ANIMATION_START_TIME] +
-          this.cache_[CP.ANIMATION_DURATION];
+      this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESIRED_END_TIME] =
+          this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME] +
+          this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION];
     }
   }
   this.isAnimating = true;
@@ -538,10 +535,10 @@ _.setMomentum = function() {
  * @return {boolean}
  * @protected
  */
-_.isBeyoundEdge = function() {
+pstj.ui.TableView.prototype.isBeyoundEdge = function() {
   var next_visual_offset =
-      this.visualOffset_ + this.cache_[CP.HANDLER_CURRENT_Y] -
-      this.cache_[CP.HANDLER_LAST_Y];
+      this.visualOffset_ + this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] -
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
 
   if (this.offset_ == 0 && next_visual_offset > 0) {
     return true;
@@ -561,24 +558,24 @@ _.isBeyoundEdge = function() {
  * @param {number} ts The timestamp of the RAF.
  * @protected
  */
-_.handleMomentum = function(ts) {
+pstj.ui.TableView.prototype.handleMomentum = function(ts) {
   if (this.isAnimating_) {
     this.momentumRaf_.start();
-    if (ts >= this.cache_[CP.ANIMATION_DESIRED_END_TIME]) {
+    if (ts >= this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESIRED_END_TIME]) {
       this.isAnimating_ = false;
-      this.cache_[CP.HANDLER_CURRENT_Y] =
-          this.cache_[CP.ANIMATION_DESTINATION_Y];
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] =
+          this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y];
       this.paintNotifyDelay_.start();
 
     } else {
-      var nn = (ts - this.cache_[CP.ANIMATION_START_TIME]) /
-          this.cache_[CP.ANIMATION_DURATION];
+      var nn = (ts - this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME]) /
+          this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION];
 
       var easing = (nn * (2 - nn));
-      this.cache_[CP.HANDLER_CURRENT_Y] =
-          ((this.cache_[CP.ANIMATION_DESTINATION_Y] -
-          this.cache_[CP.TOUCH_CURRENT_Y]) * easing) +
-          this.cache_[CP.TOUCH_CURRENT_Y];
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] =
+          ((this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] -
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y]) * easing) +
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y];
 
     }
     this.handleMovement(ts);
@@ -591,7 +588,7 @@ _.handleMomentum = function(ts) {
  * beginnig of the list.
  * @return {number}
  */
-_.pixelsToTop = function() {
+pstj.ui.TableView.prototype.pixelsToTop = function() {
   return (this.offset_ * this.childHeight_) - this.visualOffset_;
 };
 
@@ -601,7 +598,7 @@ _.pixelsToTop = function() {
  * of the visual list.
  * @return {number}
  */
-_.pixelsToBottom = function() {
+pstj.ui.TableView.prototype.pixelsToBottom = function() {
   return (((this.getModel().getCount() - this.offset_) * this.childHeight_) +
       this.visualOffset_ - this.elementHeight_);
 };
@@ -617,7 +614,7 @@ _.pixelsToBottom = function() {
  * head (negative) or at the tail (positive) to update.
  * @protected
  */
-_.updateContentForCount = function(count) {
+pstj.ui.TableView.prototype.updateContentForCount = function(count) {
   if (count < 0) {
     // TOP to BOTTOM
     for (var i = (
@@ -643,16 +640,16 @@ _.updateContentForCount = function(count) {
  * @param {number} ts The timestamp generated by the RAF.
  * @protected
  */
-_.handleMovement = function(ts) {
+pstj.ui.TableView.prototype.handleMovement = function(ts) {
   this.visualOffset_ =
-      this.visualOffset_ + this.cache_[CP.HANDLER_CURRENT_Y] -
-      this.cache_[CP.HANDLER_LAST_Y];
+      this.visualOffset_ + this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] -
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
 
-  this.cache_[CP.HANDLER_LAST_Y] = this.cache_[CP.HANDLER_CURRENT_Y];
+  this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
   this.shiftItems();
   this.applyStyles();
-  if (this.cache_[CP.NEEDS_MOMENTUM] == 1) {
-    this.cache_[CP.NEEDS_MOMENTUM] = 0;
+  if (this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] == 1) {
+    this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
     this.isAnimating_ = true;
     this.setMomentum();
     this.momentumRaf_.start();
@@ -671,7 +668,7 @@ _.handleMovement = function(ts) {
  *
  * @protected
  */
-_.shiftItems = function() {
+pstj.ui.TableView.prototype.shiftItems = function() {
   // at this point we assume that the visual offset is larger than items,
   // so we need to shift
   var to_trans = 0;
@@ -711,8 +708,8 @@ _.shiftItems = function() {
  * @return {number}
  * @private
  */
-_.getTouchDistance_ = function() {
-  return this.cache_[CP.TOUCH_CURRENT_Y] - this.cache_[CP.TOUCH_START_Y];
+pstj.ui.TableView.prototype.getTouchDistance_ = function() {
+  return this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] - this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y];
 };
 
 
@@ -728,7 +725,7 @@ _.getTouchDistance_ = function() {
  * @return {goog.ui.Component} The real child component matching the index.
  * @protected
  */
-_.getChildByOffsetIndex = function(index) {
+pstj.ui.TableView.prototype.getChildByOffsetIndex = function(index) {
   var idx = index + (this.offset_ % this.getChildCount());
   if (idx >= this.getChildCount()) {
     idx = idx - this.getChildCount();
@@ -744,11 +741,10 @@ _.getChildByOffsetIndex = function(index) {
  *
  * @protected
  */
-_.applyStyles = function() {
+pstj.ui.TableView.prototype.applyStyles = function() {
   for (var i = 0, len = this.getChildCount(); i < len; i++) {
-    _css.setTranslation(this.getChildByOffsetIndex(i).getElement(), 0,
+    pstj.lab.style.css.setTranslation(this.getChildByOffsetIndex(i).getElement(), 0,
         ((i * this.childHeight_) + this.visualOffset_));
   }
 };
 
-});  // goog.scope

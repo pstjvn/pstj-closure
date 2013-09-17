@@ -30,24 +30,21 @@ pstj.widget.Clock = function(opt_render) {
 };
 goog.inherits(pstj.widget.Clock, goog.ui.Control);
 
-goog.scope(function() {
 
-  var _ = pstj.widget.Clock.prototype;
+/** @inheritDoc */
+pstj.widget.Clock.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  pstj.ui.ngAgent.getInstance().apply(this);
+};
 
-  /** @inheritDoc */
-  _.enterDocument = function() {
-    goog.base(this, 'enterDocument');
-    pstj.ui.ngAgent.getInstance().apply(this);
-  };
 
-  /** @inheritDoc */
-  _.setModel = function(model) {
-    if (goog.isNumber(model)) {
-      this.getModel().mutate('time', model);
-    } else {
-      goog.base(this, 'setModel', model);
-    }
-    pstj.ui.ngAgent.getInstance().apply(this);
-  };
+/** @inheritDoc */
+pstj.widget.Clock.prototype.setModel = function(model) {
+  if (goog.isNumber(model)) {
+    this.getModel().mutate('time', model);
+  } else {
+    goog.base(this, 'setModel', model);
+  }
+  pstj.ui.ngAgent.getInstance().apply(this);
+};
 
-});

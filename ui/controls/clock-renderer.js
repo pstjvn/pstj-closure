@@ -20,18 +20,14 @@ goog.addSingletonGetter(pstj.widget.ClockRenderer);
  */
 pstj.widget.ClockRenderer.CSS_CLASS = goog.getCssName('pstj-widget-clock');
 
-goog.scope(function() {
 
-  var _ = pstj.widget.ClockRenderer.prototype;
-  /** @inheritDoc */
-  _.getTemplate = function(component) {
-    return pstj.templates.clock({});
-  };
+/** @inheritDoc */
+pstj.widget.ClockRenderer.prototype.getTemplate = function(component) {
+  return pstj.templates.clock({});
+};
 
-  /** @inheritDoc */
-  _.getCssClass = function() {
-    return pstj.widget.ClockRenderer.CSS_CLASS;
-  };
 
-});
-
+/** @inheritDoc */
+pstj.widget.ClockRenderer.prototype.getCssClass = function() {
+  return pstj.widget.ClockRenderer.CSS_CLASS;
+};

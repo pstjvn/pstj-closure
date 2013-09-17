@@ -14,6 +14,7 @@ goog.require('goog.async.AnimationDelay');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.Key');
+goog.require('pstj.configure');
 goog.require('pstj.ui.Agent');
 
 
@@ -56,11 +57,10 @@ goog.addSingletonGetter(pstj.ui.TouchAgent);
 
 
 /**
- * @define {number} The minimum distance between the X or Y of the point of
- * starting a touch event and ending it to consider the gesture as 'move'. If
- * both X and Y are less than this value the gesture is considered a 'tap'.
+ * @type {number}
  */
-goog.define('pstj.ui.TouchAgent.TOUCH_TRESHOLD', 10);
+pstj.ui.TouchAgent.TOUCH_TRESHOLD = goog.asserts.assertNumber(
+    pstj.configure.getRuntimeValue('TOUCH_TRESHOLD', 10, 'PSTJ.TOUCH'));
 
 
 /** @inheritDoc */

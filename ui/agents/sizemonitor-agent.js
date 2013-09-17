@@ -55,11 +55,9 @@ goog.addSingletonGetter(pstj.ui.SizeMonitorAgent);
 
 
 /**
- * @define {number} Number of milliseconds to wait before allowsing invokation
- * of the real event handler for the resize event in size monigor agent for UI
- * components.
+ * @type {number}
  */
-goog.define('pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL', 500);
+pstj.ui.SizeMonitorAgent.THROTHLE_INTERVAL = 500;
 
 
 /**

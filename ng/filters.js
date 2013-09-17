@@ -7,19 +7,13 @@ goog.provide('pstj.ng.filters');
 goog.require('pstj.date.utils');
 
 
-goog.scope(function() {
-
-var _ = pstj.ng.filters;
-var dutils = pstj.date.utils;
-
-
 /**
  * The time zone offset of the client in milliseconds (used to calculate
  * the time offset filter).
  * @type {number}
  * @private
  */
-_.zoneOffset_ = (function() {
+pstj.ng.filters.zoneOffset_ = (function() {
   return (new Date()).getTimezoneOffset() * 60 * 1000;
 })();
 
@@ -30,7 +24,7 @@ _.zoneOffset_ = (function() {
  * @type {string}
  * @private
  */
-_.timeOffsetDefaultFormat_ = 'hh:mm';
+pstj.ng.filters.timeOffsetDefaultFormat_ = 'hh:mm';
 
 
 /**
@@ -39,7 +33,7 @@ _.timeOffsetDefaultFormat_ = 'hh:mm';
  * @private
  * @return {number}
  */
-_.makeDateTime_ = function(data) {
+pstj.ng.filters.makeDateTime_ = function(data) {
   var time;
   if (!goog.isNumber(data)) {
     time = +data;
@@ -69,16 +63,17 @@ _.makeDateTime_ = function(data) {
  *   the goog.date formatting options.
  * @return {string} The result of the offset.
  */
-_.timeoffset = function(data, format) {
-  var time = _.makeDateTime_(data);
+pstj.ng.filters.timeoffset = function(data, format) {
+  var time = pstj.ng.filters.makeDateTime_(data);
   // we expect the data in seconds (most server side applications use seconds
   // and not milliseconds like JavaScript so we need to compensate for that.
   // transform seconds to milliseconds.
   time = time * 1000;
   // compensate for time zone.
-  time = time + _.zoneOffset_;
+  time = time + pstj.ng.filters.zoneOffset_;
   // ready to apply filter
-  return dutils.renderTimeSafe(time, format || _.timeOffsetDefaultFormat_);
+  return pstj.date.utils.renderTimeSafe(time,
+      format || pstj.ng.filters.timeOffsetDefaultFormat_);
 
 };
 
@@ -90,9 +85,9 @@ _.timeoffset = function(data, format) {
  *   the goog.date formatting options.
  * @return {string} The result of the offset.
  */
-_.datetime = function(data, format) {
-  return dutils.renderTimeSafe(_.makeDateTime_(data),
-      format || _.timeOffsetDefaultFormat_);
+pstj.ng.filters.datetime = function(data, format) {
+  return pstj.date.utils.renderTimeSafe(pstj.ng.filters.makeDateTime_(data),
+      format || pstj.ng.filters.timeOffsetDefaultFormat_);
 };
 
 
@@ -102,7 +97,7 @@ _.datetime = function(data, format) {
  * @param {string} format The string to append to the data.
  * @return {string} The composite value of the two.
  */
-_.prepend = function(data, format) {
+pstj.ng.filters.prepend = function(data, format) {
   return format + data.toString();
 };
 
@@ -113,7 +108,7 @@ _.prepend = function(data, format) {
  * @param {string} format The string to append to the data.
  * @return {string} The composite value of the two.
  */
-_.append = function(data, format) {
+pstj.ng.filters.append = function(data, format) {
   return data.toString() + format;
 };
 
@@ -124,8 +119,8 @@ _.append = function(data, format) {
  * @param {string} fname The filter name to look up.
  * @return {boolean} Will be true if such filter exists.
  */
-_.hasFilter = function(fname) {
-  return !goog.isNull(_.getFilterByName(fname));
+pstj.ng.filters.hasFilter = function(fname) {
+  return !goog.isNull(pstj.ng.filters.getFilterByName(fname));
 };
 
 
@@ -134,8 +129,8 @@ _.hasFilter = function(fname) {
  * @param {string} fname The filter name.
  * @return {?function((number|string|boolean),string=): string}
  */
-_.getFilterByName = function(fname) {
-  var filter = _.registry_[fname];
+pstj.ng.filters.getFilterByName = function(fname) {
+  var filter = pstj.ng.filters.registry_[fname];
   if (!goog.isFunction(filter)) {
     filter = goog.global['ngf' + fname];
     if (!goog.isFunction(filter)) {
@@ -154,10 +149,10 @@ _.getFilterByName = function(fname) {
  * formatting function.
  * @return {string} The result of the filter.
  */
-_.apply = function(fname, data, opt_format) {
-  if (_.hasFilter(fname)) {
+pstj.ng.filters.apply = function(fname, data, opt_format) {
+  if (pstj.ng.filters.hasFilter(fname)) {
     var f = /** @type {function((number|string|boolean),string=): string} */ (
-        _.getFilterByName(fname));
+        pstj.ng.filters.getFilterByName(fname));
     return f(data, opt_format);
   }
   throw new Error('There is no filter registered with this name:' + fname);
@@ -171,7 +166,7 @@ _.apply = function(fname, data, opt_format) {
  * @param {string} format The formating information.
  * @return {string} The formatted price.
  */
-_.makePrice = function(data, format) {
+pstj.ng.filters.makePrice = function(data, format) {
   var fixed = +format;
   if (isNaN(fixed)) {
     fixed = 2;
@@ -188,7 +183,7 @@ _.makePrice = function(data, format) {
  * @param {number|string|boolean} data The data to parse.
  * @return {string}
  */
-_.money = function(data) {
+pstj.ng.filters.money = function(data) {
   return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
@@ -198,13 +193,12 @@ _.money = function(data) {
  * @type {Object}
  * @private
  */
-_.registry_ = {
-  'datetime': _.datetime,
-  'timeoffset': _.timeoffset,
-  'append': _.append,
-  'prepend': _.prepend,
-  'price': _.makePrice,
-  'money': _.money
+pstj.ng.filters.registry_ = {
+  'datetime': pstj.ng.filters.datetime,
+  'timeoffset': pstj.ng.filters.timeoffset,
+  'append': pstj.ng.filters.append,
+  'prepend': pstj.ng.filters.prepend,
+  'price': pstj.ng.filters.makePrice,
+  'money': pstj.ng.filters.money
 };
 
-});  // goog.scope

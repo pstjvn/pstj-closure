@@ -20,7 +20,7 @@ goog.provide('pstj.ds.TimeProvider');
 
 goog.require('goog.array');
 goog.require('pstj.configure');
-
+goog.require('pstj.ds.IClock');
 
 
 /**

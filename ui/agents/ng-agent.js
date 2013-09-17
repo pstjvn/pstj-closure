@@ -38,15 +38,10 @@ goog.addSingletonGetter(pstj.ui.ngAgent);
 
 
 /**
- * @define {boolean} Controls if the ng agent will use the next tick in the
- * engine to perform the updates on the component. By default the updates are
- * performed immediately.
+ * @type {boolean}
  */
-goog.define('pstj.ui.ngAgent.USE_NEXT_TICK', false);
-
-goog.scope(function() {
-
-var _ = pstj.ui.ngAgent.prototype;
+pstj.ui.ngAgent.USE_NEXT_TICK = goog.asserts.assertBoolean(
+    pstj.configure.getRuntimeValue('USE_NEXT_TICK', false, 'PSTJ.NGAGENT'));
 
 
 /**
@@ -54,7 +49,7 @@ var _ = pstj.ui.ngAgent.prototype;
  * @type {RegExp}
  * @private
  */
-_.RE_ = /^([^\(]*)\((.*)\)$/;
+pstj.ui.ngAgent.prototype.RE_ = /^([^\(]*)\((.*)\)$/;
 
 
 /**
@@ -63,11 +58,11 @@ _.RE_ = /^([^\(]*)\((.*)\)$/;
  * @type {string}
  * @private
  */
-_.nullValue_ = '&nbsp;';
+pstj.ui.ngAgent.prototype.nullValue_ = '&nbsp;';
 
 
 /** @inheritDoc */
-_.updateCache = function(component) {
+pstj.ui.ngAgent.prototype.updateCache = function(component) {
   // we can update this cache only if we already have the element.
   if (!goog.isNull(component.getElement())) {
     this.getCache().set(component.getId(), this.getNGElements(component));
@@ -83,7 +78,7 @@ _.updateCache = function(component) {
  * Applies the current model on the components ng bits.
  * @param {goog.ui.Component} component The component to update.
  */
-_.apply = function(component) {
+pstj.ui.ngAgent.prototype.apply = function(component) {
   if (pstj.ui.ngAgent.USE_NEXT_TICK) {
     goog.async.nextTick(goog.bind(this.apply_, this, component));
   } else {
@@ -97,7 +92,7 @@ _.apply = function(component) {
  * @param {goog.ui.Component} component The component.
  * @private
  */
-_.apply_ = function(component) {
+pstj.ui.ngAgent.prototype.apply_ = function(component) {
   if (goog.isDefAndNotNull(component.getModel())) {
     this.attach(component);
     if (!component.isInDocument()) return;
@@ -119,7 +114,7 @@ _.apply_ = function(component) {
  * @protected
  * @param {goog.ui.Component} component The component to operate on.
  */
-_.applyModel = function(component) {
+pstj.ui.ngAgent.prototype.applyModel = function(component) {
   var model = component.getModel();
   var currentElement = null;
   var modelName;
@@ -157,7 +152,7 @@ _.applyModel = function(component) {
  * that if the data is not s primitive it will be converted to a string before
  * it is run by the filters.
  */
-_.applyFilteredModel = function(el, data) {
+pstj.ui.ngAgent.prototype.applyFilteredModel = function(el, data) {
   // first of all, get our filter
   var filter = goog.dom.dataset.get(el, 'filter');
   this.applyOnElement_(el, (goog.isString(filter)) ?
@@ -186,7 +181,7 @@ _.applyFilteredModel = function(el, data) {
  * @return {string} The result of the filter as string.
  * @private
  */
-_.applyFilterOnData_ = function(data, filter) {
+pstj.ui.ngAgent.prototype.applyFilterOnData_ = function(data, filter) {
   var filters = filter.split('|');
   var result = data;
 
@@ -230,7 +225,7 @@ _.applyFilterOnData_ = function(data, filter) {
  * @param {string} filteredData The filteret data to apply.
  * @private
  */
-_.applyOnElement_ = function(el, filteredData) {
+pstj.ui.ngAgent.prototype.applyOnElement_ = function(el, filteredData) {
   if (el.tagName.toUpperCase() == goog.dom.TagName.IMG) {
     el.src = filteredData;
   } else if (goog.dom.dataset.has(el, 'switch')) {
@@ -249,7 +244,7 @@ _.applyOnElement_ = function(el, filteredData) {
  * @param {goog.ui.Component} component The component to handle the empty
  *   model on.
  */
-_.handleEmptyModel = function(component) {
+pstj.ui.ngAgent.prototype.handleEmptyModel = function(component) {
   goog.dom.classlist.add(component.getElement(), goog.getCssName(
       'pstj-ng-cloak'));
 };
@@ -260,12 +255,10 @@ _.handleEmptyModel = function(component) {
  * @param {goog.ui.Component} component The component.
  * @return {{length: number}}
  */
-_.getNGElements = function(component) {
+pstj.ui.ngAgent.prototype.getNGElements = function(component) {
   if (!goog.isNull(component.getElement())) {
     return component.getElement().querySelectorAll('[data-model]');
   } else {
     return [];
   }
 };
-
-});  // goog.scope

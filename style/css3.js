@@ -16,10 +16,11 @@ goog.require('goog.userAgent');
 
 
 /**
- * @define {boolean} If true 2d transforms will be used always regardless of its
- * support on the host.
+ * Globally forced 2d for translations.
+ * @type {boolean}
  */
-goog.define('pstj.lab.style.css.FORCE_2D', false);
+pstj.lab.style.css.FORCE_2D = goog.asserts.assertBoolean(
+    pstj.configure.getRuntimeValue('FORCE_2D', false, 'PSTJ.CSS'));
 
 
 /**

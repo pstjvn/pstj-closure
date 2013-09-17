@@ -34,21 +34,13 @@ pstj.ng.Template = function(opt_template, opt_nullvalue) {
 };
 goog.inherits(pstj.ng.Template, pstj.ui.Touchable);
 
-goog.scope(function() {
-
-var Template = pstj.ng.Template;
-var _ = pstj.ng.Template.prototype;
-var dataset = goog.dom.dataset;
-var array = goog.array;
-var classlist = goog.dom.classlist;
-
 
 /**
  * The regular expression used to figure out the filter name and value
  * @type {RegExp}
  * @protected
  */
-Template.RE = /^([^\(]*)\((.*)\)$/;
+pstj.ng.Template.RE = /^([^\(]*)\((.*)\)$/;
 
 
 /**
@@ -56,7 +48,7 @@ Template.RE = /^([^\(]*)\((.*)\)$/;
  * @type {{length: number}|null}
  * @private
  */
-_.templateElements_;
+pstj.ng.Template.prototype.templateElements_;
 
 
 /**
@@ -65,11 +57,11 @@ _.templateElements_;
  * @type {string}
  * @private
  */
-_.nullValue_ = '&nbsp;';
+pstj.ng.Template.prototype.nullValue_ = '&nbsp;';
 
 
 /** @inheritDoc */
-_.decorateInternal = function(el) {
+pstj.ng.Template.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
   // call 1 way data bindings
   this.templateElements_ = this.querySelectorAll('[data-model]');
@@ -78,7 +70,7 @@ _.decorateInternal = function(el) {
 
 
 /** @inheritDoc */
-_.setModel = function(model) {
+pstj.ng.Template.prototype.setModel = function(model) {
   if (!(model instanceof pstj.ds.ListItem)) {
     if (goog.isObject(model) && !goog.isNull(model)) {
       model = new pstj.ds.ListItem(/** @type {!Object} */(model));
@@ -95,18 +87,18 @@ _.setModel = function(model) {
  * @override
  * @return {pstj.ds.ListItem} Hopefully casted.
  */
-_.getModel;
+pstj.ng.Template.prototype.getModel;
 
 
 /**
  * Used to apply the data on the model derived from the template.
  */
-_.applyTemplate = function() {
+pstj.ng.Template.prototype.applyTemplate = function() {
   if (goog.isDefAndNotNull(this.getModel())) {
     this.applyModel();
-    if (classlist.contains(this.getElement(), goog.getCssName(
+    if (goog.dom.classlist.contains(this.getElement(), goog.getCssName(
         'pstj-ng-cloak'))) {
-      classlist.remove(this.getElement(), goog.getCssName('pstj-ng-cloak'));
+      goog.dom.classlist.remove(this.getElement(), goog.getCssName('pstj-ng-cloak'));
     }
   } else {
     this.handleEmptyModel();
@@ -119,8 +111,8 @@ _.applyTemplate = function() {
  *   Default implementation simply puts the cloack back as class.
  * @protected
  */
-_.handleEmptyModel = function() {
-  classlist.add(this.getElement(), goog.getCssName('pstj-ng-cloak'));
+pstj.ng.Template.prototype.handleEmptyModel = function() {
+  goog.dom.classlist.add(this.getElement(), goog.getCssName('pstj-ng-cloak'));
 };
 
 
@@ -128,14 +120,14 @@ _.handleEmptyModel = function() {
  * Applies the model on the template.
  * @protected
  */
-_.applyModel = function() {
+pstj.ng.Template.prototype.applyModel = function() {
   var model = this.getModel();
   var currentElement = null;
   var modelName;
   var data;
   for (var i = 0; i < this.templateElements_.length; i++) {
     currentElement = this.templateElements_[i];
-    modelName = dataset.get(currentElement, 'model');
+    modelName = goog.dom.dataset.get(currentElement, 'model');
     if (goog.isString(modelName)) {
       data = model.getProp(modelName);
       if (goog.isNull(data)) {
@@ -149,7 +141,7 @@ _.applyModel = function() {
 
 
 /** @inheritDoc */
-_.disposeInternal = function() {
+pstj.ng.Template.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   this.templateElements_ = null;
 };
@@ -164,10 +156,10 @@ _.disposeInternal = function() {
  * that if the data is not s primitive it will be converted to a string before
  * it is run by the filters.
  */
-_.applyFilteredModel = function(el, data) {
+pstj.ng.Template.prototype.applyFilteredModel = function(el, data) {
 
   // first of all, get our filter
-  var filter = dataset.get(el, 'filter');
+  var filter = goog.dom.dataset.get(el, 'filter');
   this.applyOnElement_(el, (goog.isString(filter)) ?
       this.applyFilterOnData_(data, filter) :
       data.toString());
@@ -180,7 +172,7 @@ _.applyFilteredModel = function(el, data) {
  * @param {string} filteredData The filteret data to apply.
  * @private
  */
-_.applyOnElement_ = function(el, filteredData) {
+pstj.ng.Template.prototype.applyOnElement_ = function(el, filteredData) {
   switch (el.tagName.toUpperCase()) {
     case goog.dom.TagName.IMG:
       el.src = filteredData;
@@ -211,21 +203,21 @@ _.applyOnElement_ = function(el, filteredData) {
  * @return {string} The result of the filter as string.
  * @private
  */
-_.applyFilterOnData_ = function(data, filter) {
+pstj.ng.Template.prototype.applyFilterOnData_ = function(data, filter) {
   var filters = filter.split('|');
   var result = data;
 
   // For each filter in the filter value apply the filter on the result from
   // the previous filter and return the result afterwards.
-  array.forEach(filters, function(item) {
-    var fname;
-    var fvalue;
+  goog.array.forEach(filters, function(item) {
+    var fname = '';
+    var fvalue = '';
     // We expect the filters that accept arguments to be written as
     // filterName(argument1, argument2,...)|filterName2|filter3(whatever)
     // To extract it we use regulr expression, but because regexp is expensive
     // we first try to check for at least the '(' simbol.
     if (item.indexOf('(') != -1) {
-      var tmp = Template.RE.exec(item);
+      var tmp = pstj.ng.Template.RE.exec(item);
       // at this stage tmp will be wither null (when there is no additional
       // data to the filter or an array or matches (1 - filter name, 2 filter
       // config).
@@ -248,4 +240,3 @@ _.applyFilterOnData_ = function(data, filter) {
   return result.toString();
 };
 
-});  // goog.scope

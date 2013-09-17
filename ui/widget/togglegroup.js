@@ -26,54 +26,49 @@ pstj.widget.ToggleGroup = function(opt_template, opt_button_renderer) {
 };
 goog.inherits(pstj.widget.ToggleGroup, pstj.widget.ControlGroup);
 
-goog.scope(function() {
 
-  var _ = pstj.widget.ToggleGroup.prototype;
+/** @inheritDoc */
+pstj.widget.ToggleGroup.prototype.decorateInternal = function(el) {
+  goog.base(this, 'decorateInternal', el);
 
-  /** @inheritDoc */
-  _.decorateInternal = function(el) {
-    goog.base(this, 'decorateInternal', el);
+  this.forEachChild(function(child) {
+    child.setSupportedState(goog.ui.Component.State.SELECTED, true);
+    child.setDispatchTransitionEvents(goog.ui.Component.State.SELECTED, true);
+  });
 
-    this.forEachChild(function(child) {
-      child.setSupportedState(goog.ui.Component.State.SELECTED, true);
-      child.setDispatchTransitionEvents(goog.ui.Component.State.SELECTED, true);
-    });
+  this.currentActive_ = /** @type {pstj.ui.Button} */ (
+    this.getChildAt(0));
 
-    this.currentActive_ = /** @type {pstj.ui.Button} */ (
-      this.getChildAt(0));
+  this.currentActive_.setSelected(true);
+};
 
+/** @inheritDoc */
+pstj.widget.ToggleGroup.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  this.getHandler().listen(this, goog.ui.Component.EventType.ACTION,
+    this.handleButtonAction);
+};
+
+/**
+ * Retrieves the action name of the selected / toggled button.
+ * @return {string} The action name.
+ */
+pstj.widget.ToggleGroup.prototype.getCheckedAction = function() {
+  return this.currentActive_.getActionName() || '';
+};
+
+/**
+ * Handles the toggle event of a button and makes sure the other buttons are
+ *   not left toggled.
+ * @param {goog.events.Event} e The ACTION button event.
+ * @protected
+ */
+pstj.widget.ToggleGroup.prototype.handleButtonAction = function(e) {
+  e.stopPropagation();
+  var button = /** @type {pstj.ui.Button} */ (e.target);
+  if (button != this.currentActive_) {
+    this.currentActive_.setSelected(false);
+    this.currentActive_ = button;
     this.currentActive_.setSelected(true);
-  };
-
-  /** @inheritDoc */
-  _.enterDocument = function() {
-    goog.base(this, 'enterDocument');
-    this.getHandler().listen(this, goog.ui.Component.EventType.ACTION,
-      this.handleButtonAction);
-  };
-
-  /**
-   * Retrieves the action name of the selected / toggled button.
-   * @return {string} The action name.
-   */
-  _.getCheckedAction = function() {
-    return this.currentActive_.getActionName() || '';
-  };
-
-  /**
-   * Handles the toggle event of a button and makes sure the other buttons are
-   *   not left toggled.
-   * @param {goog.events.Event} e The ACTION button event.
-   * @protected
-   */
-  _.handleButtonAction = function(e) {
-    e.stopPropagation();
-    var button = /** @type {pstj.ui.Button} */ (e.target);
-    if (button != this.currentActive_) {
-      this.currentActive_.setSelected(false);
-      this.currentActive_ = button;
-      this.currentActive_.setSelected(true);
-    }
-  };
-
-});
+  }
+};

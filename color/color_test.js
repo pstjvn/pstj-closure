@@ -53,7 +53,7 @@ function testLargerThanOne() {
 
 function testWithNonNumber() {
   assertThrows('Value is string', function() {
-    pstj.color.hexToRgba(color, '0.23');
+    pstj.color.hexToRgba(color, 0.23);
   });
   assertThrows('Value is Object', function() {
     pstj.color.hexToRgba(color, {});

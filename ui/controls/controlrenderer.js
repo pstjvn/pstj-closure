@@ -30,58 +30,53 @@ goog.addSingletonGetter(pstj.ui.ControlRenderer);
  */
 pstj.ui.ControlRenderer.CSS_CLASS = goog.getCssName('pstj-control');
 
-goog.scope(function() {
 
-  var _ = pstj.ui.ControlRenderer.prototype;
+/** @inheritDoc */
+pstj.ui.ControlRenderer.prototype.getCssClass = function() {
+  return pstj.ui.ControlRenderer.CSS_CLASS;
+};
 
-  /** @inheritDoc */
-  _.getCssClass = function() {
-    return pstj.ui.ControlRenderer.CSS_CLASS;
-  };
+/**
+ * Should return the string template.
+ * @param {goog.ui.Component} component The component instance.
+ * @return {string}
+ * @protected
+ */
+pstj.ui.ControlRenderer.prototype.getTemplate = function(component) {
+  return pstj.templates.Control(this.generateTemplateData(component));
+};
 
-  /**
-   * Should return the string template.
-   * @param {goog.ui.Component} component The component instance.
-   * @return {string}
-   * @protected
-   */
-  _.getTemplate = function(component) {
-    return pstj.templates.Control(this.generateTemplateData(component));
-  };
+/**
+ * Generates the data to be passed to the template instance.
+ * @param {goog.ui.Component} component The component instance.
+ * @return {Object.<string, *>} The generated template model.
+ * @protected
+ */
+pstj.ui.ControlRenderer.prototype.generateTemplateData = function(component) {
+  var model = component.getModel();
+  if (model instanceof pstj.ds.ListItem) {
+    return model.getRawData();
+  }
+  if (model instanceof Object) return model;
+  return {};
+};
 
-  /**
-   * Generates the data to be passed to the template instance.
-   * @param {goog.ui.Component} component The component instance.
-   * @return {Object.<string, *>} The generated template model.
-   * @protected
-   */
-  _.generateTemplateData = function(component) {
-    var model = component.getModel();
-    if (model instanceof pstj.ds.ListItem) {
-      return model.getRawData();
-    }
-    if (model instanceof Object) return model;
-    return {};
-  };
+/** @inheritDoc */
+pstj.ui.ControlRenderer.prototype.createDom = function(control) {
+  goog.asserts.assertInstanceof(control, goog.ui.Control);
+  var element = this.getCompiledTemplate_(control);
+  this.setAriaStates(control, element);
+  return element;
+};
 
-  /** @inheritDoc */
-  _.createDom = function(control) {
-    goog.asserts.assertInstanceof(control, goog.ui.Control);
-    var element = this.getCompiledTemplate_(control);
-    this.setAriaStates(control, element);
-    return element;
-  };
-
-  /**
-   * Returns the compiled DOM from the html template. This is required to
-   *   allow the component to have referrence to a root DOM node.
-   * @param {goog.ui.Component} component The component to render for.
-   * @return {!Element} The constructed element.
-   * @private
-   */
-  _.getCompiledTemplate_ = function(component) {
-    return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
-      this.getTemplate(component)));
-  };
-
-});
+/**
+ * Returns the compiled DOM from the html template. This is required to
+ *   allow the component to have referrence to a root DOM node.
+ * @param {goog.ui.Component} component The component to render for.
+ * @return {!Element} The constructed element.
+ * @private
+ */
+pstj.ui.ControlRenderer.prototype.getCompiledTemplate_ = function(component) {
+  return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
+    this.getTemplate(component)));
+};

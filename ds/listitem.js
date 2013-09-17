@@ -147,7 +147,7 @@ pstj.ds.ListItem.prototype.update = function(node) {
   if (this.getId() == node.getId()) {
     goog.asserts.assertInstanceof(node, pstj.ds.ListItem,
         'You should not mix implementation of list items');
-    return this.set_(node);
+    return this.set_(/** @type {pstj.ds.ListItem} */ (node));
   } else {
     return false;
   }
