@@ -35,22 +35,22 @@ pstj.ds.List = function(opt_nodes) {
   /**
    * The list of items.
    * @type {!Array.<pstj.ds.ListItem>}
-   * @private
+   * @protected
    */
-  this.list_ = [];
+  this.list = [];
   /**
    * The id -> item map, stores the id as a key and the item as value.
    * @type {!Object}
-   * @private
+   * @protected
    */
-  this.map_ = {};
+  this.map = {};
   /**
    * Map of id pointing to indexes. The id is stored as a key and the index of
    *   the item in the list is stored as value.
    * @type {!Object}
-   * @private
+   * @protected
    */
-  this.indexMap_ = {};
+  this.indexMap = {};
   /**
    * The list of indexes that are currently filtered out.
    * @type {Array.<number>}
@@ -144,19 +144,19 @@ pstj.ds.List.prototype.add = function(node, opt_reverse) {
     throw new Error('Item is duplicate in the list: ' + dataName);
   }
   if (opt_reverse) {
-    this.list_.unshift(node);
+    this.list.unshift(node);
     if (dataName && dataName != '') {
-      this.map_[dataName] = node;
-      for (index in this.indexMap_) {
-        this.indexMap_[index]++;
+      this.map[dataName] = node;
+      for (index in this.indexMap) {
+        this.indexMap[index]++;
       }
-      this.indexMap_[dataName] = 0;
+      this.indexMap[dataName] = 0;
     }
   } else {
-    this.list_.push(node);
+    this.list.push(node);
     if (dataName && dataName != '') {
-      this.map_[dataName] = node;
-      this.indexMap_[dataName] = this.list_.length - 1;
+      this.map[dataName] = node;
+      this.indexMap[dataName] = this.list.length - 1;
     }
   }
   this.applyFilter_();
@@ -181,13 +181,13 @@ pstj.ds.List.prototype.deleteNode = function(node) {
   if (!goog.isNull(listnode)) {
     listnode.dispose();
     var index = this.getIndexById(id);
-    goog.array.removeAt(this.list_, index);
-    for (i in this.indexMap_) {
-      if (this.indexMap_[i] > index) {
-        this.indexMap_[i]--;
+    goog.array.removeAt(this.list, index);
+    for (i in this.indexMap) {
+      if (this.indexMap[i] > index) {
+        this.indexMap[i]--;
       }
     }
-    delete this.map_[id];
+    delete this.map[id];
     this.applyFilter_();
     this.dispatchEvent(pstj.ds.List.EventType.DELETE);
     return true;
@@ -220,7 +220,7 @@ pstj.ds.List.prototype.update = function(node) {
  * @return {?pstj.ds.ListItem} The item that matches this id or null.
  */
 pstj.ds.List.prototype.getById = function(id) {
-  return this.map_[id] || null;
+  return this.map[id] || null;
 };
 
 
@@ -231,7 +231,7 @@ pstj.ds.List.prototype.getById = function(id) {
  *   null.
  */
 pstj.ds.List.prototype.getByIndex = function(index) {
-  var result = this.list_[index];
+  var result = this.list[index];
   if (goog.isDef(result)) {
     return result;
   }
@@ -244,7 +244,7 @@ pstj.ds.List.prototype.getByIndex = function(index) {
  * @return {number} The length of the list.
  */
 pstj.ds.List.prototype.getCount = function() {
-  return this.list_.length;
+  return this.list.length;
 };
 
 
@@ -265,7 +265,7 @@ pstj.ds.List.prototype.getIndexByItem = function(node) {
  * @return {number} The item index.
  */
 pstj.ds.List.prototype.getIndexById = function(id) {
-  var res = this.indexMap_[id];
+  var res = this.indexMap[id];
   if (goog.isNumber(res)) return res;
   return -1;
 };
@@ -355,7 +355,7 @@ pstj.ds.List.prototype.getCurrentIndex = function() {
  */
 pstj.ds.List.prototype.getNext = function() {
   var nextIndex = this.getCurrentIndex() + 1;
-  if (nextIndex >= this.list_.length) {
+  if (nextIndex >= this.list.length) {
     if (this.canRewind_) {
       nextIndex = 0;
     } else {
@@ -376,7 +376,7 @@ pstj.ds.List.prototype.getPrevious = function() {
   var nextIndex = this.getCurrentIndex() - 1;
   if (nextIndex < 0) {
     if (this.canRewind_) {
-      nextIndex = this.list_.length - 1;
+      nextIndex = this.list.length - 1;
     } else {
       return null;
     }
@@ -393,22 +393,22 @@ pstj.ds.List.prototype.getPrevious = function() {
  * @template S
  */
 pstj.ds.List.prototype.forEach = function(fn, opt_obj) {
-  goog.array.forEach(this.list_, fn, opt_obj);
+  goog.array.forEach(this.list, fn, opt_obj);
 };
 
 
 /** @inheritDoc */
 pstj.ds.List.prototype['toJSON'] = function() {
-  return this.list_;
+  return this.list;
 };
 
 
 /** @inheritDoc */
 pstj.ds.List.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
-  delete this.map_;
-  delete this.indexMap_;
-  delete this.list_;
+  delete this.map;
+  delete this.indexMap;
+  delete this.list;
   delete this.canRewind_;
   delete this.currentIndex_;
 };
@@ -423,7 +423,7 @@ pstj.ds.List.prototype.disposeInternal = function() {
 pstj.ds.List.prototype.applyFilter_ = function() {
   goog.array.clear(this.filteredOutIndexes_);
   if (goog.isFunction(this.filterFn_)) {
-    goog.array.forEach(this.list_, function(item, index) {
+    goog.array.forEach(this.list, function(item, index) {
       if (this.filterFn_(item)) this.filteredOutIndexes_.push(index);
     }, this);
   }
