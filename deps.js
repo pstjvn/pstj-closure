@@ -13,7 +13,7 @@ goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj
 goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.List.Event', 'pstj.ds.List.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.ListItem']);
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.ds.IListItem', 'pstj.object']);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable']);
-goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure']);
+goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure', 'pstj.ds.IClock']);
 goog.addDependency('../../../apps/pstj/error/errorhandler.js', ['pstj.error.ErrorHandler', 'pstj.error.ErrorHandler.Error', 'pstj.error.throwError'], ['goog.pubsub.PubSub', 'pstj.control.Base']);
 goog.addDependency('../../../apps/pstj/fx/dragdropgroup.js', ['pstj.fx.DragDropGroup'], ['goog.dom.classlist', 'goog.fx.DragDropGroup', 'pstj.fx.Dragger']);
 goog.addDependency('../../../apps/pstj/fx/dragger.js', ['pstj.fx.Dragger'], ['goog.async.AnimationDelay', 'goog.fx.Dragger', 'pstj.style.css']);
@@ -34,10 +34,11 @@ goog.addDependency('../../../apps/pstj/ui/agents/agent.js', ['pstj.ui.Agent'], [
 goog.addDependency('../../../apps/pstj/ui/agents/clock-agent.js', ['pstj.ui.ClockAgent'], ['pstj.ds.IClock', 'pstj.ds.TimeProvider', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/agents/ng-agent.js', ['pstj.ui.ngAgent'], ['goog.array', 'goog.asserts', 'goog.async.nextTick', 'goog.dom', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/agents/sizemonitor-agent.js', ['pstj.ui.SizeMonitorAgent'], ['goog.array', 'goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.object', 'goog.style', 'pstj.ui.Agent']);
-goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.asserts', 'goog.async.AnimationDelay', 'goog.events', 'goog.events.EventType', 'goog.events.Key', 'pstj.ui.Agent']);
+goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.asserts', 'goog.async.AnimationDelay', 'goog.events', 'goog.events.EventType', 'goog.events.Key', 'pstj.configure', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/async.js', ['pstj.ui.Async'], ['goog.functions', 'pstj.graphics.Smooth', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/button/button.js', ['pstj.ui.Button'], ['goog.dom.dataset', 'goog.ui.CustomButton', 'goog.ui.registry', 'pstj.ui.CustomButtonRenderer', 'pstj.ui.TouchAgent']);
 goog.addDependency('../../../apps/pstj/ui/button/buttonrenderer.js', ['pstj.ui.CustomButtonRenderer'], ['goog.a11y.aria.Role', 'goog.dom.classes', 'goog.ui.ButtonRenderer']);
+goog.addDependency('../../../apps/pstj/ui/button/embededbutton.js', ['pstj.ui.EmbededButtonRenderer'], ['pstj.ui.CustomButtonRenderer']);
 goog.addDependency('../../../apps/pstj/ui/clock.js', ['pstj.ui.Clock'], ['goog.ui.Component', 'pstj.ds.IClock', 'pstj.ds.TimeProvider']);
 goog.addDependency('../../../apps/pstj/ui/controls/clock-renderer.js', ['pstj.widget.ClockRenderer'], ['pstj.templates', 'pstj.ui.ControlRenderer']);
 goog.addDependency('../../../apps/pstj/ui/controls/clock.js', ['pstj.widget.Clock'], ['goog.ui.Component.State', 'goog.ui.Control', 'pstj.ds.ListItem', 'pstj.ui.ClockAgent', 'pstj.ui.ngAgent', 'pstj.widget.ClockRenderer']);
@@ -58,7 +59,7 @@ goog.addDependency('../../../apps/pstj/ui/sheets/isheet.js', ['pstj.ui.ISheet'],
 goog.addDependency('../../../apps/pstj/ui/sheets/scrollsheet.js', ['pstj.ui.ScrollSheet'], ['goog.style', 'pstj.ui.ISheet', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sheets/sheetframe.js', ['pstj.ui.SheetFrame'], ['goog.asserts', 'goog.async.Throttle', 'goog.dom', 'goog.dom.ViewportSizeMonitor', 'goog.math.Size', 'goog.style', 'pstj.ui.ISheet', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sheets/touchsheet.js', ['pstj.ui.TouchSheet'], ['goog.async.Delay', 'goog.dom.classlist', 'goog.events.KeyCodes', 'goog.events.KeyHandler', 'goog.events.MouseWheelEvent', 'goog.events.MouseWheelHandler', 'goog.events.MouseWheelHandler.EventType', 'goog.style', 'pstj.lab.style.css', 'pstj.math.utils', 'pstj.ui.ISheet', 'pstj.ui.Touchable', 'pstj.ui.Touchable.EventType', 'pstj.ui.Touchable.PubSub']);
-goog.addDependency('../../../apps/pstj/ui/tableview.js', ['pstj.ui.TableView'], ['goog.async.AnimationDelay', 'goog.async.Delay', 'goog.events.EventType', 'goog.events.MouseWheelEvent', 'goog.events.MouseWheelHandler', 'goog.events.MouseWheelHandler.EventType', 'goog.ui.Component', 'pstj.lab.style.css', 'pstj.ui.TableViewItem']);
+goog.addDependency('../../../apps/pstj/ui/tableview.js', ['pstj.ui.TableView'], ['goog.async.AnimationDelay', 'goog.async.Delay', 'goog.events.EventType', 'goog.events.MouseWheelEvent', 'goog.events.MouseWheelHandler', 'goog.events.MouseWheelHandler.EventType', 'goog.ui.Component', 'pstj.configure', 'pstj.lab.style.css', 'pstj.ui.TableViewItem']);
 goog.addDependency('../../../apps/pstj/ui/tableviewitem.js', ['pstj.ui.TableViewItem', 'pstj.ui.TableViewItemRenderer'], ['pstj.templates', 'pstj.ui.ControlRenderer', 'pstj.ui.ngAgent']);
 goog.addDependency('../../../apps/pstj/ui/templated/template.js', ['pstj.ui.Template'], ['goog.dom']);
 goog.addDependency('../../../apps/pstj/ui/templated/templated.js', ['pstj.ui.Templated'], ['goog.dom', 'goog.ui.Component', 'pstj.ui.Template']);

@@ -133,17 +133,20 @@ pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
 pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
   //e.preventDefault();
   if (e.type == goog.events.EventType.TOUCHSTART) {
+    e.stopPropagation();
     this.touchCache_[0] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[1] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
     this.control_ = control;
     this.control_.setActive(true);
   } else if (e.type == goog.events.EventType.TOUCHMOVE) {
+    e.stopPropagation();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
     if (!this.raf_.isActive()) {
       this.raf_.start();
     }
   } else if (e.type == goog.events.EventType.TOUCHEND) {
+    e.stopPropagation();
     e.preventDefault();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
