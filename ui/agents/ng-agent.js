@@ -15,6 +15,7 @@ goog.require('goog.async.nextTick');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
+goog.require('pstj.configure');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.ng.filters');
 goog.require('pstj.ui.Agent');
