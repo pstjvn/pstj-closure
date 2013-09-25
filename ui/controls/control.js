@@ -17,7 +17,7 @@ goog.require('pstj.ui.Template');
  *   should understand templates.se.
  */
 pstj.ui.TouchControl = function(content, opt_renderer) {
-  goog.base(this, content, opt_renderer, opt_domHelper);
+  goog.base(this, content, opt_renderer);
   /**
    * The cache to use to store touch coordinates without touching the DOM.
    * @type {Array.<number>}

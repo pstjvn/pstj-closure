@@ -1,12 +1,12 @@
-goog.provide('pstj.color');
-
-goog.require('goog.color');
-
 /**
  * @fileoverview Provides color utilities missing from the closure library.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.color');
+
+goog.require('goog.color');
 
 
 /**

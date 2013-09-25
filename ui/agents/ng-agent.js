@@ -193,13 +193,13 @@ pstj.ui.ngAgent.prototype.applyFilterOnData_ = function(data, filter) {
     var fvalue;
     // We expect the filters that accept arguments to be written as
     // filterName(argument1, argument2,...)|filterName2|filter3(whatever)
-    // To extract it we use regulr expression, but because regexp is expensive
-    // we first try to check for at least the '(' simbol.
+    // To extract it we use regular expression, but because regexp is expensive
+    // we first try to check for at least the '(' symbol.
     if (item.indexOf('(') != -1) {
       var tmp = this.RE_.exec(item);
-      // at this stage tmp will be wither null (when there is no additional
+      // at this stage [tmp] will be wither null (when there is no additional
       // data to the filter or an array or matches (1 - filter name, 2 filter
-      // config).
+      // configuration).
       if (goog.isNull(tmp)) {
         // filter name === item (the whole thing is the filter name).
         fname = item;
@@ -239,8 +239,8 @@ pstj.ui.ngAgent.prototype.applyOnElement_ = function(el, filteredData) {
 
 
 /**
- * Handles cases where there was not avilable data for this template.
- *   Default implementation simply puts the cloack back as class.
+ * Handles cases where there was not available data for this template.
+ *   Default implementation simply puts the cloak back as class.
  * @protected
  * @param {goog.ui.Component} component The component to handle the empty
  *   model on.

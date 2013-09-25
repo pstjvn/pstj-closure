@@ -1,17 +1,19 @@
-goog.provide('pstj.ui.Templated');
-
-goog.require('goog.dom');
-goog.require('goog.ui.Component');
-goog.require('pstj.ui.Template');
-
 /**
  * @fileoverview Provides a class that automatically provides handing for a
  * widget that is generated from a template It also packs the needed type
  * checks and castings to make the compiler happy when working with
  * sub-elements of the widget.
  *
- * @author  regardingscot@gmail.com (Peter StJ)
+ * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.Templated');
+
+goog.require('goog.dom');
+goog.require('goog.ui.Component');
+goog.require('pstj.ui.Template');
+
+
 
 /**
  * Provides the base for components that are generated from templates. Those
@@ -28,14 +30,17 @@ pstj.ui.Templated = function(opt_template) {
    * @private
    * @type {pstj.ui.Template}
    */
-  this.template_ = opt_template || pstj.ui.Template.getInstance();
+  this.template_ = (opt_template instanceof pstj.ui.Template) ?
+      opt_template : pstj.ui.Template.getInstance();
 };
 goog.inherits(pstj.ui.Templated, goog.ui.Component);
+
 
 /** @inheritDoc */
 pstj.ui.Templated.prototype.createDom = function() {
   this.decorateInternal(this.getTemplate().createDom(this));
 };
+
 
 /**
  * Returns the component's template generating instance.
@@ -46,10 +51,12 @@ pstj.ui.Templated.prototype.getTemplate = function() {
   return this.template_;
 };
 
+
 /** @inheritDoc */
 pstj.ui.Templated.prototype.getContentElement = function() {
   return this.getTemplate().getContentElement(this);
 };
+
 
 /**
  * Retrieves an element in the component that matches the provided class name.
@@ -63,6 +70,7 @@ pstj.ui.Templated.prototype.getEls = function(selector) {
   return el;
 };
 
+
 /**
  * Queries the root element of the component for a specific query pattern and
  *   returns the first match.
@@ -73,6 +81,7 @@ pstj.ui.Templated.prototype.querySelector = function(query) {
   return this.getElement().querySelector(query);
 };
 
+
 /**
  * Queries the component's root node for elements mathicng the query string.
  * @param {string} query Css query string.
@@ -81,6 +90,7 @@ pstj.ui.Templated.prototype.querySelector = function(query) {
 pstj.ui.Templated.prototype.querySelectorAll = function(query) {
   return this.getElement().querySelectorAll(query);
 };
+
 
 /** @inheritDoc */
 pstj.ui.Templated.prototype.disposeInternal = function() {

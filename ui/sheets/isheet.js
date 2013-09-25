@@ -1,18 +1,23 @@
-goog.provide('pstj.ui.ISheet');
-
 /**
  * @fileoverview Provides the sheet interface. This is designed to give
- *   interface for the sheetframe implementors.
+ *   interface for the sheet-frame implementors.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.ui.ISheet');
+
+goog.require('goog.math.Size');
+
+
 /**
  * This is the interface to implement if a component wants to be used in a
- *   sheetframe.
+ *   sheet-frame.
  * @interface
  */
 pstj.ui.ISheet = function() {};
+
+
 
 /**
  * Updates the record for the bounding parent size.

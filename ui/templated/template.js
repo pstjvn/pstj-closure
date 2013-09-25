@@ -1,7 +1,3 @@
-goog.provide('pstj.ui.Template');
-
-goog.require('goog.dom');
-
 /**
  * @fileoverview Provides a new approach to the templatizing of the
  *   componenets, instead of implementing the view logic in the template it is
@@ -13,12 +9,20 @@ goog.require('goog.dom');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.ui.Template');
+
+goog.require('goog.dom');
+goog.require('goog.ui.Component');
+
+
+
 /**
  * Provides templates for the components.
  * @constructor
  */
 pstj.ui.Template = function() {};
 goog.addSingletonGetter(pstj.ui.Template);
+
 
 /**
  * Returns the constructed DOM for the create dom cycle in the component.
@@ -27,7 +31,7 @@ goog.addSingletonGetter(pstj.ui.Template);
  */
 pstj.ui.Template.prototype.createDom = function(templated) {
   return /** @type {!Element} */ (
-    this.getCompiledTemplate_(this.generateTemplateData(templated)));
+      this.getCompiledTemplate_(this.generateTemplateData(templated)));
 };
 
 
@@ -44,6 +48,7 @@ pstj.ui.Template.prototype.generateTemplateData = function(component) {
   };
 };
 
+
 /**
  * Returns the compiled DOM from the html template. This is required to
  *   allow the component to have referrence to a root DOM node.
@@ -54,8 +59,9 @@ pstj.ui.Template.prototype.generateTemplateData = function(component) {
  */
 pstj.ui.Template.prototype.getCompiledTemplate_ = function(model) {
   return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
-    this.getTemplate(model)));
+      this.getTemplate(model)));
 };
+
 
 /**
  * Returns the html sring to be the DOM for a component instance.
@@ -66,6 +72,7 @@ pstj.ui.Template.prototype.getCompiledTemplate_ = function(model) {
 pstj.ui.Template.prototype.getTemplate = function(model) {
   return '<div></div>';
 };
+
 
 /**
  * Getter for the component's content element.
