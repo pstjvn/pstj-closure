@@ -48,11 +48,10 @@ goog.require('goog.async.nextTick');
 goog.require('goog.json.NativeJsonProcessor');
 goog.require('goog.net.Jsonp');
 goog.require('goog.net.XhrIo');
-goog.require('goog.storage.Storage');
-goog.require('goog.storage.mechanism.mechanismfactory');
 goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('pstj.configure');
+goog.require('pstj.storage.Storage');
 
 
 /**
@@ -76,23 +75,6 @@ pstj.resource.configure = function(options) {
   if (goog.isBoolean(options.crossdomain)) {
     pstj.resource.crossDomain_ = options.crossdomain;
   }
-};
-
-
-/**
- * Getter for the storage provider. The provider is created the first time
- * it is requested. It is used to cache the values of responses when the cache
- * is enabled and the request itself is cache enabled.
- *
- * @return {goog.storage.Storage} The storage provider instance.
- */
-pstj.resource.getStorageProvider = function() {
-  if (goog.isNull(pstj.resource.storageProviderInstance_)) {
-    pstj.resource.storageProviderInstance_ = new goog.storage.Storage(
-        /** @type {!goog.storage.mechanism.Mechanism} */
-        (goog.storage.mechanism.mechanismfactory.create()));
-  }
-  return pstj.resource.storageProviderInstance_;
 };
 
 
@@ -251,12 +233,13 @@ pstj.resource.Resource = function() {
  * @param {boolean} enable If true will enable caching of the responses.
  */
 pstj.resource.Resource.prototype.enableCache = function(enable) {
-  this.useCache_ = enable;
-  if (this.useCache_) {
-    if (goog.isNull(this.cache_)) {
-      this.cache_ = pstj.resource.getStorageProvider();
-    }
-  }
+  return;
+  // this.useCache_ = enable;
+  // if (this.useCache_) {
+  //   if (goog.isNull(this.cache_)) {
+  //     this.cache_ = pstj.storage.Storage.getInstance();
+  //   }
+  // }
 };
 
 
@@ -265,9 +248,6 @@ pstj.resource.Resource.prototype.enableCache = function(enable) {
  * a resource is requested it will be retrieved from the server.
  */
 pstj.resource.Resource.prototype.dumpCache = function() {
-  for (var k in this.cache_) {
-    delete this.cache_[k];
-  }
 };
 
 
@@ -320,7 +300,7 @@ pstj.resource.Resource.prototype.get = function(data, opt_callback,
   if (this.useCache_ && opt_cache_request == true) {
     if (goog.isDefAndNotNull(this.cache_.get(url))) {
       goog.async.nextTick(function() {
-        opt_callback(null, goog.asserts.assertObject(this.cache_.get(url)));
+        opt_callback(null, this.cache_.get(url));
       }, this);
       // we will use the local copy, do not send the request.
       return;
@@ -423,9 +403,6 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
     var xhr = /** @type {!goog.net.XhrIo} */ (ev.target);
     try {
       response = this.parseResponse(xhr);
-      if (this.useCache_ && cache) {
-        this.cache_.set(url, response);
-      }
     } catch (e) {
       error = e;
     }
@@ -435,6 +412,12 @@ pstj.resource.Resource.prototype.handleResponse = function(callback, cache,
 
   if (goog.isNull(error)) {
     error = this.checkResponseValidity(response);
+  }
+
+  if (goog.isNull(error)) {
+    if (this.useCache_ && cache) {
+      this.cache_.set(url, response);
+    }
   }
 
   if (goog.isFunction(callback)) {
