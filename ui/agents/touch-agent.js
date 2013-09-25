@@ -57,6 +57,18 @@ goog.addSingletonGetter(pstj.ui.TouchAgent);
 
 
 /**
+ * The cache positions.
+ * @enum {number}
+ */
+pstj.ui.TouchAgent.Cache = {
+  TOUCH_START_X: 0,
+  TOUCH_START_Y: 1,
+  LAST_TOUCH_X: 2,
+  LAST_TOUCH_Y: 3,
+  SHOULD_ACTIVATE: 4
+};
+
+/**
  * @type {number}
  */
 pstj.ui.TouchAgent.TOUCH_TRESHOLD = goog.asserts.assertNumber(
@@ -115,9 +127,9 @@ pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
       pstj.ui.TouchAgent.TOUCH_TRESHOLD ||
       Math.abs(this.touchCache_[1] - this.touchCache_[3]) >
       pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
-
     this.control_.setActive(false);
-
+  } else {
+    this.control_.setActive(true);
   }
 };
 
@@ -133,20 +145,28 @@ pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
 pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
   //e.preventDefault();
   if (e.type == goog.events.EventType.TOUCHSTART) {
-    e.stopPropagation();
+    //e.stopPropagation();
     this.touchCache_[0] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[1] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
+    this.touchCache_[2] = this.touchCache_[0];
+    this.touchCache_[3] = this.touchCache_[1];
     this.control_ = control;
-    this.control_.setActive(true);
+    if (!this.control_.isActive()) {
+      if (!this.raf_.isActive()) {
+        this.raf_.start();
+      }
+    }
   } else if (e.type == goog.events.EventType.TOUCHMOVE) {
-    e.stopPropagation();
+    //e.stopPropagation();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
-    if (!this.raf_.isActive()) {
-      this.raf_.start();
+    if (this.control_.isActive()) {
+      if (!this.raf_.isActive()) {
+        this.raf_.start();
+      }
     }
   } else if (e.type == goog.events.EventType.TOUCHEND) {
-    e.stopPropagation();
+    //e.stopPropagation();
     e.preventDefault();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
