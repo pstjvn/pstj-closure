@@ -143,9 +143,7 @@ pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
  * @protected
  */
 pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
-  //e.preventDefault();
   if (e.type == goog.events.EventType.TOUCHSTART) {
-    //e.stopPropagation();
     this.touchCache_[0] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[1] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
     this.touchCache_[2] = this.touchCache_[0];
@@ -157,7 +155,6 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
       }
     }
   } else if (e.type == goog.events.EventType.TOUCHMOVE) {
-    //e.stopPropagation();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
     if (this.control_.isActive()) {
@@ -166,7 +163,6 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
       }
     }
   } else if (e.type == goog.events.EventType.TOUCHEND) {
-    //e.stopPropagation();
     e.preventDefault();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
