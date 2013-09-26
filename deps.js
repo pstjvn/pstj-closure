@@ -3,7 +3,6 @@
 goog.addDependency('../../../apps/pstj/color/color.js', ['pstj.color'], ['goog.color']);
 goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test'], ['goog.testing.PropertyReplacer', 'goog.testing.PseudoRandom', 'goog.testing.jsunit', 'pstj.color']);
 goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], []);
-goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configure_test'], ['pstj.configure']);
 goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], ['goog.Disposable', 'goog.asserts', 'goog.events.EventHandler']);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string']);
 goog.addDependency('../../../apps/pstj/demos/tableview/tableview_demo.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView']);
@@ -27,8 +26,8 @@ goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRo
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable']);
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object']);
-goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.async.nextTick', 'goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory', 'goog.string', 'goog.uri.utils', 'pstj.configure']);
-goog.addDependency('../../../apps/pstj/storage/localstorage.js', ['pstj.storage.Storage'], ['goog.json.NativeJsonProcessor', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory']);
+goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.async.nextTick', 'goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.string', 'goog.uri.utils', 'pstj.configure', 'pstj.storage.Storage']);
+goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Storage'], ['goog.json.NativeJsonProcessor', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory']);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product']);
 goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.dom', 'goog.userAgent']);
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub']);
@@ -57,13 +56,13 @@ goog.addDependency('../../../apps/pstj/ui/locale/strings.js', ['pstj.ui.Strings'
 goog.addDependency('../../../apps/pstj/ui/popoverlayer.js', ['pstj.ui.PopOverLayer', 'pstj.ui.PopOverLayerTemplate'], ['pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/scrollarea.js', ['pstj.ui.CustomScrollArea'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventType', 'goog.style', 'goog.ui.Component.EventType', 'goog.ui.Slider', 'pstj.style.css', 'pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/scrolllist.js', ['pstj.ui.ScrollList'], ['goog.style', 'pstj.ui.CustomScrollArea', 'pstj.ui.IdGenerator']);
-goog.addDependency('../../../apps/pstj/ui/sheets/isheet.js', ['pstj.ui.ISheet'], []);
+goog.addDependency('../../../apps/pstj/ui/sheets/isheet.js', ['pstj.ui.ISheet'], ['goog.math.Size']);
 goog.addDependency('../../../apps/pstj/ui/sheets/scrollsheet.js', ['pstj.ui.ScrollSheet'], ['goog.style', 'pstj.ui.ISheet', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sheets/sheetframe.js', ['pstj.ui.SheetFrame'], ['goog.asserts', 'goog.async.Throttle', 'goog.dom', 'goog.dom.ViewportSizeMonitor', 'goog.math.Size', 'goog.style', 'pstj.ui.ISheet', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sheets/touchsheet.js', ['pstj.ui.TouchSheet'], ['goog.async.Delay', 'goog.dom.classlist', 'goog.events.KeyCodes', 'goog.events.KeyHandler', 'goog.events.MouseWheelEvent', 'goog.events.MouseWheelHandler', 'goog.events.MouseWheelHandler.EventType', 'goog.style', 'pstj.lab.style.css', 'pstj.math.utils', 'pstj.ui.ISheet', 'pstj.ui.Touchable', 'pstj.ui.Touchable.EventType', 'pstj.ui.Touchable.PubSub']);
 goog.addDependency('../../../apps/pstj/ui/tableview.js', ['pstj.ui.TableView'], ['goog.async.AnimationDelay', 'goog.async.Delay', 'goog.events.EventType', 'goog.events.MouseWheelEvent', 'goog.events.MouseWheelHandler', 'goog.events.MouseWheelHandler.EventType', 'goog.ui.Component', 'pstj.configure', 'pstj.lab.style.css', 'pstj.ui.TableViewItem']);
 goog.addDependency('../../../apps/pstj/ui/tableviewitem.js', ['pstj.ui.TableViewItem', 'pstj.ui.TableViewItemRenderer'], ['pstj.templates', 'pstj.ui.ControlRenderer', 'pstj.ui.ngAgent']);
-goog.addDependency('../../../apps/pstj/ui/templated/template.js', ['pstj.ui.Template'], ['goog.dom']);
+goog.addDependency('../../../apps/pstj/ui/templated/template.js', ['pstj.ui.Template'], ['goog.dom', 'goog.ui.Component']);
 goog.addDependency('../../../apps/pstj/ui/templated/templated.js', ['pstj.ui.Templated'], ['goog.dom', 'goog.ui.Component', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/touchable/movetouch.js', ['pstj.ui.MoveTouch'], ['pstj.ui.Touchable', 'pstj.ui.Touchable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/touchable/touchable.js', ['pstj.ui.Touchable', 'pstj.ui.Touchable.Event', 'pstj.ui.Touchable.EventType', 'pstj.ui.Touchable.PubSub'], ['goog.events', 'goog.functions', 'goog.pubsub.PubSub', 'goog.ui.Component.EventType', 'pstj.ui.Async']);
