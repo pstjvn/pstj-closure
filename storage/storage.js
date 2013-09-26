@@ -97,7 +97,7 @@ _.set = function(key, value) {
     this.remove(key);
     return;
   }
-  this.mechanism_.set(key, this.serializer.serialize(value));
+  this.mechanism_.set(key, this.serializer.stringify(value));
 };
 
 
