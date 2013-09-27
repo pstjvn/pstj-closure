@@ -1,0 +1,32 @@
+/** Provides boxing mixin */
+.boxing-model (@orient: horizontal; @pack: center; @align: center) {
+  display: -webkit-box;
+  /* @alternate */
+  display: -moz-box;
+  /* @alternate */
+  display: box;
+
+  -webkit-box-orient: @orient;
+  /* @alternate */
+  -moz-box-orient: @orient;
+  /* @alternate */
+  -ms-box-orient: @orient;
+  /* @alternate */
+  box-orient: @orient;
+
+  -webkit-box-pack: @pack;
+  /* @alternate */
+  -moz-box-pack: @pack;
+  /* @alternate */
+  -ms-box-pack: @pack;
+  /* @alternate */
+  box-pack: @pack;
+
+  -webkit-box-align: @align;
+  /* @alternate */
+  -moz-box-align: @align;
+  /* @alternate */
+  -ms-box-align: @align;
+  /* @alternate */
+  box-align: @align;
+}
