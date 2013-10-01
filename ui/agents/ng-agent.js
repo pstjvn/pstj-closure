@@ -233,7 +233,7 @@ pstj.ui.ngAgent.prototype.applyOnElement_ = function(el, filteredData) {
     goog.dom.classlist.enable(el, goog.getCssName('pstj-switch-off'),
         (filteredData == 'none') ? true : false);
   } else {
-    el.innerHTML = filteredData;
+    el.textContent = filteredData;
   }
 };
 
