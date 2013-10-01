@@ -182,9 +182,10 @@ pstj.ui.TableView.prototype.setModel = function(model) {
  */
 pstj.ui.TableView.prototype.mouseAdapt_ = function() {
   this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] = goog.now();
-  this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] -
-      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME];
-  this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
+  this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = 260;
+  this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] = this.cache_[
+      pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
+
   if (this.isBeyoundEdge()) {
     this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 1;
     if (!this.movementRaf_.isActive()) {
@@ -457,15 +458,17 @@ pstj.ui.TableView.prototype.handleTouchEnd = function(e) {
  * @protected
  */
 pstj.ui.TableView.prototype.handleMouseWheel = function(e) {
+  this.isAnimating_ = false;
+  this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
+  this.momentumRaf_.stop();
   if (!this.mouseAdaptation_.isActive()) {
     this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME] = goog.now();
     this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y] = 0;
     this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = 0;
     this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = 0;
   }
-  this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
-  this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] +
-      (e.deltaY * -18);
+  this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[
+      pstj.ui.TableView.Cache.HANDLER_LAST_Y] + (e.deltaY * -18);
 
   if (!this.movementRaf_.isActive()) {
     this.movementRaf_.start();
