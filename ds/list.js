@@ -133,34 +133,93 @@ pstj.ds.List.prototype.setDelayFilterAppliedEvent = function(delay) {
 
 /**
  * Add a node to the list. Use dataId for map.
+ *
  * @param {!pstj.ds.ListItem} node The node to add.
  * @param {boolean=} opt_reverse If the addition should be perfumed in reverse (
  * i.e. put the element on the first place instead of last).
  */
 pstj.ds.List.prototype.add = function(node, opt_reverse) {
-  var index = null;
-  var dataName = node.getId();
-  if (!goog.isNull(this.getById(dataName))) {
-    throw new Error('Item is duplicate in the list: ' + dataName);
-  }
-  if (opt_reverse) {
-    this.list.unshift(node);
-    if (dataName && dataName != '') {
-      this.map[dataName] = node;
-      for (index in this.indexMap) {
-        this.indexMap[index]++;
-      }
-      this.indexMap[dataName] = 0;
-    }
-  } else {
-    this.list.push(node);
-    if (dataName && dataName != '') {
-      this.map[dataName] = node;
-      this.indexMap[dataName] = this.list.length - 1;
-    }
-  }
+  this.addInternal(node, (opt_reverse) ? 0 : -1);
   this.applyFilter_();
   this.dispatchEvent(new pstj.ds.List.Event(this, node));
+};
+
+
+/**
+ * Adds the node to the listing. This method is designed to be overriden by
+ * subclasses allowing them to decide where to put the element.
+ *
+ * @protected
+ * @param {!pstj.ds.ListItem} node The node to add to the listing.
+ * @param {number=} opt_position Optional index that we want the node to be
+ * inserted at. Note that the implementation might not use it! This
+ * implementation uses -1 by default (add at the end of the list).
+ */
+pstj.ds.List.prototype.addInternal = function(node, opt_position) {
+  var id = node.getId();
+
+  if (!this.isAcceptableId(id)) {
+    throw new Error('No acceptable ID found on record: ', + id);
+  }
+
+  // Make the insertion only if the item is not already in the list.
+  if (goog.isNull(this.getById(id))) {
+
+    // Check the indexes of insertion.
+    if (!goog.isNumber(opt_position)) {
+      opt_position = 0;
+    } else if (opt_position < -1 || opt_position > this.getCount()) {
+      // if the desired index is not in range we have a problem, fail early
+      // and notify the developer instead of silently ignoring it. The getCount
+      // method is intentinally used here as the plan is to support sparse
+      // lists for lazy loading of data.
+      throw new Error('Insertion index is out of bound: ' + opt_position +
+          ', list length is ' + this.getCount());
+    }
+
+    // Do the actual insertion.
+    if (opt_position == -1) {
+      // add at the end of the list.
+      this.list.push(node);
+      this.map[id] = node;
+      this.indexMap[id] = this.list.length - 1;
+    } else if (opt_position == 0) {
+      // the user wants the item at the head of the list.
+      this.list.unshift(node);
+      this.map[id] = node;
+      // Increase the index of all other items by one.
+      for (var key in this.indexMap) {
+        this.indexMap[key]++;
+      }
+      this.indexMap[id] = node;
+    } else {
+      // attemp to use the index provided.
+      goog.array.insertAt(this.list, node, opt_position);
+      this.map[id] = node;
+
+      // find all items that are behind the inserting in the list and increase
+      // their mapped index value
+      var len = this.getCount() + 1;
+
+      for (opt_position++; opt_position < len; opt_position++) {
+        this.indexMap[this.getByIndex(opt_position).getId()]++;
+      }
+    }
+  } else {
+    throw new Error('Duplicate ID in listing: ' + id);
+  }
+};
+
+
+/**
+ * Checks if an ID is an accceptable ID for the map.
+ *
+ * @param {?pstj.ds.RecordID} id The ID to check.
+ * @return {boolean} True if the ID is a number or a string that is not empty.
+ * @protected
+ */
+pstj.ds.List.prototype.isAcceptableId = function(id) {
+  return (goog.isNumber(id) || (goog.isString(id) && !goog.string.isEmpty(id)));
 };
 
 
