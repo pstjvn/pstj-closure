@@ -190,6 +190,8 @@ pstj.ui.TableView.prototype.mouseAdapt_ = function() {
     if (!this.movementRaf_.isActive()) {
       this.movementRaf_.start();
     }
+  } else {
+    this.paintNotify();
   }
 };
 
