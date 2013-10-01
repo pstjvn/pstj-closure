@@ -22,6 +22,7 @@ goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
 goog.require('goog.ui.Component');
 goog.require('pstj.configure');
+goog.require('pstj.ds.List');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.ui.TableViewItem');
 
@@ -312,7 +313,6 @@ pstj.ui.TableView.prototype.handleTouchStart = function(e) {
     this.isAnimating_ = false;
     this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
     this.momentumRaf_.stop();
-    this.movementRaf_.stop();
     if (e.getBrowserEvent().touches.length == 1) {
       e.stopPropagation();
       e.preventDefault();
@@ -324,7 +324,9 @@ pstj.ui.TableView.prototype.handleTouchStart = function(e) {
       this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
       this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME] = e.getBrowserEvent().timeStamp;
       this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
-      this.movementRaf_.start();
+      if (!this.movementRaf_.isActive()) {
+        this.movementRaf_.start();
+      }
     }
   }
 };
@@ -372,7 +374,9 @@ pstj.ui.TableView.prototype.handleTouchMove = function(e) {
     this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = e.getBrowserEvent()
         .touches[0].clientY;
 
-    this.movementRaf_.start();
+    if (!this.movementRaf_.isActive()) {
+      this.movementRaf_.start();
+    }
   }
 };
 
@@ -413,10 +417,13 @@ pstj.ui.TableView.prototype.handleTouchEnd = function(e) {
     if (be.touches.length == 0) {
       e.stopPropagation();
       this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] = be.timeStamp;
-      this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] -
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] = this.cache_[
+          pstj.ui.TableView.Cache.TOUCH_END_TIME] -
           this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME];
 
-      this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] = this.cache_[
+          pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
+
       // If touch lasted for less than 300 ms and there was movement
       if (this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION] < 300 && Math.abs(
           this.getTouchDistance_()) > 10) {
@@ -431,6 +438,8 @@ pstj.ui.TableView.prototype.handleTouchEnd = function(e) {
         if (!this.movementRaf_.isActive()) {
           this.movementRaf_.start();
         }
+      } else {
+        this.paintNotifyDelay_.start();
       }
     }
   }
@@ -641,20 +650,20 @@ pstj.ui.TableView.prototype.updateContentForCount = function(count) {
  * @protected
  */
 pstj.ui.TableView.prototype.handleMovement = function(ts) {
-  this.visualOffset_ =
-      this.visualOffset_ + this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] -
-      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
+  this.visualOffset_ = (this.visualOffset_ +
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] -
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y]) << 0;
 
-  this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
+  this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = this.cache_[
+      pstj.ui.TableView.Cache.HANDLER_CURRENT_Y];
+
   this.shiftItems();
   this.applyStyles();
   if (this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] == 1) {
     this.cache_[pstj.ui.TableView.Cache.NEEDS_MOMENTUM] = 0;
     this.isAnimating_ = true;
-    this.setMomentum();
     this.momentumRaf_.start();
-  } else {
-    this.paintNotifyDelay_.start();
+    this.setMomentum();
   }
 };
 
@@ -679,8 +688,8 @@ pstj.ui.TableView.prototype.shiftItems = function() {
       to_trans = ((this.visualOffset_ + this.childHeight_) /
           this.childHeight_) << 0;
 
-      this.visualOffset_ = (this.visualOffset_ - (this.childHeight_ *
-          to_trans)) % this.childHeight_;
+      this.visualOffset_ = ((this.visualOffset_ - (this.childHeight_ *
+          to_trans)) % this.childHeight_) << 0;
 
       this.offset_ = this.offset_ + (to_trans * -1);
       this.updateContentForCount(to_trans);
@@ -691,7 +700,7 @@ pstj.ui.TableView.prototype.shiftItems = function() {
       // we need item(s) to go from TOP to BOTTOM
       // calculate how many items to transfer
       to_trans = (this.visualOffset_ / this.childHeight_) << 0; // < 0
-      this.visualOffset_ = this.visualOffset_ % this.childHeight_;
+      this.visualOffset_ = (this.visualOffset_ % this.childHeight_) << 0;
       // now we have migrated els_to_transfer count to the bottom, update
       // them on the next tick.
       this.offset_ = this.offset_ + (to_trans * -1);
