@@ -161,6 +161,45 @@ pstj.lab.style.css.transformStyleSheetName_ = pstj.lab.style.css
 
 
 /**
+ * Cached version of the translation string. We need it as the actual string
+ * cannot be determined at compile time so we need to cache it manually.
+ *
+ * @type {string}
+ * @private
+ */
+pstj.lab.style.css.transformationPrefix_ = (function() {
+  var res = '';
+  if (pstj.lab.style.css.canUseTransform) {
+    if (pstj.lab.style.css.supports3d) {
+      res = 'translate3d(';
+    } else {
+      res = 'translate(';
+    }
+  }
+  return res;
+})();
+
+
+/**
+ * The suffix to use to close the style string.
+ *
+ * @type {string}
+ * @private
+ */
+pstj.lab.style.css.transformationSuffix_ = (function() {
+  var res = '';
+  if (pstj.lab.style.css.canUseTransform) {
+    if (pstj.lab.style.css.supports3d) {
+      res = ', 0)';
+    } else {
+      res = ')';
+    }
+  }
+  return res;
+})();
+
+
+/**
  * Calculates translation to coordinates and returns it as a value that can be
  *   directly set to the transform style property of the element.
  *
@@ -170,36 +209,15 @@ pstj.lab.style.css.transformStyleSheetName_ = pstj.lab.style.css
  *
  * @param {!number} x The X offset to apply with the translation.
  * @param {!number} y The Y offset to apply with the translation.
- * @param {string=} opt_unit The unit to use, if not provided pixels will be
+ * @param {string} unit The unit to use, if not provided pixels will be
  * used.
  * @return {!string} The value to apply to the transform style property. If
  *   transforms are not supported on the target system empty string will be
  *   returned, so make sure to check for that first.
  */
-pstj.lab.style.css.getTranslationAsValue = function(x, y, opt_unit) {
-  var translate = '';
-  if (!goog.isString(opt_unit)) opt_unit = 'px';
-  // Use 3d transforms where available.
-  if (pstj.lab.style.css.canUseTransform) {
-    if (pstj.lab.style.css.supports3d) {
-      translate = 'translate3d(';
-    } else {
-      translate = 'translate(';
-    }
-  } else {
-    return translate;
-  }
-
-  translate = translate + x + opt_unit + ',' + y + opt_unit;
-
-  // Complement the 3d with closing Z axis 0;
-  if (pstj.lab.style.css.supports3d) {
-    translate = translate + ',0';
-  }
-
-  translate = translate + ')';
-
-  return translate;
+pstj.lab.style.css.getTranslationAsValue = function(x, y, unit) {
+  return pstj.lab.style.css.transformationPrefix_ + x + unit + ',' + y +
+      unit + pstj.lab.style.css.transformationSuffix_;
 };
 
 
@@ -249,14 +267,16 @@ pstj.lab.style.css.getTranslationAsText = function(x, y, opt_unit) {
 pstj.lab.style.css.setTranslation = function(el, x, y, opt_unit,
     opt_appendage) {
   // If the provided element is not really a DOM element, do nothing.
-  if (!goog.dom.isElement(el)) return;
+  if (goog.DEBUG) {
+    if (!goog.dom.isElement(el)) return;
+  }
 
   if (!goog.isString(opt_unit)) opt_unit = 'px';
 
   if (pstj.lab.style.css.canUseTransform) {
     el.style[pstj.lab.style.css.transformPrefix] = pstj.lab.style.css
       .getTranslationAsValue(x, y, opt_unit) + (goog.isString(opt_appendage) ?
-        ' ' + opt_appendage : '');
+        opt_appendage : '');
   } else {
     el.style.top = y + opt_unit;
     el.style.left = x + opt_unit;
