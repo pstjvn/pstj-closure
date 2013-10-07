@@ -98,7 +98,8 @@ pstj.ui.TouchAgent.prototype.updateCache = function(control) {
         [
           goog.events.EventType.TOUCHSTART,
           goog.events.EventType.TOUCHMOVE,
-          goog.events.EventType.TOUCHEND],
+          goog.events.EventType.TOUCHEND,
+          goog.events.EventType.TOUCHCANCEL],
         goog.bind(this.handleTouchEvents, this, control)));
   } else {
     throw new Error('Touch agent should be attached only when component ' +
@@ -192,5 +193,10 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
       }
       control.setActive(false);
     }
+  } else if (e.type == goog.events.EventType.TOUCHCANCEL) {
+    if (this.control_.isActive()) {
+      this.control_.setActive(false);
+    }
+    this.isLocked_ = false;
   }
 };
