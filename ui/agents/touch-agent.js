@@ -10,6 +10,7 @@
 goog.provide('pstj.ui.TouchAgent');
 
 goog.require('goog.asserts');
+goog.require('goog.async.nextTick');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -51,6 +52,13 @@ pstj.ui.TouchAgent = function() {
    * @private
    */
   this.control_ = null;
+  /**
+   * Locked state. If a control has locked on touch we should not let other
+   * controls take over. Touch events should always remain in the same target.
+   * @type {boolean}
+   * @private
+   */
+  this.isLocked_ = false;
 };
 goog.inherits(pstj.ui.TouchAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.TouchAgent);
@@ -129,7 +137,9 @@ pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
       pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
     this.control_.setActive(false);
   } else {
-    this.control_.setActive(true);
+    if (!this.control_.isActive()) {
+      this.control_.setActive(true);
+    }
   }
 };
 
@@ -143,7 +153,8 @@ pstj.ui.TouchAgent.prototype.onRaf_ = function(time) {
  * @protected
  */
 pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
-  if (e.type == goog.events.EventType.TOUCHSTART) {
+  if (e.type == goog.events.EventType.TOUCHSTART && !this.isLocked_) {
+    this.isLocked_ = true;
     this.touchCache_[0] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[1] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
     this.touchCache_[2] = this.touchCache_[0];
@@ -172,11 +183,14 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
           Math.abs(this.touchCache_[1] - this.touchCache_[3]) <
           pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
 
-        control.dispatchEvent(new goog.events.Event(
-            goog.ui.Component.EventType.ACTION, control));
+        goog.async.nextTick(function() {
+          control.dispatchEvent(new goog.events.Event(
+              goog.ui.Component.EventType.ACTION, control));
+        });
 
       }
       control.setActive(false);
+      this.isLocked_ = false;
     }
   }
 };
