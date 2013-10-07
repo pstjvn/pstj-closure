@@ -184,13 +184,13 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
           pstj.ui.TouchAgent.TOUCH_TRESHOLD) {
 
         goog.async.nextTick(function() {
+          this.isLocked_ = false;
           control.dispatchEvent(new goog.events.Event(
               goog.ui.Component.EventType.ACTION, control));
-        });
+        }, this);
 
       }
       control.setActive(false);
-      this.isLocked_ = false;
     }
   }
 };
