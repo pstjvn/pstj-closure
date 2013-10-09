@@ -190,8 +190,12 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
               goog.ui.Component.EventType.ACTION, control));
         }, this);
 
+      } else {
+        this.isLocked_ = false;
       }
       control.setActive(false);
+    } else {
+      this.isLocked_ = false;
     }
   } else if (e.type == goog.events.EventType.TOUCHCANCEL) {
     if (this.control_.isActive()) {
