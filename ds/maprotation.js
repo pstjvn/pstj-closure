@@ -39,7 +39,7 @@ pstj.ds.MapRotator = function(opt_list) {
   goog.base(this);
   /**
    * The internal map instance.
-   * @type {Object.<string, *>}
+   * @type {Object}
    * @private
    */
   this.map_ = {};

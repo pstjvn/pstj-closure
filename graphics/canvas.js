@@ -24,6 +24,7 @@ goog.require('goog.style');
  * @param {Element} parent The parent element to seed the canvas is.
  */
 pstj.graphics.Canvas = function(parent) {
+  goog.base(this);
   /**
    * @type {goog.math.Size}
    * @private
