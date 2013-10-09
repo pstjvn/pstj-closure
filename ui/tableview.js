@@ -91,6 +91,13 @@ pstj.ui.TableView = function() {
    * @type {boolean}
    */
   this.ignoreEndEvents_ = false;
+  /**
+   * The number of additional elements to put in the view to assure smoother
+   * experience.
+   * @type {number}
+   * @private
+   */
+  this.bufferSize_ = 2;
 
   this.momentumRaf_ = new goog.async.AnimationDelay(
       this.handleMomentum, undefined, this);
@@ -221,7 +228,7 @@ pstj.ui.TableView.prototype.generateRows = function() {
   var w = window.innerWidth;
   var h = window.innerHeight;
   var height = (w > h) ? w : h;
-  var elscount = Math.ceil(height / this.childHeight_);
+  var elscount = Math.ceil(height / this.childHeight_) + this.bufferSize_;
   for (var i = 0; i < elscount; i++) {
     this.addChild(this.createRowCell(), true);
   }
