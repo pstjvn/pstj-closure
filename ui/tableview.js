@@ -20,11 +20,11 @@ goog.require('goog.events.EventType');
 goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
-goog.require('goog.ui.Component');
 goog.require('pstj.configure');
 goog.require('pstj.ds.List');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.ui.TableViewItem');
+goog.require('pstj.widget.MultiViewWrapper');
 
 
 
@@ -32,7 +32,7 @@ goog.require('pstj.ui.TableViewItem');
  * Provides the TableView fnctionality similar to NSTableView.
  *
  * @constructor
- * @extends {goog.ui.Component}
+ * @extends {pstj.widget.MultiViewWrapper}
  */
 pstj.ui.TableView = function() {
   goog.base(this);
@@ -107,7 +107,7 @@ pstj.ui.TableView = function() {
   this.mousewheelhandler_ = null;
   this.mouseAdaptation_ = new goog.async.Delay(this.mouseAdapt_, 500, this);
 };
-goog.inherits(pstj.ui.TableView, goog.ui.Component);
+goog.inherits(pstj.ui.TableView, pstj.widget.MultiViewWrapper);
 
 
 /**
