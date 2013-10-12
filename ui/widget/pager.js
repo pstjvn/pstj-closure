@@ -1,3 +1,9 @@
+/**
+ * @fileoverview  Provides client side pagination of large data sets.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.widget.Pager');
 goog.provide('pstj.widget.PagerTemplate');
 
@@ -11,11 +17,6 @@ goog.require('pstj.templates');
 goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Templated');
 
-/**
- * @fileoverview  Provides client side pagination of large data sets.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
 
 
 /**
@@ -29,10 +30,12 @@ pstj.widget.PagerTemplate = function() {
 goog.inherits(pstj.widget.PagerTemplate, pstj.ui.Template);
 goog.addSingletonGetter(pstj.widget.PagerTemplate);
 
+
 /** @inheritDoc */
 pstj.widget.PagerTemplate.prototype.getTemplate = function(model) {
   return pstj.templates.pager(model);
 };
+
 
 /** @inheritDoc */
 pstj.widget.PagerTemplate.prototype.generateTemplateData = function(comp) {
@@ -40,6 +43,8 @@ pstj.widget.PagerTemplate.prototype.generateTemplateData = function(comp) {
     itemsCount: comp.getNumberOfItemsRequired()
   };
 };
+
+
 
 /**
  * Pager is used on client side paging solutions, mainly in slow machines and
@@ -83,11 +88,13 @@ pstj.widget.Pager = function(opt_items_per_page, opt_template) {
 };
 goog.inherits(pstj.widget.Pager, pstj.ui.Templated);
 
+
 /**
  * @override
  * @return {pstj.ds.List} The list that is set as model.
  */
 pstj.widget.Pager.prototype.getModel;
+
 
 /**
  * The number of items per page to use getter.
@@ -97,10 +104,11 @@ pstj.widget.Pager.prototype.getNumberOfItemsRequired = function() {
   return this.itemsPerPage_;
 };
 
+
 /** @inheritDoc */
 pstj.widget.Pager.prototype.setModel = function(model) {
   goog.asserts.assertInstanceof(model, pstj.ds.List,
-    'Should be a list data structure');
+      'Should be a list data structure');
 
   this.bindModel(model);
   goog.base(this, 'setModel', model);
@@ -111,6 +119,7 @@ pstj.widget.Pager.prototype.setModel = function(model) {
   }
 };
 
+
 /**
  * Bind handler to the selection change in current model.
  * @param {pstj.ds.List} model The model to bind to.
@@ -119,11 +128,12 @@ pstj.widget.Pager.prototype.setModel = function(model) {
 pstj.widget.Pager.prototype.bindModel = function(model) {
   if (!goog.isNull(this.getModel())) {
     this.getHandler().unlisten(this.getModel(), pstj.ds.List.EventType.SELECTED,
-      this.handleSelectionChange);
+        this.handleSelectionChange);
   }
   this.getHandler().listen(model, pstj.ds.List.EventType.SELECTED,
-    this.handleSelectionChange);
+      this.handleSelectionChange);
 };
+
 
 /** @inheritDoc */
 pstj.widget.Pager.prototype.decorateInternal = function(el) {
@@ -145,6 +155,7 @@ pstj.widget.Pager.prototype.decorateInternal = function(el) {
   this.pagesEl_ = this.getEls(goog.getCssName('pstj-pager-pages'));
 };
 
+
 /** @inheritDoc */
 pstj.widget.Pager.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
@@ -155,6 +166,7 @@ pstj.widget.Pager.prototype.enterDocument = function() {
     this.pageEl_.innerHTML = this.page_.toString();
   }
 };
+
 
 /**
  * Handles the change of selection item in the underlying model.
@@ -179,8 +191,9 @@ pstj.widget.Pager.prototype.handleSelectionChange = function(e) {
   }
   // Add highlight for current item.
   goog.dom.classlist.add(this.items_[index % this.itemsPerPage_].getElement(),
-    goog.getCssName('active'));
+      goog.getCssName('active'));
 };
+
 
 /**
  * Updates the number of pages matching the current combination of page
@@ -195,6 +208,7 @@ pstj.widget.Pager.prototype.updatePagesNumber_ = function() {
   this.pagesEl_.innerHTML = pagesCount.toString();
 };
 
+
 /**
  * Sets the appropriate data to the template.
  * @param {pstj.ng.Template} template The template instance.
@@ -205,6 +219,7 @@ pstj.widget.Pager.prototype.setTemplateData = function(template, index) {
   var offset = (this.page_ - 1) * this.items_.length;
   template.setModel(this.getModel().getByIndex(offset + index));
 };
+
 
 /**
  * Loads a page into the pager's view.
@@ -221,6 +236,7 @@ pstj.widget.Pager.prototype.loadPage = function(pageIndex) {
   }
   return false;
 };
+
 
 /** @inheritDoc */
 pstj.widget.Pager.prototype.disposeInternal = function() {

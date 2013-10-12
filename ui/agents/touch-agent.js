@@ -10,8 +10,8 @@
 goog.provide('pstj.ui.TouchAgent');
 
 goog.require('goog.asserts');
-goog.require('goog.async.nextTick');
 goog.require('goog.async.AnimationDelay');
+goog.require('goog.async.nextTick');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.Key');
@@ -75,6 +75,7 @@ pstj.ui.TouchAgent.Cache = {
   LAST_TOUCH_Y: 3,
   SHOULD_ACTIVATE: 4
 };
+
 
 /**
  * @type {number}

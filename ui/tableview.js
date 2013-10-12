@@ -330,10 +330,14 @@ pstj.ui.TableView.prototype.handleTouchStart = function(e) {
       // we do not need to record the child element, assuming it will
       // fire the 'ACTION' event when really pressed (so it is a
       // good idea to subscribe it to touchable agent)
-      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = e.getBrowserEvent().touches[0].clientY;
-      this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
-      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME] = e.getBrowserEvent().timeStamp;
-      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y] = this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y] = e.getBrowserEvent()
+          .touches[0].clientY;
+      this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] = this.cache_[
+          pstj.ui.TableView.Cache.HANDLER_LAST_Y];
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_TIME] = e
+          .getBrowserEvent().timeStamp;
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y] = this.cache_[
+          pstj.ui.TableView.Cache.HANDLER_LAST_Y];
       if (!this.movementRaf_.isActive()) {
         this.movementRaf_.start();
       }
@@ -494,19 +498,23 @@ pstj.ui.TableView.prototype.setMomentum = function() {
   // distance traveled from beginning of touch event
   var distance = this.getTouchDistance_();
   // The speed that the touch traveled that distance.
-  var speed = Math.abs(distance) / this.cache_[pstj.ui.TableView.Cache.TOUCH_DURATION];
+  var speed = Math.abs(distance) / this.cache_[
+      pstj.ui.TableView.Cache.TOUCH_DURATION];
 
   this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] =
-      Math.round(this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] + ((speed * speed) / (
-      2 * pstj.ui.TableView.DECELERATION) * (distance < 0 ? -1 : 1)));
+      Math.round(this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] + (
+          (speed * speed) / (2 * pstj.ui.TableView.DECELERATION) * (
+          distance < 0 ? -1 : 1)));
 
   this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION] =
       Math.abs(speed / pstj.ui.TableView.DECELERATION);
 
   this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESIRED_END_TIME] =
-      this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] + this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION];
+      this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME] + this.cache_[
+          pstj.ui.TableView.Cache.ANIMATION_DURATION];
 
-  this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME] = this.cache_[pstj.ui.TableView.Cache.TOUCH_END_TIME];
+  this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME] = this.cache_[
+      pstj.ui.TableView.Cache.TOUCH_END_TIME];
 
   var isSmaller = this.getModel().getCount() *
       this.childHeight_ < this.elementHeight_;
@@ -517,10 +525,12 @@ pstj.ui.TableView.prototype.setMomentum = function() {
     // if the distance to travel is larger than allowed or the visible
     // items are less than the height of the view scroll to top.
     if (this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] -
-        this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] > this.pixelsToTop() || isSmaller) {
+        this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] > this
+        .pixelsToTop() || isSmaller) {
 
       this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] =
-          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] + this.pixelsToTop();
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] +
+          this.pixelsToTop();
 
       this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION] =
           (Math.abs(this.pixelsToTop()) / speed) << 0;
@@ -531,10 +541,12 @@ pstj.ui.TableView.prototype.setMomentum = function() {
     }
   } else {
     if (this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] -
-        this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] > this.pixelsToBottom()) {
+        this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] > this.
+        pixelsToBottom()) {
 
       this.cache_[pstj.ui.TableView.Cache.ANIMATION_DESTINATION_Y] =
-          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] - this.pixelsToBottom();
+          this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] - this
+          .pixelsToBottom();
 
       this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION] =
           (Math.abs(this.pixelsToBottom()) / speed) << 0;
@@ -558,7 +570,8 @@ pstj.ui.TableView.prototype.setMomentum = function() {
  */
 pstj.ui.TableView.prototype.isBeyoundEdge = function() {
   var next_visual_offset =
-      this.visualOffset_ + this.cache_[pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] -
+      this.visualOffset_ + this.cache_[
+      pstj.ui.TableView.Cache.HANDLER_CURRENT_Y] -
       this.cache_[pstj.ui.TableView.Cache.HANDLER_LAST_Y];
 
   if (this.offset_ == 0 && next_visual_offset > 0) {
@@ -589,7 +602,8 @@ pstj.ui.TableView.prototype.handleMomentum = function(ts) {
       this.paintNotifyDelay_.start();
 
     } else {
-      var nn = (ts - this.cache_[pstj.ui.TableView.Cache.ANIMATION_START_TIME]) /
+      var nn = (ts - this.cache_[
+          pstj.ui.TableView.Cache.ANIMATION_START_TIME]) /
           this.cache_[pstj.ui.TableView.Cache.ANIMATION_DURATION];
 
       var easing = (nn * (2 - nn));
@@ -730,7 +744,8 @@ pstj.ui.TableView.prototype.shiftItems = function() {
  * @private
  */
 pstj.ui.TableView.prototype.getTouchDistance_ = function() {
-  return this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] - this.cache_[pstj.ui.TableView.Cache.TOUCH_START_Y];
+  return this.cache_[pstj.ui.TableView.Cache.TOUCH_CURRENT_Y] - this.cache_[
+      pstj.ui.TableView.Cache.TOUCH_START_Y];
 };
 
 
@@ -764,8 +779,8 @@ pstj.ui.TableView.prototype.getChildByOffsetIndex = function(index) {
  */
 pstj.ui.TableView.prototype.applyStyles = function() {
   for (var i = 0, len = this.getChildCount(); i < len; i++) {
-    pstj.lab.style.css.setTranslation(this.getChildByOffsetIndex(i).getElement(), 0,
-        ((i * this.childHeight_) + this.visualOffset_));
+    pstj.lab.style.css.setTranslation(this.getChildByOffsetIndex(i)
+        .getElement(), 0, ((i * this.childHeight_) + this.visualOffset_));
   }
 };
 

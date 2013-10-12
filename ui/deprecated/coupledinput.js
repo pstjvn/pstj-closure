@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Provides working coupled input elements with support for
+ * labels (via goog.ui.LabelInput).
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.CoupledInput');
 
 goog.require('goog.Disposable');
@@ -8,12 +15,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.ui.LabelInput');
 
-/**
- * @fileoverview Provides working coupled input elements with support for
- * labels (via goog.ui.LabelInput).
- *
- * @author  regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Class that provides coupled elements binding. It will check both elements
@@ -26,10 +28,10 @@ goog.require('goog.ui.LabelInput');
  * @extends {goog.Disposable}
  * @param {!Element} el1 The first of the input elements.
  * @param {!Element} el2 The second input element.
- * @param {function(!string): boolean=} fn Optional function that will perform
- *   the validity check of the fields individually.
+ * @param {function(!string): boolean=} opt_fn Optional function that will
+ * perform the validity check of the fields individually.
  */
-pstj.ui.CoupledInput = function(el1, el2, fn) {
+pstj.ui.CoupledInput = function(el1, el2, opt_fn) {
   goog.base(this);
   this.i1 = el1;
   this.i2 = el2;
@@ -38,13 +40,14 @@ pstj.ui.CoupledInput = function(el1, el2, fn) {
   this.li1.decorate(this.i1);
   this.li2.decorate(this.i2);
 
-  if (goog.isFunction(fn)) {
-    this.validateFunction_ = fn;
+  if (goog.isFunction(opt_fn)) {
+    this.validateFunction_ = opt_fn;
   }
 
   this.setupListeners_();
 };
 goog.inherits(pstj.ui.CoupledInput, goog.Disposable);
+
 
 /**
  * Getter for the value if the input elements, this is a wrapped for
@@ -57,6 +60,7 @@ goog.inherits(pstj.ui.CoupledInput, goog.Disposable);
 pstj.ui.CoupledInput.prototype.getValue = function(el) {
   return /** @type {!string} */ (goog.dom.forms.getValue(el));
 };
+
 
 /**
  * This is the check logic that will accept the blur event.
@@ -82,6 +86,7 @@ pstj.ui.CoupledInput.prototype.check = function(ev) {
   }
 };
 
+
 /**
  * Sets the function used to validate the individual inputs.
  * @param {function(!string): boolean} fn The function should execute check of
@@ -92,15 +97,16 @@ pstj.ui.CoupledInput.prototype.setValidateMethod = function(fn) {
   this.validateFunction_ = fn;
 };
 
+
 /**
  * @inheritDoc
  */
 pstj.ui.CoupledInput.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   goog.events.unlisten(this.i1, goog.events.EventType.BLUR, this.check, false,
-    this);
+      this);
   goog.events.unlisten(this.i2, goog.events.EventType.BLUR, this.check, false,
-    this);
+      this);
   this.li1.dispose();
   this.li2.dispose();
   delete this.li1;
@@ -109,6 +115,7 @@ pstj.ui.CoupledInput.prototype.disposeInternal = function() {
   delete this.i2;
   delete this.validateFunction_;
 };
+
 
 /**
  * The method used to check the validity of each of the fields individually.
@@ -122,13 +129,15 @@ pstj.ui.CoupledInput.prototype.validateFunction_ = function(value) {
   return true;
 };
 
+
 /**
  * The CSS class that will be attached to the elements marked as invalid.
  * @type {string}
  * @private
  */
 pstj.ui.CoupledInput.prototype.cssClassInvalid_ = goog.getCssName(
-  'invalid-value');
+    'invalid-value');
+
 
 /**
  * Check function. It server as wrapper function to call the actual check
@@ -142,6 +151,7 @@ pstj.ui.CoupledInput.prototype.cssClassInvalid_ = goog.getCssName(
 pstj.ui.CoupledInput.prototype.checkInputValue_ = function(value) {
   return this.validateFunction_(value);
 };
+
 
 /**
  * Check the secondary value, it uses the common check, but on top of it check
@@ -158,13 +168,14 @@ pstj.ui.CoupledInput.prototype.checkSecondaryInput_ = function(value) {
   return valid;
 };
 
+
 /**
  * Sets up the even listeners for the elemens.
  * @private
  */
 pstj.ui.CoupledInput.prototype.setupListeners_ = function() {
   goog.events.listen(this.i1, goog.events.EventType.BLUR, this.check, false,
-    this);
+      this);
   goog.events.listen(this.i2, goog.events.EventType.BLUR, this.check, false,
-    this);
+      this);
 };

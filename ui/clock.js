@@ -1,9 +1,3 @@
-goog.provide('pstj.ui.Clock');
-
-goog.require('goog.ui.Component');
-goog.require('pstj.ds.IClock');
-goog.require('pstj.ds.TimeProvider');
-
 /**
  * @fileoverview Provides UI for a clock. Represents a very simplistic UI
  * component that simply updates the rendered time each time the time provider
@@ -11,8 +5,16 @@ goog.require('pstj.ds.TimeProvider');
  * extend it or better yet use it only as an example on implementing the IClock
  * interface.
  *
- * @author  regardingscot@gmail.com (Peter StJ)
+ * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.Clock');
+
+goog.require('goog.ui.Component');
+goog.require('pstj.ds.IClock');
+goog.require('pstj.ds.TimeProvider');
+
+
 
 /**
  * Class that implements the IClock interface, that is an UI representation of
@@ -22,20 +24,19 @@ goog.require('pstj.ds.TimeProvider');
  * @constructor
  * @implements {pstj.ds.IClock}
  * @extends {goog.ui.Component}
- * @param {goog.dom.DomHelper=} odh Optional dom helper.
+ * @param {goog.dom.DomHelper=} opt_dh Optional dom helper.
  */
-pstj.ui.Clock = function(odh) {
-  goog.base(this, odh);
+pstj.ui.Clock = function(opt_dh) {
+  goog.base(this, opt_dh);
+  /**
+   * Flag indicating if the instance is registered to receive time updates from
+   *   the global time provider
+   * @type {!boolean}
+   * @private
+   */
+  this.registeredForTimeUpdate_ = false;
 };
 goog.inherits(pstj.ui.Clock, goog.ui.Component);
-
-/**
- * Flag indicating if the instance is registered to receive time updates from
- *   the global time provider
- * @type {!boolean}
- * @private
- */
-pstj.ui.Clock.prototype.registeredForTimeUpdate_ = false;
 
 
 /** @inheritDoc */
@@ -47,6 +48,7 @@ pstj.ui.Clock.prototype.enterDocument = function() {
   }
 };
 
+
 /** @inheritDoc */
 pstj.ui.Clock.prototype.exitDocument = function() {
   goog.base(this, 'exitDocument');
@@ -56,6 +58,7 @@ pstj.ui.Clock.prototype.exitDocument = function() {
   }
 };
 
+
 /** @inheritDoc */
 pstj.ui.Clock.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
@@ -64,6 +67,7 @@ pstj.ui.Clock.prototype.disposeInternal = function() {
   }
   delete this.registeredForTimeUpdate_;
 };
+
 
 /**
  * Implementation of the IClock interface.

@@ -1,13 +1,15 @@
-goog.provide('pstj.ui.IdGenerator');
-
 /**
  * @fileoverview Provides global getter for element IDs, that are guarantieed to
  * be unique. This is a rip off of the goog.ui.IdGenerator, however the IDs work
  * with styles, i.e. an ID ':0' is not really a valid ID (the colon sign) and
  * breaks styles as well as querySelector*.
  *
- * @author  regardingscot@gmail.com (Peter StJ)
+ * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.IdGenerator');
+
+
 
 /**
  * Creates a new generator for IDs. Unless you know what you are going, use
@@ -17,6 +19,7 @@ goog.provide('pstj.ui.IdGenerator');
  */
 pstj.ui.IdGenerator = function() {};
 goog.addSingletonGetter(pstj.ui.IdGenerator);
+
 
 /**
  * Next available ID suffix to use.

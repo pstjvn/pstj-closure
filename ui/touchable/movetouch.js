@@ -1,8 +1,3 @@
-goog.provide('pstj.ui.MoveTouch');
-
-goog.require('pstj.ui.Touchable');
-goog.require('pstj.ui.Touchable.EventType');
-
 /**
  * @fileoverview Provides a special class of component that requires long
  *   press activation for its moveable state to be triggered and it can be
@@ -11,6 +6,13 @@ goog.require('pstj.ui.Touchable.EventType');
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.ui.MoveTouch');
+
+goog.require('pstj.ui.Touchable');
+goog.require('pstj.ui.Touchable.EventType');
+
+
 
 /**
  * Basic touch component that requires to be long pressed before its move
@@ -29,20 +31,23 @@ pstj.ui.MoveTouch = function(opt_template) {
 };
 goog.inherits(pstj.ui.MoveTouch, pstj.ui.Touchable);
 
+
 /** @inheritDoc */
 pstj.ui.MoveTouch.prototype.isMoveEnabled = function() {
   return this.moveEnabled_;
 };
 
+
 /** @inheritDoc */
 pstj.ui.MoveTouch.prototype.addListeners = function() {
   goog.base(this, 'addListeners');
   this.getHandler().listen(this, pstj.ui.Touchable.EventType.LONG_PRESS,
-    this.handleLongPress);
+      this.handleLongPress);
 
   this.getHandler().listen(this, pstj.ui.Touchable.EventType.RELEASE,
-    this.handleRelease);
+      this.handleRelease);
 };
+
 
 /**
  * Handles the long press event for this subclass, enabling the movement.
@@ -54,6 +59,7 @@ pstj.ui.MoveTouch.prototype.handleLongPress = function(e) {
   this.setMoveEnabled(true);
 };
 
+
 /**
  * Sets the move enabled state.
  * @param {boolean} enable True to enable move events (checked via
@@ -62,6 +68,7 @@ pstj.ui.MoveTouch.prototype.handleLongPress = function(e) {
 pstj.ui.MoveTouch.prototype.setMoveEnabled = function(enable) {
   this.moveEnabled_ = enable;
 };
+
 
 /**
  * Handles the release event from touchables.

@@ -4,12 +4,11 @@ goog.require('goog.dom');
 goog.require('pstj.ds.List');
 goog.require('pstj.ui.TableView');
 
+
 /**
  * Demo for the table view widget.
  */
 pstj.demos.tableview = function() {
-
-
 
   var tableview = new pstj.ui.TableView();
 

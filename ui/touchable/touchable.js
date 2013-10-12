@@ -1,14 +1,3 @@
-goog.provide('pstj.ui.Touchable');
-goog.provide('pstj.ui.Touchable.Event');
-goog.provide('pstj.ui.Touchable.EventType');
-goog.provide('pstj.ui.Touchable.PubSub');
-
-goog.require('goog.events');
-goog.require('goog.functions');
-goog.require('goog.pubsub.PubSub');
-goog.require('goog.ui.Component.EventType');
-goog.require('pstj.ui.Async');
-
 /**
  * @fileoverview Provides abstracted component that can be accessed as
  *   touchable or regular component, i.e. TOUCH and MOUSE events are merged
@@ -20,6 +9,19 @@ goog.require('pstj.ui.Async');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.ui.Touchable');
+goog.provide('pstj.ui.Touchable.Event');
+goog.provide('pstj.ui.Touchable.EventType');
+goog.provide('pstj.ui.Touchable.PubSub');
+
+goog.require('goog.events');
+goog.require('goog.functions');
+goog.require('goog.pubsub.PubSub');
+goog.require('goog.ui.Component.EventType');
+goog.require('pstj.ui.Async');
+
+
+
 /**
  * Provides the base for touchable components. The touch is abstracted to work
  *   with touch and mouse in the same manner.
@@ -29,7 +31,6 @@ goog.require('pstj.ui.Async');
  */
 pstj.ui.Touchable = function(opt_template) {
   goog.base(this, opt_template);
-
   /**
    * @private
    * @type {boolean}
@@ -61,6 +62,7 @@ pstj.ui.Touchable = function(opt_template) {
 };
 goog.inherits(pstj.ui.Touchable, pstj.ui.Async);
 
+
 /**
  * Extraxtec function that releases the double press state after a timeout.
  * @private
@@ -70,6 +72,7 @@ pstj.ui.Touchable.releaseDoublePress_ = function() {
   pstj.ui.Touchable.PubSub.publish(pstj.ui.Touchable.PubSub.DCLEAR);
 };
 
+
 /**
  * Starts a global long press timeout if one is not started already. This is
  *   when a user presses on an item without moving the mouse.
@@ -78,9 +81,10 @@ pstj.ui.Touchable.releaseDoublePress_ = function() {
 pstj.ui.Touchable.prototype.startLongTouch_ = function() {
   if (pstj.ui.Touchable.longTouchTimeout_ == -1) {
     pstj.ui.Touchable.longTouchTimeout_ = setTimeout(
-      this.longTouchHandlerBound_, 800);
+        this.longTouchHandlerBound_, 800);
   }
 };
+
 
 /**
  * Ends the global listened for long press, this is if user performs a
@@ -92,6 +96,7 @@ pstj.ui.Touchable.prototype.cancelLongTouch_ = function() {
   pstj.ui.Touchable.longTouchTimeout_ = -1;
 };
 
+
 /**
  * Handles the browser events as submitted by the closure event system.
  * @param {goog.events.Event} e The wrapped closure event.
@@ -102,7 +107,7 @@ pstj.ui.Touchable.prototype.handleBrowerEvent = function(e) {
   e.stopPropagation();
   if (!this.pressed_) {
     if (e.type == goog.events.EventType.TOUCHMOVE ||
-      e.type == goog.events.EventType.MOUSEMOVE) {
+        e.type == goog.events.EventType.MOUSEMOVE) {
       return;
     }
   }
@@ -117,6 +122,7 @@ pstj.ui.Touchable.prototype.handleBrowerEvent = function(e) {
   }
 };
 
+
 /**
  * Sets the state of double touch globally.
  * @param {boolean} enable If true this will mean for all application level
@@ -127,6 +133,7 @@ pstj.ui.Touchable.prototype.setDoubleTouchesState = function(enable) {
   pstj.ui.Touchable.doubleTouchApplied_ = enable;
 };
 
+
 /**
  * Checks if there is a double touch currently applied system wide.
  * @protected
@@ -136,6 +143,7 @@ pstj.ui.Touchable.prototype.isDoubleTOuchApplied = function() {
   return pstj.ui.Touchable.doubleTouchApplied_;
 };
 
+
 /**
  * Handles the touch events coming from the DOM.
  * @param {goog.events.BrowserEvent} e The browser event.
@@ -144,9 +152,7 @@ pstj.ui.Touchable.prototype.isDoubleTOuchApplied = function() {
 pstj.ui.Touchable.prototype.handleTouchEvent = function(e) {
   switch (e.type) {
     case goog.events.EventType.TOUCHSTART:
-
       this.setIgnoreEvent(pstj.ui.Touchable.IGNORING_EVENT_NAME.MOUSE, true);
-
       this.moved_ = false;
       this.lpressed_ = false;
 
@@ -158,73 +164,55 @@ pstj.ui.Touchable.prototype.handleTouchEvent = function(e) {
       }
 
       this.dispatchEvent(new pstj.ui.Touchable.Event(
-        pstj.ui.Touchable.EventType.PRESS, this,
+          pstj.ui.Touchable.EventType.PRESS, this,
           e.getBrowserEvent()['changedTouches'][0]['clientX'],
           e.getBrowserEvent()['changedTouches'][0]['clientY']));
-
       this.startLongTouch_();
-
       break;
 
     case goog.events.EventType.TOUCHMOVE:
-
       if (e.getBrowserEvent()['touches'].length > 1) {
-
         this.cancelLongTouch_();
         this.setDoubleTouchesState(true);
         pstj.ui.Touchable.PubSub.publish(pstj.ui.Touchable.PubSub.DOUBLE, e);
-
       } else {
-
         if (e.getBrowserEvent()['touches'].length == 1 &&
-          !this.isDoubleTOuchApplied()) {
-
+            !this.isDoubleTOuchApplied()) {
           if (!this.pressed_) return;
-
           this.cancelLongTouch_();
-
           this.dispatchEvent(new pstj.ui.Touchable.Event(
-            pstj.ui.Touchable.EventType.MOVE, this,
+              pstj.ui.Touchable.EventType.MOVE, this,
               e.getBrowserEvent()['changedTouches'][0]['clientX'],
               e.getBrowserEvent()['changedTouches'][0]['clientY']));
-
         }
       }
-
       break;
 
     case goog.events.EventType.TOUCHEND:
-
       this.cancelLongTouch_();
-
       if (e.getBrowserEvent()['touches'].length == 0) {
-
         if (this.isDoubleTOuchApplied()) {
           setTimeout(pstj.ui.Touchable.releaseDoublePress_, 100);
         } else {
-
           if (!this.pressed_) return;
           if (!this.moved_ && !this.lpressed_) {
             this.dispatchEvent(goog.ui.Component.EventType.ACTIVATE);
           }
           this.dispatchEvent(pstj.ui.Touchable.EventType.RELEASE);
         }
-
         this.setIgnoreEvent(pstj.ui.Touchable.IGNORING_EVENT_NAME.MOUSE, false);
       }
-
       break;
 
     case goog.events.EventType.TOUCHCANCEL:
-
       this.cancelLongTouch_();
       this.pressed_ = false;
       this.moved_ = false;
       this.lpressed_ = false;
-
       break;
   }
 };
+
 
 /**
  * Handles the mouse event from the DOM.
@@ -234,42 +222,29 @@ pstj.ui.Touchable.prototype.handleTouchEvent = function(e) {
 pstj.ui.Touchable.prototype.handleMouseEvent = function(e) {
   switch (e.type) {
     case goog.events.EventType.MOUSEDOWN:
-
       this.setIgnoreEvent(pstj.ui.Touchable.IGNORING_EVENT_NAME.TOUCH, true);
-
       this.moved_ = false;
       this.lpressed_ = false;
-
       this.dispatchEvent(new pstj.ui.Touchable.Event(
-        pstj.ui.Touchable.EventType.PRESS, this, e.clientX, e.clientY));
-
+          pstj.ui.Touchable.EventType.PRESS, this, e.clientX, e.clientY));
       this.startLongTouch_();
-
       break;
 
     case goog.events.EventType.MOUSEMOVE:
-
       if (!this.pressed_) return;
-
       this.cancelLongTouch_();
-
       this.dispatchEvent(new pstj.ui.Touchable.Event(
-        pstj.ui.Touchable.EventType.MOVE, this, e.clientX, e.clientY));
-
+          pstj.ui.Touchable.EventType.MOVE, this, e.clientX, e.clientY));
       break;
 
     case goog.events.EventType.MOUSEUP:
-
       this.cancelLongTouch_();
-
       if (!this.pressed_) return;
       if (!this.moved_ && !this.lpressed_) {
         this.dispatchEvent(goog.ui.Component.EventType.ACTIVATE);
       }
       this.dispatchEvent(pstj.ui.Touchable.EventType.RELEASE);
-
       this.setIgnoreEvent(pstj.ui.Touchable.IGNORING_EVENT_NAME.TOUCH, false);
-
       break;
 
     case goog.events.EventType.MOUSEOUT:
@@ -278,9 +253,9 @@ pstj.ui.Touchable.prototype.handleMouseEvent = function(e) {
       }
       this.setIgnoreEvent(pstj.ui.Touchable.IGNORING_EVENT_NAME.TOUCH, false);
       break;
-
   }
 };
+
 
 /**
  * Enables or disables ignoration of a particular event types.
@@ -292,8 +267,9 @@ pstj.ui.Touchable.prototype.handleMouseEvent = function(e) {
  */
 pstj.ui.Touchable.prototype.setIgnoreEvent = function(event_type, enable) {
   this.ignoringEvents_ = (enable) ? this.ignoringEvents_ | event_type :
-    this.ignoringEvents_ & ~event_type;
+      this.ignoringEvents_ & ~event_type;
 };
+
 
 /**
  * Checks if this particular ignoring state is set.
@@ -307,6 +283,7 @@ pstj.ui.Touchable.prototype.isIgnoringEvent = function(event_type) {
   return !!(this.ignoringEvents_ & event_type);
 };
 
+
 /**
  * Attaches the DOM event listeners. By default all touch and mouse events are
  *   attched.
@@ -314,8 +291,9 @@ pstj.ui.Touchable.prototype.isIgnoringEvent = function(event_type) {
  */
 pstj.ui.Touchable.prototype.attachTouchEvents = function() {
   this.getHandler().listen(this.getElement(), pstj.ui.Touchable.EVENTS,
-    this.handleBrowerEvent);
+      this.handleBrowerEvent);
 };
+
 
 /**
  * Getter method to check if move events are allowed currently on the widget.
@@ -327,6 +305,7 @@ pstj.ui.Touchable.prototype.attachTouchEvents = function() {
  *   not.
  */
 pstj.ui.Touchable.prototype.isMoveEnabled = goog.functions.TRUE;
+
 
 /**
  * Handles all touchable events with default actions. This is needed for the
@@ -357,6 +336,7 @@ pstj.ui.Touchable.prototype.handleAllTouchables_ = function(e) {
   }
 };
 
+
 /**
  * Adds the listeneres needed for the component to work properly. This
  *   includes all the DOM related listeners as well as the internal listeners
@@ -365,9 +345,7 @@ pstj.ui.Touchable.prototype.handleAllTouchables_ = function(e) {
  * @protected
  */
 pstj.ui.Touchable.prototype.addListeners = function() {
-
   this.attachTouchEvents();
-
   // listen with the default actions for high order events.
   this.getHandler().listen(this, [pstj.ui.Touchable.EventType.PRESS,
     pstj.ui.Touchable.EventType.MOVE, pstj.ui.Touchable.EventType.RELEASE,
@@ -375,17 +353,20 @@ pstj.ui.Touchable.prototype.addListeners = function() {
 
 };
 
+
 /** @inheritDoc */
 pstj.ui.Touchable.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.addListeners();
 };
 
+
 /** @inheritDoc */
 pstj.ui.Touchable.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   this.longTouchHandlerBound_ = null;
 };
+
 
 /**
  * Holds the ID of the timeout for long touch.
@@ -394,6 +375,7 @@ pstj.ui.Touchable.prototype.disposeInternal = function() {
  */
 pstj.ui.Touchable.longTouchTimeout_ = -1;
 
+
 /**
  * Internal value for if the double press is active on the application level.
  * @type {boolean}
@@ -401,27 +383,34 @@ pstj.ui.Touchable.longTouchTimeout_ = -1;
  */
 pstj.ui.Touchable.doubleTouchApplied_ = false;
 
+
 /**
  * The subscription channel for multi touches.
  * @type {goog.pubsub.PubSub}
  */
 pstj.ui.Touchable.PubSub = new goog.pubsub.PubSub();
 
+
 /**
  * The double touch MOVE topic for the subscription channel.
  * @type {string}
  */
 pstj.ui.Touchable.PubSub.DOUBLE = 'double';
+
+
 /**
  * The double touch START topic for the subscription channel.
  * @type {string}
  */
 pstj.ui.Touchable.PubSub.DINIT = 'init-double';
+
+
 /**
  * The double touch END topic for the subscription channel.
  * @type {string}
  */
 pstj.ui.Touchable.PubSub.DCLEAR = 'clear-double';
+
 
 /**
  * The list of events to listen in the DOM in order to make this work.
@@ -439,6 +428,7 @@ pstj.ui.Touchable.EVENTS = [
   goog.events.EventType.MOUSEOUT
 ];
 
+
 /**
  * Lists the event types emitted by this class.
  * @enum {string}
@@ -453,6 +443,7 @@ pstj.ui.Touchable.EventType = {
   // component.
 };
 
+
 /**
  * List of possible events to ignore when processing inputs.
  * @enum {number}
@@ -462,6 +453,8 @@ pstj.ui.Touchable.IGNORING_EVENT_NAME = {
   TOUCH: 0x01,
   MOUSE: 0x02
 };
+
+
 
 /**
  * Wraps the touch events.

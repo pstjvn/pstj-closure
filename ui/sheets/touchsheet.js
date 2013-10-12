@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Provides touch enabled sheet implementation. It is also mouse
+ *   enabled by default but uses special type of fitting in the container and
+ *   thus is a little bit more resource intensive.
+ *
+ * NOTE: special care is taken to reduce memory footprint and GC interrupts
+ *   when handling those events, still the widget is heavier than the regular
+ *   scrollsheet component, thus if you do not have special reason to use this
+ *   one consider the scrollsheet instead.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.TouchSheet');
 
 goog.require('goog.async.Delay');
@@ -15,18 +28,7 @@ goog.require('pstj.ui.Touchable');
 goog.require('pstj.ui.Touchable.EventType');
 goog.require('pstj.ui.Touchable.PubSub');
 
-/**
- * @fileoverview Provides touch enabled sheet implementation. It is also mouse
- *   enabled by default but uses special type of fitting in the container and
- *   thus is a little bit more resource intensive.
- *
- * NOTE: special care is taken to reduce memory footprint and GC interrupts
- *   when handling those events, still the widget is heavier than the regular
- *   scrollsheet component, thus if you do not have special reason to use this
- *   one consider the scrollsheet instead.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Provides the touchable sheet implementation. The widget is constructed on
@@ -42,7 +44,6 @@ goog.require('pstj.ui.Touchable.PubSub');
  */
 pstj.ui.TouchSheet = function(opt_template) {
   goog.base(this, opt_template);
-
   /**
    * Reference to the last known parent size. Used to calculate in-frame sheet
    *   fitting.
@@ -129,8 +130,7 @@ pstj.ui.TouchSheet = function(opt_template) {
    * @type {goog.async.Delay}
    * @private
    */
-  this.endZoomingBound_ = new goog.async.Delay(
-    this.endZooming, 250, this);
+  this.endZoomingBound_ = new goog.async.Delay(this.endZooming, 250, this);
   this.registerDisposable(this.endZoomingBound_);
 
   /**
@@ -159,6 +159,7 @@ pstj.ui.TouchSheet = function(opt_template) {
 };
 goog.inherits(pstj.ui.TouchSheet, pstj.ui.Touchable);
 
+
 /** @inheritDoc */
 pstj.ui.TouchSheet.prototype.disposeInternal = function() {
   this.unsibscibeToTouchPubSub();
@@ -172,12 +173,14 @@ pstj.ui.TouchSheet.prototype.disposeInternal = function() {
   this.viewportsize_ = null;
 };
 
+
 /**
  * This is a imaginary impact percentile for the wheel handler. 10 seems to
  *   work fine but make sure to made this available as runtime configuration.
  * @type {number}
  */
 pstj.ui.TouchSheet.prototype.wheelEventChangeImpact = 8;
+
 
 /**
  * Implements the ISheet interface method.
@@ -188,6 +191,7 @@ pstj.ui.TouchSheet.prototype.updateParentSize = function(size) {
   this.updateMaxOffsets();
   this.fitInFrame();
 };
+
 
 /**
  * This method subscribes the widget instance to the double movement pub sub
@@ -211,29 +215,29 @@ pstj.ui.TouchSheet.prototype.subscribeToTouchablePubSub = function() {
     }
   }, this);
   this.bounds_[1] = goog.bind(function(e) {
-      if (!this.isInDocument()) return;
-      this.handleDoubleMove(
-        [e.getBrowserEvent()['touches'][0]['clientX'],
-        e.getBrowserEvent()['touches'][0]['clientY']],
+    if (!this.isInDocument()) return;
+    this.handleDoubleMove([e.getBrowserEvent()['touches'][0]['clientX'],
+          e.getBrowserEvent()['touches'][0]['clientY']],
         [e.getBrowserEvent()['touches'][1]['clientX'],
-        e.getBrowserEvent()['touches'][1]['clientY']]);
+          e.getBrowserEvent()['touches'][1]['clientY']]);
 
   }, this);
   this.bounds_[2] = goog.bind(function(e) {
-      if (!this.isInDocument()) return;
-      this.startDoubleMove(
+    if (!this.isInDocument()) return;
+    this.startDoubleMove(
         [e.getBrowserEvent()['touches'][0]['clientX'],
-        e.getBrowserEvent()['touches'][0]['clientY']],
+          e.getBrowserEvent()['touches'][0]['clientY']],
         [e.getBrowserEvent()['touches'][1]['clientX'],
-        e.getBrowserEvent()['touches'][1]['clientY']]);
-    }, this);
+          e.getBrowserEvent()['touches'][1]['clientY']]);
+  }, this);
   pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DCLEAR,
-    this.bounds_[0]);
+      this.bounds_[0]);
   pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DOUBLE,
-    this.bounds_[1]);
+      this.bounds_[1]);
   pstj.ui.Touchable.PubSub.subscribe(pstj.ui.Touchable.PubSub.DINIT,
-    this.bounds_[2]);
+      this.bounds_[2]);
 };
+
 
 /**
  * Unsubscribe from PUBSUB in case we want to dispose the component this is
@@ -241,12 +245,13 @@ pstj.ui.TouchSheet.prototype.subscribeToTouchablePubSub = function() {
  */
 pstj.ui.TouchSheet.prototype.unsibscibeToTouchPubSub = function() {
   pstj.ui.Touchable.PubSub.unsubscribe(pstj.ui.Touchable.PubSub.DCLEAR,
-    this.bounds_[0]);
+      this.bounds_[0]);
   pstj.ui.Touchable.PubSub.unsubscribe(pstj.ui.Touchable.PubSub.DOUBLE,
-    this.bounds_[1]);
+      this.bounds_[1]);
   pstj.ui.Touchable.PubSub.unsubscribe(pstj.ui.Touchable.PubSub.DINIT,
-    this.bounds_[2]);
+      this.bounds_[2]);
 };
+
 
 /**
  * Returns the bounding viewport size.
@@ -255,6 +260,7 @@ pstj.ui.TouchSheet.prototype.unsibscibeToTouchPubSub = function() {
 pstj.ui.TouchSheet.prototype.getViewportSize = function() {
   return this.viewportsize_;
 };
+
 
 /**
  * Sets the size of the sheet in pixels.
@@ -271,6 +277,7 @@ pstj.ui.TouchSheet.prototype.setSize = function(size) {
   }
 };
 
+
 /**
  * Calculates the max offsets that we can support in such a was as to be not
  *   too much off the frame.
@@ -284,6 +291,7 @@ pstj.ui.TouchSheet.prototype.updateMaxOffsets = function() {
   }
 };
 
+
 /** @inheritDoc */
 pstj.ui.TouchSheet.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
@@ -292,8 +300,9 @@ pstj.ui.TouchSheet.prototype.decorateInternal = function(el) {
   this.getElement().style.position = 'absolute';
   this.applySize();
   this.mouseWheelHandler_ = new goog.events.MouseWheelHandler(
-    this.getElement());
+      this.getElement());
 };
+
 
 /** @inheritDoc */
 pstj.ui.TouchSheet.prototype.enterDocument = function() {
@@ -306,16 +315,17 @@ pstj.ui.TouchSheet.prototype.enterDocument = function() {
   ], this.handleTouchableEvents);
 
   this.getHandler().listen(this.getElement(),
-    goog.events.EventType.TRANSITIONEND, this.removeTransitions);
+      goog.events.EventType.TRANSITIONEND, this.removeTransitions);
 
   this.getHandler().listen(this.mouseWheelHandler_,
-    goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.handleWheel);
+      goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.handleWheel);
 
   this.getHandler().listen(this.keyHandler_,
-    goog.events.KeyHandler.EventType.KEY, this.handleZoomByKeys);
+      goog.events.KeyHandler.EventType.KEY, this.handleZoomByKeys);
 
   this.updateMaxOffsets();
 };
+
 
 /**
  * Handles the keyboard controls for zoom levels.
@@ -335,6 +345,7 @@ pstj.ui.TouchSheet.prototype.handleZoomByKeys = function(e) {
     }
   }
 };
+
 
 /**
  * Umbrealla handler for the touchable generated events that we are interested
@@ -356,6 +367,7 @@ pstj.ui.TouchSheet.prototype.handleTouchableEvents = function(e) {
   }
 };
 
+
 /**
  * Applies the size directly via altering the style properties on the element.
  *   This is very slow for most machines and should be called only when
@@ -370,14 +382,16 @@ pstj.ui.Touchable.prototype.applySize = function() {
   }
 };
 
+
 /**
  * Helper function to remove the transition flag (class name) from the element.
  * @protected
  */
 pstj.ui.TouchSheet.prototype.removeTransitions = function() {
   goog.dom.classlist.remove(this.getElement(), goog.getCssName(
-    'transitioning'));
+      'transitioning'));
 };
+
 
 /**
  * Forces the sheet to be displayed in the frame. This should be called only
@@ -391,15 +405,15 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
   var result = false;
 
   if (this.size.width < this.getViewportSize().width / 3 ||
-    this.size.height < this.getViewportSize().height / 3) {
+      this.size.height < this.getViewportSize().height / 3) {
     this.needsPostFitInFrameQuirk_ = true;
     result = true;
     this.size.scaleToFit(/** @type {!goog.math.Size} */ (
-      this.getViewportSize()));
+        this.getViewportSize()));
   }
 
   if (this.size.width > this.getViewportSize().width &&
-    this.size.height > this.getViewportSize().height) {
+      this.size.height > this.getViewportSize().height) {
 
     if (this.offsetx_ < 0) {
       this.offsetx_ = 0;
@@ -425,7 +439,7 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
       result = true;
     }
     if (this.offsetx_ > 0 &&
-      this.size.width - this.offsetx_ < this.getViewportSize().width / 2) {
+        this.size.width - this.offsetx_ < this.getViewportSize().width / 2) {
 
       this.offsetx_ = this.size.width - this.getViewportSize().width;
       result = true;
@@ -438,7 +452,7 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
       result = true;
     }
     if (this.offsety_ > 0 &&
-      this.size.height - this.offsety_ < this.getViewportSize().height / 2) {
+        this.size.height - this.offsety_ < this.getViewportSize().height / 2) {
 
       this.offsety_ = this.size.height - this.getViewportSize().height;
       result = true;
@@ -474,6 +488,7 @@ pstj.ui.TouchSheet.prototype.fitInFrame = function() {
   }
 };
 
+
 /**
  * Handles the press action on the widget.
  * @param {pstj.ui.Touchable.Event} e The touchable event abstaction.
@@ -482,6 +497,7 @@ pstj.ui.TouchSheet.prototype.onPress = function(e) {
   this.cache_[pstj.ui.TouchSheet.CACHE.FOCALX] = e.x;
   this.cache_[pstj.ui.TouchSheet.CACHE.FOCALY] = e.y;
 };
+
 
 /**
  * The move event from the touchable interface. In this implementation we just
@@ -500,6 +516,7 @@ pstj.ui.TouchSheet.prototype.onMove = function(e) {
     this.update();
   }
 };
+
 
 /**
  * Handles the release touchable event. This implementation simply checks to
@@ -521,18 +538,19 @@ pstj.ui.TouchSheet.prototype.onRelease = function() {
  */
 pstj.ui.TouchSheet.prototype.startDoubleMove = function(p1, p2) {
   this.cache_[
-    pstj.ui.TouchSheet.CACHE.DISTANCE] = pstj.math.utils.distanceOfSegment(
+      pstj.ui.TouchSheet.CACHE.DISTANCE] = pstj.math.utils.distanceOfSegment(
       p1, p2);
 
   this.cache_[pstj.ui.TouchSheet.CACHE.FOCALX] = (p1[0] + p2[0]) / 2;
   this.cache_[pstj.ui.TouchSheet.CACHE.FOCALY] = (p1[1] + p2[1]) / 2;
 
   this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] = this.cache_[
-    pstj.ui.TouchSheet.CACHE.FOCALX] + this.offsetx_;
+      pstj.ui.TouchSheet.CACHE.FOCALX] + this.offsetx_;
 
   this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] = this.cache_[
-    pstj.ui.TouchSheet.CACHE.FOCALY] + this.offsety_;
+      pstj.ui.TouchSheet.CACHE.FOCALY] + this.offsety_;
 };
+
 
 /**
  * Handles the double move event as intercepted in the pubsub routine.
@@ -544,12 +562,13 @@ pstj.ui.TouchSheet.prototype.handleDoubleMove = function(p1, p2) {
   this.doubleMovement_ = true;
 
   this.cache_[
-    pstj.ui.TouchSheet.CACHE.CDISTANCE] = pstj.math.utils.distanceOfSegment(
+      pstj.ui.TouchSheet.CACHE.CDISTANCE] = pstj.math.utils.distanceOfSegment(
       p1, p2);
 
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = (p1[0] + p2[0]) / 2;
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = (p1[1] + p2[1]) / 2;
 };
+
 
 /**
  * Handles the end of double movement.
@@ -559,27 +578,28 @@ pstj.ui.TouchSheet.prototype.handleEndDoubleMove = function() {
   this.doubleMovement_ = false;
 
   this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
-    pstj.math.utils.getValueFromPercent(
+      pstj.math.utils.getValueFromPercent(
       this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX],
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - this.cache_[
-        pstj.ui.TouchSheet.CACHE.CFOCALX];
+      pstj.ui.TouchSheet.CACHE.CFOCALX];
 
   this.offsety_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] +
-    pstj.math.utils.getValueFromPercent(
+      pstj.math.utils.getValueFromPercent(
       this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY],
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - this.cache_[
-        pstj.ui.TouchSheet.CACHE.CFOCALY];
+      pstj.ui.TouchSheet.CACHE.CFOCALY];
 
   this.size.width = this.size.width + pstj.math.utils.getValueFromPercent(
-    this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
+      this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.size.height = this.size.height + pstj.math.utils.getValueFromPercent(
-    this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
+      this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.needsSizeApplication_ = true;
 
   this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = 0;
 };
+
 
 /**
  * Completes the zooming for both touch double move and wheel.
@@ -592,25 +612,26 @@ pstj.ui.TouchSheet.prototype.endZooming = function() {
   this.needsSizeApplication_ = true;
 
   this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
-    pstj.math.utils.getValueFromPercent(
+      pstj.math.utils.getValueFromPercent(
       this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX],
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - this.cache_[
-        pstj.ui.TouchSheet.CACHE.CFOCALX];
+      pstj.ui.TouchSheet.CACHE.CFOCALX];
 
   this.offsety_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] +
-    pstj.math.utils.getValueFromPercent(
+      pstj.math.utils.getValueFromPercent(
       this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY],
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - this.cache_[
-        pstj.ui.TouchSheet.CACHE.CFOCALY];
+      pstj.ui.TouchSheet.CACHE.CFOCALY];
 
   this.size.width = this.size.width + pstj.math.utils.getValueFromPercent(
-    this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
+      this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.size.height = this.size.height + pstj.math.utils.getValueFromPercent(
-    this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
+      this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = 0;
 };
+
 
 /**
  * This method is called after a series of fake size updates (i.e. scale
@@ -623,28 +644,29 @@ pstj.ui.TouchSheet.prototype.applySizeAfterWheel = function() {
   this.update();
 
   this.size.width = this.size.width + pstj.math.utils.getValueFromPercent(
-    this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
+      this.size.width, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.size.height = this.size.height + pstj.math.utils.getValueFromPercent(
-    this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
+      this.size.height, this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]);
 
   this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
-    pstj.math.utils.getValueFromPercent(
+      pstj.math.utils.getValueFromPercent(
       this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX],
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - this.cache_[
-        pstj.ui.TouchSheet.CACHE.CFOCALX];
+      pstj.ui.TouchSheet.CACHE.CFOCALX];
 
   this.offsety_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] +
-    pstj.math.utils.getValueFromPercent(
+      pstj.math.utils.getValueFromPercent(
       this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY],
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - this.cache_[
-        pstj.ui.TouchSheet.CACHE.CFOCALY];
+      pstj.ui.TouchSheet.CACHE.CFOCALY];
 
   this.needsSizeApplication_ = true;
   this.inWheelSequence_ = false;
 
   this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = 0;
 };
+
 
 /** @inheritDoc */
 pstj.ui.TouchSheet.prototype.draw = function() {
@@ -654,33 +676,29 @@ pstj.ui.TouchSheet.prototype.draw = function() {
     if (this.doubleMovement_) {
       this.doubleMovement_ = false;
       this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = pstj.math.utils
-        .getPercentFromValue((this.cache_[
-        pstj.ui.TouchSheet.CACHE.DISTANCE] - this.cache_[
+          .getPercentFromValue((this.cache_[
+          pstj.ui.TouchSheet.CACHE.DISTANCE] - this.cache_[
           pstj.ui.TouchSheet.CACHE.CDISTANCE]), this.cache_[
-            pstj.ui.TouchSheet.CACHE.DISTANCE]) * -1;
+          pstj.ui.TouchSheet.CACHE.DISTANCE]) * -1;
     }
     this.offsetx_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] +
         pstj.math.utils.getValueFromPercent(
-          this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX],
-          this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - (
-
+        this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX],
+        this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - (
         (pstj.math.utils.getValueFromPercent(this.size.width,
-          this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]) / 2)
-
-      ) - this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX];
+        this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]) / 2)) -
+        this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX];
 
     this.offsety_ = (this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] +
         pstj.math.utils.getValueFromPercent(
-          this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY],
-          this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) - (
-
-        (pstj.math.utils.getValueFromPercent(this.size.height,
-          this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]) / 2)
-
-      ) - this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY];
+        this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY],
+        this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE])) -
+        ((pstj.math.utils.getValueFromPercent(this.size.height,
+        this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE]) / 2)) -
+        this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY];
 
     scale = 'scale(' + (1 + (
-      this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] / 100)) + ')';
+        this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] / 100)) + ')';
   }
 
   if (this.needsSizeApplication_) {
@@ -695,9 +713,10 @@ pstj.ui.TouchSheet.prototype.draw = function() {
   }
 
   pstj.lab.style.css.setTranslation(this.getElement(), -this.offsetx_,
-    -this.offsety_, undefined, scale);
+      -this.offsety_, undefined, scale);
   return false;
 };
+
 
 /**
  * Handles the mouse wheel event coming when the wheel is exerciced over the
@@ -711,25 +730,26 @@ pstj.ui.TouchSheet.prototype.handleWheel = function(e) {
   e.preventDefault();
   this.endZoomingBound_.start();
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = e.getBrowserEvent(
-    )['clientX'] - this.clientOffset_.x;
+      )['clientX'] - this.clientOffset_.x;
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = e.getBrowserEvent(
-    )['clientY'] - this.clientOffset_.y;
+      )['clientY'] - this.clientOffset_.y;
   if (!this.inWheelSequence_) {
     this.inWheelSequence_ = true;
     this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] = this.cache_[
-      pstj.ui.TouchSheet.CACHE.CFOCALX] + this.offsetx_;
+        pstj.ui.TouchSheet.CACHE.CFOCALX] + this.offsetx_;
 
     this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] = this.cache_[
-      pstj.ui.TouchSheet.CACHE.CFOCALY] + this.offsety_;
+        pstj.ui.TouchSheet.CACHE.CFOCALY] + this.offsety_;
   }
   if (e.deltaY < 0) {
     this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
-      pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] + this.wheelEventChangeImpact;
+        pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] + this.wheelEventChangeImpact;
   } else if (e.deltaY > 0) {
     this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
-      pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] - this.wheelEventChangeImpact;
+        pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] - this.wheelEventChangeImpact;
   }
 };
+
 
 /**
  * Handles the key codes directly and zooms always centered.
@@ -740,26 +760,27 @@ pstj.ui.TouchSheet.prototype.handleKey = function(keycode) {
   this.update();
   this.keyZoom_ = true;
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALX] = Math.abs(
-    this.getViewportSize().width / 2);
+      this.getViewportSize().width / 2);
 
   this.cache_[pstj.ui.TouchSheet.CACHE.CFOCALY] = Math.abs(
-    this.getViewportSize().height / 2);
+      this.getViewportSize().height / 2);
 
   this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALX] = this.cache_[
-    pstj.ui.TouchSheet.CACHE.CFOCALX] + this.offsetx_;
+      pstj.ui.TouchSheet.CACHE.CFOCALX] + this.offsetx_;
 
   this.cache_[pstj.ui.TouchSheet.CACHE.SHEETFOCALY] = this.cache_[
-    pstj.ui.TouchSheet.CACHE.CFOCALY] + this.offsety_;
+      pstj.ui.TouchSheet.CACHE.CFOCALY] + this.offsety_;
 
   if (keycode == goog.events.KeyCodes.EQUALS) {
     this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
-      pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] + this.wheelEventChangeImpact;
-} else if (keycode == goog.events.KeyCodes.DASH || keycode == 173) {
+        pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] + this.wheelEventChangeImpact;
+  } else if (keycode == goog.events.KeyCodes.DASH || keycode == 173) {
     this.cache_[pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] = this.cache_[
-      pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] - this.wheelEventChangeImpact;
+        pstj.ui.TouchSheet.CACHE.PERCENTCHANGE] - this.wheelEventChangeImpact;
   }
   this.endZoomingBound_.start();
 };
+
 
 /**
  * Provides names for the cached values, easier for the developer, those will

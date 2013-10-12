@@ -7,6 +7,8 @@ goog.require('pstj.ui.Async');
 goog.require('pstj.ui.ListItem');
 goog.require('pstj.ui.Template');
 
+
+
 /**
  * The list template.
  * @constructor
@@ -18,15 +20,18 @@ pstj.ui.ListTemplate = function() {
 goog.inherits(pstj.ui.ListTemplate, pstj.ui.Template);
 goog.addSingletonGetter(pstj.ui.ListTemplate);
 
+
 /** @inheritDoc */
 pstj.ui.ListTemplate.prototype.getTemplate = function(model) {
   return pstj.templates.list({});
 };
 
+
 /** @inheritDoc */
 pstj.ui.ListTemplate.prototype.getContentElement = function(comp) {
   return comp.getEls(goog.getCssName('pstj-list-container'));
 };
+
 
 
 /**
@@ -75,12 +80,14 @@ pstj.ui.List = function(opt_template, opt_item_template) {
 };
 goog.inherits(pstj.ui.List, pstj.ui.Async);
 
+
 /** @inheritDoc */
 pstj.ui.List.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   this.listItemTemplate_ = null;
   this.noticeElement_ = null;
 };
+
 
 /**
  * Overrides the getter method from Component to let the compiler know the
@@ -89,6 +96,7 @@ pstj.ui.List.prototype.disposeInternal = function() {
  * @return {pstj.ds.List} The list of items.
  */
 pstj.ui.List.prototype.getModel;
+
 
 /**
  * Sets the notice to be showing if no items are left after the list after
@@ -99,13 +107,14 @@ pstj.ui.List.prototype.setEmptyListNotice = function(notice) {
   this.emptyListNotice_ = notice;
 };
 
+
 /** @inheritDoc */
 pstj.ui.List.prototype.setModel = function(model) {
   // expect an array and convert internally to list.
   if (!(model instanceof pstj.ds.List)) {
     if (!goog.isArray(model)) {
       throw new Error('Model for select widget should be ' +
-        'either pstj.ds.List instance or an array or literal objects');
+          'either pstj.ds.List instance or an array or literal objects');
     }
     var list = new pstj.ds.List();
     goog.array.forEach(/** @type {Array} */ (model), function(item) {
@@ -136,6 +145,7 @@ pstj.ui.List.prototype.setModel = function(model) {
   }
 };
 
+
 /**
  * Handler for the events from the currently applied model. By default we
  *   handle only the FILTERED event and we simply set the child's state to
@@ -164,12 +174,12 @@ pstj.ui.List.prototype.handleModelChange = function(e) {
     });
     // no items left in the list.
     if (this.getModel().getCount() > 0 &&
-      ids.length == this.getModel().getCount()) {
-
+        ids.length == this.getModel().getCount()) {
       this.noticeElement_.innerHTML = this.emptyListNotice_;
     }
   }
 };
+
 
 /**
  * Visualize the items in the model as list items.
@@ -183,6 +193,7 @@ pstj.ui.List.prototype.visualizeModel = function() {
   }
 };
 
+
 /**
  * Create a new list item in the view from a list item record data.
  * @param {pstj.ds.ListItem} listitem The data record to use.
@@ -194,6 +205,7 @@ pstj.ui.List.prototype.createListItem = function(listitem) {
   this.addChild(child, true);
 };
 
+
 /**
  * Returns the currently selected item's data model.
  * @return {pstj.ds.ListItem}
@@ -203,12 +215,14 @@ pstj.ui.List.prototype.getSelectionData = function() {
   return this.currentSelectedUIItem_.getModel();
 };
 
+
 /** @inheritDoc */
 pstj.ui.List.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
   this.noticeElement_ = this.getEls(goog.getCssName(
-    'pstj-list-notice'));
+      'pstj-list-notice'));
 };
+
 
 /** @inheritDoc */
 pstj.ui.List.prototype.enterDocument = function() {
@@ -216,12 +230,14 @@ pstj.ui.List.prototype.enterDocument = function() {
   if (goog.isDefAndNotNull(this.getModel())) {
     this.visualizeModel();
   }
-  this.getHandler()
-  .listen(this, goog.ui.Component.EventType.HIGHLIGHT,
-    this.handleItemHighlight)
-  .listen(this, [pstj.ui.Touchable.EventType.MOVE,
-    pstj.ui.Touchable.EventType.PRESS], this.handleMoveByChild);
+  this.getHandler().listen(
+      this, goog.ui.Component.EventType.HIGHLIGHT, this.handleItemHighlight)
+  .listen(this,
+      [pstj.ui.Touchable.EventType.MOVE,
+        pstj.ui.Touchable.EventType.PRESS],
+      this.handleMoveByChild);
 };
+
 
 /**
  * Handles move events in children of the list so that we can emulate the
@@ -241,15 +257,17 @@ pstj.ui.List.prototype.handleMoveByChild = function(e) {
   }
 };
 
+
 /** @inheritDoc */
 pstj.ui.List.prototype.draw = function(ts) {
   if (this.yoffset_[0] - this.yoffset_[1]) {
     this.getElement().scrollTop = this.getElement().scrollTop + (
-      this.yoffset_[0] - this.yoffset_[1]);
+        this.yoffset_[0] - this.yoffset_[1]);
     this.yoffset_[0] = this.yoffset_[1];
   }
   return goog.base(this, 'draw', ts);
 };
+
 
 /**
  * Handles the highlight of a list item.

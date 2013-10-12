@@ -25,23 +25,11 @@ pstj.ui.TouchControl = function(content, opt_renderer) {
    */
   this.touchCoordinatesCache_ = [0, 0];
   /**
-   * The events that should be ignored.
-   * @type {pstj.ui.TouchControl.Ignore}
-   * @private
-   */
-  this.ignoring_ = pstj.ui.TouchControl.Ignore.NONE;
-  /**
    * Flag if an activation is pending.
    * @type {boolean}
    * @private
    */
   this.pendingActivation_ = false;
-  /**
-   * The current touch state of the control.
-   * @type {pstj.ui.TouchControl.TouchState}
-   * @private
-   */
-  this.touchState_ = pstj.ui.TouchControl.TouchState.NONE;
 };
 goog.inherits(pstj.ui.TouchControl, goog.ui.Control);
 
@@ -164,12 +152,14 @@ pstj.ui.TouchControl.prototype.handleTouchStart = function(e) {
   e.stopPropagation();
   this.pendingActivation_ = true;
   this.touchCoordinatesCache_[0] = e.getBrowserEvent(
-    )['changedTouches'][0]['clientX'];
+      )['changedTouches'][0]['clientX'];
   this.touchCoordinatesCache_[1] = e.getBrowserEvent(
-    )['changedTouches'][0]['clientY'];
+      )['changedTouches'][0]['clientY'];
   this.setState(goog.ui.Component.State.HOVER, true);
   this.setState(goog.ui.Component.State.ACTIVE, true);
 };
+
+
 /**
  * Handles touch event
  * @param {goog.events.Event} e The touch* event.
@@ -177,9 +167,9 @@ pstj.ui.TouchControl.prototype.handleTouchStart = function(e) {
  */
 pstj.ui.TouchControl.prototype.handleTouchMove = function(e) {
   if (Math.abs(this.touchCoordinatesCache_[0] - e.getBrowserEvent(
-    )['changedTouches'][0]['clientX']) > 5 || Math.abs(
-    this.touchCoordinatesCache_[1] - e.getBrowserEvent(
-    )['changedTouches'][0]['clientY']) > 5) {
+      )['changedTouches'][0]['clientX']) > 5 || Math.abs(
+      this.touchCoordinatesCache_[1] - e.getBrowserEvent(
+      )['changedTouches'][0]['clientY']) > 5) {
     this.pendingActivation_ = false;
     this.setState(goog.ui.Component.State.ACTIVE, false);
   } else {
@@ -187,6 +177,8 @@ pstj.ui.TouchControl.prototype.handleTouchMove = function(e) {
     e.preventDefault();
   }
 };
+
+
 /**
  * Handles touch event
  * @param {goog.events.Event} e The touch* event.

@@ -98,7 +98,8 @@ pstj.ng.Template.prototype.applyTemplate = function() {
     this.applyModel();
     if (goog.dom.classlist.contains(this.getElement(), goog.getCssName(
         'pstj-ng-cloak'))) {
-      goog.dom.classlist.remove(this.getElement(), goog.getCssName('pstj-ng-cloak'));
+      goog.dom.classlist.remove(this.getElement(), goog.getCssName(
+          'pstj-ng-cloak'));
     }
   } else {
     this.handleEmptyModel();

@@ -9,6 +9,7 @@ var stubs;
 var pseudoRandom = new goog.testing.PseudoRandom(100);
 pseudoRandom.install();
 
+
 /**
  * Make sure we are not actually testing the goog provided functions, stub them!
  */
@@ -19,11 +20,14 @@ var setUp = function() {
   });
 };
 
+
 /**
  * Dummy variables
  * @type {string}
  */
 var color = '#000000';
+
+
 /**
  * Our comparison value
  * @type {string}
@@ -37,19 +41,22 @@ function testGet() {
   }
   for (var i = 0; i < 10; i++) {
     assertEquals('Alpha value should match ',
-      pstj.color.hexToRgba(color, values[i]), part + values[i] + ')');
+        pstj.color.hexToRgba(color, values[i]), part + values[i] + ')');
   }
 }
 
+
 function testNegative() {
   assertEquals('Negative values should be converted to 0',
-    pstj.color.hexToRgba(color, -0.32), part + '0' + ')');
+      pstj.color.hexToRgba(color, -0.32), part + '0' + ')');
 }
+
 
 function testLargerThanOne() {
   assertEquals('Values larger than 1 should be set to 1',
-    pstj.color.hexToRgba(color, 1.001), part + '1' + ')');
+      pstj.color.hexToRgba(color, 1.001), part + '1' + ')');
 }
+
 
 function testWithNonNumber() {
   assertThrows('Value is string', function() {

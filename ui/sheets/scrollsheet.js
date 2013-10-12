@@ -1,10 +1,3 @@
-goog.provide('pstj.ui.ScrollSheet');
-
-goog.require('goog.style');
-goog.require('pstj.ui.ISheet');
-goog.require('pstj.ui.Template');
-goog.require('pstj.ui.Templated');
-
 /**
  * @fileoverview Provides a sheet that uses the native scroll of the browser
  *   to implement its hidden larger sizes. The presumtion here is that the
@@ -16,23 +9,34 @@ goog.require('pstj.ui.Templated');
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.ui.ScrollSheet');
+
+goog.require('goog.style');
+goog.require('pstj.ui.ISheet');
+goog.require('pstj.ui.Template');
+goog.require('pstj.ui.Templated');
+
+
+
 /**
  * A sheet that is using the native scrolling capabilities of the browser.
  * @constructor
  * @extends {pstj.ui.Templated}
  * @implements {pstj.ui.ISheet}
- * @param {pstj.ui.Template} opt_template Optional template.
+ * @param {pstj.ui.Template=} opt_template Optional template.
  */
 pstj.ui.ScrollSheet = function(opt_template) {
   goog.base(this, opt_template);
 };
 goog.inherits(pstj.ui.ScrollSheet, pstj.ui.Templated);
 
+
 /**
  * The scroll bar width in the current browser.
  * @type {number}
  */
 pstj.ui.ScrollSheet.scrollBarWidth = goog.style.getScrollbarWidth();
+
 
 /**
  * Here we actually want to hide the scroll bars at all time, thus we skip the

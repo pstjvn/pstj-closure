@@ -8,6 +8,8 @@ goog.require('pstj.ui.List');
 goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Templated');
 
+
+
 /**
  * The select widget template.
  * @constructor
@@ -19,10 +21,13 @@ pstj.widget.SelectTemplate = function() {
 goog.inherits(pstj.widget.SelectTemplate, pstj.ui.Template);
 goog.addSingletonGetter(pstj.widget.SelectTemplate);
 
+
 /** @inheritDoc */
 pstj.widget.SelectTemplate.prototype.getTemplate = function(model) {
   return pstj.templates.select({});
 };
+
+
 
 /**
  * My new class description
@@ -43,6 +48,7 @@ pstj.widget.Select = function(opt_template, opt_item_template) {
 };
 goog.inherits(pstj.widget.Select, pstj.ui.Templated);
 
+
 /**
  * Sets the text to be shown when list is empty.
  * @param {string} str String.
@@ -51,12 +57,14 @@ pstj.widget.Select.prototype.setEmptyListText = function(str) {
   this.list_.setEmptyListNotice(str);
 };
 
+
 /**
  * @override
  */
 pstj.widget.Select.prototype.setModel = function(model) {
   this.list_.setModel(model);
 };
+
 
 /**
  * Retrtieves the currently selected data.
@@ -66,6 +74,7 @@ pstj.widget.Select.prototype.getSelection = function() {
   return this.list_.getSelectionData();
 };
 
+
 /** @inheritDoc */
 pstj.widget.Select.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
@@ -73,6 +82,7 @@ pstj.widget.Select.prototype.decorateInternal = function(el) {
   this.selectButton_.decorate(this.querySelector('[data-action="select"]'));
   this.list_.decorate(this.querySelector('.' + goog.getCssName('pstj-list')));
 };
+
 
 /** @inheritDoc */
 pstj.widget.Select.prototype.enterDocument = function() {
@@ -83,6 +93,7 @@ pstj.widget.Select.prototype.enterDocument = function() {
     goog.ui.Component.EventType.ACTION], this.handleSubcomponentEvent);
   this.selectButton_.setEnabled(false);
 };
+
 
 /**
  * Handles for the events coming from the sub components.
@@ -109,15 +120,16 @@ pstj.widget.Select.prototype.handleSubcomponentEvent = function(e) {
   }
 };
 
+
 /**
  * Set the filter to the list's model directly (helper method to access the
  *   model of the select).
- * @param {function(pstj.ds.ListItem): boolean=} fn Function that accepts each
- *   list item and returns true if the item should be removed (filtered out).
+ * @param {function(pstj.ds.ListItem): boolean=} opt_fn Function that accepts
+ * each list item and returns true if the item should be removed (filtered out).
  */
-pstj.widget.Select.prototype.setFilter = function(fn) {
+pstj.widget.Select.prototype.setFilter = function(opt_fn) {
   if (goog.isDefAndNotNull(this.list_.getModel())) {
     this.selectButton_.setEnabled(false);
-    this.list_.getModel().setFilter(fn);
+    this.list_.getModel().setFilter(opt_fn);
   }
 };

@@ -3,6 +3,8 @@ goog.provide('pstj.widget.ClockRenderer');
 goog.require('pstj.templates');
 goog.require('pstj.ui.ControlRenderer');
 
+
+
 /**
  * Demoes the clock contorl. This is the custom renderer for it.
  * @constructor
@@ -13,6 +15,7 @@ pstj.widget.ClockRenderer = function() {
 };
 goog.inherits(pstj.widget.ClockRenderer, pstj.ui.ControlRenderer);
 goog.addSingletonGetter(pstj.widget.ClockRenderer);
+
 
 /**
  * @const

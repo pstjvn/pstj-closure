@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Provides base class for components that can detect size
+ * changes and call its sizeChange method.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.Sizeable');
 goog.provide('pstj.ui.Sizeable.EventType');
 
@@ -6,12 +13,7 @@ goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.events.EventHandler');
 goog.require('goog.ui.Component');
 
-/**
- * @fileoverview Provides base class for components that can detect size
- * changes and call its sizeChange method.
- *
- * @author  regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Class designed to be inherited by components that need to react to window
@@ -60,37 +62,34 @@ goog.require('goog.ui.Component');
  * @constructor
  * @deprecated Use the sizeable ua agent instead.
  * @extends {goog.ui.Component}
- * @param {goog.dom.DomHelper=} dh Optional dom helper.
+ * @param {goog.dom.DomHelper=} opt_dh Optional dom helper.
  */
-pstj.ui.Sizeable = function(dh) {
-  goog.base(this, dh);
-
+pstj.ui.Sizeable = function(opt_dh) {
+  goog.base(this, opt_dh);
+  /**
+   * Holds the throttled handleWindowResize method.
+   * @type {goog.async.Throttle}
+   * @private
+   */
+  this.windowResizeThrottled_;
+  /**
+   * Cache for the current component size.
+   * @type {goog.math.Size}
+   * @private
+   */
+  this.currentSize_ = null;
+  /**
+   * Throttle interval, this is how often the resize even will be allowed to
+   *   trigger the handler. Specified in milliseconds.
+   * @type {number}
+   * @protected
+   */
+  this.sizeUpdateInterval = 500;
   this.windowResizeThrottled_ = new goog.async.Throttle(
-    this.handleWindowResize, this.sizeUpdateInterval, this);
+      this.handleWindowResize, this.sizeUpdateInterval, this);
 };
 goog.inherits(pstj.ui.Sizeable, goog.ui.Component);
 
-/**
- * Holds the throttled handleWindowResize method.
- * @type {goog.async.Throttle}
- * @private
- */
-pstj.ui.Sizeable.prototype.windowResizeThrottled_;
-
-/**
- * Cache for the current component size.
- * @type {goog.math.Size}
- * @private
- */
-pstj.ui.Sizeable.prototype.currentSize_ = null;
-
-/**
- * Throttle interval, this is how often the resize even will be allowed to
- *   trigger the handler. Specified in milliseconds.
- * @type {number}
- * @protected
- */
-pstj.ui.Sizeable.prototype.sizeUpdateInterval = 500;
 
 /**
  * Getter for the currently recorded width.
@@ -100,6 +99,7 @@ pstj.ui.Sizeable.prototype.getWidth = function() {
   return this.currentSize_.width;
 };
 
+
 /**
  * Getter for the currently recorded height.
  * @return {number} Current height.
@@ -107,6 +107,7 @@ pstj.ui.Sizeable.prototype.getWidth = function() {
 pstj.ui.Sizeable.prototype.getHeight = function() {
   return this.currentSize_.height;
 };
+
 
 /**
  * Getter for the size of the component. Note that the reported size will be
@@ -119,6 +120,7 @@ pstj.ui.Sizeable.prototype.getRecordedSize = function() {
   return this.currentSize_;
 };
 
+
 /** @inheritDoc */
 pstj.ui.Sizeable.prototype.disposeInternal = function() {
   goog.dispose(this.windowResizeThrottled_);
@@ -126,6 +128,7 @@ pstj.ui.Sizeable.prototype.disposeInternal = function() {
   this.windowResizeThrottled_ = null;
   goog.base(this, 'disposeInternal');
 };
+
 
 /**
  * Handler for the window resize event. This handler is throttled to once per
@@ -140,22 +143,25 @@ pstj.ui.Sizeable.prototype.handleWindowResize = function() {
   }
 };
 
+
 /** @inheritDoc */
 pstj.ui.Sizeable.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this.sizeMonitorInstance_,
-    goog.events.EventType.RESIZE, this.handleWindowResizeThrottled_);
+      goog.events.EventType.RESIZE, this.handleWindowResizeThrottled_);
   // call the handler directly, don't wait as this is right after the DOM
   // was attached to the document tree.
   this.handleWindowResize();
 };
 
+
 /** @inheritDoc */
 pstj.ui.Sizeable.prototype.exitDocument = function() {
   goog.base(this, 'exitDocument');
-    // Stop all resize handlers pending.
+  // Stop all resize handlers pending.
   this.windowResizeThrottled_.stop();
 };
+
 
 /**
  * Handles all window resize events coming from the view port monitor and
@@ -168,6 +174,7 @@ pstj.ui.Sizeable.prototype.handleWindowResizeThrottled_ = function() {
   this.windowResizeThrottled_.fire();
 };
 
+
 /**
  * Reference to the view port size monitor.
  * @type {goog.dom.ViewportSizeMonitor}
@@ -175,7 +182,8 @@ pstj.ui.Sizeable.prototype.handleWindowResizeThrottled_ = function() {
  * @private
  */
 pstj.ui.Sizeable.prototype.sizeMonitorInstance_ =
-  goog.dom.ViewportSizeMonitor.getInstanceForWindow();
+    goog.dom.ViewportSizeMonitor.getInstanceForWindow();
+
 
 /**
  * Custom resize event for the components.

@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Provides a widget that consists of a frame and sheet surface
+ *   inside of the frame. The frame is bound to react to resize events and
+ *   record its size while the sheet inside of it is guaranteed to always be
+ *   in-bounds with the parent frame. The sheet is allowed to scale larger and
+ *   smalled than the bounding frame but its borders should not exceed the
+ *   frame when the size of the sheet is larger than the size of the frame.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.ui.SheetFrame');
 
 goog.require('goog.asserts');
@@ -9,16 +20,7 @@ goog.require('goog.style');
 goog.require('pstj.ui.ISheet');
 goog.require('pstj.ui.Templated');
 
-/**
- * @fileoverview Provides a widget that consists of a frame and sheet surface
- *   inside of the frame. The frame is bound to react to resize events and
- *   record its size while the sheet inside of it is guaranteed to always be
- *   in-bounds with the parent frame. The sheet is allowed to scale larger and
- *   smalled than the bounding frame but its borders should not exceed the
- *   frame when the size of the sheet is larger than the size of the frame.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Provides a basic sheet frame, intended to host an implementation of the
@@ -34,7 +36,7 @@ pstj.ui.SheetFrame = function(opt_template) {
    * @type {goog.async.Throttle}
    */
   this.throttle_ = new goog.async.Throttle(this.handleResize,
-    this.resizehandlerThreshold, this);
+      this.resizehandlerThreshold, this);
   this.registerDisposable(this.throttle_);
   /**
    * The size that is currently recorded in memory
@@ -44,12 +46,14 @@ pstj.ui.SheetFrame = function(opt_template) {
 };
 goog.inherits(pstj.ui.SheetFrame, pstj.ui.Templated);
 
+
 /**
  * The threshold to react to browser's resize events.
  * @type {number}
  * @protected
  */
 pstj.ui.SheetFrame.prototype.resizehandlerThreshold = 350;
+
 
 /**
  * Calculates current size based on the parent element's size. This is as if
@@ -67,6 +71,7 @@ pstj.ui.SheetFrame.prototype.getUpdatedSize = function() {
   return goog.style.getSize(parent);
 };
 
+
 /**
  * The actual implmenetation that can handle the resizes.
  * @protected
@@ -83,6 +88,7 @@ pstj.ui.SheetFrame.prototype.handleResize = function() {
   }
 };
 
+
 /**
  * Let the child know about the parent size change.
  * @param {pstj.ui.ISheet} child The child to set parent size on and update.
@@ -92,12 +98,14 @@ pstj.ui.SheetFrame.prototype.provisionChild = function(child) {
   transpiled.updateParentSize(this.size);
 };
 
+
 /** @inheritDoc */
 pstj.ui.SheetFrame.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
   this.getElement().style.position = 'relative';
   this.getElement().style.overflow = 'hidden';
 };
+
 
 /** @inheritDoc */
 pstj.ui.SheetFrame.prototype.addChild = function(child, render) {
@@ -106,13 +114,15 @@ pstj.ui.SheetFrame.prototype.addChild = function(child, render) {
   transpiled.updateParentSize(this.size);
 };
 
+
 /** @inheritDoc */
 pstj.ui.SheetFrame.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.handleResize();
   this.getHandler().listen(goog.dom.ViewportSizeMonitor.getInstanceForWindow(),
-    goog.events.EventType.RESIZE, this.handleOriginalResizeEvent_);
+      goog.events.EventType.RESIZE, this.handleOriginalResizeEvent_);
 };
+
 
 /** @inheritDoc */
 pstj.ui.SheetFrame.prototype.disposeInternal = function() {
@@ -120,6 +130,7 @@ pstj.ui.SheetFrame.prototype.disposeInternal = function() {
   this.throttle_ = null;
   this.size = null;
 };
+
 
 /**
  * Handler for the browser's resize event.

@@ -1,9 +1,3 @@
-goog.provide('pstj.control.Base');
-
-goog.require('goog.Disposable');
-goog.require('goog.asserts');
-goog.require('goog.events.EventHandler');
-
 /**
  * @fileoverview The incentive behind this class is to provide controlling
  *   interface that is usable without having to delegate to a single 'top'
@@ -16,6 +10,14 @@ goog.require('goog.events.EventHandler');
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
+goog.provide('pstj.control.Base');
+
+goog.require('goog.Disposable');
+goog.require('goog.asserts');
+goog.require('goog.events.EventHandler');
+
+
 
 /**
  * Provides the basic control flow.
@@ -43,14 +45,16 @@ pstj.control.Base = function() {
 };
 goog.inherits(pstj.control.Base, goog.Disposable);
 
+
 /**
  * Initialization routine should go here.
  */
 pstj.control.Base.prototype.initialize = function() {
   goog.asserts.assert((!this.inited_),
-    'Reinitialization of controls is not allowed');
+      'Reinitialization of controls is not allowed');
   this.inited_ = true;
 };
+
 
 /**
  * Checks if the control has been initialized.
@@ -59,6 +63,7 @@ pstj.control.Base.prototype.initialize = function() {
 pstj.control.Base.prototype.isInitialized = function() {
   return this.inited_;
 };
+
 
 /**
  * Utility function, returns bound handler for easier work with instance
@@ -72,15 +77,17 @@ pstj.control.Base.prototype.getHandler = function() {
   return this.handler_;
 };
 
+
 /**
  * Sets the parent control instance and thus effectively delegaes actions.
  * @param {pstj.control.Base} parent The parent instance to use.
  */
 pstj.control.Base.prototype.setParentControlInstance = function(parent) {
   goog.asserts.assertInstanceof(parent, pstj.control.Base,
-    'Parent control should be control instance as well');
+      'Parent control should be control instance as well');
   this.parent_ = parent;
 };
+
 
 /**
  * Notify system for controls. Works similar to events except there is no
@@ -96,6 +103,7 @@ pstj.control.Base.prototype.notify = function(child, action) {
     this.parent_.notify(this, action);
   }
 };
+
 
 /** @inheritDoc */
 pstj.control.Base.prototype.disposeInternal = function() {

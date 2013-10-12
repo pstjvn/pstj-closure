@@ -23,6 +23,7 @@ goog.require('pstj.configure');
 goog.require('pstj.ds.IClock');
 
 
+
 /**
  * Provides consistent time across the application with updates once every 60
  *   seconds or another compiled in interval. To subscribe for update your

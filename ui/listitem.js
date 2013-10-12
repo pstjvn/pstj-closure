@@ -9,6 +9,8 @@ goog.require('pstj.templates');
 goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Touchable');
 
+
+
 /**
  * The default template for list item view.
  * @constructor
@@ -20,18 +22,21 @@ pstj.ui.ListItemTemplate = function() {
 goog.inherits(pstj.ui.ListItemTemplate, pstj.ui.Template);
 goog.addSingletonGetter(pstj.ui.ListItemTemplate);
 
+
 /** @inheritDoc */
 pstj.ui.ListItemTemplate.prototype.getTemplate = function(model) {
   return pstj.templates.listitem(model);
 };
+
 
 /**
  * The default thumbnail to use if one is not found.
  * @type {string}
  */
 pstj.ui.ListItemTemplate.prototype.defaultThumbnail = goog.asserts.assertString(
-  pstj.configure.getRuntimeValue('THUMBNAIL',
+    pstj.configure.getRuntimeValue('THUMBNAIL',
     'assets/default-select-image.png', 'PSTJ.WIDGET.LISTITEM').toString());
+
 
 /** @inheritDoc */
 pstj.ui.ListItemTemplate.prototype.generateTemplateData = function(comp) {
@@ -42,11 +47,13 @@ pstj.ui.ListItemTemplate.prototype.generateTemplateData = function(comp) {
   };
 };
 
+
+
 /**
  * My new class description
  * @constructor
  * @extends {pstj.ui.Touchable}
- * @param {pstj.ui.Template} opt_template Optional template.
+ * @param {pstj.ui.Template=} opt_template Optional template.
  */
 pstj.ui.ListItem = function(opt_template) {
   goog.base(this, opt_template || pstj.ui.ListItemTemplate.getInstance());
@@ -56,11 +63,13 @@ pstj.ui.ListItem = function(opt_template) {
 };
 goog.inherits(pstj.ui.ListItem, pstj.ui.Touchable);
 
+
 /**
  * @const
  * @type {string}
  */
 pstj.ui.ListItem.CSS_CLASS = goog.getCssName('pstj-list-item');
+
 
 /**
  * @override
@@ -68,18 +77,21 @@ pstj.ui.ListItem.CSS_CLASS = goog.getCssName('pstj-list-item');
  */
 pstj.ui.ListItem.prototype.getModel;
 
+
 /** @inheritDoc */
 pstj.ui.ListItem.prototype.setModel = function(model) {
   goog.base(this, 'setModel', goog.asserts.assertInstanceof(
-    model, pstj.ds.ListItem, 'Only list item instances are supported'));
+      model, pstj.ds.ListItem, 'Only list item instances are supported'));
 };
+
 
 /** @inheritDoc */
 pstj.ui.ListItem.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this, goog.ui.Component.EventType.ACTIVATE,
-    this.handleActivateEvent);
+      this.handleActivateEvent);
 };
+
 
 /**
  * Handles for the activate event, it happens when the item is clicked or
@@ -104,6 +116,7 @@ pstj.ui.ListItem.prototype.handleActivateEvent = function(e) {
   }
 };
 
+
 /**
  * Activates / deactivates the component.
  * @param {boolean} enable True to mark the component as activated.
@@ -114,6 +127,7 @@ pstj.ui.ListItem.prototype.setActive = function(enable) {
     this.update();
   }
 };
+
 
 /**
  * Enables / disabled the component.
@@ -127,6 +141,7 @@ pstj.ui.ListItem.prototype.setEnabled = function(enable) {
   }
 };
 
+
 /**
  * Getter for the enable / disbaled state.
  * @return {boolean} True if the item is enabled.
@@ -135,24 +150,25 @@ pstj.ui.ListItem.prototype.isEnabled = function() {
   return this.enabled_;
 };
 
+
 /** @inheritDoc */
 pstj.ui.ListItem.prototype.draw = function(ts) {
 
   if (!this.enabled_) {
     goog.dom.classlist.add(this.getElement(), goog.getCssName(
-      pstj.ui.ListItem.CSS_CLASS, 'disabled'));
+        pstj.ui.ListItem.CSS_CLASS, 'disabled'));
 
   } else {
     goog.dom.classlist.remove(this.getElement(), goog.getCssName(
-      pstj.ui.ListItem.CSS_CLASS, 'disabled'));
+        pstj.ui.ListItem.CSS_CLASS, 'disabled'));
   }
 
   if (this.active_) {
     goog.dom.classlist.add(this.getElement(), goog.getCssName(
-      pstj.ui.ListItem.CSS_CLASS, 'active'));
+        pstj.ui.ListItem.CSS_CLASS, 'active'));
   } else {
     goog.dom.classlist.remove(this.getElement(), goog.getCssName(
-      pstj.ui.ListItem.CSS_CLASS, 'active'));
+        pstj.ui.ListItem.CSS_CLASS, 'active'));
   }
 
   return goog.base(this, 'draw', ts);

@@ -7,6 +7,8 @@ goog.require('pstj.ui.ClockAgent');
 goog.require('pstj.ui.ngAgent');
 goog.require('pstj.widget.ClockRenderer');
 
+
+
 /**
  * Proof of concept clock widget / control that uses the agent interface.
  * @constructor
@@ -16,7 +18,7 @@ goog.require('pstj.widget.ClockRenderer');
  */
 pstj.widget.Clock = function(opt_render) {
   goog.base(this, '',
-    opt_render || pstj.widget.ClockRenderer.getInstance());
+      opt_render || pstj.widget.ClockRenderer.getInstance());
   this.setSupportedState(goog.ui.Component.State.ACTIVE, false);
   this.setSupportedState(goog.ui.Component.State.FOCUSED, false);
   this.setAutoStates(goog.ui.Component.State.ACTIVE, false);
@@ -47,4 +49,3 @@ pstj.widget.Clock.prototype.setModel = function(model) {
   }
   pstj.ui.ngAgent.getInstance().apply(this);
 };
-

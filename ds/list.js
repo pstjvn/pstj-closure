@@ -225,14 +225,14 @@ pstj.ds.List.prototype.isAcceptableId = function(id) {
 
 /**
  * Deletes a node from the list. If deletion happened the delete event will be
- *   dispatched.
+ * dispatched.
+ *
  * @param  {pstj.ds.ListItem|pstj.ds.RecordID} node The node to delete. Note
- *   that it can be a node that is already in the list or a node with the same
- *   ID.
+ * that it can be a node that is already in the list or a node with the same
+ * ID.
  * @return {boolean} True if the node was deleted. False otherwise.
  */
 pstj.ds.List.prototype.deleteNode = function(node) {
-  var i = null;
   var id = /** @type {pstj.ds.RecordID} */ ((node instanceof pstj.ds.ListItem) ?
       node.getId() : node);
 
@@ -241,9 +241,9 @@ pstj.ds.List.prototype.deleteNode = function(node) {
     listnode.dispose();
     var index = this.getIndexById(id);
     goog.array.removeAt(this.list, index);
-    for (i in this.indexMap) {
-      if (this.indexMap[i] > index) {
-        this.indexMap[i]--;
+    for (var key in this.indexMap) {
+      if (this.indexMap[key] > index) {
+        this.indexMap[key]--;
       }
     }
     delete this.map[id];
@@ -275,6 +275,7 @@ pstj.ds.List.prototype.update = function(node) {
 
 /**
  * Getter for the item by its ID.
+ *
  * @param  {pstj.ds.RecordID} id The id of the data to retrieve.
  * @return {?pstj.ds.ListItem} The item that matches this id or null.
  */
@@ -285,9 +286,10 @@ pstj.ds.List.prototype.getById = function(id) {
 
 /**
  * Getter for the items by its index in the list.
+ *
  * @param  {!number} index The index of the item in the list.
  * @return {pstj.ds.ListItem} The item that matches the index in the list or
- *   null.
+ * null.
  */
 pstj.ds.List.prototype.getByIndex = function(index) {
   var result = this.list[index];
@@ -299,7 +301,10 @@ pstj.ds.List.prototype.getByIndex = function(index) {
 
 
 /**
- * The number of items in the list.
+ * The number of items in the list. Note that in this implementation the list
+ * length is directly used. Sparse subclasses might need to return the full
+ * length without it actually being loaded.
+ *
  * @return {number} The length of the list.
  */
 pstj.ds.List.prototype.getCount = function() {

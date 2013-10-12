@@ -10,13 +10,13 @@ goog.provide('pstj.ui.ISheet');
 goog.require('goog.math.Size');
 
 
+
 /**
  * This is the interface to implement if a component wants to be used in a
  *   sheet-frame.
  * @interface
  */
 pstj.ui.ISheet = function() {};
-
 
 
 /**

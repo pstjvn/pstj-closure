@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Provides initial loading progress bar to be used during
+ *   application initialization. It supports custom text on top of the
+ *   progress bar.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.widget.Progress');
 goog.provide('pstj.widget.ProgressTemplate');
 
@@ -9,13 +17,7 @@ goog.require('pstj.templates');
 goog.require('pstj.ui.Async');
 goog.require('pstj.ui.Template');
 
-/**
- * @fileoverview Provides initial loading progress bar to be used during
- *   application initialization. It supports custom text on top of the
- *   progress bar.
- *
- * @author regardingscot@gmail.com (Peter StJ)
- */
+
 
 /**
  * Provides the default progress bar template implementation.
@@ -28,10 +30,12 @@ pstj.widget.ProgressTemplate = function() {
 goog.inherits(pstj.widget.ProgressTemplate, pstj.ui.Template);
 goog.addSingletonGetter(pstj.widget.ProgressTemplate);
 
+
 /** @inheritDoc */
 pstj.widget.ProgressTemplate.prototype.getTemplate = function(model) {
   return pstj.templates.progress(model);
 };
+
 
 /** @inheritDoc */
 pstj.widget.ProgressTemplate.prototype.generateTemplateData = function(comp) {
@@ -40,10 +44,13 @@ pstj.widget.ProgressTemplate.prototype.generateTemplateData = function(comp) {
   };
 };
 
+
 /** @inheritDoc */
 pstj.widget.ProgressTemplate.prototype.getContentElement = function(comp) {
   return comp.querySelector('.' + goog.getCssName('pstj-widget-progress-bar'));
 };
+
+
 
 /**
  * Provides an application loading progress bar widget.
@@ -81,10 +88,11 @@ goog.inherits(pstj.widget.Progress, pstj.ui.Async);
 /** @inheritDoc */
 pstj.widget.Progress.prototype.setModel = function(model) {
   goog.asserts.assertNumber(model,
-    'Model should always be number for this widget');
+      'Model should always be number for this widget');
   this.delay_.stop();
   goog.base(this, 'setModel', model);
 };
+
 
 /**
  * Notify the widget that one item has been completed.
@@ -97,6 +105,7 @@ pstj.widget.Progress.prototype.progress = function() {
   }
 };
 
+
 /**
  * Allows the developer to set custom text on top of the progress bar.
  * @param {string} text The text to use.
@@ -104,6 +113,7 @@ pstj.widget.Progress.prototype.progress = function() {
 pstj.widget.Progress.prototype.setContent = function(text) {
   this.text_ = text;
 };
+
 
 /**
  * Getter for the content of the progress.
@@ -113,10 +123,11 @@ pstj.widget.Progress.prototype.getContent = function() {
   return this.text_;
 };
 
+
 /** @inheritDoc */
 pstj.widget.Progress.prototype.draw = function(ms) {
   var model = goog.asserts.assertNumber(this.getModel(),
-    'Model should be a number!');
+      'Model should be a number!');
   var percent = pstj.math.utils.getPercentFromValue(this.itemsDone_, model);
   this.getContentElement().style.width = percent + '%';
   return false;

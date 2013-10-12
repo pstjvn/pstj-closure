@@ -4,16 +4,19 @@ goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('pstj.widget.ControlGroup');
 
+
+
 /**
  * Provides button group with indication on the last activated button. Can be
- *   used as a toggle-exclusive button group. All child buttons are emiting
- *   the select event and the widget remembers the last selected item.
+ * used as a toggle-exclusive button group. All child buttons are emiting
+ * the select event and the widget remembers the last selected item.
+ *
  * @constructor
  * @extends {pstj.widget.ControlGroup}
  * @param {pstj.ui.Template=} opt_template Optional template to use for DOM
- *   construction.
+ * construction.
  * @param {goog.ui.ButtonRenderer=} opt_button_renderer Optional renderer to
- *   use for the control buttons.
+ * use for the control buttons.
  */
 pstj.widget.ToggleGroup = function(opt_template, opt_button_renderer) {
   goog.base(this, opt_template, opt_button_renderer);
@@ -37,17 +40,19 @@ pstj.widget.ToggleGroup.prototype.decorateInternal = function(el) {
   });
 
   this.currentActive_ = /** @type {pstj.ui.Button} */ (
-    this.getChildAt(0));
+      this.getChildAt(0));
 
   this.currentActive_.setSelected(true);
 };
+
 
 /** @inheritDoc */
 pstj.widget.ToggleGroup.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this, goog.ui.Component.EventType.ACTION,
-    this.handleButtonAction);
+      this.handleButtonAction);
 };
+
 
 /**
  * Retrieves the action name of the selected / toggled button.
@@ -57,9 +62,10 @@ pstj.widget.ToggleGroup.prototype.getCheckedAction = function() {
   return this.currentActive_.getActionName() || '';
 };
 
+
 /**
  * Handles the toggle event of a button and makes sure the other buttons are
- *   not left toggled.
+ * not left toggled.
  * @param {goog.events.Event} e The ACTION button event.
  * @protected
  */

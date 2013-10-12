@@ -73,15 +73,23 @@ pstj.ds.ListItem = function(data, opt_id_proprety) {
   // are objects, check only for object
   goog.asserts.assertObject(data,
       'List item can use only object literals as data source');
+
+  /**
+   * Reference to the raw data record type for this item.
+   *
+   * @type {Object|Array}
+   * @private
+   */
   this.data_ = data;
   /**
+   * What will be the name of the ID. This is provided for compatibility.
+   *
    * @type {string}
    * @private
    */
-  this.id_property_ = 'id';
-  if (goog.isString(opt_id_proprety)) {
-    this.id_property_ = opt_id_proprety;
-  }
+  this.id_property_ = (goog.isDef(opt_id_proprety) && !goog.string.isEmpty(
+      opt_id_proprety)) ? opt_id_proprety : 'id';
+
   this.convert();
 };
 goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
@@ -90,6 +98,7 @@ goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
 /**
  * Provides the Event type to listen for in controllers that might use this
  * data structure.
+ *
  * @enum {string}
  */
 pstj.ds.ListItem.EventType = {
@@ -226,6 +235,7 @@ pstj.ds.ListItem.prototype.disposeInternal = function() {
  * Coerce the raw data if needed. This includes permutations over the ojbect
  * literal to make complex object abide the application logic. By default it
  * does nothing.
+ *
  * @protected
  */
 pstj.ds.ListItem.prototype.convert = function() {};

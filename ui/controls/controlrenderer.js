@@ -6,6 +6,8 @@ goog.require('goog.ui.ControlRenderer');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.templates');
 
+
+
 /**
  * Provides basic renderer that has the following advantages over the default
  *   control renderer:
@@ -24,6 +26,7 @@ pstj.ui.ControlRenderer = function() {
 goog.inherits(pstj.ui.ControlRenderer, goog.ui.ControlRenderer);
 goog.addSingletonGetter(pstj.ui.ControlRenderer);
 
+
 /**
  * @const
  * @type {string}
@@ -36,6 +39,7 @@ pstj.ui.ControlRenderer.prototype.getCssClass = function() {
   return pstj.ui.ControlRenderer.CSS_CLASS;
 };
 
+
 /**
  * Should return the string template.
  * @param {goog.ui.Component} component The component instance.
@@ -45,6 +49,7 @@ pstj.ui.ControlRenderer.prototype.getCssClass = function() {
 pstj.ui.ControlRenderer.prototype.getTemplate = function(component) {
   return pstj.templates.Control(this.generateTemplateData(component));
 };
+
 
 /**
  * Generates the data to be passed to the template instance.
@@ -61,6 +66,7 @@ pstj.ui.ControlRenderer.prototype.generateTemplateData = function(component) {
   return {};
 };
 
+
 /** @inheritDoc */
 pstj.ui.ControlRenderer.prototype.createDom = function(control) {
   goog.asserts.assertInstanceof(control, goog.ui.Control);
@@ -68,6 +74,7 @@ pstj.ui.ControlRenderer.prototype.createDom = function(control) {
   this.setAriaStates(control, element);
   return element;
 };
+
 
 /**
  * Returns the compiled DOM from the html template. This is required to
@@ -78,5 +85,5 @@ pstj.ui.ControlRenderer.prototype.createDom = function(control) {
  */
 pstj.ui.ControlRenderer.prototype.getCompiledTemplate_ = function(component) {
   return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
-    this.getTemplate(component)));
+      this.getTemplate(component)));
 };
