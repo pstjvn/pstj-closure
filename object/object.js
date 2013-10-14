@@ -159,3 +159,28 @@ pstj.object.add_ = function(arr, key, value) {
       goog.isNull(value) ? '' : value);
   arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
 };
+
+
+/**
+ * Clone object. This uses goog's unsafeClone method internally but takes
+ * special care of Date objects.
+ * @param {*} obj The object to clone.
+ * @return {*} The cloned object.
+ */
+pstj.object.clone = function(obj) {
+  var type = goog.typeOf(obj);
+  if (type == 'object' || type == 'array') {
+    if (obj.clone) {
+      return obj.clone();
+    } else if (obj instanceof Date) {
+      return new Date(obj.getTime());
+    }
+    var clone = type == 'array' ? [] : {};
+    for (var key in obj) {
+      clone[key] = pstj.object.clone(obj[key]);
+    }
+    return clone;
+  }
+
+  return obj;
+};

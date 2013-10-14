@@ -206,7 +206,7 @@ pstj.ds.ListItem.prototype.mutate = function(property, value) {
  */
 pstj.ds.ListItem.prototype.clone = function() {
   return new pstj.ds.ListItem(goog.asserts.assertObject(
-      goog.object.unsafeClone(this.getRawData())));
+      pstj.object.clone(this.getRawData())));
 };
 
 
