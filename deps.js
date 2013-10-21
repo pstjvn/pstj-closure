@@ -13,6 +13,7 @@ goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj
 goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.List.Event', 'pstj.ds.List.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.ListItem']);
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.ds.IListItem', 'pstj.object']);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable']);
+goog.addDependency('../../../apps/pstj/ds/poolcache.js', ['pstj.ds.PoolCache'], ['pstj.ds.Cache']);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure', 'pstj.ds.IClock']);
 goog.addDependency('../../../apps/pstj/error/errorhandler.js', ['pstj.error.ErrorHandler', 'pstj.error.ErrorHandler.Error', 'pstj.error.throwError'], ['goog.pubsub.PubSub', 'pstj.control.Base']);
 goog.addDependency('../../../apps/pstj/fx/dragdropgroup.js', ['pstj.fx.DragDropGroup'], ['goog.dom.classlist', 'goog.fx.DragDropGroup', 'pstj.fx.Dragger']);
@@ -33,7 +34,8 @@ goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], [
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub']);
 goog.addDependency('../../../apps/pstj/ui/agents/agent.js', ['pstj.ui.Agent'], ['goog.array', 'goog.asserts', 'pstj.ds.Cache']);
 goog.addDependency('../../../apps/pstj/ui/agents/clock-agent.js', ['pstj.ui.ClockAgent'], ['pstj.ds.IClock', 'pstj.ds.TimeProvider', 'pstj.ui.Agent']);
-goog.addDependency('../../../apps/pstj/ui/agents/ng-agent.js', ['pstj.ui.ngAgent'], ['goog.array', 'goog.asserts', 'goog.async.nextTick', 'goog.dom', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.configure', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Agent']);
+goog.addDependency('../../../apps/pstj/ui/agents/ng-agent.js', ['pstj.ui.ngAgent'], ['goog.async.nextTick', 'pstj.configure', 'pstj.ds.PoolCache', 'pstj.ng.filters', 'pstj.ui.Agent', 'pstj.ui.NGPool']);
+goog.addDependency('../../../apps/pstj/ui/agents/ng-cache.js', ['pstj.ui.NGCache', 'pstj.ui.NGPool'], ['goog.array', 'goog.dom', 'goog.dom.TagName', 'goog.dom.classlist', 'goog.dom.dataset', 'goog.structs.Pool', 'pstj.ds.ListItem', 'pstj.ng.filters']);
 goog.addDependency('../../../apps/pstj/ui/agents/sizemonitor-agent.js', ['pstj.ui.SizeMonitorAgent'], ['goog.array', 'goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.object', 'goog.style', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.asserts', 'goog.async.AnimationDelay', 'goog.async.nextTick', 'goog.events', 'goog.events.EventType', 'goog.events.Key', 'pstj.configure', 'pstj.ui.Agent']);
 goog.addDependency('../../../apps/pstj/ui/async.js', ['pstj.ui.Async'], ['goog.functions', 'pstj.graphics.Smooth', 'pstj.ui.Templated']);

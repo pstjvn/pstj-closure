@@ -9,16 +9,12 @@
 
 goog.provide('pstj.ui.ngAgent');
 
-goog.require('goog.array');
-goog.require('goog.asserts');
 goog.require('goog.async.nextTick');
-goog.require('goog.dom');
-goog.require('goog.dom.classlist');
-goog.require('goog.dom.dataset');
 goog.require('pstj.configure');
-goog.require('pstj.ds.ListItem');
+goog.require('pstj.ds.PoolCache');
 goog.require('pstj.ng.filters');
 goog.require('pstj.ui.Agent');
+goog.require('pstj.ui.NGPool');
 
 
 
@@ -32,7 +28,7 @@ goog.require('pstj.ui.Agent');
 pstj.ui.ngAgent = function() {
   // do not enforce type check, because we do not actually know the type.
   goog.base(this, null);
-
+  this.poolCache_ = new pstj.ds.PoolCache(pstj.ui.NGPool.getInstance());
 };
 goog.inherits(pstj.ui.ngAgent, pstj.ui.Agent);
 goog.addSingletonGetter(pstj.ui.ngAgent);
@@ -45,28 +41,19 @@ pstj.ui.ngAgent.USE_NEXT_TICK = goog.asserts.assertBoolean(
     pstj.configure.getRuntimeValue('USE_NEXT_TICK', false, 'PSTJ.NGAGENT'));
 
 
-/**
- * The regular expression used to figure out the filter name and value
- * @type {RegExp}
- * @private
- */
-pstj.ui.ngAgent.prototype.RE_ = /^([^\(]*)\((.*)\)$/;
-
-
-/**
- * The default value to use to adds as data when no relevant data is found
- *   on the model.
- * @type {string}
- * @private
- */
-pstj.ui.ngAgent.prototype.nullValue_ = '&nbsp;';
+/** @inheritDoc */
+pstj.ui.ngAgent.prototype.getCache = function() {
+  return this.poolCache_;
+};
 
 
 /** @inheritDoc */
 pstj.ui.ngAgent.prototype.updateCache = function(component) {
   // we can update this cache only if we already have the element.
   if (!goog.isNull(component.getElement())) {
-    this.getCache().set(component.getId(), this.getNGElements(component));
+    var cache = pstj.ui.NGPool.getInstance().getObject();
+    cache.bindToComponent(component);
+    this.getCache().set(component.getId(), cache);
   } else {
     if (goog.DEBUG) {
       console.log('Trying to get NG cache on component that has no element');
@@ -94,172 +81,10 @@ pstj.ui.ngAgent.prototype.apply = function(component) {
  * @private
  */
 pstj.ui.ngAgent.prototype.apply_ = function(component) {
-  if (goog.isDefAndNotNull(component.getModel())) {
-    this.attach(component);
-    if (!component.isInDocument()) return;
-    this.applyModel(component);
-    goog.dom.classlist.remove(component.getElement(), goog.getCssName(
-        'pstj-ng-cloak'));
-  } else {
-    this.handleEmptyModel(component);
-  }
-};
-
-
-/**
- * Applies the model on the template.
- * TODO: add cache for element properties allowing determination of the needed
- * filters and setters only one in the beginning, this will potentially speed
- * up things a lot.
- *
- * @protected
- * @param {goog.ui.Component} component The component to operate on.
- */
-pstj.ui.ngAgent.prototype.applyModel = function(component) {
-  var model = component.getModel();
-  var currentElement = null;
-  var modelName;
-  var data;
-  var elements = this.getCache().get(component.getId());
-  if (goog.isNull(elements)) {
-    if (goog.DEBUG) {
-      console.log('No elements cached for this component');
-    }
-    return;
-  }
-  goog.asserts.assertInstanceof(model, pstj.ds.ListItem,
-      'Model should be ListItem instance');
-  for (var i = 0; i < elements.length; i++) {
-    currentElement = elements[i];
-    modelName = goog.dom.dataset.get(currentElement, 'model');
-    if (goog.isString(modelName)) {
-      data = model.getProp(modelName);
-      if (goog.isNull(data)) {
-        currentElement.innerHTML = this.nullValue_;
-      } else {
-        this.applyFilteredModel(currentElement, data);
-      }
-    }
-  }
-};
-
-
-/**
- * Applies the data on the element inner HTML by first filtering it with the
- * registered filter names.
- * @protected
- * @param {Element} el The element to work with.
- * @param {number|string|boolean} data The data to apply in the html. Note
- * that if the data is not s primitive it will be converted to a string before
- * it is run by the filters.
- */
-pstj.ui.ngAgent.prototype.applyFilteredModel = function(el, data) {
-  // first of all, get our filter
-  var filter = goog.dom.dataset.get(el, 'filter');
-  this.applyOnElement_(el, (goog.isString(filter)) ?
-      this.applyFilterOnData_(data, filter) :
-      data.toString());
-};
-
-
-/**
- * Applies the filtering information on the data and resurns the filtered
- * result as string.
- *
- * The filters are applied in the order they are written on and the result is
- * piped to the next filter and so on until all filter are executed. The
- * result is then returned as string.
- *
- * Example:
- * data-filter="timeoffset(hh:mm)|append( passed since midnight)"
- * and data provided as
- * data = 3600;
- * will result in
- * 1:00 passed since midnight
- *
- * @param {number|string|boolean} data The data record to use.
- * @param {string} filter The filter to apply on the data.
- * @return {string} The result of the filter as string.
- * @private
- */
-pstj.ui.ngAgent.prototype.applyFilterOnData_ = function(data, filter) {
-  var filters = filter.split('|');
-  var result = data;
-
-  // For each filter in the filter value apply the filter on the result from
-  // the previous filter and return the result afterwards.
-  goog.array.forEach(filters, function(item) {
-    var fname;
-    var fvalue;
-    // We expect the filters that accept arguments to be written as
-    // filterName(argument1, argument2,...)|filterName2|filter3(whatever)
-    // To extract it we use regular expression, but because regexp is expensive
-    // we first try to check for at least the '(' symbol.
-    if (item.indexOf('(') != -1) {
-      var tmp = this.RE_.exec(item);
-      // at this stage [tmp] will be wither null (when there is no additional
-      // data to the filter or an array or matches (1 - filter name, 2 filter
-      // configuration).
-      if (goog.isNull(tmp)) {
-        // filter name === item (the whole thing is the filter name).
-        fname = item;
-      } else {
-        fname = tmp[1];
-        fvalue = tmp[2];
-      }
-    } else {
-      fname = item;
-    }
-    // if there is a named filter with this name, call it with the values
-    // else just return the data.
-    if (pstj.ng.filters.hasFilter(fname)) {
-      result = pstj.ng.filters.apply(fname, result, fvalue);
-    }
-  }, this);
-  return result.toString();
-};
-
-
-/**
- * Applies the data on the correct place.
- * @param {Element} el The element to alter.
- * @param {string} filteredData The filteret data to apply.
- * @private
- */
-pstj.ui.ngAgent.prototype.applyOnElement_ = function(el, filteredData) {
-  if (el.tagName.toUpperCase() == goog.dom.TagName.IMG) {
-    el.src = filteredData;
-  } else if (goog.dom.dataset.has(el, 'switch')) {
-    goog.dom.classlist.enable(el, goog.getCssName('pstj-switch-off'),
-        (filteredData == 'none') ? true : false);
-  } else {
-    el.textContent = filteredData;
-  }
-};
-
-
-/**
- * Handles cases where there was not available data for this template.
- *   Default implementation simply puts the cloak back as class.
- * @protected
- * @param {goog.ui.Component} component The component to handle the empty
- *   model on.
- */
-pstj.ui.ngAgent.prototype.handleEmptyModel = function(component) {
-  goog.dom.classlist.add(component.getElement(), goog.getCssName(
-      'pstj-ng-cloak'));
-};
-
-
-/**
- * Gathers the NG elements in the component.
- * @param {goog.ui.Component} component The component.
- * @return {{length: number}}
- */
-pstj.ui.ngAgent.prototype.getNGElements = function(component) {
-  if (!goog.isNull(component.getElement())) {
-    return component.getElement().querySelectorAll('[data-model]');
-  } else {
-    return [];
+  this.attach(component);
+  if (component.isInDocument()) {
+    var cache = /** @type {pstj.ui.NGCache} */(
+        this.getCache().get(component.getId()));
+    cache.applyModel();
   }
 };

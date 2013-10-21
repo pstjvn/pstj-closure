@@ -132,7 +132,7 @@ pstj.ui.Agent.prototype.forEach = function(fn, opt_obj) {
  */
 pstj.ui.Agent.prototype.detach = function(component) {
   if (goog.array.contains(this.components_, component)) {
-    this.cache_.remove(component.getId());
+    this.getCache().remove(component.getId());
     this.components_[goog.array.indexOf(this.components_, component)] = null;
   }
 };
