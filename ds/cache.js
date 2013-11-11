@@ -71,3 +71,17 @@ pstj.ds.Cache.prototype.remove = function(key) {
     goog.object.remove(this.cache_, key);
   }
 };
+
+
+/**
+ * Wraps the library object call to always point to the right object.
+ * @param {?function(this:T,V,string,Object.<string,V>):boolean} f The function
+ * to call for every element. This function takes 3 arguments (the element,
+ * the index and the object) and should return a boolean.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {boolean} false if any element fails the test.
+ * @template T,V
+ */
+pstj.ds.Cache.prototype.every = function(f, opt_obj) {
+  return goog.object.every(this.cache_, f, opt_obj);
+};
