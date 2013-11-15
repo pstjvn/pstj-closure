@@ -126,6 +126,33 @@ pstj.ui.Agent.prototype.forEach = function(fn, opt_obj) {
 
 
 /**
+ * Helper function to retrieve the index of the component in out list.
+ * @param {goog.ui.Component} component The component to look up.
+ * @return {number} The index or -1.
+ */
+pstj.ui.Agent.prototype.getComponentIndex = function(component) {
+  return goog.array.indexOf(this.components_, component);
+};
+
+
+/**
+ * Gets the component by its index.
+ * @param {number} index The index of the looked component.
+ * @return {?goog.ui.Component} The component or null.
+ */
+pstj.ui.Agent.prototype.getComponentByIndex = function(index) {
+  var comp = null;
+  if (index > -1) {
+    comp = this.components_[index];
+    if (!comp) {
+      comp = null;
+    }
+  }
+  return comp;
+};
+
+
+/**
  * Removes the binding of the component to this agent.
  *
  * @param {goog.ui.Component} component The component to remove.
