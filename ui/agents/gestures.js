@@ -7,6 +7,7 @@ goog.require('goog.async.AnimationDelay');
 goog.require('goog.events');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventType');
+goog.require('goog.ui.Control');
 goog.require('pstj.ui.Agent');
 goog.require('pstj.ui.TouchPool');
 
@@ -58,6 +59,14 @@ pstj.ui.gestureAgent = function() {
    */
   this.tc_ = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   /**
+   * Second touch cache values. Note that this is utilized only when a second
+   * touch is detected. The developer shoud always chekc if the touch was
+   * double.
+   * @type {Array.<number>}
+   * @private
+   */
+  this.tc2_ = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  /**
    * Bound event handler to use for the browse events.
    * @type {goog.events.EventHandler}
    * @private
@@ -94,12 +103,21 @@ pstj.ui.gestureAgent.Cache_ = {
 
 
 /**
+ * The maximum velocity to use when calculatinc veloticy for kinetic effects.
+ * @type {number}
+ * @const
+ */
+pstj.ui.gestureAgent.MaxVelocity = 30;
+
+
+/**
  * Provides the list of event types the gesture system recognizes.
  * @enum {string}
  */
 pstj.ui.gestureAgent.EventType = {
   PRESS: goog.events.getUniqueId('start'),
   LONGPRESS: goog.events.getUniqueId('longpress'),
+  PINCH: goog.events.getUniqueId('pinch'),
   MOVE: goog.events.getUniqueId('move'),
   RELEASE: goog.events.getUniqueId('release'),
   ZOOM: goog.events.getUniqueId('zoom'),
@@ -201,7 +219,6 @@ _.updateCache = function(component) {
   // map the element that we will listen on to the component we want to
   // emit the events to.
   this.elements_[this.getComponentIndex(component)] = component.getElement();
-  console.log(this.components_);
   this.getHandler().listen(component.getElement(), [
     goog.events.EventType.TOUCHSTART,
     goog.events.EventType.TOUCHMOVE,
@@ -250,15 +267,15 @@ _.getTouchCount = function(e) {
 /**
  * Getter for a particular indexed touch.
  * @param {goog.events.Event} e The wrapper browser event.
- * @param {number=} idx The index of the Touch to retrieve.
+ * @param {number=} opt_idx The index of the Touch to retrieve.
  * @return {?Touch}
  * @protected
  */
-_.getTouch = function(e, idx) {
-  if (!goog.isDef(idx)) {
-    idx = 0;
+_.getTouch = function(e, opt_idx) {
+  if (!goog.isDef(opt_idx)) {
+    opt_idx = 0;
   }
-  var touch = this.getBrowserEvent(e).touches.item(idx);
+  var touch = this.getBrowserEvent(e).touches.item(opt_idx);
   if (!touch) {
     return null;
   }
@@ -273,7 +290,7 @@ _.getTouch = function(e, idx) {
 _.getTouchDistance = function() {
   var dx = this.getTouchDistanceX();
   var dy = this.getTouchDistanceY();
-  return Math.sqrt(dx * dx + dy * dy);
+  return Math.sqrt((dx * dx) + (dy * dy));
 };
 
 
@@ -334,13 +351,47 @@ _.getTouchDuration = function() {
 };
 
 
+/**
+ * Returns the difference between the last announced MOVE event and the
+ * current position on the X coordinate.
+ * @return {number}
+ */
 _.getMoveDifferenceX = function() {
   return this.tc_[C.TOUCHLAST_X] - this.tc_[C.TOUCHCURRENT_X];
 };
 
 
+/**
+ * Returns the difference between the last announced move event and the
+ * ccurrent position on the Y coordinate.
+ * @return {number}
+ */
 _.getMoveDifferenceY = function() {
   return this.tc_[C.TOUCHLAST_Y] - this.tc_[C.TOUCHCURRENT_Y];
+};
+
+
+/**
+ * When zooming calculates the zoom diff.
+ * @return {nuber}
+ */
+_.getZoomDistance = function() {
+
+};
+
+
+/**
+ * Returns the calculated velocity of the scroll.
+ * @return {number}
+ */
+_.getVelocityY = function() {
+  var velocity = this.tc_[C.TOUCHCURRENT_Y] - this.tc_[C.TOUCHLAST_Y];
+  if (velocity < -pstj.ui.gestureAgent.MaxVelocity) {
+    return -pstj.ui.gestureAgent.MaxVelocity;
+  } else if (velocity > pstj.ui.gestureAgent.MaxVelocity) {
+    return pstj.ui.gestureAgent.MaxVelocity;
+  }
+  return velocity;
 };
 
 
@@ -360,6 +411,11 @@ _.getCurrentComponent = function() {
  */
 _.onRaf = function(ts) {
   this.getCurrentComponent().dispatchEvent(GE.MOVE);
+  // Update the last position to match the position we had on the time
+  // of the MOVE event.
+  this.tc_[C.TOUCHLAST_X] = this.tc_[C.TOUCHCURRENT_X];
+  this.tc_[C.TOUCHLAST_Y] = this.tc_[C.TOUCHCURRENT_Y];
+  this.tc_[C.TOUCHLAST_TS] = this.tc_[C.TOUCHCURRENT_TS];
 };
 
 
@@ -398,9 +454,6 @@ _.handleTouchEvents = function(e) {
     if (this.isLocked()) {
       if (this.getTouchCount(e) == 1) {
         var touch = this.getTouch(e);
-        this.tc_[C.TOUCHLAST_X] = this.tc_[C.TOUCHCURRENT_X];
-        this.tc_[C.TOUCHLAST_Y] = this.tc_[C.TOUCHCURRENT_Y];
-        this.tc_[C.TOUCHLAST_TS] = this.tc_[C.TOUCHCURRENT_TS];
         this.tc_[C.TOUCHCURRENT_X] = touch.clientX;
         this.tc_[C.TOUCHCURRENT_Y] = touch.clientY;
         this.tc_[C.TOUCHCURRENT_TS] = this.getBrowserEvent(e).timeStamp;
@@ -434,4 +487,3 @@ _.handleTouchEvents = function(e) {
 };
 
 });  // goog.scope
-
