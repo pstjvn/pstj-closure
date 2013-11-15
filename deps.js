@@ -61,7 +61,7 @@ goog.addDependency('../../../apps/pstj/ui/locale/strings.js', ['pstj.ui.Strings'
 goog.addDependency('../../../apps/pstj/ui/popoverlayer.js', ['pstj.ui.PopOverLayer', 'pstj.ui.PopOverLayerTemplate'], ['pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/scrollarea.js', ['pstj.ui.CustomScrollArea'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventType', 'goog.style', 'goog.ui.Component.EventType', 'goog.ui.Slider', 'pstj.style.css', 'pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/scrolllist.js', ['pstj.ui.ScrollList'], ['goog.style', 'pstj.ui.CustomScrollArea', 'pstj.ui.IdGenerator']);
-goog.addDependency('../../../apps/pstj/ui/scrollview.js', ['pstj.ui.ScrollView'], ['goog.dom.ViewportSizeMonitor', 'goog.events.EventType', 'goog.events.MouseWheelHandler.EventType', 'goog.ui.Control', 'pstj.lab.style.css']);
+goog.addDependency('../../../apps/pstj/ui/scrollview.js', ['pstj.ui.ScrollView'], ['goog.dom.ViewportSizeMonitor', 'goog.events.EventType', 'goog.ui.Control', 'pstj.ds.List', 'pstj.lab.style.css', 'pstj.ui.TableViewItem']);
 goog.addDependency('../../../apps/pstj/ui/sheets/isheet.js', ['pstj.ui.ISheet'], ['goog.math.Size']);
 goog.addDependency('../../../apps/pstj/ui/sheets/scrollsheet.js', ['pstj.ui.ScrollSheet'], ['goog.style', 'pstj.ui.ISheet', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/sheets/sheetframe.js', ['pstj.ui.SheetFrame'], ['goog.asserts', 'goog.async.Throttle', 'goog.dom', 'goog.dom.ViewportSizeMonitor', 'goog.math.Size', 'goog.style', 'pstj.ui.ISheet', 'pstj.ui.Templated']);

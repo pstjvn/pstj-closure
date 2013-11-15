@@ -7,11 +7,14 @@
 
 goog.provide('pstj.ui.ScrollView');
 
-goog.require('goog.ui.Control');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.events.EventType');
+goog.require('goog.ui.Control');
+goog.require('pstj.ds.List');
 goog.require('pstj.lab.style.css');
-goog.require('goog.events.MouseWheelHandler.EventType');
+goog.require('pstj.ui.TableViewItem');
+goog.require('pstj.ui.gestureAgent');
+goog.require('pstj.ui.gestureAgent.EventType');
 
 
 
@@ -37,16 +40,28 @@ pstj.ui.ScrollView = function(opt_renderer, opt_domHelper) {
    * @type {number}
    * @private
    */
-  this.offset_ = 0;
+  this.dataOffset_ = 0;
+  /**
+   * The axium visual offset that is allowed.
+   * @type {number}
+   * @private
+   */
+  this.maxVisualOffset_ = 0;
   /**
    * The cache used for calculations. This is done to allow the access to
    * numeric values to be made in array and potentially in a typed array. The
    * access in typed arrays is performed in the same was as in normal arrays,
    * however the buffer must be created separately.
-   * @type {Array.<number>}
+   * @type {number}
    * @private
    */
-  this.cache_ = [0];
+  this.childCount_ = 0;
+  /**
+   * Referrences the last known velocity.
+   * @type {number}
+   * @private
+   */
+  this.velocity_ = 0;
   /**
    * The height a single child will have in the view. Note that in this
    * implemnetation we assume static child height and thus once it is set and
@@ -56,33 +71,85 @@ pstj.ui.ScrollView = function(opt_renderer, opt_domHelper) {
    */
   this.cellHeight_ = 100;
   /**
-   * Referrence to the mouse wheel handler for the component's root DOM node.
-   * @type {goog.events.MouseWheelHandler}
+   * Kinetich raf-ing.
+   * @type {goog.async.AnimationDelay}
    * @private
    */
-  this.mousewheelhandler_ = null;
+  this.kineticRaf_ = new goog.async.AnimationDelay(this.kineticHandler,
+      undefined, this);
 };
 goog.inherits(pstj.ui.ScrollView, goog.ui.Control);
 
 
 /**
- * Referrence for the cache values meaning. Using the cache example:
- * <pre>
- *   // Gets the cached child count of the element.
- *   var value = this.cache_[pstj.ui.ScrollView.Cache.CHILD_COUNT];
- * </pre>
- * Becasue the cache is private the names of the cache are also made private.
- * @enum {number}
- * @private
+ * The priction to use when decelerating.
+ * @type {number}
+ * @const
  */
-pstj.ui.ScrollView.Cache_ = {
-  CHILD_COUNT: 0
-};
+pstj.ui.ScrollView.Friction = 0.5;
 
 
 goog.scope(function() {
 var _ = pstj.ui.ScrollView.prototype;
-var C = pstj.ui.ScrollView.Cache_;
+
+
+/**
+ * Handles the RAF when we have kinetic.
+ * @param {number} ts The timestamp of the RAF
+ * @protected
+ */
+_.kineticHandler = function(ts) {
+  this.kineticRaf_.start();
+  if (this.velocity_ != 0) {
+    this.handleVerticalDifference(-this.velocity_);
+    this.velocity_ += (this.velocity_ < 0) ? pstj.ui.ScrollView.Friction :
+        -pstj.ui.ScrollView.Friction;
+  } else {
+    this.kineticRaf_.stop();
+  }
+};
+
+
+/**
+ * Only List type is alloed here.
+ * @override
+ */
+_.setModel = function(model) {
+  goog.asserts.assertInstanceof(model, pstj.ds.List);
+  goog.base(this, 'setModel', model);
+  // null out the positioning.
+  this.visualOffset_ = 0;
+  this.dataOffset_ = 0;
+  this.updateChildren();
+  this.updateScroll();
+  this.calculateMaxVisualOffset();
+};
+
+
+/**
+ * Calculates the maximum allowed visual offset. The calculation is based on the
+ * number of model items and the height of the cell.
+ * @protected
+ */
+_.calculateMaxVisualOffset = function() {
+  if (this.isInDocument() && !goog.isNull(this.getModel())) {
+    this.maxVisualOffset_ = ((this.getCellHeight() * this.getModel().getCount()) -
+        goog.style.getSize(this.getElement()).height);
+  }
+};
+
+
+/**
+ * Iterate children setting the models.
+ * @protected
+ */
+_.updateChildren = function() {
+  this.forEachChild(function(child, idx) {
+    child.setModel(this.getModel().getByIndex(this.dataOffset_ + idx));
+    pstj.lab.style.css.setTranslation(child.getElement(), 0,
+        (idx * this.cellHeight_));
+  }, this);
+};
 
 
 /**
@@ -92,22 +159,22 @@ var C = pstj.ui.ScrollView.Cache_;
  * @protected
  */
 _.switchChild = function(down) {
-  var first = this.offset_ % this.getChildCount();
+  var first = this.dataOffset_ % this.childCount_;
   if (down) {
     var child = this.getChildAt(first);
     child.setModel(this.getModel().getByIndex(
-        this.offset_ + this.getChildCount()));
+        this.dataOffset_ + this.childCount_));
     pstj.lab.style.css.setTranslation(child.getElement(), 0,
-        ((this.offset_ + this.getChildCount()) * this.cellHeight_));
-    this.offset_++;
+        ((this.dataOffset_ + this.childCount_) * this.cellHeight_));
+    this.dataOffset_++;
   } else {
     var last = (first == 0) ?
-        (this.cache_[C.CHILD_COUNT] - 1) : (first - 1);
+        (this.childCount_ - 1) : (first - 1);
     var child = this.getChildAt(last);
-    child.setModel(this.getModel().getByIndex(this.offset_ - 1));
+    child.setModel(this.getModel().getByIndex(this.dataOffset_ - 1));
     pstj.lab.style.css.setTranslation(
-        child.getElement(), 0, ((this.offset_ - 1) * this.cellHeight_));
-    this.offset_--;
+        child.getElement(), 0, ((this.dataOffset_ - 1) * this.cellHeight_));
+    this.dataOffset_--;
   }
 };
 
@@ -144,37 +211,71 @@ _.getCellHeight = function() {
  * @return {!goog.ui.Control}
  */
 _.createRowCell = function() {
-  return new goog.ui.Control('', undefined, this.getDomHelper());
+  return new pstj.ui.TableViewItem(undefined, this.getDomHelper());
 };
 
 
 /** @inheritDoc */
 _.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  this.mousewheelhandler_ = new goog.events.MouseWheelHandler(
-      this.getElement());
   // FIXME: this should not be used in desktop PCs!!! fires too often
-  this.getHandler().listen(
-      goog.dom.ViewportSizeMonitor.getInstanceForWindow(window),
-      goog.events.EventType.RESIZE, this.handleViewportResize);
+  // this.getHandler().listen(
+  //     goog.dom.ViewportSizeMonitor.getInstanceForWindow(window),
+  //     goog.events.EventType.RESIZE, this.handleViewportResize);
 
-  this.getHandler().listen(this.getElement(), [
-    goog.events.EventType.TOUCHSTART,
-    goog.events.EventType.TOUCHMOVE,
-    goog.events.EventType.TOUCHEND,
-    goog.events.EventType.TOUCHCANCEL]);
-
-  this.getHandler().listen(this.mousewheelhandler_,
-      goog.events.MouseWheelHandler.EventType.MOUSEWHEEL);
+  this.getHandler().listen(this, [
+    pstj.ui.gestureAgent.EventType.PRESS,
+    pstj.ui.gestureAgent.EventType.MOVE,
+    pstj.ui.gestureAgent.EventType.RELEASE,
+    pstj.ui.gestureAgent.EventType.CANCEL
+  ], this.handleGesture);
+  this.calculateMaxVisualOffset();
+  // It is safe to attach multiple times, subsequent ones will be ignored
+  pstj.ui.gestureAgent.getInstance().attach(this);
 };
 
 
 /**
  * Generalized handler for the events that are to be bound to the instance.
- * @override
+ * @param {goog.events.Event} e The abstractd gesture event.
+ * @protected
  */
-_.handleEvent = function(e) {
+_.handleGesture = function(e) {
+  if (e.type == pstj.ui.gestureAgent.EventType.PRESS) {
+    this.kineticRaf_.stop();
+  } else if (e.type == pstj.ui.gestureAgent.EventType.MOVE) {
+    this.handleVerticalDifference(
+        pstj.ui.gestureAgent.getInstance().getMoveDifferenceY());
+  } else if (e.type == pstj.ui.gestureAgent.EventType.RELEASE) {
+    this.velocity_ = pstj.ui.gestureAgent.getInstance().getVelocityY();
+    console.log(this.velocity_)
+    if (this.velocity_ != 0) {
+      if (!this.kineticRaf_.isActive()) {
+        this.kineticRaf_.start();
+      }
+    }
+  }
+};
 
+
+/**
+ * Handles the difference in vertical that should be traveled by the scroll view
+ * in order to match the new desired position.
+ * @param {number} diff The difference in pixels to apply.
+ * @protected
+ */
+_.handleVerticalDifference = function(diff) {
+  var offset = this.visualOffset_ - diff;
+  if (-offset < 0) offset = 0;
+  if (-offset > this.maxVisualOffset_) offset = -this.maxVisualOffset_;
+  this.visualOffset_ = offset;
+  var toppixel = this.dataOffset_ * this.getCellHeight();
+  if (toppixel + this.getCellHeight() < -this.visualOffset_) {
+    this.switchChild(true);
+  } else if (toppixel > -this.visualOffset_) {
+    this.switchChild(false);
+  }
+  this.updateScroll();
 };
 
 
@@ -212,8 +313,9 @@ _.getMaximumCoverableHeight = function() {
  * @protected
  */
 _.calculateMaxChildCount = function() {
-  var h = this.getMaximumCoverableHeight();
-  return Math.ceil(h / this.cellHeight_) + 1;
+  // var h = this.getMaximumCoverableHeight();
+  // return Math.ceil(h / this.cellHeight_) + 1;
+  return 5;
 };
 
 
@@ -226,7 +328,20 @@ _.generateCells = function() {
   for (var i = 0; i < len; i++) {
     this.addChild(this.createRowCell(), true);
   }
-  this.cache_[C.CHILD_COUNT] = len;
+  this.childCount_ = len;
+  if (this.isInDocument()) {
+    this.updateChildren();
+  }
+};
+
+
+/**
+ * Updates the position of the scrolling element to match the desired visual
+ * offset.
+ * @protected
+ */
+_.updateScroll = function() {
+  pstj.lab.style.css.setTranslation(this.getElement(), 0, this.visualOffset_);
 };
 
 });  // goog.scope
