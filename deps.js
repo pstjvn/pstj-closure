@@ -31,7 +31,7 @@ goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goo
 goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.async.nextTick', 'goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.string', 'goog.uri.utils', 'pstj.configure', 'pstj.storage.Storage']);
 goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Storage'], ['goog.json.NativeJsonProcessor', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory']);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product']);
-goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.dom', 'goog.userAgent']);
+goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.dom', 'goog.userAgent', 'pstj.configure']);
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub']);
 goog.addDependency('../../../apps/pstj/ui/agents/agent.js', ['pstj.ui.Agent'], ['goog.array', 'goog.asserts', 'pstj.ds.Cache']);
 goog.addDependency('../../../apps/pstj/ui/agents/clock-agent.js', ['pstj.ui.ClockAgent'], ['pstj.ds.IClock', 'pstj.ds.TimeProvider', 'pstj.ui.Agent']);

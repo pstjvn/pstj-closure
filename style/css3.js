@@ -13,6 +13,7 @@ goog.provide('pstj.lab.style.css');
 goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.userAgent');
+goog.require('pstj.configure');
 
 
 /**
