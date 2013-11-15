@@ -47,10 +47,13 @@ pstj.ui.TableViewItemRenderer.prototype.getCssClass = function() {
  * @extends {goog.ui.Control}
  * @param {pstj.ui.ControlRenderer=} opt_renderer Optional alternative renderer
  * to use to render the instance.
+ * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
+ * document interaction.
  */
-pstj.ui.TableViewItem = function(opt_renderer) {
+pstj.ui.TableViewItem = function(opt_renderer, opt_domHelper) {
   goog.base(this, '',
-      opt_renderer || pstj.ui.TableViewItemRenderer.getInstance());
+      opt_renderer || pstj.ui.TableViewItemRenderer.getInstance(),
+      opt_domHelper);
   // disable handling of events - we are going to deal with this from the
   // TableView instance.
   // this.setHandleMouseEvents(false);
