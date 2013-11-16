@@ -117,10 +117,10 @@ pstj.ui.gestureAgent.MaxVelocity = 30;
 pstj.ui.gestureAgent.EventType = {
   PRESS: goog.events.getUniqueId('start'),
   LONGPRESS: goog.events.getUniqueId('longpress'),
-  PINCH: goog.events.getUniqueId('pinch'),
   MOVE: goog.events.getUniqueId('move'),
-  RELEASE: goog.events.getUniqueId('release'),
+  PINCH: goog.events.getUniqueId('pinch'),
   ZOOM: goog.events.getUniqueId('zoom'),
+  RELEASE: goog.events.getUniqueId('release'),
   CANCEL: goog.events.getUniqueId('cancel')
 };
 
@@ -373,7 +373,7 @@ _.getMoveDifferenceY = function() {
 
 /**
  * When zooming calculates the zoom diff.
- * @return {nuber}
+ * @return {number}
  */
 _.getZoomDistance = function() {
 
