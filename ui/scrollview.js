@@ -95,7 +95,7 @@ var _ = pstj.ui.ScrollView.prototype;
 
 /**
  * Handles the RAF when we have kinetic.
- * @param {number} ts The timestamp of the RAF
+ * @param {number} ts The timestamp of the RAF.
  * @protected
  */
 _.kineticHandler = function(ts) {
@@ -106,6 +106,7 @@ _.kineticHandler = function(ts) {
         -pstj.ui.ScrollView.Friction;
   } else {
     this.kineticRaf_.stop();
+    this.onDrawReady();
   }
 };
 
@@ -118,11 +119,13 @@ _.setModel = function(model) {
   goog.asserts.assertInstanceof(model, pstj.ds.List);
   goog.base(this, 'setModel', model);
   // null out the positioning.
+  this.kineticRaf_.stop();
   this.visualOffset_ = 0;
   this.dataOffset_ = 0;
   this.updateChildren();
   this.updateScroll();
   this.calculateMaxVisualOffset();
+  this.onDrawReady();
 };
 
 
@@ -133,10 +136,20 @@ _.setModel = function(model) {
  */
 _.calculateMaxVisualOffset = function() {
   if (this.isInDocument() && !goog.isNull(this.getModel())) {
-    this.maxVisualOffset_ = ((this.getCellHeight() * this.getModel().getCount()) -
+    this.maxVisualOffset_ = (
+        (this.getCellHeight() * this.getModel().getCount()) -
         goog.style.getSize(this.getElement()).height);
   }
 };
+
+
+/**
+ * Method designed specifically to extend. The sublcasses should override it
+ * in order to perfom heavy drawing operations inside of it. It is guaranteed
+ * to be called only after movement is completed.
+ * @protected
+ */
+_.onDrawReady = function() {};
 
 
 /**
@@ -222,7 +235,9 @@ _.enterDocument = function() {
   // this.getHandler().listen(
   //     goog.dom.ViewportSizeMonitor.getInstanceForWindow(window),
   //     goog.events.EventType.RESIZE, this.handleViewportResize);
-
+  if (this.getChildCount() == 0) {
+    this.generateCells();
+  }
   this.getHandler().listen(this, [
     pstj.ui.gestureAgent.EventType.PRESS,
     pstj.ui.gestureAgent.EventType.MOVE,
@@ -248,11 +263,12 @@ _.handleGesture = function(e) {
         pstj.ui.gestureAgent.getInstance().getMoveDifferenceY());
   } else if (e.type == pstj.ui.gestureAgent.EventType.RELEASE) {
     this.velocity_ = pstj.ui.gestureAgent.getInstance().getVelocityY();
-    console.log(this.velocity_)
     if (this.velocity_ != 0) {
       if (!this.kineticRaf_.isActive()) {
         this.kineticRaf_.start();
       }
+    } else {
+      this.onDrawReady();
     }
   }
 };
@@ -313,9 +329,8 @@ _.getMaximumCoverableHeight = function() {
  * @protected
  */
 _.calculateMaxChildCount = function() {
-  // var h = this.getMaximumCoverableHeight();
-  // return Math.ceil(h / this.cellHeight_) + 1;
-  return 5;
+  var h = this.getMaximumCoverableHeight();
+  return Math.ceil(h / this.cellHeight_) + 1;
 };
 
 
