@@ -57,7 +57,7 @@ pstj.ui.gestureAgent = function() {
    * @type {Array.<number>}
    * @private
    */
-  this.tc_ = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  this.tc_ = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   /**
    * Second touch cache values. Note that this is utilized only when a second
    * touch is detected. The developer shoud always chekc if the touch was
@@ -98,7 +98,9 @@ pstj.ui.gestureAgent.Cache_ = {
   TOUCHLAST_TS: 5,
   TOUCHCURRENT_X: 6,
   TOUCHCURRENT_Y: 7,
-  TOUCHCURRENT_TS: 8
+  TOUCHCURRENT_TS: 8,
+  TOUCHREALLST_X: 9,
+  TOUCHREALLAST_Y: 10
 };
 
 
@@ -385,11 +387,11 @@ _.getZoomDistance = function() {
  * @return {number}
  */
 _.getVelocityY = function() {
-  var velocity = this.tc_[C.TOUCHCURRENT_Y] - this.tc_[C.TOUCHLAST_Y];
+  var velocity = this.tc_[C.TOUCHCURRENT_Y] - this.tc_[C.TOUCHREALLAST_Y];
   if (velocity < -pstj.ui.gestureAgent.MaxVelocity) {
-    return -pstj.ui.gestureAgent.MaxVelocity;
+    velocity = -pstj.ui.gestureAgent.MaxVelocity;
   } else if (velocity > pstj.ui.gestureAgent.MaxVelocity) {
-    return pstj.ui.gestureAgent.MaxVelocity;
+    velocity = pstj.ui.gestureAgent.MaxVelocity;
   }
   return velocity;
 };
@@ -438,11 +440,14 @@ _.handleTouchEvents = function(e) {
     // If this is the first touch emit the press event for the component.
     if (this.getTouchCount(e) == 1) {
       var touch = this.getTouch(e);
-
-      this.tc_[C.TOUCHCURRENT_X] = this.tc_[C.TOUCHLAST_X] =
-          this.tc_[C.TOUCHSTART_X] = touch.clientX;
-      this.tc_[C.TOUCHCURRENT_Y] = this.tc_[C.TOUCHLAST_Y] =
-          this.tc_[C.TOUCHSTART_Y] = touch.clientY;
+      this.tc_[C.TOUCHCURRENT_X] =
+          this.tc_[C.TOUCHLAST_X] =
+          this.tc_[C.TOUCHSTART_X] =
+          this.tc_[C.TOUCHREALLST_X] = touch.clientX;
+      this.tc_[C.TOUCHCURRENT_Y] =
+          this.tc_[C.TOUCHLAST_Y] =
+          this.tc_[C.TOUCHSTART_Y] =
+          this.tc_[C.TOUCHREALLAST_Y] = touch.clientY;
       this.tc_[C.TOUCHCURRENT_TS] = this.tc_[C.TOUCHLAST_TS] =
           this.tc_[C.TOUCHSTART_TS] = this.getBrowserEvent(e).timeStamp;
 
@@ -454,6 +459,8 @@ _.handleTouchEvents = function(e) {
     if (this.isLocked()) {
       if (this.getTouchCount(e) == 1) {
         var touch = this.getTouch(e);
+        this.tc_[C.TOUCHREALLST_X] = this.tc_[C.TOUCHCURRENT_X];
+        this.tc_[C.TOUCHREALLAST_Y] = this.tc_[C.TOUCHCURRENT_Y];
         this.tc_[C.TOUCHCURRENT_X] = touch.clientX;
         this.tc_[C.TOUCHCURRENT_Y] = touch.clientY;
         this.tc_[C.TOUCHCURRENT_TS] = this.getBrowserEvent(e).timeStamp;
