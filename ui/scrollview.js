@@ -157,8 +157,13 @@ _.onDrawReady = function() {};
  * @protected
  */
 _.updateChildren = function() {
+  var use_null = goog.isNull(this.getModel());
   this.forEachChild(function(child, idx) {
-    child.setModel(this.getModel().getByIndex(this.dataOffset_ + idx));
+    if (use_null) {
+      child.setModel(null);
+    } else {
+      child.setModel(this.getModel().getByIndex(this.dataOffset_ + idx));
+    }
     pstj.lab.style.css.setTranslation(child.getElement(), 0,
         (idx * this.cellHeight_));
   }, this);
@@ -200,7 +205,7 @@ _.switchChild = function(down) {
  * @param {!number} height The height to use to calculate children positions.
  */
 _.setCellHeight = function(height) {
-  if (!this.isInDocument()) {
+  if (this.isInDocument()) {
     throw new Error(
         'Component already in document, cell height cannot be changed');
   }
