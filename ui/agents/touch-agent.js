@@ -163,9 +163,7 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
     this.touchCache_[3] = this.touchCache_[1];
     this.control_ = control;
     if (!this.control_.isActive()) {
-      if (!this.raf_.isActive()) {
-        this.raf_.start();
-      }
+      this.control_.setActive(true);
     }
   } else if (e.type == goog.events.EventType.TOUCHMOVE) {
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
@@ -179,6 +177,7 @@ pstj.ui.TouchAgent.prototype.handleTouchEvents = function(control, e) {
     e.preventDefault();
     this.touchCache_[2] = e.getBrowserEvent()['changedTouches'][0]['clientX'];
     this.touchCache_[3] = e.getBrowserEvent()['changedTouches'][0]['clientY'];
+    this.raf_.stop();
     if (control.isActive()) {
       if (Math.abs(this.touchCache_[0] - this.touchCache_[2]) <
           pstj.ui.TouchAgent.TOUCH_TRESHOLD &&
