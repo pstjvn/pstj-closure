@@ -31,6 +31,13 @@ pstj.ui.Image = function(opt_domHelper) {
    */
   this.src_ = '';
   /**
+   * Internal flag touse for pending images when loading and not yet in the
+   * document.
+   * @type {boolean}
+   * @private
+   */
+  this.hasPendingImage_ = false;
+  /**
    * The helper image loader.
    * @type {Image}
    * @private
@@ -56,14 +63,36 @@ _.setModel = function(src) {
 };
 
 
+/** @inheritDoc */
+_.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  if (this.hasPendingImage_) {
+    this.hasPendingImage_ = false;
+    this.onImageLoaded(null);
+  }
+};
+
+
+/** @inheritDoc */
+_.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.imageTag_.onload = null;
+  this.imageTag_ = null;
+};
+
+
 /**
  * Handles the loading of the image in the helper image instance.
- * @param {Event} e The native load event.
+ * @param {?Event} e The native load event.
  * @protected
  */
 _.onImageLoaded = function(e) {
-  this.getElement().src = this.src_;
-  goog.dom.classlist.remove(this.getElement(), goog.getCssName('loading'));
+  if (this.isInDocument()) {
+    this.getElement().src = this.src_;
+    goog.dom.classlist.remove(this.getElement(), goog.getCssName('loading'));
+  } else {
+    this.hasPendingImage_ = true;
+  }
 };
 
 
@@ -73,9 +102,15 @@ _.onImageLoaded = function(e) {
  * @protected
  */
 _.setSource = function(src) {
-  goog.dom.classlist.add(this.getElement(), goog.getCssName('loading'));
+  if (this.isInDocument()) {
+    goog.dom.classlist.add(this.getElement(), goog.getCssName('loading'));
+  } else {
+    this.hasPendingImage_ = false;
+  }
   this.src_ = src;
-  this.imageTag_.src = src;
+  if (this.src_ != '') {
+    this.imageTag_.src = src;
+  }
 };
 
 });  // goog.scope
