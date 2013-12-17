@@ -55,6 +55,7 @@ goog.addDependency('../../../apps/pstj/ui/controls/listitemrenderer.js', ['pstj.
 goog.addDependency('../../../apps/pstj/ui/deprecated/coupledinput.js', ['pstj.ui.CoupledInput'], ['goog.Disposable', 'goog.dom', 'goog.dom.classes', 'goog.dom.forms', 'goog.events', 'goog.events.EventType', 'goog.ui.LabelInput']);
 goog.addDependency('../../../apps/pstj/ui/deprecated/sizeable.js', ['pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType'], ['goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events.EventHandler', 'goog.ui.Component']);
 goog.addDependency('../../../apps/pstj/ui/elementids.js', ['pstj.ui.IdGenerator'], []);
+goog.addDependency('../../../apps/pstj/ui/image.js', ['pstj.ui.Image'], ['goog.asserts', 'goog.dom.classlist', 'goog.ui.Component']);
 goog.addDependency('../../../apps/pstj/ui/list.js', ['pstj.ui.List', 'pstj.ui.ListTemplate'], ['pstj.ds.List', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.ListItem', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/listitem.js', ['pstj.ui.ListItem', 'pstj.ui.ListItemTemplate'], ['goog.asserts', 'goog.dom.classlist', 'pstj.configure', 'pstj.ds.ListItem', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Touchable']);
 goog.addDependency('../../../apps/pstj/ui/locale/strings.js', ['pstj.ui.Strings'], []);
