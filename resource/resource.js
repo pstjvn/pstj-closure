@@ -343,7 +343,7 @@ pstj.resource.Resource.prototype.post = function(data, callback) {
  *   apply on the result.
  * @param {string=} opt_method The HTTP method to use to place the request. The
  *   default is GET.
- * @param {ArrayBuffer|Blob|Document|FormData|GearsBlob|string=} opt_data The
+ * @param {ArrayBuffer|Blob|Document|FormData|string=} opt_data The
  * data to send as part of the request.
  * @param {boolean=} opt_cache_response If true the response will be cached and
  *   used subsequently.
