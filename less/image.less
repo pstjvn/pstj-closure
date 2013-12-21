@@ -1,0 +1,32 @@
+@import "translation";
+
+.pstj-image(@pstj-image-display: block;
+            @pstj-image-width: 100px;
+            @pstj-image-height: 100px;
+            @pstj-image-color: black) {
+  display: @pstj-image-display;
+  opacity: 1;
+  width: @pstj-image-width;
+  height: @pstj-image-height;
+  -webkit-transition: opacity 2s;
+  /* @alternate */
+  -moz-transition: opacity 2s;
+  /* @alternate */
+  -ms-transition: opacity: 2s;
+  /* @alternate */
+  transition: opacity 2s;
+}
+
+.pstj-image-hidden() {
+  opacity: 0;
+  .notransition();
+}
+
+// Adds default styling for the instances.
+.pstj-image-instance {
+  .pstj-image();
+}
+
+.pstj-image-instance.hidden {
+  .pstj-image-hidden();
+}
