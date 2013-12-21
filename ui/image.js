@@ -8,6 +8,7 @@ goog.provide('pstj.ui.Image');
 
 goog.require('goog.asserts');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.EventType');
 goog.require('goog.ui.Component');
 
 
@@ -43,8 +44,6 @@ pstj.ui.Image = function(opt_domHelper) {
    * @private
    */
   this.imageTag_ = new Image();
-
-  this.imageTag_.onload = goog.bind(this.onImageLoaded, this);
 };
 goog.inherits(pstj.ui.Image, goog.ui.Component);
 
@@ -66,6 +65,10 @@ _.setModel = function(src) {
 /** @inheritDoc */
 _.enterDocument = function() {
   goog.base(this, 'enterDocument');
+
+  this.getHandler().listen(this.imageTag_, goog.events.EventType.LOAD,
+      this.onImageLoaded);
+
   if (this.hasPendingImage_) {
     this.hasPendingImage_ = false;
     this.onImageLoaded(null);
@@ -76,14 +79,13 @@ _.enterDocument = function() {
 /** @inheritDoc */
 _.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
-  this.imageTag_.onload = null;
   this.imageTag_ = null;
 };
 
 
 /**
  * Handles the loading of the image in the helper image instance.
- * @param {?Event} e The native load event.
+ * @param {?goog.events.Event} e The wrapped load event.
  * @protected
  */
 _.onImageLoaded = function(e) {
