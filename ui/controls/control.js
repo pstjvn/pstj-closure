@@ -9,12 +9,16 @@ goog.require('pstj.ui.Template');
 
 
 /**
- * My new class description
+ * Attempts to provide touch compatible UI control base class.
  * @constructor
+ * @deprecated  This class was never used in production. Initially designed to
+ * allow all controls to extend from touch capable state machine. Abandoned as
+ * it cannot be easily plugged in to existing controls. The touch agnet is
+ * adopted instead.
  * @extends {goog.ui.Control}
  * @param {?string} content The content to use, this is not really used here.
  * @param {pstj.ui.ControlRenderer=} opt_renderer The renderer to use, it
- *   should understand templates.se.
+ * should understand templates.se.
  */
 pstj.ui.TouchControl = function(content, opt_renderer) {
   goog.base(this, content, opt_renderer);
