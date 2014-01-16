@@ -25,6 +25,36 @@ goog.addSingletonGetter(pstj.ui.Template);
 
 
 /**
+ * Creates an instance of the template that uses alternate class names.
+ *
+ * @param {Function} ctor The constructor of the renderer you are trying to
+ * create.
+ * @param {string} cssClassName The name of the CSS class for this renderer.
+ * @return {goog.ui.ControlRenderer} An instance of the desired renderer with
+ * its getCssClass() method overridden to return the supplied custom CSS class
+ * name.
+ */
+pstj.ui.Template.getCustomTemplate = function(ctor, className) {
+  var template = new ctor();
+
+  template.getCssClass = function() {
+    return className;
+  }
+
+  return template;
+};
+
+
+/**
+ * Returns the base class name for the template.
+ * @return {string}
+ */
+pstj.ui.Template.prototype.getCssClass = function() {
+  return 'template';
+};
+
+
+/**
  * Returns the constructed DOM for the create dom cycle in the component.
  * @param {goog.ui.Component} templated The component to use as model.
  * @return {!Element} The element to be used as root node.
