@@ -479,6 +479,21 @@ pstj.ds.List.prototype.disposeInternal = function() {
 
 
 /**
+ * Disposes all the elements in the list. Note that if you reference these
+ * elements elsewhere they will be disposed regardless of that reference and
+ * you might corrupt your data!
+ *
+ * CAUTION: Use only if you are sure that none of the list elements are
+ * referenced elsewhere!
+ */
+pstj.ds.List.prototype.free = function() {
+  for (var i = 0; i < this.list.length; i++) {
+    goog.dispose(this.list[i]);
+  }
+};
+
+
+/**
  * Applies the filter on the current list. It executes the filter function and
  *   if the element matches the remove filter the function should return true
  *   to signify removing the item.

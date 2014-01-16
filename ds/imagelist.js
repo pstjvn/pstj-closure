@@ -33,6 +33,14 @@ goog.require('pstj.ds.ListItem');
  */
 pstj.ds.Image = function(data) {
   goog.base(this, data);
+  /**
+   * Holds reference to the size to be reused. In case the size is needed
+   * mulltiple times the garbage will be less.
+   * @type {goog.math.Size}
+   * @protected
+   */
+  this.size = new goog.math.Size(+this.getProp(pstj.ds.Image.Property.WIDTH),
+      +this.getProp(pstj.ds.Image.Property.HEIGHT));
 };
 goog.inherits(pstj.ds.Image, pstj.ds.ListItem);
 
@@ -42,8 +50,7 @@ goog.inherits(pstj.ds.Image, pstj.ds.ListItem);
  * @return {goog.math.Size} The image size as reported by the browser.
  */
 pstj.ds.Image.prototype.getSize = function() {
-  return new goog.math.Size(+this.getProp(pstj.ds.Image.Property.WIDTH),
-      +this.getProp(pstj.ds.Image.Property.HEIGHT));
+  return this.size;
 };
 
 
@@ -53,6 +60,13 @@ pstj.ds.Image.prototype.getSize = function() {
  */
 pstj.ds.Image.prototype.getSource = function() {
   return this.getProp(pstj.ds.Image.Property.SOURCE).toString();
+};
+
+
+/** @inheritDoc */
+pstj.ds.Image.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.size = null;
 };
 
 
