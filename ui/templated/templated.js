@@ -23,9 +23,10 @@ goog.require('pstj.ui.Template');
  * @constructor
  * @extends {goog.ui.Component}
  * @param {pstj.ui.Template=} opt_template The template to use in the component.
+ * @param {goog.dom.DomHelper=} opt_domHelper The DOM helper to use.
  */
-pstj.ui.Templated = function(opt_template) {
-  goog.base(this);
+pstj.ui.Templated = function(opt_template, opt_domHelper) {
+  goog.base(this, opt_domHelper);
   /**
    * @private
    * @type {pstj.ui.Template}
