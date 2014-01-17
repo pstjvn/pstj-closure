@@ -29,7 +29,7 @@ goog.addSingletonGetter(pstj.ui.Template);
  *
  * @param {Function} ctor The constructor of the renderer you are trying to
  * create.
- * @param {string} cssClassName The name of the CSS class for this renderer.
+ * @param {string} className The name of the CSS class for this renderer.
  * @return {goog.ui.ControlRenderer} An instance of the desired renderer with
  * its getCssClass() method overridden to return the supplied custom CSS class
  * name.
@@ -39,7 +39,7 @@ pstj.ui.Template.getCustomTemplate = function(ctor, className) {
 
   template.getCssClass = function() {
     return className;
-  }
+  };
 
   return template;
 };
