@@ -373,9 +373,8 @@ pstj.ui.TouchSheet.prototype.handleTouchableEvents = function(e) {
  *   This is very slow for most machines and should be called only when
  *   absolutely needed. One exception is IE<10, where scaling is not supported
  *   via css.
- * @protected
  */
-pstj.ui.Touchable.prototype.applySize = function() {
+pstj.ui.TouchSheet.prototype.applySize = function() {
   if (!goog.isNull(this.size)) {
     this.getElement().style.width = this.size.width + 'px';
     this.getElement().style.height = this.size.height + 'px';
@@ -553,6 +552,18 @@ pstj.ui.TouchSheet.prototype.startDoubleMove = function(p1, p2) {
 
 
 /**
+ * Utility method allowsin to set directly the x/y offsets. Note that this
+ * might break your animations, so use carefully and test!
+ * @param {number} x The x offset to apply on the next draw.
+ * @param {number} y The Y offset to apply on the next draw.
+ */
+pstj.ui.TouchSheet.prototype.setOffsets = function(x, y) {
+  this.offsetx_ = x;
+  this.offsety_ = y;
+};
+
+
+/**
  * Handles the double move event as intercepted in the pubsub routine.
  * @param {Array.<number>} p1 The first touch point.
  * @param {Array.<number>} p2 The second touch point.
@@ -723,7 +734,6 @@ pstj.ui.TouchSheet.prototype.draw = function() {
  *   sheet.
  * @param {goog.events.MouseWheelEvent} e The wheel event abstracted by the
  *   CL.
- * @protected
  */
 pstj.ui.TouchSheet.prototype.handleWheel = function(e) {
   this.update();
