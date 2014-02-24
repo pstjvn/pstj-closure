@@ -90,6 +90,11 @@ pstj.ds.ListItem = function(data, opt_id_proprety) {
   this.id_property_ = (goog.isDef(opt_id_proprety) && !goog.string.isEmpty(
       opt_id_proprety)) ? opt_id_proprety : 'id';
 
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.requireValueUpdate_ = false;
   this.convert();
 };
 goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
@@ -104,6 +109,18 @@ goog.inherits(pstj.ds.ListItem, goog.events.EventTarget);
 pstj.ds.ListItem.EventType = {
   UPDATE: goog.events.getUniqueId('update'),
   DELETE: goog.events.getUniqueId('delete')
+};
+
+
+/**
+ * Sets the require value update flag. By default the mutated value is set
+ * if it is of the same data type. If this flag is enabled the
+ * value will be set only if it is a different value of the same type
+ * and only then the update event will be fired.
+ * @param {boolean} enable True to enable value check.
+ */
+pstj.ds.ListItem.prototype.setRequireValueUpdate = function(enable) {
+  this.requireValueUpdate_ = enable;
 };
 
 
@@ -191,6 +208,11 @@ pstj.ds.ListItem.prototype.mutate = function(property, value) {
 
   if (goog.typeOf(oldvalue) != 'object' &&
       goog.typeOf(value) == goog.typeOf(oldvalue)) {
+    if (this.requireValueUpdate_) {
+      if (oldvalue === value) {
+        return false;
+      }
+    }
     result[name] = value;
     this.dispatchEvent(pstj.ds.ListItem.EventType.UPDATE);
     return true;
