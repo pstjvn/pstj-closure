@@ -20,6 +20,7 @@ goog.require('goog.events.KeyHandler');
 goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
+goog.require('goog.math.Coordinate');
 goog.require('goog.style');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.math.utils');
@@ -560,6 +561,15 @@ pstj.ui.TouchSheet.prototype.startDoubleMove = function(p1, p2) {
 pstj.ui.TouchSheet.prototype.setOffsets = function(x, y) {
   this.offsetx_ = x;
   this.offsety_ = y;
+};
+
+
+/**
+ * Getter for the currently applied visual offset (translation).
+ * @return {goog.math.Coordinate}
+ */
+pstj.ui.TouchSheet.prototype.getOffset = function() {
+  return new goog.math.Coordinate(this.offsetx_ * -1, this.offsety_ * -1);
 };
 
 
