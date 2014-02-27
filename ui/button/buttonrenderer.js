@@ -21,7 +21,7 @@ goog.require('goog.ui.ButtonRenderer');
  * @extends {goog.ui.ButtonRenderer}
  */
 pstj.ui.CustomButtonRenderer = function() {
-  goog.ui.ButtonRenderer.call(this);
+  goog.base(this);
 };
 goog.inherits(pstj.ui.CustomButtonRenderer, goog.ui.ButtonRenderer);
 goog.addSingletonGetter(pstj.ui.CustomButtonRenderer);
