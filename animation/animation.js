@@ -1,10 +1,7 @@
-goog.provide('pstj.ui.animations');
+goog.provide('pstj.animation.Base');
+goog.provide('pstj.animation.Element');
 
 goog.require('goog.async.AnimationDelay');
-
-
-goog.scope(function() {
-var _ = pstj.ui.animations;
 
 
 
@@ -14,20 +11,24 @@ var _ = pstj.ui.animations;
  * used to implement the nimation itself.
  * @constructor
  */
-_.Base = function() {
+pstj.animation.Base = function() {
   this.runnig_ = false;
   this.onRafBound_ = new goog.async.AnimationDelay(
       this.onRaf_, undefined, this);
 };
 
 
+goog.scope(function() {
+var _ = pstj.animation.Base.prototype;
+
+
 /**
  * Starts the animation if not already started.
  */
-_.Base.prototype.start = function() {
+_.start = function() {
   this.runnig_ = true;
-  if (!this.draw_.isActive()) {
-    this.draw_.start();
+  if (!this.onRafBound_.isActive()) {
+    this.onRafBound_.start();
   }
 };
 
@@ -41,7 +42,7 @@ _.Base.prototype.start = function() {
  * Closure authors).
  * @private
  */
-_.Base.prototype.onRaf_ = function(ts) {
+_.onRaf_ = function(ts) {
   if (this.runnig_ && this.draw(ts)) {
     this.onRafBound_.start();
   }
@@ -51,7 +52,7 @@ _.Base.prototype.onRaf_ = function(ts) {
 /**
  * Stops the animation.
  */
-_.Base.prototype.stop = function() {
+_.stop = function() {
   this.runnig_ = false;
   this.onRafBound_.stop();
 };
@@ -65,9 +66,11 @@ _.Base.prototype.stop = function() {
  * @return {boolean} If true the animation must continue as the drawing
  * did not complete all the drawing job.
  */
-_.Base.prototype.draw = function(ts) {
+_.draw = function(ts) {
   return false;
 };
+
+});  // goog.scope
 
 
 
@@ -75,9 +78,9 @@ _.Base.prototype.draw = function(ts) {
  * Provides class that can animate any element. The animation is predefined in
  * the [draw] method.
  * @constructor
- * @extends {_.Base}
+ * @extends {pstj.animation.Base}
  */
-_.Element = function() {
+pstj.animation.Element = function() {
   goog.base(this);
   /**
    * Reference to the Element to be currently animated.
@@ -86,14 +89,18 @@ _.Element = function() {
    */
   this.element = null;
 };
-goog.base(_.Element, _.Base);
+goog.inherits(pstj.animation.Element, pstj.animation.Base);
+
+
+goog.scope(function() {
+var _ = pstj.animation.Element.prototype;
 
 
 /**
  * Grabs an element to be animated.
  * @param {Element} el The HTML element to animate.
  */
-_.Element.prototype.grab = function(el) {
+_.grab = function(el) {
   this.element = el;
   this.start();
 };
@@ -102,7 +109,7 @@ _.Element.prototype.grab = function(el) {
 /**
  * Release the element from the animation.
  */
-_.Element.prototype.drop = function() {
+_.drop = function() {
   this.stop();
   this.element = null;
 };
