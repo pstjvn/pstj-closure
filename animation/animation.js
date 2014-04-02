@@ -1,8 +1,34 @@
+goog.provide('pstj.animation.Animation');
 goog.provide('pstj.animation.Base');
 goog.provide('pstj.animation.Element');
 
 goog.require('goog.async.AnimationDelay');
 
+
+
+/**
+ * @constructor
+ */
+pstj.animation.Animation = function() {
+  this.rafBound_ = new goog.async.AnimationDelay(this.onRaf, undefined, this);
+  this.handleRafBound_ = goog.bind(this.handleRaf, this);
+  this.animations_ = [];
+};
+goog.addSingletonGetter(pstj.animation.Animation);
+
+goog.scope(function() {
+var _ = pstj.animation.Animation.prototype;
+
+
+_.onRaf = function(ts) {
+  goog.array.forEach(this.animations_, this.handleRafBound_);
+};
+
+_.handleRaf = function(animation) {
+  animation.draw();
+};
+
+});  // goog.scope
 
 
 /**
