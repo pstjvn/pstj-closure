@@ -434,10 +434,10 @@ pstj.ui.Touchable.EVENTS = [
  * @enum {string}
  */
 pstj.ui.Touchable.EventType = {
-  PRESS: goog.events.getUniqueId(goog.DEBUG ? 'press' : 'a'),
-  LONG_PRESS: goog.events.getUniqueId(goog.DEBUG ? 'long-press' : 'b'),
-  MOVE: goog.events.getUniqueId(goog.DEBUG ? 'move' : 'c'),
-  RELEASE: goog.events.getUniqueId(goog.DEBUG ? 'release' : 'd')
+  PRESS: goog.events.getUniqueId('press'),
+  LONG_PRESS: goog.events.getUniqueId('long-press'),
+  MOVE: goog.events.getUniqueId('move'),
+  RELEASE: goog.events.getUniqueId('release')
   // we also emit the Component's ACTIVATE event.
   // ZOOMIN/OUT events are externally bound and not supported within the
   // component.
