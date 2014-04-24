@@ -25,7 +25,7 @@ goog.addDependency('../../../apps/pstj/graphics/draw.js', ['pstj.graphics.Draw']
 goog.addDependency('../../../apps/pstj/graphics/smooth.js', ['pstj.graphics.Smooth'], ['goog.Disposable', 'goog.async.AnimationDelay']);
 goog.addDependency('../../../apps/pstj/graphics/timeline.js', ['pstj.graphics.Timeline'], ['goog.dom.classlist', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventType', 'goog.functions', 'pstj.configure', 'pstj.date.utils', 'pstj.graphics.Canvas', 'pstj.graphics.Draw', 'pstj.graphics.Smooth', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/math/number-generators.js', ['pstj.math.CyclicNumberGenerator', 'pstj.math.LinearNumberGenerator'], []);
-goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], []);
+goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['goog.array']);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable']);
@@ -75,6 +75,7 @@ goog.addDependency('../../../apps/pstj/ui/templated/template.js', ['pstj.ui.Temp
 goog.addDependency('../../../apps/pstj/ui/templated/templated.js', ['pstj.ui.Templated'], ['goog.dom', 'goog.ui.Component', 'pstj.ui.Template']);
 goog.addDependency('../../../apps/pstj/ui/touchable/movetouch.js', ['pstj.ui.MoveTouch'], ['pstj.ui.Touchable', 'pstj.ui.Touchable.EventType']);
 goog.addDependency('../../../apps/pstj/ui/touchable/touchable.js', ['pstj.ui.Touchable', 'pstj.ui.Touchable.Event', 'pstj.ui.Touchable.EventType', 'pstj.ui.Touchable.PubSub'], ['goog.events', 'goog.functions', 'goog.pubsub.PubSub', 'goog.ui.Component.EventType', 'pstj.ui.Async']);
+goog.addDependency('../../../apps/pstj/ui/twothumbslider.js', ['pstj.ui.TwoThumbSlider'], ['goog.dom.dataset', 'goog.ui.TwoThumbSlider', 'pstj.math.utils']);
 goog.addDependency('../../../apps/pstj/ui/upload.js', ['pstj.ui.Upload', 'pstj.ui.Upload.Event', 'pstj.ui.UploadTemplate'], ['goog.dom', 'goog.events', 'goog.events.Event', 'goog.net.EventType', 'goog.net.IframeIo', 'pstj.templates', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/widget/controlgroup.js', ['pstj.widget.ControlGroup', 'pstj.widget.ControlGroupTemplate'], ['goog.array', 'goog.asserts', 'pstj.templates', 'pstj.ui.Button', 'pstj.ui.Template', 'pstj.ui.Templated']);
 goog.addDependency('../../../apps/pstj/ui/widget/multiview.js', ['pstj.widget.MultiView'], ['goog.asserts', 'goog.ui.Component', 'goog.ui.Component.EventType']);

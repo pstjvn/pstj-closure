@@ -6,6 +6,8 @@
 
 goog.provide('pstj.math.utils');
 
+goog.require('goog.array');
+
 
 /**
  * Generates a random number between two numbers.
@@ -77,4 +79,51 @@ pstj.math.utils.pick = function(arr) {
 };
 
 
+/**
+ * Attempts to find a multiplicator that will transform a floating point number
+ * to integer without loosing precision.
+ * @param {!number} num The number to find multiplicator for.
+ * @return {!number} The calculated multiplicator
+ */
+pstj.math.utils.shiftToInteger = function(num) {
+  if (num == (num | 0)) {
+    return 1;
+  }
+  var str = num.toString().split('.');
+  if (str.length == 2) {
+    str = str[1];
+    return Math.pow(10, str.length);
+  } else {
+    return 1;
+  }
+};
 
+
+/**
+ * Calculates the largest multiplicator for series of numbers.
+ * @param {...number} var_args The numbers to compute with.
+ * @return {!number}
+ */
+pstj.math.utils.calculateCommonMultiplicator = function(var_args) {
+  var multiplicator = 1;
+  goog.array.forEach(arguments, function(arg) {
+    var res = pstj.math.utils.shiftToInteger(arg);
+    if (res > multiplicator) multiplicator = res;
+  });
+  return multiplicator;
+};
+
+
+/**
+ * Parses a string as a floating point number or if cannot find a
+ * number returns the default value.
+ * @param {?string} str The string to parse.
+ * @param {!number} default_value The value to use as dewfault.
+ * @return {!number}
+ */
+pstj.math.utils.parseFloat = function(str, default_value) {
+  if (goog.isNull(str)) return default_value;
+  var num = parseFloat(str);
+  if (isNaN(num)) return default_value;
+  return num;
+};
