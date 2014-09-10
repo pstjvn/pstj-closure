@@ -83,7 +83,7 @@ pstj.math.utils.pick = function(arr) {
  * Attempts to find a multiplicator that will transform a floating point number
  * to integer without loosing precision.
  * @param {!number} num The number to find multiplicator for.
- * @return {!number} The calculated multiplicator
+ * @return {!number} The calculated multiplicator.
  */
 pstj.math.utils.shiftToInteger = function(num) {
   if (num == (num | 0)) {
