@@ -10,7 +10,9 @@ goog.provide('pstj.ui.Agent');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
+goog.require('pstj.debug');
 goog.require('pstj.ds.Cache');
+
 
 
 
@@ -51,6 +53,21 @@ pstj.ui.Agent = function(type) {
    * @private
    */
   this.type_ = type || null;
+  
+  if (goog.DEBUG) {
+    pstj.debug.bus.subscribe(pstj.debug.Topic.DUMP, this.dumpCache, this);
+  }
+};
+
+
+/**
+ * Method used for code instrumentation. Should be removed by the compiler in 
+ * advanced mode.
+ * 
+ * @protected
+ */
+pstj.ui.Agent.prototype.dumpCache = function() {
+  console.log('pstj.ui.Agent: ', this.components_.length);
 };
 
 
