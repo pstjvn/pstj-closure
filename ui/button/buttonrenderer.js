@@ -10,7 +10,7 @@
 goog.provide('pstj.ui.CustomButtonRenderer');
 
 goog.require('goog.a11y.aria.Role');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.ui.ButtonRenderer');
 
 
@@ -76,7 +76,7 @@ pstj.ui.CustomButtonRenderer.prototype.getContentElement = function(element) {
  */
 pstj.ui.CustomButtonRenderer.prototype.decorate = function(control, element) {
   var button = /** @type {goog.ui.Button} */ (control);
-  goog.dom.classes.add(element, this.getCssClass());
+  goog.dom.classlist.add(element, this.getCssClass());
   return goog.base(this, 'decorate', button, element);
 };
 
