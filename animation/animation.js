@@ -31,6 +31,7 @@ _.handleRaf = function(animation) {
 });  // goog.scope
 
 
+
 /**
  * Provides the basic class for creating animation.
  * The animation can be then started/stopped. Overrideing the [draw] method is
