@@ -25,6 +25,15 @@ goog.addSingletonGetter(pstj.ui.Template);
 
 
 /**
+ * The bindin count name to map in the element.
+ *
+ * @type {string}
+ * @final
+ */
+pstj.ui.Template.DATA_BINDING_COUNT = 'bindingsCount';
+
+
+/**
  * Creates an instance of the template that uses alternate class names.
  *
  * @param {Function} ctor The constructor of the renderer you are trying to
@@ -47,7 +56,7 @@ pstj.ui.Template.getCustomTemplate = function(ctor, className) {
 
 /**
  * Returns the base class name for the template.
- * @return {string}
+ * @return {!string}
  */
 pstj.ui.Template.prototype.getCssClass = function() {
   return 'template';
@@ -56,12 +65,31 @@ pstj.ui.Template.prototype.getCssClass = function() {
 
 /**
  * Returns the constructed DOM for the create dom cycle in the component.
- * @param {goog.ui.Component} templated The component to use as model.
+ * @param {goog.ui.Component} component The component to use as model.
  * @return {!Element} The element to be used as root node.
  */
-pstj.ui.Template.prototype.createDom = function(templated) {
-  return /** @type {!Element} */ (
-      this.getCompiledTemplate_(this.generateTemplateData(templated)));
+pstj.ui.Template.prototype.createDom = function(component) {
+  var htmlstring = this.getTemplate(this.generateTemplateData(component));
+  var bindings = this.getBindingsCount(htmlstring);
+  var el = /** @type {!Element} */(this.createElement(htmlstring));
+  goog.dom.dataset.set(el, pstj.ui.Template.DATA_BINDING_COUNT,
+      bindings.toString());
+  return el;
+};
+
+
+/**
+ * Will count the double moustaches occurences inside the element.
+ * Note that here we do not assume component bounds and instead count all
+ * occurences.
+ *
+ * @param {string} htmlstring The HTML string to inspect.
+ * @return {number} The number of moustaches occurences.
+ */
+pstj.ui.Template.prototype.getBindingsCount = function(htmlstring) {
+  var result = htmlstring.match(/{{.*}}/g);
+  if (!result) return 0;
+  return result.length;
 };
 
 
@@ -112,4 +140,14 @@ pstj.ui.Template.prototype.getTemplate = function(model) {
  */
 pstj.ui.Template.prototype.getContentElement = function(component) {
   return component.getElement();
+};
+
+
+/**
+ * Transforms a string into document fragment.
+ * @param {string} htmlstring The HTML as a string.
+ * @return {!Element}
+ */
+pstj.ui.Template.prototype.createElement = function(htmlstring) {
+  return /** @type {!Element} */(goog.dom.htmlToDocumentFragment(htmlstring));
 };

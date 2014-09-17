@@ -23,6 +23,7 @@ goog.require('pstj.ds.Cache');
  * until it is disposed or explicitly detached.
  *
  * @constructor
+ * @struct
  * @param {*} type The type to check agains the values of the cache.
  */
 pstj.ui.Agent = function(type) {
@@ -202,7 +203,7 @@ pstj.ui.Agent.prototype.indexOf = function(component) {
  * @return {?goog.ui.Component}
  */
 pstj.ui.Agent.prototype.item = function(index) {
-  if (index > -1 && index < this.components_.length - 1) {
+  if (index > -1 && index < this.components_.length) {
     return this.components_[index];
   }
   return null;
