@@ -22,9 +22,8 @@
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
+goog.provide('pstj.error');
 goog.provide('pstj.error.ErrorHandler');
-goog.provide('pstj.error.ErrorHandler.Error');
-goog.provide('pstj.error.throwError');
 
 goog.require('goog.pubsub.PubSub');
 goog.require('pstj.control.Base');
@@ -60,6 +59,13 @@ pstj.error.ErrorHandler.Error = {
   // handle automatically and needs user interaction for fixing it.
   NO_DATA: 5 // timeout on important requests, loading etc.
 };
+
+
+/**
+ * Alias for the error types.
+ * @enum {number}
+ */
+pstj.error.Type = pstj.error.ErrorHandler.Error;
 
 
 /**
