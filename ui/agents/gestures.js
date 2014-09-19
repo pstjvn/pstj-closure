@@ -162,7 +162,7 @@ _.getTouchCache = function() {
  */
 _.resolveComponent = function(element) {
   var idx = goog.array.indexOf(this.elements_, element);
-  var component = this.getComponentByIndex(idx);
+  var component = this.item(idx);
   if (!goog.isNull(component)) {
     return goog.asserts.assertInstanceof(component, goog.ui.Control);
   } else {
@@ -220,7 +220,7 @@ _.updateCache = function(component) {
 
   // map the element that we will listen on to the component we want to
   // emit the events to.
-  this.elements_[this.getComponentIndex(component)] = component.getElement();
+  this.elements_[this.indexOf(component)] = component.getElement();
   this.getHandler().listen(component.getElement(), [
     goog.events.EventType.TOUCHSTART,
     goog.events.EventType.TOUCHMOVE,
@@ -232,14 +232,14 @@ _.updateCache = function(component) {
 /** @inheritDoc */
 _.detach = function(component) {
   goog.base(this, 'detach', component);
-  var index = this.getComponentIndex(component);
+  var index = this.indexOf(component);
   if (index != -1) {
     this.getHandler().unlisten(component.getElement(), [
       goog.events.EventType.TOUCHSTART,
       goog.events.EventType.TOUCHMOVE,
       goog.events.EventType.TOUCHEND,
       goog.events.EventType.TOUCHCANCEL], this.handleTouchEvents);
-    this.elements_[this.getComponentIndex(component)] = null;
+    this.elements_[this.indexOf(component)] = null;
   }
 };
 

@@ -10,8 +10,19 @@ goog.require('goog.async.AnimationDelay');
  * @constructor
  */
 pstj.animation.Animation = function() {
+  /**
+   * @type {goog.async.AnimationDelay}
+   * @private
+   */
   this.rafBound_ = new goog.async.AnimationDelay(this.onRaf, undefined, this);
+  /**
+   * @private
+   */
   this.handleRafBound_ = goog.bind(this.handleRaf, this);
+  /**
+   * @type {Array.<*>}
+   * @private
+   */
   this.animations_ = [];
 };
 goog.addSingletonGetter(pstj.animation.Animation);
@@ -20,10 +31,21 @@ goog.scope(function() {
 var _ = pstj.animation.Animation.prototype;
 
 
+/**
+ * Handle the rafing.
+ * @param {number} ts The timestamp.
+ * @protected
+ */
 _.onRaf = function(ts) {
   goog.array.forEach(this.animations_, this.handleRafBound_);
 };
 
+
+/**
+ * Handles the raf timeout.
+ * @param {*} animation The animation.
+ * @protected
+ */
 _.handleRaf = function(animation) {
   animation.draw();
 };
