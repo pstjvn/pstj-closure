@@ -81,20 +81,20 @@ pstj.ui.TouchSheet = function(opt_template) {
    * @private
    */
   this.cache_ = [0, -1, -1, -1, -1, 0, -1, -1, 0];
-  /**
-   * The maximum X offset that can be applied based on the current size of the
-   *   sheet so that the sheet is not too much off the frame.
-   * @private
-   * @type {number}
-   */
-  this.maxoffsetx_ = 0;
-  /**
-   * The maximum Y offset that can be applied based on the current size of the
-   *   sheet so that the sheet is not too much off the frame.
-   * @private
-   * @type {number}
-   */
-  this.maxoffsety_ = 0;
+  // /**
+  // * The maximum X offset that can be applied based on the current size of the
+  // *   sheet so that the sheet is not too much off the frame.
+  // * @private
+  // * @type {number}
+  // */
+  // this.maxoffsetx_ = 0;
+  // /**
+  // * The maximum Y offset that can be applied based on the current size of the
+  // *   sheet so that the sheet is not too much off the frame.
+  // * @private
+  // * @type {number}
+  // */
+  // this.maxoffsety_ = 0;
   /**
    * We need this handler to be able to bind to the wheel events.
    * @private
@@ -286,8 +286,8 @@ pstj.ui.TouchSheet.prototype.setSize = function(size) {
  */
 pstj.ui.TouchSheet.prototype.updateMaxOffsets = function() {
   if (this.isInDocument() && !goog.isNull(this.getViewportSize())) {
-    this.maxoffsetx_ = this.size.width - this.getViewportSize().width;
-    this.maxoffsety_ = this.size.height - this.getViewportSize().height;
+    // this.maxoffsetx_ = this.size.width - this.getViewportSize().width;
+    // this.maxoffsety_ = this.size.height - this.getViewportSize().height;
     this.clientOffset_ = goog.style.getPageOffset(this.getElement());
   }
 };

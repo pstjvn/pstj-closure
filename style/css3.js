@@ -286,6 +286,20 @@ pstj.lab.style.css.setTranslation = function(el, x, y, opt_unit,
 
 
 /**
+ * Clears the translation applied so that parent/css translation can overtake.
+ * @param {Element} el The element to operate on.
+ */
+pstj.lab.style.css.clearTranslation = function(el) {
+  if (pstj.lab.style.css.canUseTransform) {
+    el.style[pstj.lab.style.css.transformPrefix] = '';
+  } else {
+    el.style.top = 0;
+    el.style.left = 0;
+  }
+};
+
+
+/**
  * Clean up as we do not need the div anymore and it is retained...
  * @private
  */

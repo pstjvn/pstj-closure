@@ -1,0 +1,52 @@
+@import "layout";
+@import "common";
+
+.header-panel {
+  display: block;
+  position: relative;
+  height: 100%;
+  &-outer-container {
+    &:extend(.core-fill-position);
+    &:extend(.core-flexd);
+    &:extend(.core-flex-vertical);
+  }
+  &-main-panel {
+    position: relative;
+    &:extend(.core-flexd);
+    &:extend(.core-flex-vertical);
+    &:extend(.core-flex);
+  }
+  &-main-container {
+    &:extend(.core-flex);
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  &-shadow .shadow {
+    display: block ! important;
+  }
+  &-transition &-header-content {
+    transition: height 0.2s;
+  }
+  &-header-content {
+    height: 60px;
+  }
+  &-tall &-header-content {
+    height: 180px;
+  }
+  &-scroll &-main-container {
+    overflow: visible;
+  }
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
+  &:extend(.core-hidden);
+}
+

@@ -1,0 +1,51 @@
+// Common stylies for the elements
+
+.fillall {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.core-fill-position  {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+
+// Set default box sizing. This is also included in the reset so you not need to
+// apply it per component.
+.borderbox {
+  box-sizing: border-box;
+  /* @alternative */
+  -moz-box-sizing: border-box;
+  /* @alternative */
+  -webkit-box-sizing: border-box;
+}
+
+
+.core-hidden {
+  display: none;
+}
+
+.core-empty {
+  nonexisting: #fff;
+}
+
+// Enumerate the classnames that determine the behaviour. We use a 'hack' to
+// force the renaming as they provide no real styles.
+.core-press,
+.core-move,
+.core-release,
+.core-tap,
+.core-longpress,
+.core-swipe,
+.core-scroll {
+  &:extend(.core-empty);
+}

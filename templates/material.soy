@@ -1,0 +1,41 @@
+{namespace pstj.material.template}
+
+
+/** Template for the scrim panel */
+{template .ScrimPanel}
+  <div is class="{css scrim-panel} {css drawer-panel-main}">
+    <div is class="{css core-element} {css core-tap} {css scrim}"></div>
+  </div>
+{/template}
+
+/**
+ * Template for the DrawerPanel component.
+ */
+{template .DrawerPanel}
+  <div class="{css drawer-panel} {css core-swipe}">
+    <div is class="{css scrim-panel} {css drawer-panel-main}">
+      <div is class="{css core-element} {css core-tap} {css scrim}"></div>
+    </div>
+    <div is class="{css core-element} {css drawer-panel-drawer}"></div>
+  </div>
+{/template}
+
+
+/** Template for the header panel material element */
+{template .HeaderPanel}
+  <div class="{css header-panel} {css header-panel-waterfall-tall}">
+    <div class="{css header-panel-outer-container}">
+      <div is class="{css core-element} {css header-panel-header-content}">
+        Test Header
+      </div>
+      <div class="{css header-panel-main-panel}">
+        <div class="{css header-panel-main-container}">
+          <div is class="{css core-element} {css header-panel-main-content}">
+            <div style="height: 1000px; background-color: yellow;">Test content</div>
+          </div>
+        </div>
+        <div class="{css shadow}"></div>
+      </div>
+    </div>
+  </div>
+{/template}

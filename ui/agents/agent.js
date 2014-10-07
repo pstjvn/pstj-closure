@@ -221,5 +221,3 @@ pstj.ui.Agent.prototype.getComponentByIndex = function(index) {
   return this.item(index);
 };
 
-
-

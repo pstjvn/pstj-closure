@@ -1,0 +1,59 @@
+@import "common";
+
+
+.drawer-panel {
+  .fillall();
+  overflow: hidden;
+  &-narrow &-main {
+    left: 0 ! important;
+    padding: 0;
+  }
+  &-transition &-drawer {
+    transition: -webkit-transform ease-in-out 0.3s, width ease-in-out 0.3s;
+    /* @alternate */
+    transition: transform ease-in-out 0.3s, width ease-in-out 0.3s;
+  }
+  &-transition &-main {
+    transition: left ease-in-out 0.3s, padding ease-in-out 0.3s;
+  }
+  &-narrow .core-element-selected {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  &-narrow &-drawer:not(.core-element-selected) {
+    -webkit-transform: translateX(-100%);
+    /* @alternate */
+    transform: translateX(-100%);
+  }
+  &-drawer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    // Speed up things on Chrome with gpu rendering.
+    will-change: transform;
+    .borderbox();
+    & > * {
+      .fillall();
+      .borderbox();
+    }
+  }
+  &-main {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+  &-narrow .scrim-panel:not(.scrim-panel-selected) .scrim {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.scrim {
+  &:extend(.core-fill-position);
+  background-color: rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity ease-in-out 0.38s, visibility ease-in-out 0.38s;
+}
+

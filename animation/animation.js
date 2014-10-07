@@ -14,7 +14,7 @@ pstj.animation.Animation = function() {
    * @type {goog.async.AnimationDelay}
    * @private
    */
-  this.rafBound_ = new goog.async.AnimationDelay(this.onRaf, undefined, this);
+  //this.rafBound_ = new goog.async.AnimationDelay(this.onRaf, undefined, this);
   /**
    * @private
    */

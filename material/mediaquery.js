@@ -1,17 +1,18 @@
-goog.provide('pstj.ui.element.MediaQuery');
+goog.provide('pstj.material.MediaQuery');
 
 goog.require('goog.async.nextTick');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
-goog.require('pstj.ui.element.EventType');
+goog.require('pstj.material.EventType');
 
 
-
-pstj.ui.element.MediaQuery = goog.defineClass(goog.events.EventTarget, {
+/**
+ * Implementation for the mediaquery class in material design.
+ */
+pstj.material.MediaQuery = goog.defineClass(goog.events.EventTarget, {
   /**
    * Provides the utilities for creating and using media queries inside the app.
-   *
    * @constructor
    * @param {!string} query The query to match against.
    * @extends {goog.events.EventTarget}
@@ -19,7 +20,7 @@ pstj.ui.element.MediaQuery = goog.defineClass(goog.events.EventTarget, {
    */
   constructor: function(query) {
     goog.events.EventTarget.call(this);
-    if (!pstj.ui.element.MediaQuery.hasMediaSupport) {
+    if (!pstj.material.MediaQuery.hasMediaSupport) {
       throw new Error('Browser does not support matchMedia');
     }
     /**
@@ -84,9 +85,17 @@ pstj.ui.element.MediaQuery = goog.defineClass(goog.events.EventTarget, {
   onQueryUpdate: function(mq) {
     this.queryMatches = mq.matches;
     goog.async.nextTick(function() {
-      this.dispatchEvent(pstj.ui.element.EventType.MEDIA_CHANGE);
+      this.dispatchEvent(pstj.material.EventType.MEDIA_CHANGE);
     }, this);
   },
+
+
+  /** @override */
+  disposeInternal: function() {
+    goog.base(this, 'disposeInternal');
+    this.mediaQuery_ = null;
+  },
+
 
   statics: {
     /**

@@ -19,18 +19,10 @@ goog.require('goog.ui.Component');
 /**
  * Provides templates for the components.
  * @constructor
+ * @struct
  */
 pstj.ui.Template = function() {};
 goog.addSingletonGetter(pstj.ui.Template);
-
-
-/**
- * The bindin count name to map in the element.
- *
- * @type {string}
- * @final
- */
-pstj.ui.Template.DATA_BINDING_COUNT = 'bindingsCount';
 
 
 /**
@@ -39,16 +31,24 @@ pstj.ui.Template.DATA_BINDING_COUNT = 'bindingsCount';
  * @param {Function} ctor The constructor of the renderer you are trying to
  * create.
  * @param {string} className The name of the CSS class for this renderer.
+ * @param {function(Object.<string, *>=): string=} opt_templateFn The template
+ *    function to hot swipe in the constructor.
  * @return {goog.ui.ControlRenderer} An instance of the desired renderer with
- * its getCssClass() method overridden to return the supplied custom CSS class
- * name.
+ *    its getCssClass() method overridden to return the supplied custom CSS
+ *    class name.
  */
-pstj.ui.Template.getCustomTemplate = function(ctor, className) {
+pstj.ui.Template.getCustomTemplate = function(ctor, className, opt_templateFn) {
   var template = new ctor();
 
   template.getCssClass = function() {
     return className;
   };
+
+  if (opt_templateFn) {
+    template.getTemplate = function(model) {
+      return opt_templateFn(model);
+    };
+  }
 
   return template;
 };
@@ -56,7 +56,7 @@ pstj.ui.Template.getCustomTemplate = function(ctor, className) {
 
 /**
  * Returns the base class name for the template.
- * @return {!string}
+ * @return {string}
  */
 pstj.ui.Template.prototype.getCssClass = function() {
   return 'template';
@@ -69,27 +69,8 @@ pstj.ui.Template.prototype.getCssClass = function() {
  * @return {!Element} The element to be used as root node.
  */
 pstj.ui.Template.prototype.createDom = function(component) {
-  var htmlstring = this.getTemplate(this.generateTemplateData(component));
-  var bindings = this.getBindingsCount(htmlstring);
-  var el = /** @type {!Element} */(this.createElement(htmlstring));
-  goog.dom.dataset.set(el, pstj.ui.Template.DATA_BINDING_COUNT,
-      bindings.toString());
-  return el;
-};
-
-
-/**
- * Will count the double moustaches occurences inside the element.
- * Note that here we do not assume component bounds and instead count all
- * occurences.
- *
- * @param {string} htmlstring The HTML string to inspect.
- * @return {number} The number of moustaches occurences.
- */
-pstj.ui.Template.prototype.getBindingsCount = function(htmlstring) {
-  var result = htmlstring.match(/{{.*}}/g);
-  if (!result) return 0;
-  return result.length;
+  return /** @type {!Element} */(this.createElement(
+      this.getTemplate(this.generateTemplateData(component))));
 };
 
 

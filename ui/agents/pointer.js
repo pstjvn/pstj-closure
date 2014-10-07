@@ -1,17 +1,21 @@
 goog.provide('pstj.agent.Pointer');
+goog.provide('pstj.agent.Pointer.EventType');
+goog.provide('pstj.agent.PointerEvent');
 
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
+goog.require('goog.events');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventType');
 goog.require('goog.math.Coordinate');
 goog.require('pstj.ui.Agent');
-goog.require('pstj.ui.element.EventType');
 
 
-
+/**
+ * Implementation for the pointer agent.
+ */
 pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   /**
    * Provides modern event abstractions for touch mouse and pen. Use
@@ -97,6 +101,15 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
 
   /**
+   * Getter for the type of event that triggered the pointer event.
+   * @return {pstj.agent.Pointer.Type}
+   */
+  getOriginalType: function() {
+    return this.currentEventType_;
+  },
+
+
+  /**
    * Attempts to find the component instance that corresponds to the
    * element triggered the browser event.
    * @param {Element} element
@@ -113,14 +126,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // between elements and component.
     this.elements_[this.indexOf(component)] = component.getElement();
 
-    // We need to make sure we are bound to the document for mouse events as
-    // they seem to often escape the boundaries of the target element
-    if (!this.isDocumentBound_) {
-      this.handler.listen(goog.dom.getDocument(), [
-        goog.events.EventType.MOUSEMOVE,
-        goog.events.EventType.MOUSEUP], this.handleEvents);
-    }
-
     this.handler.listen(component.getElement(), [
       goog.events.EventType.TOUCHSTART,
       goog.events.EventType.TOUCHMOVE,
@@ -136,6 +141,32 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         goog.events.EventType.POINTERUP,
         goog.events.EventType.POINTERCANCEL
       ], this.handleEvents);
+    }
+  },
+
+
+  /**
+   * ENable handling the mouse on document level. This is needed because
+   * the mouse down target might not moove fast enought with the mouse and thus
+   * it can be lost (not under the mouse) and the event not finished properly.
+   *
+   * To mitigate this we start to listen to the document level for movement and
+   * up mouse events once the mouse triggers pointer event start,
+   *
+   * @param {boolean} enable If the listener should ne enabled.
+   * @protected
+   */
+  enableDocumentMouseHandling: function(enable) {
+    if (enable && !this.isDocumentBound_) {
+      this.isDocumentBound_ = true;
+      this.handler.listen(goog.dom.getDocument(), [
+        goog.events.EventType.MOUSEMOVE,
+        goog.events.EventType.MOUSEUP], this.handleEvents);
+    } else if (!enable && this.isDocumentBound_) {
+      this.isDocumentBound_ = false;
+      this.handler.unlisten(goog.dom.getDocument(), [
+        goog.events.EventType.MOUSEMOVE,
+        goog.events.EventType.MOUSEUP], this.handleEvents);
     }
   },
 
@@ -182,7 +213,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * @protected
    */
   onRaf: function(ts) {
-    this.getTargetComponent().dispatchEvent(pstj.ui.element.EventType.MOVE);
+    this.createEvent(pstj.agent.Pointer.EventType.MOVE);
     this.lastPoint_.copy(this.currentPoint_);
   },
 
@@ -190,11 +221,29 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   /**
    * Allows the listener(s) to have access to the current touch point (i.e.
    * the last move taht occured).
-   *
-   * @return {pstj.agent.Point_}
+   * @param {number=} opt_idx The index of the multi event.
+   * @return {!pstj.agent.Point_}
    */
   getCurrentPoint: function(opt_idx) {
     return this.currentPoint_;
+  },
+
+
+  /**
+   * Getter for the start point.
+   * @return {!pstj.agent.Point_}
+   */
+  getStartPoint: function() {
+    return this.startPoint_;
+  },
+
+
+  /**
+   * Getter for the previous point in move.
+   * @return {!pstj.agent.Point_}
+   */
+  getLastPoint: function() {
+    return this.lastPoint_;
   },
 
 
@@ -235,6 +284,10 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         } else {
           this.longPressDelay_.stop();
           // TODO: handle multiple touches.
+          // All moves will be received here even if the move is for a
+          // target that is not inside of the current locked target
+          // This means that we should expose the pinch event eitherway and
+          // stopping the move event
           return;
         }
       } else if (e.type == goog.events.EventType.MOUSEDOWN) {
@@ -242,10 +295,12 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         this.currentEventType_ = pstj.agent.Pointer.Type.MOUSE;
         var event = this.getMouseEvent(e);
         this.startPoint_.update(event.clientX, event.clientY, event.timeStamp);
+        this.sourceElement_ = /** @type {Element} */(e.target);
         // Start listening on the document for move events as mouse
         // events are not bound to their original target.
-        this.isDocumentBound_ = true;
+        this.enableDocumentMouseHandling(true);
       } else if (e.type == goog.events.EventType.POINTERDOWN) {
+        console.log('Unsupported - POINTERDOWN');
         //TODO: handle the MS events.
       }
       // Reset all points
@@ -253,7 +308,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       this.lastPoint_.copy(this.startPoint_);
       this.longPressDelay_.start();
       // Finally notify listeners.
-      this.getTargetComponent().dispatchEvent(pstj.ui.element.EventType.PRESS);
+      this.createEvent(pstj.agent.Pointer.EventType.PRESS);
 
     // MOVE
     } else if (e.type == goog.events.EventType.TOUCHMOVE ||
@@ -279,9 +334,11 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
                 touch.clientY,
                 this.getTouchEvent(e).timeStamp);
           } else {
+            console.log('Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
           }
         } else if (e.type == goog.events.EventType.POINTERMOVE) {
+          console.log('Unsupported - POINTERMOVE');
           // TODO: handle pointer events
         }
         this.longPressDelay_.stop();
@@ -304,23 +361,22 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           }
         } else if (e.type == goog.events.EventType.MOUSEUP) {
           this.currentPoint_.timestamp = this.getMouseEvent(e).timeStamp;
-          this.isDocumentBound_ = false;
+          this.enableDocumentMouseHandling(false);
         } else if (e.type == goog.events.EventType.POINTERUP) {
+          console.log('Unsupported - POINTERUP');
           // TODO: handle pointer events for IE
         }
 
         this.raf_.stop();
         this.longPressDelay_.stop();
-        this.getTargetComponent().dispatchEvent(
-            pstj.ui.element.EventType.RELEASE);
+        this.createEvent(pstj.agent.Pointer.EventType.RELEASE);
 
         if (goog.math.Coordinate.distance(
             this.startPoint_, this.currentPoint_) < 2 &&
-            this.currentPoint_.timestamp - this.startPoint_.timestamp <
+            (this.currentPoint_.timestamp - this.startPoint_.timestamp) <
                 pstj.agent.Pointer.TapDelay) {
-          this.getTargetComponent().dispatchEvent(new pstj.agent.PointerEvent(
-              pstj.ui.element.EventType.TAP,
-              this.getTargetComponent(), this.sourceElement_));
+
+          this.createEvent(pstj.agent.Pointer.EventType.TAP);
         }
         // makes sure this does not get stuck.
         this.currentEventType_ = pstj.agent.Pointer.Type.UNKNOWN;
@@ -330,6 +386,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // CANCEL
     } else if (e.type == goog.events.EventType.TOUCHCANCEL ||
         e.type == goog.events.EventType.POINTERCANCEL) {
+      console.log('TODO: handle cancel events');
       // TODO: handle cancel events
     }
   },
@@ -436,8 +493,18 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * @protected
    */
   fireLongPress: function() {
+    this.createEvent(pstj.agent.Pointer.EventType.LONGPRESS);
+  },
+
+
+  /**
+   * Fires a new PointerEvent for the current agent setup.
+   * @param {pstj.agent.Pointer.EventType} type The type of the event to create.
+   * @protected
+   */
+  createEvent: function(type) {
     this.getTargetComponent().dispatchEvent(
-        pstj.ui.element.EventType.LONGPRESS);
+        new pstj.agent.PointerEvent(type, this.getTargetComponent()));
   },
 
 
@@ -461,11 +528,36 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       TOUCH: 1,
       MOUSE: 2,
       POINTER: 3
+    },
+
+
+    /**
+     * The directions we are interested in.
+     * @enum {number}
+     */
+    Direction: {
+      X: 1,
+      Y: 2,
+      ALL: 4
     }
   }
 
 });
 goog.addSingletonGetter(pstj.agent.Pointer);
+
+
+/**
+ * Defines the Pointer agent event types. The pointer agent will be emiting
+ * these events based on the abstracted interaction with the user.
+ * @enum {string}
+ */
+pstj.agent.Pointer.EventType = {
+  PRESS: goog.events.getUniqueId('press'),
+  MOVE: goog.events.getUniqueId('move'),
+  RELEASE: goog.events.getUniqueId('release'),
+  LONGPRESS: goog.events.getUniqueId('longpress'),
+  TAP: goog.events.getUniqueId('tap')
+};
 
 
 /**
@@ -475,6 +567,10 @@ goog.addSingletonGetter(pstj.agent.Pointer);
 goog.define('pstj.agent.Pointer.TapDelay', 150);
 
 
+/**
+ * Implementation for a timestamped math.Point
+ * @private
+ */
 pstj.agent.Point_ = goog.defineClass(goog.math.Coordinate, {
   /**
    * Notion of timestamped touch / pen / mouse point.
@@ -511,10 +607,25 @@ pstj.agent.Point_ = goog.defineClass(goog.math.Coordinate, {
     this.x = point.x;
     this.y = point.y;
     this.timestamp = point.timestamp;
+  },
+
+
+  /**
+   * Clone the point for later use.
+   * @override
+   * @return {!pstj.agent.Point_}
+   */
+  clone: function() {
+    var p = new pstj.agent.Point_();
+    p.copy(this);
+    return p;
   }
 });
 
 
+/**
+ * Implementation for a custom pointer event.
+ */
 pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
   /**
    * Provides custom event for higher order events (like TAP for example).
@@ -526,20 +637,78 @@ pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
    *
    * @param {string} type The event type.
    * @param {goog.ui.Component} target The target of the event.
-   * @param {Element} source The source element that triggered the creation
-   *    of the high level event.
    * @constructor
    * @extends {goog.events.Event}
    * @struct
    * @suppress {checkStructDictInheritance}
    */
-  constructor: function(type, target, source) {
+  constructor: function(type, target) {
     goog.events.Event.call(this, type, target);
-    this.source = source;
   },
 
-  /** @override */
-  disposeInternal: function() {
-    this.source = null;
+
+  /**
+   * Returns the point relevant for the current event.
+   * @return {pstj.agent.Point_}
+   */
+  getPoint: function() {
+    if (this.type == pstj.agent.Pointer.EventType.PRESS ||
+        this.type == pstj.agent.Pointer.EventType.TAP) {
+      return pstj.agent.Pointer.getInstance().getStartPoint();
+    } else {
+      return pstj.agent.Pointer.getInstance().getCurrentPoint();
+    }
+  },
+
+
+  /**
+   * Retrieves the distance. Only returns meaningful values for MOVE and
+   * RELEASE events.
+   * @param {pstj.agent.Pointer.Direction=} opt_direction The direction to
+   *    measure.
+   * @return {number}
+   */
+  getDistance: function(opt_direction) {
+    if (!opt_direction || opt_direction == pstj.agent.Pointer.Direction.ALL) {
+      return goog.math.Coordinate.distance(
+          pstj.agent.Pointer.getInstance().getStartPoint(),
+          pstj.agent.Pointer.getInstance().getCurrentPoint());
+    } else if (opt_direction == pstj.agent.Pointer.Direction.X) {
+      return (pstj.agent.Pointer.getInstance().getStartPoint().x -
+          pstj.agent.Pointer.getInstance().getCurrentPoint().x);
+    } else if (opt_direction == pstj.agent.Pointer.Direction.Y) {
+      return (pstj.agent.Pointer.getInstance().getStartPoint().y -
+          pstj.agent.Pointer.getInstance().getCurrentPoint().y);
+    } else {
+      return 0;
+    }
+  },
+
+
+  /**
+   * Returns the duration from the start of the event (for RELEASE/TAP) or the
+   * time difference between the current and the last fired event in MOVE.
+   * @return {number} Milliseconds ellapsed.
+   */
+  getDuration: function() {
+    if (this.type == pstj.agent.Pointer.EventType.RELEASE ||
+        this.type == pstj.agent.Pointer.EventType.TAP) {
+      return (pstj.agent.Pointer.getInstance().getCurrentPoint().timestamp -
+          pstj.agent.Pointer.getInstance().getStartPoint().timestamp);
+    } else if (this.type == pstj.agent.Pointer.EventType.MOVE) {
+      return (pstj.agent.Pointer.getInstance().getCurrentPoint().timestamp -
+          pstj.agent.Pointer.getInstance().getLastPoint().timestamp);
+    } else {
+      return 0;
+    }
+  },
+
+
+  /**
+   * Getter for the DOM element that triggered the Pointer event initially.
+   * @return {Element}
+   */
+  getSourceElement: function() {
+    return pstj.agent.Pointer.getInstance().getSourceTarget();
   }
 });
