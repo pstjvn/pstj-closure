@@ -260,7 +260,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // paradigm, but if the developer wants to listen for the events we
     // assume he really wants to do so.
     e.stopPropagation();
-    e.preventDefault();
 
     if (e.type == goog.events.EventType.TOUCHSTART ||
         e.type == goog.events.EventType.POINTERDOWN ||
@@ -350,6 +349,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         e.type == goog.events.EventType.POINTERUP) {
 
       if (this.isLocked()) {
+        e.preventDefault();
         if (e.type == goog.events.EventType.TOUCHEND) {
           if (this.getTouchesCount(e) == 0) {
             this.currentPoint_.timestamp = this.getTouchEvent(e).timeStamp;
