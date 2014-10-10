@@ -38,7 +38,7 @@ goog.addDependency('../../../apps/pstj/material/ripplerenderer.js', ['pstj.mater
 goog.addDependency('../../../apps/pstj/material/scrimpanel.js', ['pstj.material.ScrimPanel'], ['goog.asserts', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ScrimPanelRenderer']);
 goog.addDependency('../../../apps/pstj/material/scrimpanelrenderer.js', ['pstj.material.ScrimPanelRenderer'], ['pstj.material.ElementRenderer']);
 goog.addDependency('../../../apps/pstj/material/state.js', ['pstj.material.State'], ['goog.ui.Component.State']);
-goog.addDependency('../../../apps/pstj/material/wave.js', ['pstj.material.Wave'], ['goog.Disposable', 'goog.array', 'goog.async.AnimationDelay', 'goog.color', 'goog.dom', 'goog.math.Coordinate', 'goog.math.Size', 'goog.structs.Pool', 'goog.style', 'pstj.color', 'pstj.ds.Cache', 'pstj.lab.style.css', 'pstj.material.EventType', 'pstj.math.utils']);
+goog.addDependency('../../../apps/pstj/material/wave.js', ['pstj.material.Wave'], ['goog.Disposable', 'goog.array', 'goog.async.AnimationDelay', 'goog.async.Delay', 'goog.color', 'goog.dom', 'goog.math.Coordinate', 'goog.math.Size', 'goog.structs.Pool', 'goog.style', 'pstj.color', 'pstj.ds.Cache', 'pstj.lab.style.css', 'pstj.material.EventType', 'pstj.math.utils']);
 goog.addDependency('../../../apps/pstj/math/number-generators.js', ['pstj.math.CyclicNumberGenerator', 'pstj.math.LinearNumberGenerator'], []);
 goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['goog.array', 'goog.math.Coordinate']);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);

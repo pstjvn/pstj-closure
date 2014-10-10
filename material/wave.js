@@ -27,6 +27,7 @@ goog.provide('pstj.material.Wave');
 goog.require('goog.Disposable');
 goog.require('goog.array');
 goog.require('goog.async.AnimationDelay');
+goog.require('goog.async.Delay');
 goog.require('goog.color');
 goog.require('goog.dom');
 goog.require('goog.math.Coordinate');
@@ -175,6 +176,7 @@ pstj.material.Wave = function() {
   this.waveContainer_ = dom.createDom('div',
       goog.getCssName('wave-container'));
   dom.appendChild(this.waveContainer_, this.wave_);
+  this.delay_ = new goog.async.Delay(this.completeTap_, 70, this);
 };
 goog.inherits(pstj.material.Wave, goog.Disposable);
 
@@ -436,9 +438,33 @@ pstj.material.Wave.prototype.handlePress = function(e) {
  * @param {pstj.agent.PointerEvent} e
  */
 pstj.material.Wave.prototype.handleRelease = function(e) {
+  this.completeTap_(e.getPoint().timestamp);
+};
+
+
+/**
+ * Handler for the TAP event. It differentiates from press/release cycle by the
+ * fact that we have to immediately use the release.
+ * @param {pstj.agent.PointerEvent} e
+ */
+pstj.material.Wave.prototype.handleTap = function(e) {
+  this.handlePress(e);
+  this.delay_.start();
+};
+
+
+/**
+ * Completes the press/release cycle. This is a separate method because if TAP
+ * is used the release delay is simulated.
+ * @param {number} ts The timestamp. In press/release this is the timestamp if
+ * the release event, in TAP handling this is the goog.now() result.
+ * @private
+ */
+pstj.material.Wave.prototype.completeTap_ = function(ts) {
+  if (!goog.isDef(ts)) ts = goog.now();
   if (this.pressed_) {
     this.pressed_ = false;
-    this.releaseTimestamp_ = e.getPoint().timestamp;
+    this.releaseTimestamp_ = ts;
     this.pressTimestamp_ = 0;
     this.releaseElapsedTime_ = 0.0;
   }

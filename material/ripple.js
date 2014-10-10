@@ -30,8 +30,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
-    this.setAutoEventsInternal(EventMap.EventFlag.PRESS |
-        EventMap.EventFlag.RELEASE);
+    this.setAutoEventsInternal(EventMap.EventFlag.TAP);
     /**
      * Recentering flag for the wave.
      * @type {boolean}
@@ -51,6 +50,9 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
 
   /** @override */
+  // This is commented out as TAP is preffered. If you have really good reason
+  // you can use press/release as triggers as shown here.
+  /*
   onPress: function(e) {
     var wave = Wave.get(this);
     wave.setRecenter(this.recenterRipples_);
@@ -59,6 +61,15 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
           wave.handleRelease(ev);
         });
     wave.handlePress(e);
+  }
+  */
+
+
+  /** @override */
+  onTap: function(e) {
+    var wave = Wave.get(this);
+    wave.setRecenter(this.recenterRipples_);
+    wave.handleTap(e);
   }
 
 });
