@@ -93,7 +93,6 @@ pstj.material.HeaderPanel = goog.defineClass(Base, {
   /** @override */
   onScroll: function() {
     var atTop = this.getScrollElement().scrollTop == 0;
-    console.log(this.hasState(State.STANDARD));
     this.setState(State.SHADOW,
         (this.hasState(State.STANDARD) ||
         (this.isShadow() && !atTop)));
