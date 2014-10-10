@@ -1,0 +1,26 @@
+@import "common";
+@import "layout";
+
+// Design for the base ripple element. Note that we do not yet support the
+// circle ripple element.
+.ripple {
+  border-radius: inherit;
+  overflow: hidden;
+  &:extend(.core-fit);
+  &-bg, &-waves {
+    &:extend(.fillall);
+  }
+  &-bg, .wave {
+    opacity: 0;
+  }
+  &-waves, .wave {
+    overflow: hidden;
+  }
+}
+
+.wave-container, .wave {
+  &:extend(.fillall);
+  border-radius: 50%;
+}
+
+

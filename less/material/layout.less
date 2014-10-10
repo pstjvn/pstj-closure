@@ -1,3 +1,5 @@
+@import "common";
+
 .core-flex {
   -ms-flex: 1 1 0.000000001px;
   -webkit-flex: 1;
@@ -20,4 +22,8 @@
   -webkit-flex-direction: column;
   /* @alternative */
   flex-direction: column;
+}
+
+.core-fit {
+  &:extend(.core-fill-position);
 }

@@ -7,6 +7,12 @@
 goog.provide('pstj.math.utils');
 
 goog.require('goog.array');
+goog.require('goog.math.Coordinate');
+
+
+goog.scope(function() {
+var _ = pstj.math.utils;
+var Coordinate = goog.math.Coordinate;
 
 
 /**
@@ -15,7 +21,7 @@ goog.require('goog.array');
  * @param {number} to The last possible value.
  * @return {number} The generated value.
  */
-pstj.math.utils.getRandomBetween = function(from, to) {
+_.getRandomBetween = function(from, to) {
   return Math.floor(Math.random() * (to - from + 1) + from);
 };
 
@@ -27,7 +33,7 @@ pstj.math.utils.getRandomBetween = function(from, to) {
  * @param {Array.<number>} b The x ([0]) and y ([1]) of the second point.
  * @return {number} The distance as floating point.
  */
-pstj.math.utils.distanceOfSegment = function(a, b) {
+_.distanceOfSegment = function(a, b) {
   return Math.sqrt(((a[0] - b[0]) * (a[0] - b[0])) + ((a[1] - b[1]) * (
       a[1] - b[1])));
 };
@@ -41,7 +47,7 @@ pstj.math.utils.distanceOfSegment = function(a, b) {
  *   the segment.
  * @return {Array.<number>} The point that sits in the middle of the segment.
  */
-pstj.math.utils.middleOfSegment = function(a, b) {
+_.middleOfSegment = function(a, b) {
   return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
 };
 
@@ -52,7 +58,7 @@ pstj.math.utils.middleOfSegment = function(a, b) {
  * @param {number} of_value The value to calculate the percentage according to.
  * @return {number} The percen of value in of_value.
  */
-pstj.math.utils.getPercentFromValue = function(value, of_value) {
+_.getPercentFromValue = function(value, of_value) {
   return (value / of_value) * 100;
 };
 
@@ -63,7 +69,7 @@ pstj.math.utils.getPercentFromValue = function(value, of_value) {
  * @param {number} percent The percent to calculate.
  * @return {number} The calculated percentile of value.
  */
-pstj.math.utils.getValueFromPercent = function(value, percent) {
+_.getValueFromPercent = function(value, percent) {
   return (value * percent) / 100;
 };
 
@@ -74,7 +80,7 @@ pstj.math.utils.getValueFromPercent = function(value, percent) {
  * @return {T} The item picked at random.
  * @template T
  */
-pstj.math.utils.pick = function(arr) {
+_.pick = function(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
@@ -85,7 +91,7 @@ pstj.math.utils.pick = function(arr) {
  * @param {!number} num The number to find multiplicator for.
  * @return {!number} The calculated multiplicator.
  */
-pstj.math.utils.shiftToInteger = function(num) {
+_.shiftToInteger = function(num) {
   if (num == (num | 0)) {
     return 1;
   }
@@ -104,10 +110,10 @@ pstj.math.utils.shiftToInteger = function(num) {
  * @param {...number} var_args The numbers to compute with.
  * @return {!number}
  */
-pstj.math.utils.calculateCommonMultiplicator = function(var_args) {
+_.calculateCommonMultiplicator = function(var_args) {
   var multiplicator = 1;
   goog.array.forEach(arguments, function(arg) {
-    var res = pstj.math.utils.shiftToInteger(arg);
+    var res = _.shiftToInteger(arg);
     if (res > multiplicator) multiplicator = res;
   });
   return multiplicator;
@@ -121,9 +127,41 @@ pstj.math.utils.calculateCommonMultiplicator = function(var_args) {
  * @param {!number} default_value The value to use as dewfault.
  * @return {!number}
  */
-pstj.math.utils.parseFloat = function(str, default_value) {
+_.parseFloat = function(str, default_value) {
   if (goog.isNull(str)) return default_value;
   var num = parseFloat(str);
   if (isNaN(num)) return default_value;
   return num;
 };
+
+
+/**
+ * Finds the largests distance from point to corner of a rectangle. This means
+ * that the distance between the point and the corner that is furthest from that
+ * point will be returned.
+ * @param {!Coordinate} point
+ * @param {goog.math.Rect} rect
+ * @return {number}
+ */
+_.distanceToFurthestCorner = function(point, rect) {
+  // tl tr bl br
+  return Math.max(
+      Coordinate.distance(point, new Coordinate(0, 0)),
+      Coordinate.distance(point, new Coordinate(rect.width, 0)),
+      Coordinate.distance(point, new Coordinate(0, rect.height)),
+      Coordinate.distance(point, new Coordinate(rect.width, rect.height)));
+};
+
+
+/**
+ * Returns the diagonal length of the rectangle.
+ * @param {goog.math.Rect|goog.math.Size} rect
+ * @return {number}
+ */
+_.diagonal = function(rect) {
+  return Math.sqrt(rect.width * rect.width + rect.height * rect.height);
+};
+
+});  // goog.scope
+
+

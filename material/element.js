@@ -427,9 +427,16 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       this.getHandler().unlisten(this, pev.RELEASE, this.onRelease);
     }
 
+    // Handle swipes
     if (this.hasAutoEvent(EventMap.EventFlag.SWIPE)) {
       this.getHandler().listen(this, pev.PRESS, this.onPress);
       this.getHandler().listen(this, pev.MOVE, this.onMove);
+      this.getHandler().listen(this, pev.RELEASE, this.onRelease);
+    }
+
+    // Handle ripples - note that it should NOT be used
+    if (this.hasAutoEvent(EventMap.EventFlag.RIPPLE)) {
+      this.getHandler().listen(this, pev.PRESS, this.onPress);
       this.getHandler().listen(this, pev.RELEASE, this.onRelease);
     }
 
@@ -527,6 +534,16 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   getScrollElement: function() {
     return this.getElement();
+  },
+
+
+  /**
+   * Returns the element on which to generate ripple effect. By default this is
+   * the root element.
+   * @return {!Element}
+   */
+  getRippleElement: function() {
+    return this.getElementStrict();
   },
 
 
@@ -638,7 +655,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
         EventMap.EventFlag.RELEASE |
         EventMap.EventFlag.TAP |
         EventMap.EventFlag.SWIPE |
-        EventMap.EventFlag.LONGPRESS)
+        EventMap.EventFlag.LONGPRESS |
+        EventMap.EventFlag.RIPPLE)
   }
 
 });

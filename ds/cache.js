@@ -22,6 +22,7 @@ goog.require('pstj.debug');
  * @constructor
  * @param {string=} opt_name Optional, name of the cache, used only for debug
  *    and to notify the number ot items.
+ * @template T
  */
 pstj.ds.Cache = function(opt_name) {
   /**
@@ -33,7 +34,7 @@ pstj.ds.Cache = function(opt_name) {
   /**
    * The actual object we will use to store the key/value pairs.
    *
-   * @type {Object.<string, *>}
+   * @type {Object.<string, T>}
    * @private
    */
   this.cache_ = {};
@@ -58,7 +59,7 @@ pstj.ds.Cache = function(opt_name) {
  * Creates a new record in the cache or updates existing one.
  *
  * @param {!string} key The key.
- * @param {*} data The data.
+ * @param {T} data The data.
  */
 pstj.ds.Cache.prototype.set = function(key, data) {
   if (goog.DEBUG) {
@@ -86,7 +87,7 @@ pstj.ds.Cache.prototype.has = function(key) {
  * exists null is returned.
  *
  * @param {!string} key The key to lookup.
- * @return {*}
+ * @return {T}
  */
 pstj.ds.Cache.prototype.get = function(key) {
   if (this.has(key)) {
@@ -113,14 +114,23 @@ pstj.ds.Cache.prototype.remove = function(key) {
 
 
 /**
+ * Checks if the cache is currently empty.
+ * @return {boolean}
+ */
+pstj.ds.Cache.prototype.isEmpty = function() {
+  return goog.object.isEmpty(this.cache_);
+};
+
+
+/**
  * Wraps the library object call to always point to the right object.
  *
- * @param {?function(this:T,V,string,Object.<string,V>):boolean} f The function
- *    to call for every element. This function takes 3 arguments (the element,
- *    the index and the object) and should return a boolean.
- * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @param {?function(this:THIS,T,string,Object.<string,T>):boolean} f The
+ *    function to call for every element. This function takes 3 arguments
+ *    (the element, the index and the object) and should return a boolean.
+ * @param {THIS=} opt_obj This is used as the 'this' object within f.
  * @return {boolean} false if any element fails the test.
- * @template T, V
+ * @template THIS, T
  */
 pstj.ds.Cache.prototype.every = function(f, opt_obj) {
   return goog.object.every(this.cache_, f, opt_obj);

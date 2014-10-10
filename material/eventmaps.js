@@ -19,7 +19,8 @@ _.EventFlag = {
   TAP: 8,
   LONGPRESS: 16,
   SCROLL: 32,
-  SWIPE: 64
+  SWIPE: 64,
+  RIPPLE: 128
 };
 
 
@@ -35,7 +36,8 @@ _.ClassByEvent = goog.object.create(
     _.EventFlag.TAP, goog.getCssName('core-tap'),
     _.EventFlag.LONGPRESS, goog.getCssName('core-longpress'),
     _.EventFlag.SCROLL, goog.getCssName('core-scroll'),
-    _.EventFlag.SWIPE, goog.getCssName('core-swipe'));
+    _.EventFlag.SWIPE, goog.getCssName('core-swipe'),
+    _.EventFlag.RIPPLE, goog.getCssName('core-ripple'));
 
 
 /**

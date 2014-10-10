@@ -33,11 +33,14 @@ goog.addDependency('../../../apps/pstj/material/eventtype.js', ['pstj.material.E
 goog.addDependency('../../../apps/pstj/material/headerpanel.js', ['pstj.material.HeaderPanel'], ['goog.ui.Component.State', 'pstj.material.Element', 'pstj.material.EventMap', 'pstj.material.HeaderPanelRenderer', 'pstj.material.State']);
 goog.addDependency('../../../apps/pstj/material/headerpanelrenderer.js', ['pstj.material.HeaderPanelRenderer'], ['pstj.material.ElementRenderer', 'pstj.material.template']);
 goog.addDependency('../../../apps/pstj/material/mediaquery.js', ['pstj.material.MediaQuery'], ['goog.async.nextTick', 'goog.dom', 'goog.events', 'goog.events.EventTarget', 'pstj.material.EventType']);
+goog.addDependency('../../../apps/pstj/material/ripple.js', ['pstj.material.Ripple'], ['pstj.material.Element', 'pstj.material.EventMap', 'pstj.material.RippleRenderer', 'pstj.material.Wave']);
+goog.addDependency('../../../apps/pstj/material/ripplerenderer.js', ['pstj.material.RippleRenderer'], ['pstj.material.ElementRenderer']);
 goog.addDependency('../../../apps/pstj/material/scrimpanel.js', ['pstj.material.ScrimPanel'], ['goog.asserts', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ScrimPanelRenderer']);
 goog.addDependency('../../../apps/pstj/material/scrimpanelrenderer.js', ['pstj.material.ScrimPanelRenderer'], ['pstj.material.ElementRenderer']);
 goog.addDependency('../../../apps/pstj/material/state.js', ['pstj.material.State'], ['goog.ui.Component.State']);
+goog.addDependency('../../../apps/pstj/material/wave.js', ['pstj.material.Wave'], ['goog.Disposable', 'goog.array', 'goog.async.AnimationDelay', 'goog.color', 'goog.dom', 'goog.math.Coordinate', 'goog.math.Size', 'goog.structs.Pool', 'goog.style', 'pstj.color', 'pstj.ds.Cache', 'pstj.lab.style.css', 'pstj.material.EventType', 'pstj.math.utils']);
 goog.addDependency('../../../apps/pstj/math/number-generators.js', ['pstj.math.CyclicNumberGenerator', 'pstj.math.LinearNumberGenerator'], []);
-goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['goog.array']);
+goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['goog.array', 'goog.math.Coordinate']);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable']);
