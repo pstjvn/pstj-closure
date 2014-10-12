@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Provides the default implementation for the ripple effect
+ * as found in the paper reference implementation.
+ *
+ * Note that while it is usable, a more robust variant that leaves less DOM
+ * nodes inside the tree is available.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.Ripple');
 
 goog.require('pstj.material.Element');

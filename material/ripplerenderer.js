@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Provides the default ripple element's renderer.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.RippleRenderer');
 
 goog.require('pstj.material.ElementRenderer');
@@ -46,4 +52,3 @@ pstj.material.RippleRenderer = goog.defineClass(ER, {
 });
 
 });  // goog.scope
-
