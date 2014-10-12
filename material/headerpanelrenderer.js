@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Provides the renderer for the header panel.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.HeaderPanelRenderer');
 
 goog.require('pstj.material.ElementRenderer');

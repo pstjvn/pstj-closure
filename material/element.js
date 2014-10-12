@@ -2,8 +2,8 @@
  * @fileoverview Provides the base class for material design implementation for
  * the closure library. We include both the base control and its renderer in
  * order to allow for some additional type checks in DEBUG mode of the code as
- * we are overloading a lot of the control base clas found in the library and to
- * avoid circular dependency between the control and its renderer.
+ * we are overloading a lot of the control base class found in the library and
+ * to avoid circular dependency between the control and its renderer.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
@@ -42,12 +42,12 @@ var pev = pstj.agent.Pointer.EventType;
 pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   /**
    * Implementation of the control renderer for the material design elements.
-   * Note that several key features of the goog.ui.ControlRenderer are overriden
-   * to make better use of the modern browsers and not all features are
-   * implemented in a manner to work in older engines. This base renderer should
-   * be enough for most elements. The class is designed to be used as a single
-   * instance so please do not instanciate it, instead use the static
-   * 'getInstance' method.
+   * Note that several key features of the goog.ui.ControlRenderer are
+   * over-ridden to make better use of the modern browsers and not all
+   * features are implemented in a manner to work in older engines. This
+   * base renderer should be enough for most elements. The class is designed
+   * to be used as a single instance so please do not instantiate it,
+   * instead use the static 'getInstance' method.
    * @constructor
    * @struct
    * @extends {goog.ui.ControlRenderer}
@@ -109,7 +109,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
 
   /**
-   * Overrides the dom creation to rely on a template.
+   * Overrides the DOM creation to rely on a template.
    * @override
    * @param {goog.ui.Control} control The control to create DOM for.
    * @return {Element}
@@ -156,13 +156,13 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * As the material elements rely on html we provide a method to get the
-   * template required without chaning the rest of the logic of the renderer.
+   * template required without chaining the rest of the logic of the renderer.
    * Simply override this method to get a different template for the same
    * element.
    * @param {Object.<string, *>} model The model to apply on the template.
    *    The template is a soy template and accepts a single object as model
    *    parameter.
-   * @return {string} The outpput of the soy template.
+   * @return {string} The output of the soy template.
    * @protected
    */
   getTemplate: function(model) {
@@ -224,9 +224,9 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
 
   /**
-   * Queries the component's root node for elements mathicng the query string.
+   * Queries the component's root node for elements matching the query string.
    * @param {Element} element The element that we want to search in.
-   * @param {!string} selector Css query string.
+   * @param {!string} selector CSS query string.
    * @return {!NodeList} The node collection. Collection could be empty.
    */
   querySelectorAll: function(element, selector) {
@@ -247,7 +247,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      * optionally a custom template function.
      * @param {Function} ctor The constructor of the renderer you want to
      *    create.
-     * @param {string} cssClassName The name of the css class for the custom
+     * @param {string} cssClassName The name of the CSS class for the custom
      *    renderer.
      * @param {function(Object.<string, *>=): string=} opt_templateFn Optional
      *    template soy function to use to generate the DOM.
@@ -288,7 +288,7 @@ goog.addSingletonGetter(pstj.material.ElementRenderer);
 pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Implementation of the base material design element. The implementation uses
-   * the ideas of the templated component and assumes that the DOM will be
+   * the ideas of the template component and assumes that the DOM will be
    * created by decorating element of constructing them from a soy template.
    * This means that we can minify the classes and also use classes to assign
    * auto events etc.
@@ -316,7 +316,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
      * @private
      */
     this.autoEvents_ = EventMap.EventFlag.NONE;
-    // by default we disable all event handling (mouse and kbd).
+    // by default we disable all event handling (mouse and keyboard).
     this.setHandleMouseEvents(false);
     // Disable all states by default (make it more like the Component).
     this.setSupportedState(goog.ui.Component.State.ALLALL, false);
@@ -372,7 +372,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
   /** @override */
   setContentInternal: function(content) {
-    // Override this, we do not want to keep any refs to actual dom nodes.
+    // Override this, we do not want to keep any refs to actual DOM nodes.
     goog.base(this, 'setContentInternal', null);
   },
 
@@ -588,8 +588,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /**
-   * Handler for any async opearate events.
-   * @param {number} ts The timestamp of the hadler call.
+   * Handler for any  asynchronously operating events.
+   * @param {number} ts The time stamp of the handler call.
    * @protected
    */
   onRaf: goog.functions.FALSE,
@@ -632,8 +632,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /**
-   * Queries the component's root node for elements mathicng the query string.
-   * @param {!string} selector Css query string.
+   * Queries the component's root node for elements matching the query string.
+   * @param {!string} selector CSS query string.
    * @return {!NodeList} The node collection. Collection could be empty.
    */
   querySelectorAll: function(selector) {

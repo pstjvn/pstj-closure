@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Provdes the renderer for the drawer panel element. Because the
+ * element is taken 1 to 1 from the polymer implementation, the renderer is
+ * doing some extra work. This should change with the native implementation
+ * coming.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.DrawerPanelRenderer');
 
 goog.require('pstj.material.ElementRenderer');

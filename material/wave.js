@@ -2,9 +2,9 @@
  * @fileoverview Provides the wave-like ink effect for material design.
  *
  * The main idea is that the waves are up to 10. In reality less than 10 will be
- * used, but in extreame cases (i.e. not material design but drawing like app)
- * it is possible to need more than 10 (for 10 digits and N (~10) still running
- * animations).
+ * used, but in extreme cases (i.e. not material design but drawing like
+ * application) it is possible to need more than 10 (for 10 digits and N
+ * (~10) still running animations).
  *
  * The wave is designed to be pool/cached. You would want to request a wave from
  * the pool and set the element on which the wave is to be applied. In the
@@ -14,10 +14,10 @@
  * it to finish and then remove it from the cache. Removing from the cache
  * should also return the wave instance in the pool for free waves.
  *
- * Obtaining a new wave should link it in the caceh to the element instance.
+ * Obtaining a new wave should link it in the cache to the element instance.
  *
  * Note that the pool is static by default and if you forget to free the
- * finished waves it can be exhausted. This is done for perfoemance reasons.
+ * finished waves it can be exhausted. This is done for performance reasons.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
@@ -65,7 +65,7 @@ var style = goog.style;
 pstj.material.Wave = function() {
   Disposable.call(this);
   /**
-   * Referrence to the currently attached component, if any.
+   * Reference to the currently attached component, if any.
    * @type {pstj.material.Element}
    * @private
    */
@@ -76,7 +76,7 @@ pstj.material.Wave = function() {
    */
   this.element_ = null;
   /**
-   * Outher in script created element (wc, wave container, outer).
+   * Outer in script created element (wc, wave container, outer).
    * @type {Element}
    * @private
    */
@@ -101,7 +101,7 @@ pstj.material.Wave = function() {
    */
   this.startPoint_ = new Coordinate();
   /**
-   * The end coordinate to use when using recentering position.
+   * The end coordinate to use when using re centering position.
    * @type {Coordinate}
    * @private
    */
@@ -113,13 +113,13 @@ pstj.material.Wave = function() {
    */
   this.containerSize_ = new Size(0, 0);
   /**
-   * The longest side of the contaner, used in calculations so we cache it.
+   * The longest side of the container, used in calculations so we cache it.
    * @type {number}
    * @private
    */
   this.containerLargestSide_ = 0;
   /**
-   * The color extacted from the element's currently computer style.
+   * The color exacted from the element's currently computer style.
    * @type {string}
    * @private;
    */
@@ -171,7 +171,7 @@ pstj.material.Wave = function() {
    * @private
    */
   this.opacityDecayVelocity_ = 0.8;
-  // Setup cached dom nodes.
+  // Setup cached DOM nodes.
   this.wave_ = dom.createDom('div', goog.getCssName('wave'));
   this.waveContainer_ = dom.createDom('div',
       goog.getCssName('wave-container'));
@@ -192,7 +192,7 @@ pstj.material.Wave.prototype.setInitialOpacity = function(opacity) {
 
 
 /**
- * Sets the recentering option. If recenter is applied the animation does not
+ * Sets the re centering option. If recenter is applied the animation does not
  * stay fixed but instead growing the wave will move it toward the center of the
  * container.
  * @param {boolean} recenter
@@ -239,7 +239,7 @@ pstj.material.Wave.prototype.nextFrame = function() {
     // his/her finger
     return true;
   } else {
-    // User has liftes his/her finger plus
+    // User has lifted his/her finger plus
     // the minimum alpha is reached and the maximum radius is reached
     // so we need not render this wave anymore.
     if (alpha < 0.01 && radius >= Math.min(this.maxRadius_,
@@ -456,7 +456,7 @@ pstj.material.Wave.prototype.handleTap = function(e) {
 /**
  * Completes the press/release cycle. This is a separate method because if TAP
  * is used the release delay is simulated.
- * @param {number} ts The timestamp. In press/release this is the timestamp if
+ * @param {number} ts The time stamp. In press/release this is the time stamp if
  * the release event, in TAP handling this is the goog.now() result.
  * @private
  */
@@ -507,7 +507,7 @@ pstj.material.Wave.prototype.clearBackground = function() {
  * Override to make sure we do not keep the elements around. Note that the
  * disposing should not actually occur since a pool should be used for
  * obtaining a wave instance and those are all cached. This override is
- * provide in case you deicided to do something else with the implementation.
+ * provide in case you decided to do something else with the implementation.
  * @override
  */
 pstj.material.Wave.prototype.disposeInternal = function() {
@@ -707,4 +707,3 @@ pstj.material.Wave.raf_ = (new AnimationDelay(pstj.material.Wave.onRaf));
 pstj.material.Wave.Pool_ = (new pstj.material.WavePool());
 
 });  // goog.scope
-

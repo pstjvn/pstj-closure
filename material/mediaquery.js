@@ -1,3 +1,20 @@
+/**
+ * @fileoverview Default implementation for the medial query utility. This class
+ * allows the user to set up a media query in code and listen for changes on it
+ * to respond thresholds in the view. Similar to the CSS media query utilities
+ * it is constructed as string and registered on the document.
+ *
+ * Example usage:
+ * <code>
+ * var mq = new pstj.material.MediaQuery('max-width:600px');
+ * goog.events.listen(mq, pstj.material.EventType.MEDIA_CHANGE, function(e) {
+ *   console.log(mq.queryMatches);
+ * });
+ * </code>
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.MediaQuery');
 
 goog.require('goog.async.nextTick');
@@ -8,11 +25,12 @@ goog.require('pstj.material.EventType');
 
 
 /**
- * Implementation for the mediaquery class in material design.
+ * Implementation for the media query class for material design.
  */
 pstj.material.MediaQuery = goog.defineClass(goog.events.EventTarget, {
   /**
-   * Provides the utilities for creating and using media queries inside the app.
+   * Provides the utilities for creating and using media queries inside the
+   * application.
    * @constructor
    * @param {!string} query The query to match against.
    * @extends {goog.events.EventTarget}
@@ -21,24 +39,24 @@ pstj.material.MediaQuery = goog.defineClass(goog.events.EventTarget, {
   constructor: function(query) {
     goog.events.EventTarget.call(this);
     if (!pstj.material.MediaQuery.hasMediaSupport) {
+      // TODO: fix the behavior, throwing on instance creation is not a very
+      // nice practice
       throw new Error('Browser does not support matchMedia');
     }
     /**
-     * The current query matching in matchMedia
-     *
+     * Reference to the query that is configured in the instance.
      * @type {!string}
      * @private
      */
     this.query_ = '';
     /**
-     * The query object requrned by the native functionality.
-     *
+     * The query object returned by the native functionality.
      * @type {MediaQueryList}
      * @private
      */
     this.mediaQuery_ = null;
     /**
-     * Cached helper function. The MediaQueryList interface does not
+     * Cached helper function. The 'MediaQueryList' interface does not
      * provide helper to setup the context so we need to do it manually.
      *
      * @type {function(!MediaQueryList): void}
@@ -105,3 +123,4 @@ pstj.material.MediaQuery = goog.defineClass(goog.events.EventTarget, {
     hasMediaSupport: ('matchMedia' in window)
   }
 });
+

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Implementation for a simple renderer for the scrim panel.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.ScrimPanelRenderer');
 
 goog.require('pstj.material.ElementRenderer');

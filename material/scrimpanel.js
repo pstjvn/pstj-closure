@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Provides a very simple panel element that has an overlay which
+ * can be hidden/shown on demand. The main use in the drawer panel, where we
+ * need to 'overlap' the main panel's content when the drawer panel is on top of
+ * it in order to be able to focus the user attention on the side/drawer.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.ScrimPanel');
 
 goog.require('goog.asserts');
@@ -32,7 +41,7 @@ pstj.material.ScrimPanel = goog.defineClass(pstj.material.Element, {
 
 
   /**
-   * Retrieves the last child in the container - it should be the sceim overlay.
+   * Retrieves the last child in the container - it should be the scrim overlay.
    * @return {pstj.material.Element}
    */
   getScrim: function() {

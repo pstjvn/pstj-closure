@@ -1,3 +1,30 @@
+/**
+ * @fileoverview The drawer panel is a two section user interface abstraction
+ * that simplifies the responsive layout for an application with menu panel and
+ * main panel. When the screen is wide enough the menu panel is displayed at the
+ * left hand side and the main panel is positioned right next to it on its right
+ * and is taking up the rest of the screen. When the screen is not wide enough
+ * the menu panel is hidden on the left and the main panel is taking the whole
+ * screen.
+ *
+ * The 'enough' threshold is configurable on instantiation time and is 640
+ * pixels by default.
+ *
+ * This implementation does not support right hand menu panel, should this be of
+ * any interest it can be easily added.
+ *
+ * The idea for the panel is taken directly from the polymer's own
+ * core-drawer-panel code.
+ *
+ * NOTE: because of the complex structure of the component it cannot add child
+ * nodes before it is decorated/element created as the drawer/main panels are
+ * actually children of the drawer panel. Future implementation that is a
+ * composite of two independent nodes will not have this limitation. For now
+ * first render / decorate the node and only then attempt to add child nodes
+ * with 'addToHeader' and 'addToMain'.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
 goog.provide('pstj.material.DrawerPanel');
 
 goog.require('goog.asserts');
@@ -28,7 +55,7 @@ var EventMap = pstj.material.EventMap;
 pstj.material.DrawerPanel = goog.defineClass(pstj.material.Element, {
   /**
    * Implementation of the responsive design drawer panel found in core polymer
-   * elements. Note that this implementation does not provide the righ oriented
+   * elements. Note that this implementation does not provide the right oriented
    * drawer found in the original component.
    * @constructor
    * @struct
@@ -47,7 +74,7 @@ pstj.material.DrawerPanel = goog.defineClass(pstj.material.Element, {
       opt_content, opt_renderer, opt_domHelper, opt_responsiveWidth) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
     /**
-     * The width of the drawe panel.
+     * The width of the drawer panel.
      * @type {number}
      * @private
      */
@@ -182,7 +209,7 @@ pstj.material.DrawerPanel = goog.defineClass(pstj.material.Element, {
 
   /**
    * Choses a new selected section. The corresponding classes are updated.
-   * @param {pstj.material.DrawerPanel.Section} section The setion to set as
+   * @param {pstj.material.DrawerPanel.Section} section The section to set as
    *    active/selected.
    */
   setSelectedSection: function(section) {
@@ -264,7 +291,7 @@ pstj.material.DrawerPanel = goog.defineClass(pstj.material.Element, {
 
 
   /**
-   * Returns the current state of nthe dragger.
+   * Returns the current state of the dragger.
    * @return {boolean}
    */
   isDragging: function() {
@@ -285,7 +312,7 @@ pstj.material.DrawerPanel = goog.defineClass(pstj.material.Element, {
 
 
   /**
-   * Getter for the withd of the drawer panel.
+   * Getter for the width of the drawer panel.
    * @return {number}
    */
   getDrawerWidth: function() {

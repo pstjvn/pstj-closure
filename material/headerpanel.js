@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Implementation for the header panel as found in the material
+ * design reference implementation.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.HeaderPanel');
 
 goog.require('goog.ui.Component.State');
