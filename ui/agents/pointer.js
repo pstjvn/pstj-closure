@@ -124,7 +124,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   updateCache: function(component) {
     // We need the element in out list so we can easily resolve
     // between elements and component.
-    this.elements_[this.indexOf(component)] = component.getElement();
+    this.elements_[this.indexOf(component)] = component.getContentElement();
 
     this.handler.listen(component.getElement(), [
       goog.events.EventType.TOUCHSTART,
