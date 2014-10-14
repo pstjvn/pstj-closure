@@ -1,0 +1,49 @@
+// Provides the typography fundamentals for material design elements.
+
+// Example usage
+// .header {
+//   .title(white);
+//   .teal600();
+// }
+
+// .myheader {
+//   &:extend(.header);
+// }
+
+
+// The predefined values.
+@typography-color: black;
+
+// regular = 400, medium = 600, light = 200;
+@typography-weight-light: 200;
+@typography-weight-regular: 400;
+@typography-weight-medium: 600;
+
+// Base mixin
+.typography(
+    @color: @typography-color,
+    @opacity: 87,
+    @size: 40pt,
+    @weight: @typography-weight-regular
+) {
+  color: fade(@color, @opacity);
+  font-size: @size;
+  font-weight: @weight;
+}
+
+// Named mixins
+.display4 (@color){.typography(@color, 45, 112pt, @typography-weight-light);}
+.display3 (@color){.typography(@color, 45, 56pt);}
+.display2 (@color){.typography(@color, 45, 45pt);}
+.display1 (@color){.typography(@color, 45, 34pt);}
+.headline (@color){.typography(@color, 87, 24pt);}
+.title (@color){.typography(@color, 87, 20pt, @typography-weight-medium);}
+.subhead (@color){.typography(@color, 87, 16pt);}
+.body2 (@color){.typography(@color, 87, 14pt, @typography-weight-medium);}
+.body1 (@color){.typography(@color, 87, 14pt);}
+.caption (@color){.typography(@color, 54, 12pt);}
+.menu (@color){.typography(@color, 87, 14pt, @typography-weight-medium);}
+.button (@color){
+  .typography(@color, 87, 14pt, @typography-weight-medium);
+  text-transform: uppercase;
+}

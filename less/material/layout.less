@@ -1,5 +1,7 @@
 @import "common";
 
+
+// Primary definitions
 .core-flex {
   -ms-flex: 1 1 0.000000001px;
   -webkit-flex: 1;
@@ -16,6 +18,10 @@
   display: flex;
 }
 
+.core-flex-display {
+  &:extend(.core-flexd);
+}
+
 .core-flex-vertical {
   -ms-flex-direction: column;
   /* @alternative */
@@ -24,6 +30,52 @@
   flex-direction: column;
 }
 
+.core-flex-direction-row {
+  -ms-flex-direction: row;
+  /* @alternative */
+  -webkit-flex-direction: row;
+  /* @a;ternative */
+  flex-direction: row;
+}
+
+
+.core-flex-align-center {
+  -ms-flex-align: center;
+  /* @alternative */
+  -webkit-align-items: center;
+  /* @alternative */
+  align-items: center;
+}
+
 .core-fit {
   &:extend(.core-fill-position);
+}
+//////////////////////////////////////////
+// The official layout names.
+//////////////////////////////////////////
+.flex {
+  &:extend(.core-flex);
+}
+
+.fit {
+  &:extend(.core-fill-position);
+}
+
+.flex.auto {
+  -ms-flex: 1 1 auto;
+  -webkit-flex-basis: auto;
+  flex-basis: auto;
+}
+
+.relative {
+  position: relative;
+}
+
+.horizontal {
+  &:extend(.core-flex-display);
+  &:extend(.core-flex-direction-row);
+}
+
+.center {
+  &:extend(.core-flex-align-center);
 }
