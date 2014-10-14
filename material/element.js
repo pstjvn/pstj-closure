@@ -371,13 +371,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /** @override */
-  setContentInternal: function(content) {
-    // Override this, we do not want to keep any refs to actual DOM nodes.
-    goog.base(this, 'setContentInternal', null);
-  },
-
-
-  /** @override */
   enterDocument: function() {
     goog.base(this, 'enterDocument');
     if (this.autoEvents_ != EventMap.EventFlag.NONE) {
