@@ -8,6 +8,7 @@
   </div>
 {/template}
 
+
 /**
  * Template for the DrawerPanel component.
  */
@@ -25,14 +26,10 @@
 {template .HeaderPanel}
   <div class="{css header-panel} {css header-panel-waterfall-tall}">
     <div class="{css header-panel-outer-container}">
-      <div is class="{css core-element} {css header-panel-header-content}">
-        Test Header
-      </div>
+      <div is class="{css core-element} {css header-panel-header-content}"></div>
       <div class="{css header-panel-main-panel}">
         <div class="{css header-panel-main-container}">
-          <div is class="{css core-element} {css header-panel-main-content}">
-            <div style="height: 1000px; background-color: yellow;">Test content</div>
-          </div>
+          <div is class="{css core-element} {css header-panel-main-content}"></div>
         </div>
         <div class="{css shadow}"></div>
       </div>
@@ -46,5 +43,68 @@
   <div class="{css ripple}">
     <div class="{css ripple-bg}"></div>
     <div class="{css ripple-waves}"></div>
+  </div>
+{/template}
+
+
+/**
+ * The floating label for the inputs.
+ * @param label
+ */
+{template .FloatingLabel}
+  <div class="{css floating-label}" aria-hidden="true">
+    <span class="{css floating-label-text}">{$label}</span>
+  </div>
+{/template}
+
+
+/**
+ * The underline effect for the inputs.
+ */
+{template .InputUnderline}
+  <div class="{css input-underline}">
+    <div class="{css input-unfocused-underline}"></div>
+    <div class="{css focused-underline}"></div>
+  </div>
+{/template}
+
+
+/**
+ * The error message for the inputs
+ * @param error The error to display.
+ */
+{template .InputError}
+  <div class="{css input-error}">
+    <div class="{css input-error-text}" role="alert">{$error}</div>
+    <div class="{css input-error-icon}" icon="warning"></div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the template for the default Input in material design. Note
+ * that this is NOT the paper input
+ */
+{template .Input}
+  <div class="{css input}" error='{msg desc="The error message to show to the user"}Invalid input{/msg}'></div>
+{/template}
+
+
+/**
+ * The template for the input body that overlays the actual input element.
+ * @param label
+ * @param type
+ * @param value
+ * @param name
+ */
+{template .InputBody}
+  <div class="{css input-body}">
+    <div class="{css input-body-label}">
+      <span class="{css input-body-label-text}">{$label}</span>
+    </div>
+    <div class="{css input-body-cursor}"></div>
+    <div class="{css input-body-container}">
+      <input type="{$type}" value="{$value}" name="{$name}">
+    </div>
   </div>
 {/template}
