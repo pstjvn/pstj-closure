@@ -286,6 +286,18 @@ pstj.lab.style.css.setTranslation = function(el, x, y, opt_unit,
 
 
 /**
+ * Sets the translation directly on the element without checks if it is valid
+ * @param {Element} el
+ * @param {string} translation
+ */
+pstj.lab.style.css.setTranslationText = function(el, translation) {
+  if (pstj.lab.style.css.canUseTransform) {
+    el.style[pstj.lab.style.css.transformPrefix] = translation;
+  }
+};
+
+
+/**
  * Clears the translation applied so that parent/css translation can overtake.
  * @param {Element} el The element to operate on.
  */

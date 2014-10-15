@@ -70,7 +70,10 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
         State.COVER, goog.getCssName(baseClass, 'cover'),
         State.STANDARD, goog.getCssName(baseClass, 'standard'),
         State.SHADOW, goog.getCssName(baseClass, 'shadow'),
-        State.TALL, goog.getCssName(baseClass, 'tall'));
+        State.TALL, goog.getCssName(baseClass, 'tall'),
+        State.INVALID, goog.getCssName(baseClass, 'invalid'),
+        State.EMPTY, goog.getCssName(baseClass, 'empty'),
+        State.INVISIBLE, goog.getCssName(baseClass, 'invisible'));
 
     /**
      * @type {Object.<string, number>}
@@ -234,6 +237,18 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   },
 
 
+  /**
+   * By default we do not want to provide key target so that the handler will
+   * NOT listen for keyboard events. This is done to allow the complex material
+   * element to have the focusable state but to not really create multiple
+   * listeners for itself and its children components/element.
+   * @override
+   */
+  getKeyEventTarget: function(control) {
+    return null;
+  },
+
+
   statics: {
     /**
      * @type {string}
@@ -350,6 +365,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       for (var i = 0; i < nodes.length; i++) {
         //console.log('attempt to auto decorate: ', nodes[i]);
         var child = goog.ui.decorate(nodes[i]);
+        console.log('Decorate child', child);
         this.addChild(child);
         var toRemove = goog.array.toArray(child.getDecorativeChildren());
         for (var j = 0; j < toRemove.length; j++) {
@@ -463,6 +479,34 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.autoEvents_ = eventMask;
   },
 
+  /**
+   * @return {boolean}
+   */
+  isEmpty: function() {
+    return this.hasState(State.EMPTY);
+  },
+
+  /**
+   * @param {boolean} empty
+   */
+  setEmpty: function(empty) {
+    return this.setState(State.EMPTY, empty);
+  },
+
+  /**
+   * @return {boolean}
+   */
+  isValid: function() {
+    return !this.hasState(State.INVALID);
+  },
+
+  /**
+   * @param {boolean} valid
+   */
+  setValid: function(valid) {
+    this.setState(State.INVALID, !valid);
+  },
+
 
   /**
    * Checks if the narrow state is currently enabled on the component.
@@ -545,7 +589,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @protected
    * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
-  onPress: goog.functions.FALSE,
+  onPress: goog.functions.TRUE,
 
 
   /**
@@ -553,7 +597,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @protected
    * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
-  onMove: goog.functions.FALSE,
+  onMove: goog.functions.TRUE,
 
 
   /**
@@ -561,7 +605,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @protected
    * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
-  onRelease: goog.functions.FALSE,
+  onRelease: goog.functions.TRUE,
 
 
   /**
@@ -569,7 +613,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @protected
    * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
-  onLongPress: goog.functions.FALSE,
+  onLongPress: goog.functions.TRUE,
 
 
   /**
@@ -577,7 +621,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @protected
    * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
-  onTap: goog.functions.FALSE,
+  onTap: goog.functions.TRUE,
 
 
   /**
@@ -585,7 +629,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @param {number} ts The time stamp of the handler call.
    * @protected
    */
-  onRaf: goog.functions.FALSE,
+  onRaf: goog.functions.TRUE,
 
 
   /**
@@ -595,7 +639,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @param {goog.events.Event} e
    * @protected
    */
-  onScroll: goog.functions.FALSE,
+  onScroll: goog.functions.TRUE,
 
 
   /**

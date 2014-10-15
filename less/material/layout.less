@@ -61,7 +61,7 @@
   &:extend(.core-fill-position);
 }
 
-.flex.auto {
+.auto {
   -ms-flex: 1 1 auto;
   -webkit-flex-basis: auto;
   flex-basis: auto;
@@ -71,6 +71,10 @@
   position: relative;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .horizontal {
   &:extend(.core-flex-display);
   &:extend(.core-flex-direction-row);
@@ -78,4 +82,11 @@
 
 .center {
   &:extend(.core-flex-align-center);
+}
+
+.animated {
+  visibility: visible !important;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* @alternative */
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }

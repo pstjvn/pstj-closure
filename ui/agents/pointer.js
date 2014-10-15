@@ -126,7 +126,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // between elements and component.
     this.elements_[this.indexOf(component)] = component.getContentElement();
 
-    this.handler.listen(component.getElement(), [
+    this.handler.listen(component.getContentElement(), [
       goog.events.EventType.TOUCHSTART,
       goog.events.EventType.TOUCHMOVE,
       goog.events.EventType.TOUCHEND,
@@ -135,7 +135,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     ], this.handleEvents);
 
     if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
-      this.handler.listen(component.getElement(), [
+      this.handler.listen(component.getContentElement(), [
         goog.events.EventType.POINTERDOWN,
         goog.events.EventType.POINTERMOVE,
         goog.events.EventType.POINTERUP,
@@ -191,7 +191,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       ], this.handleEvents);
 
       if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
-        this.handler.unlisten(component.getElement(), [
+        this.handler.unlisten(component.getContentElement(), [
           goog.events.EventType.POINTERDOWN,
           goog.events.EventType.POINTERMOVE,
           goog.events.EventType.POINTERUP,

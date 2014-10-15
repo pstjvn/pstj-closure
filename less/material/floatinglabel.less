@@ -1,0 +1,23 @@
+// Configures the general behavior of the floating label.
+// The floating label supports two states - regular state (i.e. no specific
+// state) and INVISIBLE state. Provided here are styles for both states.
+.floating-label {
+  font-size: 0.75em;
+  background: transparent;
+  white-space: nowrap;
+  &-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 100%;
+    -moz-transform-origin: 0% 0%;
+    /* @alternative */
+    -webkit-transform-origin: 0% 0%;
+    /* @alternative */
+    transform-origin: 0% 0%;
+  }
+  &-invisible {
+    &:extend(.invisible);
+  }
+}
