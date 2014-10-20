@@ -1,0 +1,84 @@
+// Styles the material radio button.
+
+@import "ripple";
+
+
+// Global variables
+@material-radio-button-color: #5a5a5a;
+@material-radio-button-checked-color: green;
+
+.material-radio-button {
+  display: inline-block;
+  white-space: nowrap;
+  &:focus {
+    outline: none;
+  }
+
+  &-container {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &-label {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    white-space: normal;
+    pointer-events: none;
+  }
+
+  &-off {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: solid 2px;
+    border-color: @material-radio-button-color;
+  }
+
+  &-on {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: @material-radio-button-checked-color;
+    -webkit-transform: scale(0);
+    /* @alternative */
+    transform: scale(0);
+    transition: -webkit-transform ease 0.28s;
+    transition: transform ease 0.28s;
+
+    // when the button is in checked state
+    .material-radio-button-checked & {
+      -webkit-transform: scale(1.1);
+      /* @alternative */
+      transform: scale(1.1);
+    }
+  }
+
+  // Configure the ripple.
+  & .ripple {
+    position: absolute;
+    background-color: transparent;
+    top: -16px;
+    left: -16px;
+    width: 48px;
+    height: 48px;
+    color: @material-radio-button-checked-color;
+
+    // Switch the colors because the checked state is applied AFTER the color
+    // for the ripple is calculated (ripple is child of the button).
+    .material-radio-button-checked& {
+      color: @material-radio-button-color;
+    }
+  }
+}

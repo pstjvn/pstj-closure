@@ -1,12 +1,29 @@
 @import "common";
 @import "layout";
 
+
+@ripple-bg-color: yellow;
+@ripple-color: red;
+
 // Design for the base ripple element. Note that we do not yet support the
 // circle ripple element.
 .ripple {
   border-radius: inherit;
   overflow: hidden;
+  background-color: @ripple-bg-color;
+  color: @ripple-color;
   &:extend(.core-fit);
+
+  // Circle class added - used for FAB and radiobutton
+  &&-circle {
+    & .ripple-bg, & .ripple-waves {
+      border-radius: 50%;
+    }
+    & .wave-container {
+      overflow: hidden;
+    }
+  }
+
   &-bg, &-waves {
     &:extend(.fillall);
   }

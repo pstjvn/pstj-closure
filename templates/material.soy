@@ -1,6 +1,12 @@
 {namespace pstj.material.template}
 
 
+/** Base template */
+{template .CoreElement}
+  <div is class="{css core-element}"></div>
+{/template}
+
+
 /** Template for the scrim panel */
 {template .ScrimPanel}
   <div is class="{css scrim-panel} {css drawer-panel-main}">
@@ -38,9 +44,21 @@
 {/template}
 
 
-/** Template for the base ripple */
+/**
+ * Template for the base ripple
+ */
 {template .Ripple}
-  <div class="{css ripple}">
+  {@param? circle: bool}
+  {@param? recenter: bool}
+  <div is class="{css ripple}
+  {if $circle}
+    {sp}{css ripple-circle}
+  {/if}
+  "
+  {if $recenter}
+    {sp} recenter
+  {/if}
+  >
     <div class="{css ripple-bg}"></div>
     <div class="{css ripple-waves}"></div>
   </div>
@@ -99,7 +117,7 @@
  * @param name
  */
 {template .InputBody}
-  <div class="{css material-input-body}">
+  <div is class="{css material-input-body}">
     <div class="{css material-input-body-label}">
       <span class="{css material-input-body-label-text}">{$label}</span>
     </div>
@@ -107,5 +125,26 @@
     <div class="{css material-input-body-container}">
       <input type="{$type}" value="{$value}" name="{$name}">
     </div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the template for the RadioButton. Internally uses the ripple effect.
+ */
+{template .RadioButton}
+  {@param? label: string}
+  <div is class="{css material-radio-button}" role="radio" tabindex="0" aria-checked="false">
+    <div class="{css material-radio-button-container}">
+      <div class="{css material-radio-button-off}"></div>
+      <div class="{css material-radio-button-on}"></div>
+      {call .Ripple}
+        {param circle: true /}
+        {param recenter: true /}
+      {/call}
+    </div>
+    {if $label}
+      <div class="{css material-radio-button-label}" aria-hidden="true">{$label}</div>
+    {/if}
   </div>
 {/template}

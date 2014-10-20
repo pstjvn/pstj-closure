@@ -94,17 +94,28 @@ pstj.material.Input = function(opt_content, opt_renderer, opt_domHelper) {
   /**
    * @type {string}
    */
-  this.type = 'text';
+  this.type = '';
   /**
    * @type {string}
    */
   this.label = '';
+  /**
+   * @type {string}
+   * @private
+   */
+  this.tmpValue_ = '';
   /**
    * The RegExp pattern used for validation. It is a normal JS re.
    * @type {RegExp}
    * @private
    */
   this.pattern_ = null;
+  /**
+   * The error message we will use in case of invalid input.
+   * @type {string}
+   * @private
+   */
+  this.errorText_ = '';
   /**
    * Cache for the label transformation to apply.
    * @type {string}
@@ -139,9 +150,15 @@ goog.inherits(pstj.material.Input, pstj.material.Element);
  */
 pstj.material.Input.prototype.decorateInternal = function(element) {
   goog.base(this, 'decorateInternal', element);
+
+  this.getProperties();
   // Generate the children element and add them to the main component.
   this.floatingLabel_ = new pstj.material.FloatingLabel(this.label);
   this.inputBody_ = new pstj.material.InputBody();
+  if (this.tmpValue_ != '') {
+    this.inputBody_.setValue(this.tmpValue_);
+  }
+  this.tmpValue_ = '';
   // set up the parameters for the input in case someone wants to use the
   // native input directly. Those will be reflected on the DOM of the inputbody
   // by the input body template.
@@ -152,23 +169,39 @@ pstj.material.Input.prototype.decorateInternal = function(element) {
   this.inputBody_.type = this.type;
   this.inputBody_.label = this.label;
   this.underline_ = new pstj.material.InputUnderline(null);
-  this.error_ = new pstj.material.InputError(this.getErrorMessage());
+  this.error_ = new pstj.material.InputError(this.errorText_);
 
+  this.addChild(this.floatingLabel_, true);
+  this.addChild(this.inputBody_, true);
+  this.addChild(this.underline_, true);
+  this.addChild(this.error_, true);
+};
+
+
+/**
+ * Real all relevant properties from the dom node we are decorating if they have
+ * not been configured yet. Use some sane defaults in case those were neither
+ * imperatively or declaratively provided.
+ * @protected
+ */
+pstj.material.Input.prototype.getProperties = function() {
+  var el = this.getElement();
+  if (!this.name) this.name = el.getAttribute('name') || '';
+  if (!this.type) this.type = el.getAttribute('type') || 'text';
+  if (!this.errorText_) this.errorText_ = el.getAttribute(
+      'error') || 'Invalid input';
+  if (!this.label) this.label = el.getAttribute('label') || '';
   // Set up check patterns, we use either the user provided pattern of the
   // default patterns for tel, email and number. User supplied pattern has
   // precedance.
   if (goog.isNull(this.pattern_)) {
-    var pattern = this.getElement().getAttribute('pattern');
+    var pattern = el.getAttribute('pattern');
     if (!goog.isNull(pattern)) {
       this.setPattern(pattern);
     } else if (this.type == 'tel') {
       this.pattern_ = /^\+?\d{3,12}$/;
     }
   }
-  this.addChild(this.floatingLabel_, true);
-  this.addChild(this.inputBody_, true);
-  this.addChild(this.underline_, true);
-  this.addChild(this.error_, true);
 };
 
 
@@ -305,7 +338,8 @@ pstj.material.Input.prototype.getValue = function() {
  * @param {string} val
  */
 pstj.material.Input.prototype.setValue = function(val) {
-  this.inputBody_.setValue(val);
+  if (this.inputBody_) this.inputBody_.setValue(val);
+  else this.tmpValue_ = val;
 };
 
 
@@ -392,16 +426,6 @@ pstj.material.Input.prototype.onLabelUpEnd = function() {
 };
 
 
-/**
- * Getter for the error message that we want to display to the user when
- * the input does not match our requirement.
- * @return {string}
- */
-pstj.material.Input.prototype.getErrorMessage = function() {
-  return this.getElement().getAttribute('error') || 'Invalid input';
-};
-
-
 /** @override */
 pstj.material.Input.prototype.setEnabled = function(enable) {
   goog.base(this, 'setEnabled', enable);
@@ -442,6 +466,35 @@ pstj.material.Input.prototype.onPress = function(e) {
     console.log('fake the focus event');
     this.inputBody_.getKeyEventTarget().focus();
   }
+};
+
+
+/**
+ * Allow for imperative setup of the error message.
+ * @param {string} text The error message to display in case of invalid input.
+ */
+pstj.material.Input.prototype.setErrorMessage = function(text) {
+  if (this.isInDocument()) {
+    throw Error(goog.ui.Component.Error.ALREADY_RENDERED);
+  }
+  this.errorText_ = text;
+};
+
+
+/**
+ * Constructs a new input imperatively from a JSON settings object.
+ * @param {MaterialInputConfig} config
+ * @return {pstj.material.Input}
+ */
+pstj.material.Input.fromJSON = function(config) {
+  var input = new pstj.material.Input();
+  input.type = config.type;
+  input.name = config.name;
+  input.label = config.label;
+  input.setPattern(config.pattern);
+  input.setValue(config.value);
+  input.setErrorMessage(config.errorText);
+  return input;
 };
 
 

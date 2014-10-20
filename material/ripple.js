@@ -59,6 +59,13 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
   },
 
 
+  /** @inheritDoc */
+  decorateInternal: function(el) {
+    this.recenterRipples_ = el.hasAttribute('recenter');
+    goog.base(this, 'decorateInternal', el);
+  },
+
+
   /** @override */
   // This is commented out as TAP is preffered. If you have really good reason
   // you can use press/release as triggers as shown here.
@@ -85,6 +92,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 });
 
 goog.ui.registry.setDefaultRenderer(pstj.material.Ripple, RR);
+
 
 goog.ui.registry.setDecoratorByClassName(RR.CSS_CLASS, function() {
   return new pstj.material.Ripple(null);

@@ -26,6 +26,8 @@ goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.agent.Scroll');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.State');
+goog.require('pstj.material.template');
+goog.require('soydata');
 
 
 goog.scope(function() {
@@ -134,7 +136,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * the control element and submit it to the soy template function. If your
    * control contains complex data you should override this method.
    * @param {!goog.ui.Control} control The control that needs the template.
-   * @return {Object.<string, *>}
+   * @return {?}
    * @protected
    */
   generateTemplateData: function(control) {
@@ -148,12 +150,14 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Creates a DOM tree from an html string assuring its type.
-   * @param {string} htmlstring The HTML to parse into DOM tree.
+   * @param {string|soydata.SanitizedHtml} htmlstring The HTML to parse
+   *    into DOM tree.
    * @return {!Element}
    * @protected
    */
   createRootElement: function(htmlstring) {
-    return /** @type {!Element} */(goog.dom.htmlToDocumentFragment(htmlstring));
+    return /** @type {!Element} */(goog.dom.htmlToDocumentFragment(
+        /** @type {string} */ (htmlstring)));
   },
 
 
@@ -162,14 +166,14 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * template required without chaining the rest of the logic of the renderer.
    * Simply override this method to get a different template for the same
    * element.
-   * @param {Object.<string, *>} model The model to apply on the template.
+   * @param {?} model The model to apply on the template.
    *    The template is a soy template and accepts a single object as model
    *    parameter.
-   * @return {string} The output of the soy template.
+   * @return {soydata.SanitizedHtml} The output of the soy template.
    * @protected
    */
   getTemplate: function(model) {
-    return '<div></div>';
+    return pstj.material.template.CoreElement();
   },
 
 
@@ -365,7 +369,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       for (var i = 0; i < nodes.length; i++) {
         //console.log('attempt to auto decorate: ', nodes[i]);
         var child = goog.ui.decorate(nodes[i]);
-        console.log('Decorate child', child);
+        console.log('Decorate child', child, nodes[i]);
         this.addChild(child);
         var toRemove = goog.array.toArray(child.getDecorativeChildren());
         for (var j = 0; j < toRemove.length; j++) {

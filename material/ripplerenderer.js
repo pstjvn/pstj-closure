@@ -35,20 +35,16 @@ pstj.material.RippleRenderer = goog.defineClass(ER, {
   /** @override */
   getCssClass: function() {
     return pstj.material.RippleRenderer.CSS_CLASS;
-  },
-
-
-  statics: {
-
-
-    /**
-     * The css class to recognize the element by.
-     * @type {string}
-     * @final
-     */
-    CSS_CLASS: goog.getCssName('ripple')
   }
 
 });
+
+
+/**
+ * The css class to recognize the element by.
+ * @type {string}
+ * @final
+ */
+pstj.material.RippleRenderer.CSS_CLASS = goog.getCssName('ripple');
 
 });  // goog.scope
