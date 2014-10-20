@@ -1,4 +1,5 @@
 goog.provide('pstj.material.RadioButton');
+goog.provide('pstj.material.RadioButtonRenderer');
 
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -28,6 +29,10 @@ goog.scope(function() {
  */
 pstj.material.RadioButton = function(opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
+  /** @type {string} */
+  this.name = '';
+  /** @type {string} */
+  this.value = '';
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setAutoStates(goog.ui.Component.State.FOCUSED |
@@ -73,6 +78,8 @@ _.decorateInternal = function(el) {
   }
   goog.base(this, 'decorateInternal', el);
   this.setChecked(el.hasAttribute('checked'));
+  if (!this.name) this.name = el.getAttribute('name') || '';
+  if (!this.value) this.value = el.getAttribute('value') || '';
 };
 
 
@@ -101,7 +108,9 @@ r.getTemplate = function(model) {
 r.generateTemplateData = function(control) {
   var c = control.getContent();
   return {
-    label: ((c) ? c.toString() : '')
+    label: ((c) ? c.toString() : ''),
+    name: control.name,
+    value: control.value
   };
 };
 

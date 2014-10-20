@@ -148,3 +148,24 @@
     {/if}
   </div>
 {/template}
+
+
+/**
+ * Provides the template for the toggle button
+ */
+{template .ToggleButton}
+  <div is class="{css material-toggle-button}" role="button" aria-pressed="false" tabindex="0">
+    <div class="{css material-toggle-button-container}">
+      <div class="{css material-toggle-button-bar}"></div>
+      {call .RadioButton}
+        {param label: '' /}
+      {/call}
+    </div>
+  </div>
+{/template}
+
+
+/** Template for the Radio Group */
+{template .RadioGroup}
+  <div is class="{css material-radio-group}" values="male,female,unknown" name="gender"></div>
+{/template}
