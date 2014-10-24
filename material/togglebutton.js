@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Provides the toggle button UI component.
+ *
+ * By default the newly created toggle buttons are in 'off' state.
+ *
+ * As currently decoration is not supported/working we assume only imperative
+ * creation from a
+ *
+ */
 goog.provide('pstj.material.ToggleButton');
 goog.provide('pstj.material.ToggleButtonRenderer');
 
@@ -29,10 +38,27 @@ goog.scope(function() {
 pstj.material.ToggleButton = function(
     opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
+  /** @type {string} */
+  this.name = '';
+  /** @type {number} */
+  this.value = 0;
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
 };
 goog.inherits(pstj.material.ToggleButton, pstj.material.Element);
+
+
+/**
+ * Instance created from JSON config.
+ * @param {ToggleButtonConfig} json
+ * @return {pstj.material.ToggleButton}
+ */
+pstj.material.ToggleButton.fromJSON = function(json) {
+  var i = new pstj.material.ToggleButton();
+  i.name = json.name;
+  i.value = json.value;
+  return i;
+};
 
 
 
@@ -63,8 +89,9 @@ var r = pstj.material.ToggleButtonRenderer.prototype;
 /** @inheritDoc */
 _.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
-  var checked = el.hasAttribute('checked');
+  var checked = (this.value == 1);
   if (checked) {
+    this.setChecked(checked);
     this.getChildAt(0).setChecked(true);
   }
 };
@@ -87,6 +114,7 @@ _.enterDocument = function() {
  */
 _.onCheckedChange = function(e) {
   this.setChecked(e.type == goog.ui.Component.EventType.CHECK);
+  this.value = this.isChecked() ? 1 : 0;
 };
 
 

@@ -11,7 +11,7 @@
   }
 
   &-container {
-    position: relative;
+    position: absolute;
     width: 64px;
     height: 16px;
   }
@@ -34,8 +34,8 @@
   & .material-radio-button {
     position: absolute;
     left: 0;
-    padding: 8px 48px 8px 0;
-    margin: -8px -48px -8px 0;
+    // padding: 8px 48px 8px 0;
+    // margin: -8px -48px -8px 0;
     -webkit-transition: -webkit-transform linear .08s;
     /* @alternative */
     transition: transform linear .08s;
@@ -44,8 +44,8 @@
       -webkit-transform: translate(48px, 0);
       /* @alternative */
       transform: translate(48px, 0);
-      padding: 8px 0 8px 48px;
-      margin: -8px 0 -8px -48px;
+      // padding: 8px 0 8px 48px;
+      // margin: -8px 0 -8px -48px;
     }
 
     // Make sure there is no transitioning when we manually animate the circle
