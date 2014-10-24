@@ -89,7 +89,7 @@ r.getCssClass = function() {
 
 /**
  * The decoration template to use based on the name of the icon.
- * @enum {!function(Object): string}
+ * @enum {!function(Object.<string, *>): soydata.SanitizedHtml}
  */
 Icon.Name = {
   WARNING: pstj.material.icons.warning,
