@@ -117,8 +117,9 @@ _.decorateInternal = function(el) {
 /** @inheritDoc */
 _.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  this.getHandler().listen(this, goog.ui.Component.EventType.CHECK,
-      this.onCheckHandler);
+  this.getHandler().listen(this, [
+    goog.ui.Component.EventType.CHECK,
+    goog.ui.Component.EventType.UNCHECK], this.onCheckHandler);
 };
 
 
@@ -128,12 +129,26 @@ _.enterDocument = function() {
  * @protected
  */
 _.onCheckHandler = function(e) {
-  if (e.target.value) {
+  // Stop the check/uncheck events, instead we use CHANGE from here on.
+  e.stopPropagation();
+
+  // Update values if checking
+  if (e.type == goog.ui.Component.EventType.CHECK) {
+    var old = this.selectedChild_;
+    this.selectedChild_ = goog.asserts.assertInstanceof(e.target,
+        pstj.material.RadioButton);
     this.value = e.target.value;
-    if (!goog.isNull(this.selectedChild_)) {
-      this.selectedChild_.setChecked(false);
+    // If there was a previously selected element ni the group, unselect it.
+    if (!goog.isNull(old)) {
+      old.setChecked(false);
     }
-    this.selectedChild_ = e.target;
+    this.dispatchEvent(goog.ui.Component.EventType.CHANGE);
+  } else {
+    // handle uncheck to make sure that we are not actually unchecking the
+    // already checked element and thus leaving without a checked element.
+    if (e.target ==  this.selectedChild_) {
+      e.preventDefault();
+    }
   }
 };
 
