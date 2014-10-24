@@ -17,3 +17,10 @@ it is possible to have 'double finger' zoom events. This should be handled
 correctly for the gesture reconizer plugin to work absolutely correctly. In
 practice however this is doubted to have big impact as users will rarely if
 at all use combination of finger and mouse.
+
+Implement the idea of config that is a model. This will require some work
+in the base model. *fromJSON can be reused with a model and then we can
+set the model. Alternatively the UI can be constructed from the model and
+this is better as it will allow the autobinding to happen. For example
+listen for mutate events on the model and then branch based on the
+property updated for input elements.
