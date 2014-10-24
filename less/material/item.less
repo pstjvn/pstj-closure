@@ -1,0 +1,14 @@
+@import "layout";
+@import "common";
+
+.core-item {
+  display: block;
+  min-height: 40px;
+  &:extend(.relative);
+  white-space: nowrap;
+
+  & > a {
+    background-color: rgba(0, 0, 0, 0.000001);
+    &:extend(.core-fill-position);
+  }
+}
