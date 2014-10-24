@@ -30,6 +30,7 @@ goog.provide('pstj.material.Input');
 goog.provide('pstj.material.InputRenderer');
 
 goog.require('goog.format.EmailAddress');
+goog.require('goog.string');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -99,6 +100,8 @@ pstj.material.Input = function(opt_content, opt_renderer, opt_domHelper) {
    * @type {string}
    */
   this.label = '';
+  /** @type {boolean} */
+  this.required = false;
   /**
    * @type {string}
    * @private
@@ -353,16 +356,25 @@ pstj.material.Input.prototype.checkValidity = function() {
   // tel is handled by the regexp.
   var value = this.getValue();
   var valid = true;
-  if (!goog.isNull(this.pattern_) && !this.pattern_.test(value)) {
+  var emptystr = goog.string.isEmptyString(goog.string.trim(value));
+
+  if (this.required && emptystr) {
     valid = false;
   } else {
-    switch (this.type) {
-      case 'number':
-        valid = goog.string.isNumeric(value);
-        break;
-      case 'email':
-        valid = goog.format.EmailAddress.isValidAddrSpec(value);
-        break;
+    // it is not required so it is okay to be empty
+    if (!emptystr) {
+      if (!goog.isNull(this.pattern_) && !this.pattern_.test(value)) {
+        valid = false;
+      } else {
+        switch (this.type) {
+          case 'number':
+            valid = goog.string.isNumeric(value);
+            break;
+          case 'email':
+            valid = goog.format.EmailAddress.isValidAddrSpec(value);
+            break;
+        }
+      }
     }
   }
   this.setValid(valid);
@@ -494,6 +506,7 @@ pstj.material.Input.fromJSON = function(config) {
   input.setPattern(config.pattern);
   input.setValue(config.value);
   input.setErrorMessage(config.errorText);
+  input.required = config.required || false;
   return input;
 };
 

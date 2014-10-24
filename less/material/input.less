@@ -3,10 +3,12 @@
 @import "layout";
 @import "floatinglabel";
 @import "icon";
+@import "typography";
 
 
 // Style for the input's main DOM element, no state applied
 .material-input {
+  .body1(black);
   display: inline-block;
   outline: none;
   text-align: inherit;
@@ -15,6 +17,9 @@
   // accent color
   & .floating-label {
     color: @input-accent-color;
+  }
+  & .material-icon {
+    fill: @input-accent-color-invalid;
   }
   // The states supported as DISABLED, EMPTY, TRANSITIONING, INVALID, FOCUSED
   // If the input has transitioning state we want the label text to be animatable
@@ -37,20 +42,15 @@
     }
   }
   &-invalid {
-    & .material-input-error {
-      color: @input-accent-color-invalid;
-      &:extend(.horizontal);
-    }
     & .material-input-underline-focused {
       background-color: @input-accent-color-invalid;
     }
     & .floating-label {
       color: @input-accent-color-invalid;
     }
-    & .material-icon {
-      fill: @input-accent-color-invalid;
+    & .material-input-body-cursor {
+      background-color: @input-accent-color-invalid;
     }
-
   }
   &-disabled {
     & &-underline {
@@ -61,7 +61,8 @@
   // Default styling for the sub-components
   &-error {
     &:extend(.center);
-    display: none;
+    &:extend(.horizontal);
+    color: @input-accent-color-invalid;
     &-text {
       &:extend(.auto);
       &:extend(.flex);
@@ -72,6 +73,9 @@
       height: 20px;
       width: 20px;
     }
+  }
+  &:not(.material-input-invalid) &-error {
+    &:extend(.invisible);
   }
   &-underline {
     &:extend(.relative);
@@ -119,7 +123,7 @@
       &:extend(.invisible);
       background-color: @input-accent-color;
       position: absolute;
-      top: 0.4em;
+      top: 0;
       left: 0;
       width: 1px;
       height: 1.4em;
