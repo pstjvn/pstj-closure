@@ -1,0 +1,60 @@
+// Implements the shadow element styling.
+
+@import "layout";
+@import "../transitions";
+
+// Extrqcted shadow generation for the shadow element.
+.shadowGenerator(@x: 0; @y: 0; @opacity: 0) {
+  box-shadow: 0 unit(@x, px) unit(@y, px) 0 rgba(0,0,0, @opacity);
+}
+
+
+// Element styles.
+.material-shadow {
+  display: block;
+  &:extend(.fit);
+
+  &-top, &-bottom {
+    border-radius: inherit;
+    &:extend(.fit);
+  }
+
+  &-transition &-top, &-transition &-bottom{
+    .transition(box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  &-1 &-top {
+    .shadowGenerator(2, 20, 0.16);
+  }
+  &-1 &-bottom {
+    .shadowGenerator(2, 5, 0.26);
+  }
+
+  &-2 &-top {
+    .shadowGenerator(6, 20, 0.19);
+  }
+  &-2 &-bottom {
+    .shadowGenerator(8, 17, 0.2);
+  }
+
+  &-3 &-top {
+    .shadowGenerator(17, 50, 0.19);
+  }
+  &-3 &-bottom {
+    .shadowGenerator(12, 15, 0.24);
+  }
+
+  &-4 &-top {
+    .shadowGenerator(25, 55, 0.21);
+  }
+  &-4 &-bottom {
+    .shadowGenerator(16, 28, 0.22);
+  }
+
+  &-5 &-top {
+    .shadowGenerator(40, 77, 0.22);
+  }
+  &-5 &-bottom {
+    .shadowGenerator(27, 24, 0.20);
+  }
+}
