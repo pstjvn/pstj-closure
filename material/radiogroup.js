@@ -29,14 +29,14 @@ goog.scope(function() {
  */
 pstj.material.RadioGroup = function(opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
-  /**
-   * Reference to the currently selected choice in the radio group.
-   * @type {goog.ui.Component}
-   * @private
-   */
+  /** @type {string} */
   this.value = '';
+  /** @type {string} */
   this.values = '';
+  /** @type {string} */
   this.name = '';
+  /** @type {string} */
+  this.labels = '';
   /**
    * @type {pstj.material.RadioButton}
    * @private
@@ -44,6 +44,21 @@ pstj.material.RadioGroup = function(opt_content, opt_renderer, opt_domHelper) {
   this.selectedChild_ = null;
 };
 goog.inherits(pstj.material.RadioGroup, pstj.material.Element);
+
+
+/**
+ * Creates a new instance from a configuration JSON file.
+ * @param {RadioGroupConfig} json
+ * @return {pstj.material.RadioGroup}
+ */
+pstj.material.RadioGroup.fromJSON = function(json) {
+  var i = new pstj.material.RadioGroup();
+  i.values = json.values;
+  i.labels = json.labels;
+  i.value = json.value;
+  i.name = json.name;
+  return i;
+};
 
 
 
@@ -76,6 +91,9 @@ _.decorateInternal = function(el) {
   if (!this.values) {
     this.values = el.getAttribute('values') || '';
   }
+  if (!this.labels) {
+    this.labels = el.getAttribute('labels') || this.values;
+  }
   if (!this.name) this.name = el.getAttribute('name') || '';
   goog.base(this, 'decorateInternal', el);
   // If there are no children BUT we have values, we should add the children
@@ -83,14 +101,17 @@ _.decorateInternal = function(el) {
   if (this.getChildCount() == 0) {
     if (this.values) {
       var vals = this.values.split(',');
-      goog.array.forEach(vals, function(val) {
+      var labels = this.labels.split(',');
+      goog.array.forEach(vals, function(val, i) {
         var v = goog.string.trim(val);
         var rb = new pstj.material.RadioButton(v);
         rb.name = this.name;
         rb.value = v;
+        rb.setContent(labels[i]);
         this.addChild(rb, true);
         if (this.value == v) {
           rb.setChecked(true);
+          this.selectedChild_ = rb;
         }
       }, this);
     }
