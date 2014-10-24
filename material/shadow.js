@@ -76,7 +76,8 @@ _.setDepth = function(depth) {
  * @return {pstj.material.ShadowRenderer}
  */
 _.getRenderer = function() {
-  return goog.base(this, 'getRenderer');
+  return goog.asserts.assertInstanceof(
+      goog.base(this, 'getRenderer'), pstj.material.ShadowRenderer);
 };
 
 
@@ -113,7 +114,7 @@ goog.ui.registry.setDefaultRenderer(pstj.material.Shadow,
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
     pstj.material.ShadowRenderer.CSS_CLASS, function() {
-      return new pstj.material.Shadow(null);
+      return new pstj.material.Shadow();
     });
 
 });  // goog.scope

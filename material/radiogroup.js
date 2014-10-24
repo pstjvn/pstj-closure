@@ -167,7 +167,7 @@ _.onCheckHandler = function(e) {
   } else {
     // handle uncheck to make sure that we are not actually unchecking the
     // already checked element and thus leaving without a checked element.
-    if (e.target ==  this.selectedChild_) {
+    if (e.target == this.selectedChild_) {
       e.preventDefault();
     }
   }

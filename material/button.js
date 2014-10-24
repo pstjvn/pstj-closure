@@ -173,7 +173,8 @@ _.setContent = function(cont) {
  * @return {pstj.material.ButtonRenderer}
  */
 _.getRenderer = function() {
-  return goog.base(this, 'getRenderer');
+  return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
+      pstj.material.ButtonRenderer);
 };
 
 

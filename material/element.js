@@ -572,7 +572,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * Checks if the component has the transitioning flag on.
    * @return {boolean}
    */
-  isTransitioning: function(enable) {
+  isTransitioning: function() {
     return this.hasState(State.TRANSITIONING);
   },
 
