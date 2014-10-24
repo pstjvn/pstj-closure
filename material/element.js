@@ -17,6 +17,8 @@ goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.events.EventType');
 goog.require('goog.functions');
+goog.require('goog.object');
+goog.require('goog.string');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.Control');
 goog.require('goog.ui.ControlRenderer');
@@ -75,7 +77,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
         State.TALL, goog.getCssName(baseClass, 'tall'),
         State.INVALID, goog.getCssName(baseClass, 'invalid'),
         State.EMPTY, goog.getCssName(baseClass, 'empty'),
-        State.INVISIBLE, goog.getCssName(baseClass, 'invisible'));
+        State.INVISIBLE, goog.getCssName(baseClass, 'invisible'),
+        State.RAISED, goog.getCssName(baseClass, 'raised'));
 
     /**
      * @type {Object.<string, number>}
@@ -143,8 +146,13 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     var model = control.getModel();
     if (model) {
       return { data: model };
+    } else if (control.getContent()) {
+      return {
+        content: control.getContent()
+      };
+    } else {
+      return null;
     }
-    return null;
   },
 
 
@@ -173,7 +181,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @protected
    */
   getTemplate: function(model) {
-    return pstj.material.template.CoreElement();
+    return pstj.material.template.CoreElement(model);
   },
 
 
@@ -201,7 +209,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * visual behavior.
    * @override
    */
-  setContent: function(a, b) {},
+  // setContent: function(a, b) {},
 
 
   /**
@@ -362,15 +370,26 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   decorateInternal: function(element) {
     goog.base(this, 'decorateInternal', element);
+    // Automatically find decorative children.
+    // NOTE: this was initially designed to allow one element to decorate its
+    // mandatory children (i.e. Header panel -> Header and Main) and then
+    // decorate its actual children (i.e. input in the main panel etc) but
+    // because the child is created with decorate and the parent is not yet
+    // finished with the decoration phase the "ALREADY RENDERED" error is
+    // thrown. For fix see bellow.
+
+    // Currently there is no interest in making this work and instead
+    // only the imperative construction of complex UI patterns will be
+    // supported.
+
+    // THIS IS NOT WORKING! WE NEED TO FIX IT WITH smjsapp / js / tw / decrator
     var nodes = this.getDecorativeChildren();
     if (nodes.length > 0) {
       nodes = goog.array.toArray(nodes);
-      //console.log('Nodes', nodes);
       for (var i = 0; i < nodes.length; i++) {
-        //console.log('attempt to auto decorate: ', nodes[i]);
+        console.log('Auto decorating:', nodes[i].className);
         var child = goog.ui.decorate(nodes[i]);
-        console.log('Decorate child', child, nodes[i]);
-        this.addChild(child);
+        this.addChild(child, true);
         var toRemove = goog.array.toArray(child.getDecorativeChildren());
         for (var j = 0; j < toRemove.length; j++) {
           goog.array.remove(nodes, toRemove[j]);
@@ -482,6 +501,25 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   setAutoEventsInternal: function(eventMask) {
     this.autoEvents_ = eventMask;
   },
+
+
+  /**
+   * Getter for the raised state.
+   * @return {boolean}
+   */
+  isRaised: function() {
+    return this.hasState(goog.ui.Component.State.RAISED);
+  },
+
+
+  /**
+   * Setter for the raised state.
+   * @param {boolean} raised
+   */
+  setRaised: function(raised) {
+    this.setState(goog.ui.Component.State.RAISED, raised);
+  },
+
 
   /**
    * @return {boolean}
@@ -701,6 +739,51 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   }
 
 });
+
+
+/**
+ * Creates a pre-configured element from JSON config file.
+ * @param {MaterialConfig} json
+ * @return {pstj.material.Element}
+ */
+pstj.material.Element.fromJSON = function(json) {
+  var i = new pstj.material.Element(json.content || undefined);
+  pstj.material.Element.setupAdditionalClasses(i, json);
+  return i;
+};
+
+
+/**
+ * Enable additional class names based on the base config option of
+ * classNames. This can be used to setup elements with layout classes as
+ * defined imperatively in JSON configuration.
+ * @param {pstj.material.Element} instance
+ * @param {MaterialConfig} config
+ */
+pstj.material.Element.setupAdditionalClasses = function(instance, config) {
+  if (goog.isDef(config.classNames)) {
+    var cl = config.classNames.split(',');
+    goog.array.forEach(cl, function(cname) {
+      instance.enableClassName(
+          pstj.material.Element.ExternalClassRefs_[goog.string.trim(cname)],
+          true);
+    });
+  }
+};
+
+
+/**
+ * The un-obfuscated class name to obfuscated one translation.
+ * @type {Object.<string, string>}
+ * @private
+ */
+pstj.material.Element.ExternalClassRefs_ = goog.object.create(
+    'layout', goog.getCssName('layout'),
+    'flex', goog.getCssName('flex'),
+    'horizontal', goog.getCssName('horizontal'),
+    'vertical', goog.getCssName('vertical'),
+    'flex', goog.getCssName('flex'),
+    'fit', goog.getCssName('fit'));
 
 
 // Register for default renderer.

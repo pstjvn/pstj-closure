@@ -22,6 +22,8 @@ goog.require('goog.events');
 pstj.material.EventType = {
   RESPONSIVE_CHANGE: goog.events.getUniqueId('responsive-change'),
   MEDIA_CHANGE: goog.events.getUniqueId('media-change'),
-  RIPPLE_END: goog.events.getUniqueId('ripple-end')
+  RIPPLE_END: goog.events.getUniqueId('ripple-end'),
+  LOAD_START: goog.events.getUniqueId('load-start'),
+  LOAD_END: goog.events.getUniqueId('load-end')
 };
 

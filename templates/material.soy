@@ -3,7 +3,15 @@
 
 /** Base template */
 {template .CoreElement}
-  <div is class="{css core-element}"></div>
+  {@param? content: string}
+  <div is class="{css core-element}">{if $content}{$content}{/if}</div>
+{/template}
+
+
+/** Item template */
+{template .Item}
+  {@param? content: string}
+  <div is class="{css core-element}">{if $content}{$content}{/if}</div>
 {/template}
 
 
@@ -104,8 +112,7 @@
  * that this is NOT the paper input
  */
 {template .Input}
-  <div class="{css material-input}"
-    error='{msg desc="The error message to show to the user"}Invalid input{/msg}'></div>
+  <div class="{css material-input}"></div>
 {/template}
 
 
@@ -167,5 +174,47 @@
 
 /** Template for the Radio Group */
 {template .RadioGroup}
-  <div is class="{css material-radio-group}" values="male,female,unknown" name="gender"></div>
+  <div is class="{css material-radio-group}"></div>
+{/template}
+
+
+/** Progress bar element */
+{template .Progressbar}
+  <div class="{css material-progress-bar}">
+    <div class="{css material-progress-bar-inner}"></div>
+  </div>
+{/template}
+
+
+/** Provides template for the shadow element. */
+{template .Shadow}
+  <div is class="{css material-shadow} {css material-shadow-0}">
+    <div class="{css material-shadow-bottom}"></div>
+    <div class="{css material-shadow-top}"></div>
+  </div>
+{/template}
+
+
+/** Template for the internal button label. */
+{template .ButtonContent}
+  {@param? label: string}
+  <div is class="{css core-element} {css relative}">
+    <div class="{css material-button-label}">{$label}</div>
+  </div>
+{/template}
+
+
+/** Provides the template for the material button. Note that it does not
+support icons etc, it is purely material impementation*/
+{template .Button}
+  {@param? label: string}
+  <div class="{css material-button}">
+    {call .Shadow /}
+    {call .ButtonContent}
+      {param label: $label /}
+    {/call}
+    {call .Ripple}
+      {param recenter: false /}
+    {/call}
+  </div>
 {/template}
