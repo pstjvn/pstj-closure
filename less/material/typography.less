@@ -10,6 +10,8 @@
 //   &:extend(.header);
 // }
 
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,500italic,400italic,300italic,700italic&subset=cyrillic,latin);
+
 
 // The predefined values.
 @typography-color: black;
@@ -23,27 +25,28 @@
 .typography(
     @color: @typography-color,
     @opacity: 87,
-    @size: 40pt,
+    @size: 40px,
     @weight: @typography-weight-regular
 ) {
   color: fade(@color, @opacity);
   font-size: @size;
   font-weight: @weight;
+  line-height: @size;
 }
 
 // Named mixins
-.display4 (@color){.typography(@color, 45, 112pt, @typography-weight-light);}
-.display3 (@color){.typography(@color, 45, 56pt);}
-.display2 (@color){.typography(@color, 45, 45pt);}
-.display1 (@color){.typography(@color, 45, 34pt);}
-.headline (@color){.typography(@color, 87, 24pt);}
-.title (@color){.typography(@color, 87, 20pt, @typography-weight-medium);}
-.subhead (@color){.typography(@color, 87, 16pt);}
-.body2 (@color){.typography(@color, 87, 14pt, @typography-weight-medium);}
-.body1 (@color){.typography(@color, 87, 14pt);}
-.caption (@color){.typography(@color, 54, 12pt);}
-.menu (@color){.typography(@color, 87, 14pt, @typography-weight-medium);}
+.display4 (@color){.typography(@color, 45, 112px, @typography-weight-light);}
+.display3 (@color){.typography(@color, 45, 56px);}
+.display2 (@color){.typography(@color, 45, 45px);}
+.display1 (@color){.typography(@color, 45, 34px);}
+.headline (@color){.typography(@color, 87, 24px);}
+.title (@color){.typography(@color, 87, 20px, @typography-weight-medium);}
+.subhead (@color){.typography(@color, 87, 16px);}
+.body2 (@color){.typography(@color, 87, 14px, @typography-weight-medium);}
+.body1 (@color){.typography(@color, 87, 14px);}
+.capxion (@color){.typography(@color, 54, 12px);}
+.menu (@color){.typography(@color, 87, 14px, @typography-weight-medium);}
 .button (@color){
-  .typography(@color, 87, 14pt, @typography-weight-medium);
+  .typography(@color, 87, 14px, @typography-weight-medium);
   text-transform: uppercase;
 }
