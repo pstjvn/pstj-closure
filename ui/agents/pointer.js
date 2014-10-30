@@ -260,6 +260,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // paradigm, but if the developer wants to listen for the events we
     // assume he really wants to do so.
     e.stopPropagation();
+    var ts = goog.now();
 
     if (e.type == goog.events.EventType.TOUCHSTART ||
         e.type == goog.events.EventType.POINTERDOWN ||
@@ -275,10 +276,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           // this is the primary touch so we assume it is a single finger
           // touch for now
           var touch = this.getTouchByIndex(this.getTouchEvent(e));
-          this.startPoint_.update(
-              touch.clientX,
-              touch.clientY,
-              this.getTouchEvent(e).timeStamp);
+          this.startPoint_.update(touch.clientX, touch.clientY, ts);
           this.sourceElement_ = /** @type {Element} */(e.target);
         } else {
           this.longPressDelay_.stop();
@@ -293,7 +291,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         // there is only one mause assuming...
         this.currentEventType_ = pstj.agent.Pointer.Type.MOUSE;
         var event = this.getMouseEvent(e);
-        this.startPoint_.update(event.clientX, event.clientY, event.timeStamp);
+        this.startPoint_.update(event.clientX, event.clientY, ts);
         this.sourceElement_ = /** @type {Element} */(e.target);
         // Start listening on the document for move events as mouse
         // events are not bound to their original target.
@@ -320,18 +318,11 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           if (!this.isDocumentBound_) return;
           // assuming this is coming from the document now...
           var event = this.getMouseEvent(e);
-          this.currentPoint_.update(
-              event.clientX,
-              event.clientY,
-              event.timeStamp);
-
+          this.currentPoint_.update(event.clientX, event.clientY, ts);
         } else if (e.type == goog.events.EventType.TOUCHMOVE) {
           if (this.getTouchesCount(e) == 1) {
             var touch = this.getTouchByIndex(this.getTouchEvent(e));
-            this.currentPoint_.update(
-                touch.clientX,
-                touch.clientY,
-                this.getTouchEvent(e).timeStamp);
+            this.currentPoint_.update(touch.clientX, touch.clientY, ts);
           } else {
             console.log('Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
