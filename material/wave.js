@@ -280,7 +280,7 @@ pstj.material.Wave.prototype.drawRipple = function(
   // effect to work.
   var s = radius / (this.containerLargestSide_ / 2);
   style.setStyle(
-      this.wave_, 'transform', 'scale3d(' + s + ',' + s + ',1)');
+      this.wave_, 'transform', 'scale(' + s + ',' + s + ')');
 };
 
 
