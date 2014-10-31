@@ -34,12 +34,12 @@ goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.structs.Pool');
 goog.require('goog.style');
+goog.require('goog.userAgent');
 goog.require('pstj.color');
 goog.require('pstj.ds.Cache');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.material.EventType');
 goog.require('pstj.math.utils');
-
 
 goog.scope(function() {
 var AnimationDelay = goog.async.AnimationDelay;
@@ -279,8 +279,13 @@ pstj.material.Wave.prototype.drawRipple = function(
   // This is noted as workaround for Safari, but is actually required for the
   // effect to work.
   var s = radius / (this.containerLargestSide_ / 2);
-  style.setStyle(
-      this.wave_, 'transform', 'scale(' + s + ',' + s + ')');
+  if (goog.userAgent.SAFARI) {
+    style.setStyle(
+        this.wave_, 'transform', 'scale(' + s + ',' + s + ')');
+  } else {
+    style.setStyle(
+        this.wave_, 'transform', 'scale3d(' + s + ',' + s + ',1)');
+  }
 };
 
 
