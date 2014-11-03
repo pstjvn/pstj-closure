@@ -4,4 +4,134 @@
   width: 25px;
   height: 25px;
   position: relative;
+  &[type="none"] {
+    .menu, .playback {
+      display: none;
+    }
+    .menu {
+      .first, .third {
+        transform: translateY(0) rotate(0deg) scaleX(1);
+      }
+    }
+  }
+  &[type="from-none-to-menu"] {
+    .menu {
+      display: block;
+      -webkit-transform-origin: 50% 50%;
+      -webkit-animation: icon-scaleup 500ms;
+    }
+  }
+
+  &[type="from-menu-to-none"] {
+    .menu {
+      display: block;
+      -webkit-animation: icon-fade 500ms;
+      -webkit-animation-fill-mode: forwards;
+    }
+  }
+
+  // svg
+  &[type="from-menu-to-plus"] {
+    transform: rotate(90deg);
+    transition: all 400ms linear;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-cross-first 400ms forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-cross-third 400ms forwards;
+      }
+    }
+  }
+
+  &[type="from-plus-to-none"] {
+    .menu {
+      -webkit-animation: icon-fade 500ms forwards;
+      &.first {
+        transform-origin: 50% 50%;
+        transform: translateY(275%) rotate(90deg);
+      }
+      &.third {
+        display: none;
+      }
+    }
+  }
+
+  &[type="from-plus-to-menu"] {
+    transform: rotate(180deg);
+    transition: all 400ms linear;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: from-cross-first 400ms forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: from-cross-third 400ms forwards;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes icon-scaleup {
+  from {
+    -webkit-transform: scale(0.0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@-webkit-keyframes icon-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// zavurta purviq bar na menuto kum +
+@-webkit-keyframes to-cross-first {
+  50% {
+    transform: translateY(275%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(275%) rotate(90deg);
+  }
+}
+
+@-webkit-keyframes to-cross-third {
+  50% {
+    transform: translateY(-275%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-275%) rotate(90deg);
+  }
+}
+@-webkit-keyframes from-cross-first {
+  0% {
+    transform: translateY(275%) rotate(90deg);
+  }
+  50% {
+    transform: translateY(275%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0%) rotate(180deg);
+  }
+}
+@-webkit-keyframes from-cross-third {
+  0% {
+    transform: translateY(-275%) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-275%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(-0%) rotate(180deg);
+  }
 }

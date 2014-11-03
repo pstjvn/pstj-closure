@@ -35,18 +35,31 @@
   </div>
 {/template}
 
+/** The main panel fo rthe header panel. */
+{template .HeaderPanelMain}
+  <div is class="{css material-header-panel-main}">
+    <div class="{css material-header-panel-main-container}">
+      <div class="{css material-header-panel-main-content}"></div>
+    </div>
+    <div class="{css material-drop-shadow}"></div>
+  </div>
+{/template}
 
-/** Template for the header panel material element */
+
+/** The header in the header panel. */
+{template .HeaderPanelHeader}
+  <div is class="{css material-header-panel-header}"></div>
+{/template}
+
+
+/**
+  * Template for the header panel material element
+  * It intentionally does not contain the header and main panels as we want to
+  * create them programatically with their own children from the JSON config.
+  */
 {template .HeaderPanel}
-  <div class="{css header-panel} {css header-panel-waterfall-tall}">
-    <div class="{css header-panel-outer-container}">
-      <div is class="{css core-element} {css header-panel-header-content}"></div>
-      <div class="{css header-panel-main-panel}">
-        <div class="{css header-panel-main-container}">
-          <div is class="{css core-element} {css header-panel-main-content}"></div>
-        </div>
-        <div class="{css shadow}"></div>
-      </div>
+  <div class="{css material-header-panel}">
+    <div class="{css material-header-panel-outer-container}">
     </div>
   </div>
 {/template}
@@ -204,11 +217,13 @@
 {/template}
 
 
-/** Provides the template for the material button. Note that it does not
-support icons etc, it is purely material impementation*/
+/**
+ * Provides the template for the material button. Note that it does not
+ * support icons etc, it is purely material impementation
+ */
 {template .Button}
   {@param? label: string}
-  <div class="{css material-button}">
+  <div is class="{css material-button}">
     {call .Shadow /}
     {call .ButtonContent}
       {param label: $label /}
@@ -216,5 +231,42 @@ support icons etc, it is purely material impementation*/
     {call .Ripple}
       {param recenter: false /}
     {/call}
+  </div>
+{/template}
+
+
+/** Provides the SVG for all included icons. */
+{template .Icon}
+  <svg is viewBox="0 0 200 200" class="{css material-icon} {css fit}" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px">
+    <path class="{css menu} {css first}" d="M168,59.75c0,4.28-3.47,7.75-7.75,7.75H39.75c-4.28,0-7.75-3.47-7.75-7.75l0,0c0-4.28,3.47-7.75,7.75-7.75h120.5C164.53,52,168,55.47,168,59.75L168,59.75z"/>
+    <path class="menu second" d="M168,100.25c0,4.28-3.47,7.75-7.75,7.75H39.75c-4.28,0-7.75-3.47-7.75-7.75l0,0c0-4.28,3.47-7.75,7.75-7.75h120.5C164.53,92.5,168,95.97,168,100.25L168,100.25z"/>
+    <path class="menu third" d="M168,140.25c0,4.28-3.47,7.75-7.75,7.75H39.75c-4.28,0-7.75-3.47-7.75-7.75l0,0c0-4.28,3.47-7.75,7.75-7.75h120.5C164.53,132.5,168,135.97,168,140.25L168,140.25z"/>
+  </svg>
+{/template}
+
+
+/** Implements the FAB button */
+{template .Fab}
+  <div is class="{css material-fab}">
+    {call .Shadow /}
+    {call .Icon /}
+    {call .Ripple}
+      {param recenter: true /}
+    {/call}
+  </div>
+{/template}
+
+
+/** Template for the material checkbox */
+{template .Checkbox}
+  <div class="{css material-checkbox}" role="checkbox">
+    <div class="{css material-checkbox-container}">
+      <div class="{css material-checkbox-icon}"></div>
+      {call .Ripple}
+        {param circle: true /}
+        {param recenter: true /}
+      {/call}
+    </div>
+    <div class="{css material-checkbox-label}"></div>
   </div>
 {/template}

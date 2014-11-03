@@ -1,7 +1,7 @@
 @import "layout";
 @import "common";
 
-.header-panel {
+.material-header-panel {
   display: block;
   position: relative;
   height: 100%;
@@ -10,7 +10,7 @@
     &:extend(.core-flexd);
     &:extend(.core-flex-vertical);
   }
-  &-main-panel {
+  &-main {
     position: relative;
     &:extend(.core-flexd);
     &:extend(.core-flex-vertical);
@@ -23,16 +23,16 @@
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
   }
-  &-shadow .shadow {
+  &-shadow .material-drop-shadow {
     display: block ! important;
   }
-  &-transition &-header-content {
+  &-transition &-header {
     transition: height 0.2s;
   }
-  &-header-content {
+  &-header {
     height: 60px;
   }
-  &-tall &-header-content {
+  &-tall &-header {
     height: 180px;
   }
   &-scroll &-main-container {
@@ -40,7 +40,7 @@
   }
 }
 
-.shadow {
+.material-header-panel-shadow .material-drop-shadow {
   position: absolute;
   top: 0;
   left: 0;
