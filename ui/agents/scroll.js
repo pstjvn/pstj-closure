@@ -1,4 +1,5 @@
 goog.provide('pstj.agent.Scroll');
+goog.provide('pstj.agent.ScrollEvent');
 
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
@@ -21,7 +22,7 @@ pstj.agent.Scroll = goog.defineClass(pstj.ui.Agent, {
     pstj.ui.Agent.call(this, null);
     /**
      * References the last scrolled - on component.
-     * @type {goog.ui.Component}
+     * @type {pstj.material.Element}
      * @private
      */
     this.currentSource_ = null;
@@ -38,7 +39,6 @@ pstj.agent.Scroll = goog.defineClass(pstj.ui.Agent, {
   updateCache: function(component) {
     // We can actually support only the material element control as we need
     // to know which is the scroll element.
-    goog.asserts.assertInstanceof(component, pstj.material.Element);
     this.getCache().set(component.getId(), goog.events.listen(
         component.getScrollElement(), goog.events.EventType.SCROLL,
         goog.bind(this.handleScroll, this, component)));
@@ -58,7 +58,7 @@ pstj.agent.Scroll = goog.defineClass(pstj.ui.Agent, {
 
   /**
    * Handles the original (browser generated) scroll event.
-   * @param {goog.ui.Component} component
+   * @param {pstj.material.Element} component
    * @param {goog.events.Event} e
    * @protected
    */
@@ -77,9 +77,28 @@ pstj.agent.Scroll = goog.defineClass(pstj.ui.Agent, {
    * @protected
    */
   onRaf: function(ts) {
-    this.currentSource_.dispatchEvent(goog.events.EventType.SCROLL);
+    this.currentSource_.dispatchEvent(new pstj.agent.ScrollEvent(
+        this.currentSource_));
   }
 });
-
 goog.addSingletonGetter(pstj.agent.Scroll);
 
+
+/**
+ * Implements the scroll event abstraction.
+ */
+pstj.agent.ScrollEvent = goog.defineClass(goog.events.Event, {
+  /**
+   * @constructor
+   * @extends {goog.events.Event}
+   * @param {pstj.material.Element} target
+   * @suppress {checkStructDictInheritance}
+   */
+  constructor: function(target) {
+    goog.events.Event.call(this, goog.events.EventType.SCROLL, target);
+    /**
+     * @type {number}
+     */
+    this.scrollTop = target.getScrollElement().scrollTop;
+  }
+});
