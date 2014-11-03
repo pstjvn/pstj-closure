@@ -268,7 +268,6 @@ check:
 	-f --flagfile=options/compile.ini \
 	--output_file=/dev/null
 
-
 #### Calls specific to library development (i.e. no application code) #####
 
 # Provides the deps file for the library, should be available to the compiler to

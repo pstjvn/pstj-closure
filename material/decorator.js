@@ -1,7 +1,12 @@
 goog.provide('pstj.material.decorator');
 
 goog.require('pstj.material.Button');
+goog.require('pstj.material.Checkbox');
 goog.require('pstj.material.Element');
+goog.require('pstj.material.Fab');
+goog.require('pstj.material.HeaderPanel');
+goog.require('pstj.material.HeaderPanelHeader');
+goog.require('pstj.material.HeaderPanelMain');
 goog.require('pstj.material.Input');
 goog.require('pstj.material.Item');
 goog.require('pstj.material.Progressbar');
@@ -24,7 +29,9 @@ _.create = function(json, root) {
 
   // Handle intrinsic root element.
   if (goog.isNull(root)) {
-    root = new pstj.material.Element();
+    root = pstj.material.Element.fromJSON(/** @type {MaterialConfig} */ ({
+      classNames: 'fit'
+    }), null);
     root.render();
   }
   // Iterate over all elements and in the list and add them to the designated
@@ -47,8 +54,18 @@ _.create = function(json, root) {
 _.create_ = function(item) {
   console.log('Creating: ' + item.type);
   switch (item.type) {
+    case 'checkbox':
+      return pstj.material.Checkbox.fromJSON(item.config);
+    case 'header-panel-main':
+      return pstj.material.HeaderPanelMain.fromJSON(item.config);
+    case 'header-panel':
+      return pstj.material.HeaderPanel.fromJSON(item.config);
+    case 'header-panel-header':
+      return new pstj.material.HeaderPanelHeader();
     case 'button':
       return pstj.material.Button.fromJSON(item.config);
+    case 'fab':
+      return pstj.material.Fab.fromJSON(item.model);
     case 'form':
       return new pstj.material.Element();
     case 'input':
@@ -62,12 +79,23 @@ _.create_ = function(item) {
           /** @type {MaterialConfig} */ (item.config));
     case 'label':
       return pstj.material.Element.fromJSON(
-          /** @type {MaterialConfig} */ (item.config));
+          /** @type {MaterialConfig} */ (item.config), null);
     case 'togglebutton':
       return pstj.material.ToggleButton.fromJSON(
           /** @type {ToggleButtonConfig} */ (item.config));
     case 'progressbar':
-      return new pstj.material.Progressbar();
+      var i = new pstj.material.Progressbar();
+      if (item.config && goog.isDef(item.config.state)) {
+        switch (item.config.state) {
+          case 1:
+            i.setTransitioning(true);
+            break;
+          case 2:
+            i.setEmpty(false);
+            break;
+        }
+      }
+      return i;
     default:
       throw Error('Unrecognized component');
 
