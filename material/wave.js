@@ -34,7 +34,7 @@ goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.structs.Pool');
 goog.require('goog.style');
-goog.require('goog.userAgent');
+goog.require('goog.userAgent.product');
 goog.require('pstj.color');
 goog.require('pstj.ds.Cache');
 goog.require('pstj.lab.style.css');
@@ -279,7 +279,7 @@ pstj.material.Wave.prototype.drawRipple = function(
   // This is noted as workaround for Safari, but is actually required for the
   // effect to work.
   var s = radius / (this.containerLargestSide_ / 2);
-  if (goog.userAgent.SAFARI) {
+  if (goog.userAgent.product.SAFARI) {
     style.setStyle(
         this.wave_, 'transform', 'scale(' + s + ',' + s + ')');
   } else {
