@@ -40,6 +40,8 @@ pstj.material.RadioButton = function(opt_content, opt_renderer, opt_domHelper) {
   this.setDispatchTransitionEvents(goog.ui.Component.State.FOCUSED |
       goog.ui.Component.State.DISABLED |
       goog.ui.Component.State.CHECKED, true);
+
+  this.setUsePointerAgent(true);
 };
 goog.inherits(pstj.material.RadioButton, pstj.material.Element);
 

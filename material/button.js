@@ -32,6 +32,22 @@ goog.scope(function() {
 pstj.material.Button = function(opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
 
+  /**
+   * @type {number}
+   * @protected
+   */
+  this.baseDepth = 1;
+  /**
+   * @type {number}
+   * @protected
+   */
+  this.activeDepth = 2;
+  /**
+   * @type {number}
+   * @protected
+   */
+  this.disabledDepth = 0;
+
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
   this.setSupportedState(goog.ui.Component.State.RAISED, true);
   this.setSupportedState(goog.ui.Component.State.ACTIVE, true);
@@ -45,6 +61,8 @@ pstj.material.Button = function(opt_content, opt_renderer, opt_domHelper) {
 
   this.setStateInternal(goog.ui.Component.State.TRANSITIONING |
       goog.ui.Component.State.RAISED);
+
+  this.setUsePointerAgent(true);
 };
 goog.inherits(pstj.material.Button, pstj.material.Element);
 
@@ -118,13 +136,13 @@ _.onPress = function(e) {
  */
 _.adjustDepth = function() {
   if (!this.isEnabled()) {
-    this.getShadow().setDepth(0);
+    this.getShadow().setDepth(this.disabledDepth);
   } else {
     if (this.isRaised()) {
       if (this.isActive()) {
-        this.getShadow().setDepth(2);
+        this.getShadow().setDepth(this.activeDepth);
       } else {
-        this.getShadow().setDepth(1);
+        this.getShadow().setDepth(this.baseDepth);
       }
     }
   }

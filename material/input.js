@@ -141,6 +141,8 @@ pstj.material.Input = function(opt_content, opt_renderer, opt_domHelper) {
   this.setSupportedState(goog.ui.Component.State.EMPTY, true);
   this.setSupportedState(goog.ui.Component.State.FOCUSED, true);
   this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
+
+  this.setUsePointerAgent(true);
 };
 goog.inherits(pstj.material.Input, pstj.material.Element);
 
@@ -452,7 +454,6 @@ pstj.material.Input.prototype.setEnabled = function(enable) {
  * @protected
  */
 pstj.material.Input.prototype.handleFocus = function(e) {
-  console.log('Handle focus');
   // revert the value as it is added after the event is emited
   this.setFocused(!this.inputBody_.isFocused());
   if (this.isEmpty() && this.isFocused()) {
@@ -475,7 +476,6 @@ pstj.material.Input.prototype.onPress = function(e) {
       e.getPoint().x - goog.style.getBounds(
           this.underline_.getElement()).left);
   if (goog.userAgent.ANDROID) {
-    console.log('fake the focus event');
     this.inputBody_.getKeyEventTarget().focus();
   }
 };

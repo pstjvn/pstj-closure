@@ -47,6 +47,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
      * @private
      */
     this.recenterRipples_ = false;
+    this.setUsePointerAgent(true);
   },
 
 

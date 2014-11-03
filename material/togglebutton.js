@@ -44,6 +44,8 @@ pstj.material.ToggleButton = function(
   this.value = 0;
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
+
+  this.setUsePointerAgent(true);
 };
 goog.inherits(pstj.material.ToggleButton, pstj.material.Element);
 
