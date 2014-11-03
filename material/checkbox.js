@@ -116,6 +116,21 @@ r.getTemplate = function(model) {
 };
 
 
+/** @inheritDoc */
+r.generateTemplateData = function(control) {
+  return {
+    label: control.getContent() || ''
+  }
+};
+
+
+/** @inheritDoc */
+r.getContentElement = function(el) {
+  return goog.dom.getElementByClass(goog.getCssName(this.getCssClass(),
+      'label'), el);
+};
+
+
 // Register for default renderer.
 goog.ui.registry.setDefaultRenderer(pstj.material.Checkbox,
     pstj.material.CheckboxRenderer);
