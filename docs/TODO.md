@@ -1,5 +1,5 @@
 
-Explore the option to have event registration separate from 'enter/exitDocument'
+DONE: Explore the option to have event registration separate from 'enter/exitDocument'
 This will allow the automatic registration of pointer etc events without actually
 subscribing the DOM node to the pointer. That could be handled by a separate
 flag in the base Element.

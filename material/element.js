@@ -26,6 +26,10 @@ goog.require('goog.ui.registry');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.agent.Scroll');
+goog.require('pstj.ds.List');
+goog.require('pstj.ds.List.EventType');
+goog.require('pstj.ds.ListItem');
+goog.require('pstj.ds.ListItem.EventType');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
@@ -35,7 +39,6 @@ goog.require('soydata');
 goog.scope(function() {
 var Control = goog.ui.Control;
 var EventMap = pstj.material.EventMap;
-var Pointer = pstj.agent.Pointer;
 var State = goog.ui.Component.State;
 var pev = pstj.agent.Pointer.EventType;
 
@@ -126,6 +129,13 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     goog.asserts.assertInstanceof(control, pstj.material.Element);
     var el = this.createRootElement(this.getTemplate(this.generateTemplateData(
         control)));
+    // FIXME: this breaks the extra class names because we mix render and
+    // decorate: first we start with render and we create the DOM, but then
+    // we go via the decorate path and update the states based on classes that
+    // were
+    // just set based on state (?) and at this point we have set the additional
+    // class names but the in decorate in the renderer we try to do it again
+    // which doubles the class names for some reason...
     goog.dom.classlist.addAll(el, this.getClassNames(control));
     this.setAriaStates(control, el);
     this.setupAutoEvents(control, el);
@@ -319,6 +329,35 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * created by decorating element of constructing them from a soy template.
    * This means that we can minify the classes and also use classes to assign
    * auto events etc.
+   *
+   * The Element instance is equiped to use the UI agents (Scroll, Pointer,
+   * Gesture etc) with a single flag flip, so extending the base Element is
+   * pretty easy and leaves the developer with a very robust and 'almost' ready
+   * instance that can be tweaked.
+   *
+   * The Element can be set up to a) subscribe for DOM events via the
+   * UI event agenst and b) listen for those agent's customized events. Note
+   * that both are used and configured separately. The listening part is
+   * 'semi-automatic', the developer configures a bitnask of events to listen
+   * for and the binding is done automatically to predefined method names
+   * (on* methods), so the developer does not need to create them, only
+   * override where fit is seen.
+   *
+   * By default the Element instance is completely innert - all listeners and
+   * events are ignored, all states are prohibited and all interactions are
+   * dismissed. This is done to allow a sort of a 'clean slate' approch to the
+   * material elements - use only when is really useful. This however means that
+   * the developer need to carefully examine the needed states and turn them on
+   * in the following manner: a) allow the state (for example 'CHECKED'), b) if
+   * you need CHECKED/UNCHECKED events - enable dispatch of transitioning events
+   * for the desired states c) set the state to AUTO if you want the closure
+   * default control states to be applied based on interaction. d) enable auto
+   * assignment for the events that you would like to handle by overriding
+   * the default on* events (if you don't you need to call listen(this, evtype)
+   * for every event you want to listen for in 'enterDocument'. e) enable
+   * ui agents automatic attachement.
+   *
+   *
    * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
    * @param {goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
@@ -343,6 +382,25 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
      * @private
      */
     this.autoEvents_ = EventMap.EventFlag.NONE;
+    /**
+     * Flag if the instance should automatically sign up for the scroll
+     * agent. If set to true, the instance will try to attach to the
+     * scroll user agent and will dispatch its events (ScrollEvent).
+     * This means that the instance or its ancestors in the component hierachy
+     * can listen for scroll events that are raf-ed and cleaned up by the
+     * agent.
+     * @type {boolean}
+     * @private
+     */
+    this.useScrollAgent_ = false;
+    /**
+     * Flag: if the instance should try to automatically attach to the
+     * pointer agent to handle touch/mouse/pointer events and dispatch
+     * custom pointer events for the instance and/or its ancestors.
+     * @type {boolean}
+     * @private
+     */
+    this.usePointerAgent_ = false;
     // by default we disable all event handling (mouse and keyboard).
     this.setHandleMouseEvents(false);
     // Disable all states by default (make it more like the Component).
@@ -353,12 +411,79 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /**
+   * Configures if the instance should be attached to the pointer UI agent.
+   * @param {boolean} enable
+   */
+  setUsePointerAgent: function(enable) {
+    this.usePointerAgent_ = enable;
+    if (this.isInDocument()) {
+      this.updatePointerAgentAttachement_();
+    }
+  },
+
+
+  /**
+   * Configures if the component should be attached to the Scoll UI agent.
+   * @param {boolean} enable
+   */
+  setUseScrollAgent: function(enable) {
+    this.useScrollAgent_ = enable;
+    if (this.isInDocument()) {
+      this.updateScrollAgentAttachement_();
+    }
+  },
+
+
+  /**
+   * Returns true if the element instance is configured to be attache-able
+   * to the scroll agent.
+   * @return {boolean}
+   */
+  hasUseScrollAgent: function() {
+    return this.useScrollAgent_;
+  },
+
+
+  /**
+   * Updates the registration state of the component with the Pointer agent.
+   * @private
+   */
+  updatePointerAgentAttachement_: function() {
+    if (this.usePointerAgent_) {
+      pstj.agent.Pointer.getInstance().attach(this);
+    } else {
+      pstj.agent.Pointer.getInstance().detach(this);
+    }
+  },
+
+
+  /**
+   * Updates the registration for the scroll agent to match the
+   * current state of the component.
+   * @private
+   */
+  updateScrollAgentAttachement_: function() {
+    if (this.useScrollAgent_) {
+      pstj.agent.Scroll.getInstance().attach(this);
+    } else {
+      pstj.agent.Scroll.getInstance().detach(this);
+    }
+  },
+
+
+  /**
    * We want to always go with the decoration via internal decorate methods as
    * we are also making deep decorator path pattern working here.
    * @override
    */
   createDom: function() {
     goog.base(this, 'createDom');
+    // here we are assuming too much, basically allowing the the more complex
+    // and 'coposed' elements to be created naturally (from the template).
+    // This however bvreaks the 'decorate/rendered' pattern. This should change
+    // in future to allow the composition to work automatically and augment
+    // elements in a separate method that can be called from either the
+    // rendering or the decoration.
     this.decorateInternal(this.getElement());
   },
 
@@ -389,7 +514,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       for (var i = 0; i < nodes.length; i++) {
         console.log('Auto decorating:', nodes[i].className);
         var child = goog.ui.decorate(nodes[i]);
-        this.addChild(child, true);
+        this.addChild(child);
         var toRemove = goog.array.toArray(child.getDecorativeChildren());
         for (var j = 0; j < toRemove.length; j++) {
           goog.array.remove(nodes, toRemove[j]);
@@ -412,9 +537,67 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /** @override */
   enterDocument: function() {
     goog.base(this, 'enterDocument');
-    if (this.autoEvents_ != EventMap.EventFlag.NONE) {
-      this.enableAutoEvents();
+    this.updatePointerAgentAttachement_();
+    this.updateScrollAgentAttachement_();
+    this.enableAutoEvents();
+  },
+
+
+  /**
+   * Swap the listeners for model, cleaning from old model and setting up the
+   * new one.
+   * @param {pstj.ds.ListItem} newModel
+   * @protected
+   */
+  swapModelItem: function(newModel) {
+    var old = this.getModel();
+    if (!goog.isNull(old)) {
+      goog.asserts.assertInstanceof(old, pstj.ds.ListItem);
+      this.getHandler().unlisten(old, pstj.ds.ListItem.EventType.UPDATE,
+          this.handleModelEvent);
     }
+    if (!goog.isNull(newModel)) {
+      this.getHandler().listen(newModel, pstj.ds.ListItem.EventType.UPDATE,
+          this.handleModelEvent);
+    }
+  },
+
+
+  /**
+   * Hotswap the model running the instance with a new one.
+   * @param {pstj.ds.List} newList
+   * @protected
+   */
+  swapModelList: function(newList) {
+    var old = this.getModel();
+    if (!goog.isNull(old)) {
+      goog.asserts.assertInstanceof(old, pstj.ds.List);
+      this.getHandler().unlisten(old, [
+        pstj.ds.List.EventType.ADD,
+        pstj.ds.List.EventType.UPDATE,
+        pstj.ds.List.EventType.DELETE,
+        pstj.ds.List.EventType.FILTERED,
+        pstj.ds.List.EventType.SELECTED], this.handleModelEvent);
+    }
+    if (!goog.isNull(newList)) {
+      this.getHandler().listen(newList, [
+        pstj.ds.List.EventType.ADD,
+        pstj.ds.List.EventType.UPDATE,
+        pstj.ds.List.EventType.DELETE,
+        pstj.ds.List.EventType.FILTERED,
+        pstj.ds.List.EventType.SELECTED], this.handleModelEvent);
+    }
+  },
+
+
+  /**
+   * Handles events from the current model. Our model is primitive
+   * and should be re-designed, but for now it will do...
+   * @param {goog.events.Event} e
+   * @protected
+   */
+  handleModelEvent: function(e) {
+    console.log(e.type);
   },
 
 
@@ -425,14 +608,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * again.
    */
   enableAutoEvents: function() {
-    if (this.autoEvents_ & pstj.material.Element.PointerMap) {
-      this.assignAutoEventHandlers_();
-      Pointer.getInstance().attach(this);
-    }
-    if (this.hasAutoEvent(EventMap.EventFlag.SCROLL)) {
-      this.assignAutoEventHandlers_();
-      pstj.agent.Scroll.getInstance().attach(this);
-    }
+    // currently we delegate directly to the auto assignment.
+    this.assignAutoEventHandlers_();
   },
 
 
@@ -607,21 +784,21 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /**
-   * Getter for the element that we want to listen for scrolling on. This is
-   * mainly used by the scroll agent.
-   * @return {Element}
-   */
-  getScrollElement: function() {
-    return this.getElement();
-  },
-
-
-  /**
    * Returns the element on which to generate ripple effect. By default this is
    * the root element.
    * @return {!Element}
    */
   getRippleElement: function() {
+    return this.getElementStrict();
+  },
+
+
+  /**
+   * Getter for the element we would like to listen on for scroll events in the
+   * scroll agent. This should be overriden in children classes.
+   * @return {!Element}
+   */
+  getScrollElement: function() {
     return this.getElementStrict();
   },
 
@@ -678,7 +855,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * Default scroll handler. Note that we expect the scroll events to be raf
    * synced so if you are not sure how to implement this use the scroll agent
    * and the incoming events will be automatically reduced to the raf cycle.
-   * @param {goog.events.Event} e
+   * @param {pstj.agent.ScrollEvent} e
    * @protected
    */
   onScroll: goog.functions.TRUE,
@@ -744,10 +921,13 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 /**
  * Creates a pre-configured element from JSON config file.
  * @param {MaterialConfig} json
+ * @param {pstj.material.Element} i
  * @return {pstj.material.Element}
  */
-pstj.material.Element.fromJSON = function(json) {
-  var i = new pstj.material.Element(json.content || undefined);
+pstj.material.Element.fromJSON = function(json, i) {
+  if (goog.isNull(i)) {
+    i = new pstj.material.Element(json.content || undefined);
+  }
   pstj.material.Element.setupAdditionalClasses(i, json);
   return i;
 };
@@ -764,9 +944,12 @@ pstj.material.Element.setupAdditionalClasses = function(instance, config) {
   if (goog.isDef(config.classNames)) {
     var cl = config.classNames.split(',');
     goog.array.forEach(cl, function(cname) {
-      instance.enableClassName(
-          pstj.material.Element.ExternalClassRefs_[goog.string.trim(cname)],
-          true);
+      var cn = pstj.material.Element.ExternalClassRefs_[goog.string.trim(
+          cname)];
+      if (!goog.isDef(cn)) {
+        cn = cname;
+      }
+      instance.enableClassName(cn, true);
     });
   }
 };
@@ -779,10 +962,10 @@ pstj.material.Element.setupAdditionalClasses = function(instance, config) {
  */
 pstj.material.Element.ExternalClassRefs_ = goog.object.create(
     'layout', goog.getCssName('layout'),
-    'flex', goog.getCssName('flex'),
     'horizontal', goog.getCssName('horizontal'),
     'vertical', goog.getCssName('vertical'),
     'flex', goog.getCssName('flex'),
+    'center', goog.getCssName('center'),
     'fit', goog.getCssName('fit'));
 
 
