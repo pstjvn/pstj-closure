@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Provides the 'shadow' for material elements. The element is
+ * simple enough and does not require a separate model, thus controlling it
+ * and setting its state cannot be bound to a specific model. Logic for that
+ * can be delegated to controllers if needed, but in most cases the element is
+ * used directly by another element and it should manages the shadow state /
+ * depth.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ */
+
 goog.provide('pstj.material.Shadow');
 goog.provide('pstj.material.ShadowRenderer');
 
