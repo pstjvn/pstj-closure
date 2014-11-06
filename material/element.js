@@ -26,10 +26,6 @@ goog.require('goog.ui.registry');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.agent.Scroll');
-goog.require('pstj.ds.List');
-goog.require('pstj.ds.List.EventType');
-goog.require('pstj.ds.ListItem');
-goog.require('pstj.ds.ListItem.EventType');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
@@ -44,17 +40,16 @@ var pev = pstj.agent.Pointer.EventType;
 
 
 /**
- * Implementation for the custom renderer.
+ * Implementation of the control renderer for the material design elements.
+ * Note that several key features of the goog.ui.ControlRenderer are
+ * over-ridden to make better use of the modern browsers and not all
+ * features are implemented in a manner to work in older engines. This
+ * base renderer should be enough for most elements. The class is designed
+ * to be used as a single instance so please do not instantiate it,
+ * instead use the static 'getInstance' method.
  */
 pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   /**
-   * Implementation of the control renderer for the material design elements.
-   * Note that several key features of the goog.ui.ControlRenderer are
-   * over-ridden to make better use of the modern browsers and not all
-   * features are implemented in a manner to work in older engines. This
-   * base renderer should be enough for most elements. The class is designed
-   * to be used as a single instance so please do not instantiate it,
-   * instead use the static 'getInstance' method.
    * @constructor
    * @struct
    * @extends {goog.ui.ControlRenderer}
@@ -62,11 +57,30 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    */
   constructor: function() {
     goog.ui.ControlRenderer.call(this);
-    var baseClass = this.getStructuralCssClass();
     /**
+     * Provides the additional classes to be used when determining the
+     * class names to apply by the current state.
      * @type {Object.<number, string>}
      * @private
      */
+    this.classByMaterialState_ = null;
+    /**
+     * Provides the additional mappings for retrieving the state from the
+     * class names applied to an html DOM structure.
+     * @type {Object.<string, number>}
+     * @private
+     */
+    this.materialStateByClass_ = null;
+  },
+
+
+  /**
+   * Internal method to generate the mapping that is needed to convey the
+   * state-class name relation.
+   * @protected
+   */
+  createClassToStateMapping: function() {
+    var baseClass = this.getStructuralCssClass();
     this.classByMaterialState_ = goog.object.create(
         State.NARROW, goog.getCssName(baseClass, 'narrow'),
         State.TRANSITIONING, goog.getCssName(baseClass, 'transition'),
@@ -82,11 +96,17 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
         State.EMPTY, goog.getCssName(baseClass, 'empty'),
         State.INVISIBLE, goog.getCssName(baseClass, 'invisible'),
         State.RAISED, goog.getCssName(baseClass, 'raised'));
+  },
 
-    /**
-     * @type {Object.<string, number>}
-     * @private
-     */
+
+  /**
+   * Creates the mapping to get the state by the class name(s).
+   * @protected
+   */
+  createMaterialStateByClassMapping: function() {
+    if (goog.isNull(this.classByMaterialState_)) {
+      this.createClassToStateMapping();
+    }
     this.materialStateByClass_ = goog.object.transpose(
         this.classByMaterialState_);
   },
@@ -99,6 +119,9 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   getClassForState: function(state) {
     var result = goog.base(this, 'getClassForState', state);
     if (!goog.isDef(result)) {
+      if (goog.isNull(this.classByMaterialState_)) {
+        this.createClassToStateMapping();
+      }
       return this.classByMaterialState_[state];
     } else {
       return result;
@@ -113,6 +136,9 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   getStateFromClass: function(className) {
     var state = goog.base(this, 'getStateFromClass', className);
     if (state == 0) {
+      if (goog.isNull(this.materialStateByClass_)) {
+        this.createMaterialStateByClassMapping();
+      }
       state = parseInt(this.materialStateByClass_[className], 10);
     }
     return /** @type {State} */ (isNaN(state) ? 0 : state);
@@ -155,7 +181,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   generateTemplateData: function(control) {
     var model = control.getModel();
     if (model) {
-      return { data: model };
+      return { model: model.getRawData() };
     } else if (control.getContent()) {
       return {
         content: control.getContent()
@@ -286,7 +312,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      *    create.
      * @param {string} cssClassName The name of the CSS class for the custom
      *    renderer.
-     * @param {function(Object.<string, *>=): string=} opt_templateFn Optional
+     * @param {function(Object.<string, *>=): soydata.SanitizedHtml=}
+     *    opt_templateFn Optional
      *    template soy function to use to generate the DOM.
      * @return {pstj.material.ElementRenderer} An instance of the desired
      *    renderer customized with new class name and optionally new template.
@@ -304,7 +331,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
       if (goog.isFunction(opt_templateFn)) {
         /**
          * @param {Object.<string, *>} model
-         * @return {string}
+         * @return {soydata.SanitizedHtml}
          */
         renderer.getTemplate = function(model) {
           return opt_templateFn(model);
@@ -540,64 +567,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.updatePointerAgentAttachement_();
     this.updateScrollAgentAttachement_();
     this.enableAutoEvents();
-  },
-
-
-  /**
-   * Swap the listeners for model, cleaning from old model and setting up the
-   * new one.
-   * @param {pstj.ds.ListItem} newModel
-   * @protected
-   */
-  swapModelItem: function(newModel) {
-    var old = this.getModel();
-    if (!goog.isNull(old)) {
-      goog.asserts.assertInstanceof(old, pstj.ds.ListItem);
-      this.getHandler().unlisten(old, pstj.ds.ListItem.EventType.UPDATE,
-          this.handleModelEvent);
-    }
-    if (!goog.isNull(newModel)) {
-      this.getHandler().listen(newModel, pstj.ds.ListItem.EventType.UPDATE,
-          this.handleModelEvent);
-    }
-  },
-
-
-  /**
-   * Hotswap the model running the instance with a new one.
-   * @param {pstj.ds.List} newList
-   * @protected
-   */
-  swapModelList: function(newList) {
-    var old = this.getModel();
-    if (!goog.isNull(old)) {
-      goog.asserts.assertInstanceof(old, pstj.ds.List);
-      this.getHandler().unlisten(old, [
-        pstj.ds.List.EventType.ADD,
-        pstj.ds.List.EventType.UPDATE,
-        pstj.ds.List.EventType.DELETE,
-        pstj.ds.List.EventType.FILTERED,
-        pstj.ds.List.EventType.SELECTED], this.handleModelEvent);
-    }
-    if (!goog.isNull(newList)) {
-      this.getHandler().listen(newList, [
-        pstj.ds.List.EventType.ADD,
-        pstj.ds.List.EventType.UPDATE,
-        pstj.ds.List.EventType.DELETE,
-        pstj.ds.List.EventType.FILTERED,
-        pstj.ds.List.EventType.SELECTED], this.handleModelEvent);
-    }
-  },
-
-
-  /**
-   * Handles events from the current model. Our model is primitive
-   * and should be re-designed, but for now it will do...
-   * @param {goog.events.Event} e
-   * @protected
-   */
-  handleModelEvent: function(e) {
-    console.log(e.type);
   },
 
 
@@ -981,4 +950,3 @@ goog.ui.registry.setDecoratorByClassName(
     });
 
 });  // goog.scope
-
