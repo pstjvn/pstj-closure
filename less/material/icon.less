@@ -1,55 +1,65 @@
 // Styliong for the material icons.
 
+
+@general-icon-mutation-duration: 400ms;
+
+.material-icon-container {
+  width: 25px;
+  height: 25px;
+  position: relative;
+
+  // Material icons inside their container.
+  & .material-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+
+// The SVG icons themselves.
 .material-icon {
   width: 25px;
   height: 25px;
   position: relative;
+
   &[type="none"] {
+    // General
+    display: none;
+
+    // The menu icon.
     .menu, .playback {
       display: none;
     }
+
+    // The initial transformations for the menu icon when it is not visible.
     .menu {
       .first, .third {
         transform: translateY(0) rotate(0deg) scaleX(1);
       }
     }
   }
-  &[type="from-none-to-menu"] {
-    .menu {
-      display: block;
-      -webkit-transform-origin: 50% 50%;
-      -webkit-animation: icon-scaleup 500ms;
-    }
-  }
 
-  &[type="from-menu-to-none"] {
-    .menu {
-      display: block;
-      -webkit-animation: icon-fade 500ms;
-      -webkit-animation-fill-mode: forwards;
-    }
-  }
-
-  // svg
+  // Transformation for the MENU icons.
   &[type="from-menu-to-plus"] {
     transform: rotate(90deg);
-    transition: all 400ms linear;
+    transition: all @general-icon-mutation-duration linear;
     .menu {
       display: block;
       &.first {
         transform-origin: 50% 50%;
-        -webkit-animation: to-cross-first 400ms forwards;
+        -webkit-animation: to-cross-first @general-icon-mutation-duration forwards;
       }
       &.third {
         transform-origin: 50% 50%;
-        -webkit-animation: to-cross-third 400ms forwards;
+        -webkit-animation: to-cross-third @general-icon-mutation-duration forwards;
       }
     }
   }
 
   &[type="from-plus-to-none"] {
     .menu {
-      -webkit-animation: icon-fade 500ms forwards;
+      -webkit-animation: icon-fade @general-icon-mutation-duration forwards;
       &.first {
         transform-origin: 50% 50%;
         transform: translateY(275%) rotate(90deg);
@@ -67,32 +77,48 @@
       display: block;
       &.first {
         transform-origin: 50% 50%;
-        -webkit-animation: from-cross-first 400ms forwards;
+        -webkit-animation: from-cross-first @general-icon-mutation-duration forwards;
       }
       &.third {
         transform-origin: 50% 50%;
-        -webkit-animation: from-cross-third 400ms forwards;
+        -webkit-animation: from-cross-third @general-icon-mutation-duration forwards;
       }
     }
   }
+
+
+  // Generalized 'come-in' animation for icons (when svg is replaced).
+  &[type="from-none-to-user"], &[type="from-none-to-menu"], &[type="from-none-to-plus"] {
+    &:extend(.icon-scaleup);
+  }
+
+  // Generalized 'go out' animation for icons (when svg is replaced).
+  &[type="from-user-to-none"], &[type="from-menu-to-none"] {
+    &:extend(.icon-fadeout);
+  }
 }
 
+.icon-scaleup {
+  display: block;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation: icon-scaleup @general-icon-mutation-duration
+}
+
+.icon-fadeout {
+  display: block;
+  -webkit-animation: icon-fade @general-icon-mutation-duration;
+  -webkit-animation-fill-mode: forwards;
+}
+
+
 @-webkit-keyframes icon-scaleup {
-  from {
-    -webkit-transform: scale(0.0);
-  }
-  to {
-    -webkit-transform: scale(1);
-  }
+  from { -webkit-transform: scale(0.0); }
+  to { -webkit-transform: scale(1); }
 }
 
 @-webkit-keyframes icon-fade {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 // zavurta purviq bar na menuto kum +
