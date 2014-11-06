@@ -31,7 +31,7 @@ pstj.material.Checkbox = function(opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
-  this.setAutoStates(goog.ui.Component.State.CHECKED);
+  this.setAutoStates(goog.ui.Component.State.CHECKED, true);
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
 };
 goog.inherits(pstj.material.Checkbox, pstj.material.Element);
@@ -120,7 +120,7 @@ r.getTemplate = function(model) {
 r.generateTemplateData = function(control) {
   return {
     label: control.getContent() || ''
-  }
+  };
 };
 
 
