@@ -21,6 +21,10 @@ goog.require('pstj.material.ElementRenderer');
  * The class implements a single instance with its mutations. The allowed
  * mutations are pre-defined fir each SVG set. The IconContainer class should
  * manage those.
+ *
+ * In order to allow animated change of icons when the same renderer does not
+ * support the state we want to go into 'indirect mutation' could be aplpied.
+ * For this to work you need to use the {@see IconContainer} class.
  */
 pstj.material.Icon = goog.defineClass(pstj.material.Element, {
   /**
@@ -36,9 +40,7 @@ pstj.material.Icon = goog.defineClass(pstj.material.Element, {
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     goog.base(this, opt_content, opt_renderer, opt_domHelper);
-    /**
-     * @type {pstj.material.Icon.Name}
-     */
+    /** @type {pstj.material.Icon.Name} */
     this.type = pstj.material.Icon.Name.NONE;
   },
 
@@ -57,7 +59,9 @@ pstj.material.Icon = goog.defineClass(pstj.material.Element, {
    * @protected
    */
   onAnimationEnd: function(e) {
-    this.dispatchEvent(pstj.material.Icon.EventType.MORPHEND);
+    if (this.dispatchEvent(pstj.material.Icon.EventType.MORPHEND)) {
+      this.getRenderer().resetType(this);
+    }
   },
 
 
@@ -74,6 +78,7 @@ pstj.material.Icon = goog.defineClass(pstj.material.Element, {
       return true;
     }
   },
+
 
   /**
    * @override
@@ -151,22 +156,27 @@ pstj.material.IconContainer = goog.defineClass(pstj.material.Element, {
   /** @inheritDoc */
   enterDocument: function() {
     goog.base(this, 'enterDocument');
-    // Listen for child icon morph end and remove the icon instance if it is
-    // not the current icon.
     this.getHandler().listen(this, pstj.material.Icon.EventType.MORPHEND,
         this.onMorphEnd);
   },
 
 
   /**
-   * Handles the end of the morphing of an Icon instance.
+   * Handles the end of the morphing of an Icon instance. If the icon instance
+   * that ended its morphing is not the one we currently have as active icon
+   * element we remove it (@see indirect mutations) and we prevent the default
+   * action, which in the default implementation should reset the icon type
+   * and fix its view properties (useful for SVG icons that support more than
+   * one icon type).
+   *
    * @param {goog.events.Event} e
    * @protected
    */
   onMorphEnd: function(e) {
-    if (e.target != this.icon) {
-      console.log('Morf event end', e.target);
-      // this.removeChild(e.target, true);
+    var target = goog.asserts.assertInstanceof(e.target, pstj.material.Icon);
+    if (target != this.icon) {
+      e.preventDefault();
+      this.removeChild(target, true);
     }
   },
 
@@ -344,6 +354,15 @@ pstj.material.IconRenderer.prototype.setType = function(iconInstance, to) {
   } else {
     return false;
   }
+};
+
+
+/**
+ * Removes mutating types from the attribute.
+ * @param {pstj.material.Icon} control
+ */
+pstj.material.IconRenderer.prototype.resetType = function(control) {
+  control.getElement().setAttribute('type', control.type);
 };
 
 
