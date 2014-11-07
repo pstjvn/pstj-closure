@@ -5,9 +5,11 @@ goog.provide('pstj.material.IconRenderer');
 goog.require('goog.array');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
+goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
+goog.require('pstj.material.State');
 
 
 /**
@@ -150,6 +152,7 @@ pstj.material.IconContainer = goog.defineClass(pstj.material.Element, {
      * @protected
      */
     this.type = pstj.material.Icon.Name.NONE;
+    this.setSupportedState(goog.ui.Component.State.EMPTY, true);
   },
 
 
@@ -181,6 +184,7 @@ pstj.material.IconContainer = goog.defineClass(pstj.material.Element, {
       e.preventDefault();
       this.removeChild(this.icon, true);
       this.icon = null;
+      this.setEmpty(true);
     }
   },
 
@@ -192,6 +196,7 @@ pstj.material.IconContainer = goog.defineClass(pstj.material.Element, {
   setIcon: function(iconName) {
     if (this.type != iconName) {
       if (goog.isNull(this.icon)) {
+        this.setEmpty(false);
         this.icon = this.createIcon(iconName);
         this.addChild(this.icon, true);
         // this will set the type from 'none' to 'from-none-to-{$iconName}'
