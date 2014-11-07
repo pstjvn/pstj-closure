@@ -165,7 +165,7 @@ pstj.material.Wave = function() {
    * @type {number}
    * @private
    */
-  this.initialOpacity_ = 0.25;
+  this.initialOpacity_ = pstj.material.Wave.InitialOpacity_;
   /**
    * @type {number}
    * @private

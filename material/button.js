@@ -132,7 +132,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
       if (this.isAutoState(goog.ui.Component.State.ACTIVE)) {
         this.setActive(true);
         // Immediately invoke the
-        if (this.getRipple()) this.getRipple().onTap(e);
+        if (this.getRipple()) this.getRipple().onPress(e);
       }
       this.adjustDepth_();
     }
@@ -141,7 +141,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
 
   /** @inheritDoc */
   onRelease: function(e) {
-    // if (this.getRipple()) this.getRipple().onRelease(e);
+    if (this.getRipple()) this.getRipple().onRelease(e);
     this.handleMouseUp(null);
     this.adjustDepth_();
   },
