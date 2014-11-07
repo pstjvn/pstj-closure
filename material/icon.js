@@ -177,6 +177,10 @@ pstj.material.IconContainer = goog.defineClass(pstj.material.Element, {
     if (target != this.icon) {
       e.preventDefault();
       this.removeChild(target, true);
+    } else if (this.icon.type == pstj.material.Icon.Name.NONE) {
+      e.preventDefault();
+      this.removeChild(this.icon, true);
+      this.icon = null;
     }
   },
 
