@@ -12,6 +12,7 @@ goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.Ripple');
 goog.require('pstj.material.Shadow');
 goog.require('pstj.material.State');
+goog.require('pstj.material.icon');
 goog.require('pstj.material.template');
 
 goog.scope(function() {
@@ -60,10 +61,10 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.disabledDepth = 0;
     /**
      * The icon to display in the button.
-     * @type {pstj.material.Icon.Name}
+     * @type {pstj.material.icon.Name}
      * @protected
      */
-    this.icon = pstj.material.Icon.Name.NONE;
+    this.icon = pstj.material.icon.Name.NONE;
 
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.RAISED, true);
@@ -76,7 +77,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS |
         pstj.material.EventMap.EventFlag.RELEASE);
     // ENable transitions by default
-    this.setStateInternal(goog.ui.Component.State.TRANSITIONING);
+    this.setTransitioning(true);
     // Use the pointer agent to subscribe to DOM events.
     this.setUsePointerAgent(true);
   },
@@ -96,7 +97,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /**
    * Sets the icon to be used in the button, if icon is supported by the
    * renderer.
-   * @param {pstj.material.Icon.Name} icon
+   * @param {pstj.material.icon.Name} icon
    */
   setIcon: function(icon) {
     this.icon = icon;
@@ -243,7 +244,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
       // consifure raised, enable state and icon
       i.setRaised(conf.raised);
       i.setEnabled(!conf.disabled);
-      i.setIcon(conf.icon || pstj.material.Icon.Name.NONE);
+      i.setIcon(conf.icon || pstj.material.icon.Name.NONE);
       return i;
     },
 
