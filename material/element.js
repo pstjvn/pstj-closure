@@ -310,7 +310,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      * optionally a custom template function.
      * @param {Function} ctor The constructor of the renderer you want to
      *    create.
-     * @param {string} cssClassName The name of the CSS class for the custom
+     * @param {?string} cssClassName The name of the CSS class for the custom
      *    renderer.
      * @param {function(Object.<string, *>=): soydata.SanitizedHtml=}
      *    opt_templateFn Optional
@@ -321,12 +321,14 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     getCustomRenderer: function(ctor, cssClassName, opt_templateFn) {
       var renderer = new ctor();
 
-      /**
-       * @return {string}
-       */
-      renderer.getCssClass = function() {
-        return cssClassName;
-      };
+      if (!goog.isNull(cssClassName)) {
+        /**
+         * @return {string}
+         */
+        renderer.getCssClass = function() {
+          return goog.asserts.assertString(cssClassName);
+        };
+      }
 
       if (goog.isFunction(opt_templateFn)) {
         /**
