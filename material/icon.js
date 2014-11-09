@@ -69,22 +69,16 @@ pstj.material.Icon = goog.defineClass(pstj.material.Element, {
 
 
   /**
-   * Sets the icon type. If the current SVG DOM structure controlled
-   * by the renderer supports the desired icon name it will be mutated and
-   * the setter will return true (as in 'successfully mutated to that state').
+   * Sets the icon type.
+   * Previously available checks (if the SVG can actually resolved the
+   * icon type) are extracted into the icon container in order to support
+   * the dev/compiled differences in icon creation.
+   *
    * @param {pstj.material.icon.Name} iconName
-   * @return {boolean} True if the current icon/renderer combination can be
-   * applied. False if the new type(icon)/renderer combination is not supported.
    */
   setIcon: function(iconName) {
-    var resolved = pstj.material.icon.resolveRenderer(iconName);
-    if (!goog.isNull(resolved) && this.getRenderer() != resolved) {
-      return false;
-    } else {
-      this.getRenderer().setType(this, iconName);
-      this.type = iconName;
-      return true;
-    }
+    this.getRenderer().setType(this, iconName);
+    this.type = iconName;
   },
 
 
