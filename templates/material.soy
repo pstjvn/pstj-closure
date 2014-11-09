@@ -72,19 +72,7 @@
   {@param? circle: bool}
   {@param? recenter: bool}
   {@param? opacity: number}
-  <div is class="{css ripple}
-  {if $circle}
-    {sp}{css ripple-circle}
-  {/if}
-  "
-  {if $recenter}
-    {sp} recenter
-  {/if}
-
-  {if $opacity}
-    {sp} opacity="{$opacity}"
-  {/if}
-  >
+  <div is class="{css ripple}{if $circle}{sp}{css ripple-circle}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}>
     <div class="{css ripple-bg}"></div>
     <div class="{css ripple-waves}"></div>
   </div>
@@ -236,7 +224,7 @@
     {/call}
     {call .Ripple}
       {param recenter: false /}
-      {param opacity: 0.6 /}
+      {param opacity: 0.80 /}
     {/call}
   </div>
 {/template}

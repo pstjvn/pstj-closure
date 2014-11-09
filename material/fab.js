@@ -1,18 +1,14 @@
 goog.provide('pstj.material.Fab');
 goog.provide('pstj.material.FabRenderer');
 
+goog.require('goog.object');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Button');
 goog.require('pstj.material.ButtonRenderer');
-goog.require('pstj.material.Element');
-goog.require('pstj.material.ElementRenderer');
-goog.require('pstj.material.Icon');
-goog.require('pstj.material.IconContainer');
-goog.require('pstj.material.Ripple');
-goog.require('pstj.material.Shadow');
 goog.require('pstj.material.template');
 
 goog.scope(function() {
+var BR = pstj.material.ButtonRenderer;
 
 
 
@@ -30,14 +26,9 @@ goog.scope(function() {
  */
 pstj.material.Fab = function(opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
-  /**
-   * The icon to use in the fab. We need this as the icon might be set before
-   * the DOM is created and thus the icont container might not exists yet.
-   * @type {pstj.material.Icon.Name}
-   * @private
-   */
-  this.icon_ = pstj.material.Icon.Name.NONE;
   this.activeDepth = 4;
+  // by default the FAB is raised
+  this.setRaised(true);
 };
 goog.inherits(pstj.material.Fab, pstj.material.Button);
 
@@ -63,67 +54,38 @@ pstj.material.Fab.fromJSON = function(conf) {
  * @struct
  * @extends {pstj.material.ButtonRenderer}
  */
-pstj.material.FabRenderer = function() {
-  goog.base(this);
-};
-goog.inherits(pstj.material.FabRenderer, pstj.material.ButtonRenderer);
-goog.addSingletonGetter(pstj.material.FabRenderer);
+pstj.material.FabRenderer = goog.defineClass(BR, {
+  constructor: function() {
+    goog.base(this);
+    this.childrenNames = goog.object.create(
+        pstj.material.Button.Children.ICON, 1,
+        pstj.material.Button.Children.LABEL, -1,
+        pstj.material.Button.Children.RIPPLE, 2,
+        pstj.material.Button.Children.SHADOW, 0);
+  },
 
 
-/**
- * @type {string}
- * @final
- */
-pstj.material.FabRenderer.CSS_CLASS = goog.getCssName('material-fab');
+  /** @inheritDoc */
+  getCssClass: function() {
+    return pstj.material.FabRenderer.CSS_CLASS;
+  },
 
 
-var _ = pstj.material.Fab.prototype;
-var r = pstj.material.FabRenderer.prototype;
+  /** @inheritDoc */
+  getTemplate: function(model) {
+    return pstj.material.template.Fab(model);
+  },
 
 
-/**
- * Sets the icon to be used in the FAB.
- * @param {pstj.material.Icon.Name} iconName
- */
-_.setIcon = function(iconName) {
-  this.icon_ = iconName;
-  this.getRenderer().setIcon(this, this.icon_);
-};
-
-
-/**
- * @override
- * @return {pstj.material.FabRenderer}
- */
-_.getRenderer = function() {
-  return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-      pstj.material.FabRenderer);
-};
-
-
-/** @inheritDoc */
-r.getCssClass = function() {
-  return pstj.material.FabRenderer.CSS_CLASS;
-};
-
-
-/** @inheritDoc */
-r.getTemplate = function(model) {
-  return pstj.material.template.Fab(model);
-};
-
-
-/**
- * Sets the icon to use on the fab. Mutation is upported as usual.
- * @param {pstj.material.Element} el
- * @param {pstj.material.Icon.Name} icon
- */
-r.setIcon = function(el, icon) {
-  if (el.getElement() && el.getChildAt(1)) {
-    goog.asserts.assertInstanceof(el.getChildAt(1),
-        pstj.material.IconContainer).setIcon(icon);
+  statics: {
+    /**
+     * @type {string}
+     * @final
+     */
+    CSS_CLASS: goog.getCssName('material-raf')
   }
-};
+});
+goog.addSingletonGetter(pstj.material.FabRenderer);
 
 
 // Register for default renderer.

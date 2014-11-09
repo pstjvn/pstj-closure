@@ -1,7 +1,7 @@
-// Styliong for the material icons.
+// Styling for the material icons.
 
 
-@general-icon-mutation-duration: 400ms;
+@general-icon-mutation-duration: 500ms;
 
 .material-icon-container {
   width: 25px;
@@ -41,7 +41,7 @@
   }
 
   // Transformation for the MENU icons.
-  &[type="from-menu-to-plus"] {
+  &[type="from-menu-to-plus"], &[type="from-none-to-plus"] {
     transform: rotate(90deg);
     transition: all @general-icon-mutation-duration linear;
     .menu {
@@ -53,19 +53,6 @@
       &.third {
         transform-origin: 50% 50%;
         -webkit-animation: to-cross-third @general-icon-mutation-duration forwards;
-      }
-    }
-  }
-
-  &[type="from-plus-to-none"] {
-    .menu {
-      -webkit-animation: icon-fade @general-icon-mutation-duration forwards;
-      &.first {
-        transform-origin: 50% 50%;
-        transform: translateY(275%) rotate(90deg);
-      }
-      &.third {
-        display: none;
       }
     }
   }
@@ -85,43 +72,247 @@
       }
     }
   }
-
-
-  // Generalized 'come-in' animation for icons (when svg is replaced).
-  &[type="from-none-to-user"], &[type="from-none-to-menu"], &[type="from-none-to-plus"] {
-    &:extend(.icon-scaleup);
+  
+  &[type="from-plus-to-close"] {
+    -webkit-animation: from-plus-to-close @general-icon-mutation-duration forwards;
   }
 
-  // Generalized 'go out' animation for icons (when svg is replaced).
-  &[type="from-user-to-none"], &[type="from-menu-to-none"] {
-    &:extend(.icon-fadeout);
+  // Stay on Last state
+  &[type="plus"] {
+    .menu {
+      &.first {
+        transform-origin: 50% 50%;
+        transform: translateY(275%) rotate(90deg);
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        transform: translateY(-275%) rotate(90deg);
+      }
+    }
   }
-}
 
-.icon-scaleup {
-  display: block;
-  -webkit-transform-origin: 50% 50%;
-  -webkit-animation: icon-scaleup @general-icon-mutation-duration
-}
+  // Transformation for X.
+  &[type="from-none-to-close"] {
+    -webkit-animation: from-none-to-close @general-icon-mutation-duration forwards;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-ex-first @general-icon-mutation-duration forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-ex-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+  &[type="from-menu-to-close"] {
+    -webkit-animation: from-menu-to-close @general-icon-mutation-duration forwards;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-ex-first @general-icon-mutation-duration forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-ex-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
 
-.icon-fadeout {
-  display: block;
-  -webkit-animation: icon-fade @general-icon-mutation-duration;
-  -webkit-animation-fill-mode: forwards;
-}
+  &[type="from-close-to-menu"] {
+    transform: rotate(180deg);
+    transition: all 400ms linear;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: from-ex-first @general-icon-mutation-duration forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: from-ex-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+  
+  &[type="from-close-to-plus"] {
+    -webkit-animation: from-close-to-plus @general-icon-mutation-duration forwards;
+  }
+  
+  &[type="from-close-to-none"] {
+    -webkit-animation: from-close-to-none @general-icon-mutation-duration forwards;
+  }
+
+  // Stay on Last state
+  &[type="close"] {
+    transform: rotate(45deg);
+    .menu {
+      &.first {
+        transform-origin: 50% 50%;
+        transform: translateY(275%) rotate(90deg);
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        transform: translateY(-275%) rotate(90deg);
+      }
+    }
+  }
+
+  // Transformation for Check.
+  &[type="from-none-to-check"] {
+    -webkit-animation: from-none-to-check @general-icon-mutation-duration forwards;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-check-first @general-icon-mutation-duration forwards;
+      }
+      &.second {visibility: hidden;transition-delay: 10ms;}
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-check-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+  &[type="from-check-to-none"] {
+    -webkit-animation: from-check-to-none @general-icon-mutation-duration forwards;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-check-first @general-icon-mutation-duration forwards reverse;
+      }
+      &.second {visibility: hidden;transition-delay: 10ms;}
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-check-third @general-icon-mutation-duration forwards reverse;
+      }
+    }
+  }
+  &[type="from-menu-to-check"] {
+    -webkit-animation: from-menu-to-check @general-icon-mutation-duration forwards;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-check-first @general-icon-mutation-duration forwards;
+      }
+      &.second {visibility: hidden;transition-delay: 10ms;}
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: to-check-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+  &[type="from-plus-to-check"] {
+      .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-first @general-icon-mutation-duration forwards;
+      }
+      &.second {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-second @general-icon-mutation-duration forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+
+  &[type="from-check-to-menu"] {
+    transform: rotate(180deg);
+    transition: all 400ms linear;
+    .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: from-check-first @general-icon-mutation-duration forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: from-check-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+  
+  &[type="from-check-to-plus"] {
+      .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-first @general-icon-mutation-duration forwards reverse;
+      }
+      &.second {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-second @general-icon-mutation-duration forwards reverse;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-third @general-icon-mutation-duration forwards reverse;
+      }
+    }
+  }
+  &[type="from-check-to-close"] {
+    -webkit-animation: from-check-to-close @general-icon-mutation-duration forwards;
+      .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-first @general-icon-mutation-duration forwards reverse;
+      }
+      &.second {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-second @general-icon-mutation-duration forwards reverse;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: plus-to-check-third @general-icon-mutation-duration forwards reverse;
+      }
+    }
+  }
+  &[type="from-close-to-check"] {
+    -webkit-animation: from-close-to-check @general-icon-mutation-duration forwards;
+      .menu {
+      display: block;
+      &.first {
+        transform-origin: 50% 50%;
+        -webkit-animation: close-to-check-first @general-icon-mutation-duration forwards;
+      }
+      &.second {
+        transform-origin: 50% 50%;
+        -webkit-animation: close-to-check-second @general-icon-mutation-duration forwards;
+      }
+      &.third {
+        transform-origin: 50% 50%;
+        -webkit-animation: close-to-check-third @general-icon-mutation-duration forwards;
+      }
+    }
+  }
+
+  // Stay on Last state
+  &[type="check"] {
+    .menu {
+      &.first {
+        transform: translateY(262%) rotate(45deg) scaleX(0.45);
+        transform-origin: 0% 70%;
+      }
+      &.second {visibility: hidden;}
+      &.third {
+        transform: translateY(-580%) rotate(-45deg);
+        transform-origin: 100% 70%;
+      }
+    }
+  }
 
 
-@-webkit-keyframes icon-scaleup {
-  from { -webkit-transform: scale(0.0); }
-  to { -webkit-transform: scale(1); }
-}
 
-@-webkit-keyframes icon-fade {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
 
-// zavurta purviq bar na menuto kum +
+// From menu to +
 @-webkit-keyframes to-cross-first {
   50% {
     transform: translateY(275%) rotate(0deg);
@@ -159,5 +350,319 @@
   }
   100% {
     transform: translateY(-0%) rotate(180deg);
+  }
+}
+
+// From Menu to X
+@-webkit-keyframes to-ex-first {
+  50% {
+    transform: translateY(275%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(275%) rotate(90deg);
+  }
+}
+@-webkit-keyframes to-ex-third {
+  50% {
+    transform: translateY(-275%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-275%) rotate(90deg);
+  }
+}
+@-webkit-keyframes from-ex-first {
+  0% {
+    transform: translateY(275%) rotate(90deg);
+  }
+  50% {
+    transform: translateY(275%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0%) rotate(180deg);
+  }
+}
+@-webkit-keyframes from-ex-third {
+  0% {
+    transform: translateY(-275%) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-275%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(-0%) rotate(180deg);
+  }
+}
+
+// From Menu to Check
+@-webkit-keyframes to-check-first {
+  50% {
+    transform: translateY(263%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(262%) rotate(45deg) scaleX(0.45);
+    transform-origin: 0% 70%;
+  }
+}
+@-webkit-keyframes to-check-third {
+  50% {
+    transform: translateY(-260%) rotate(0deg);
+  }
+  51% {
+    transform-origin: 100% 70%;
+  }
+  100% {
+    transform: translateY(-580%) rotate(-45deg);
+    transform-origin: 100% 70%;
+  }
+}
+@-webkit-keyframes from-check-first {
+  0% {
+    transform: translateY(275%) rotate(90deg);
+  }
+  50% {
+    transform: translateY(275%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0%) rotate(180deg);
+  }
+}
+@-webkit-keyframes from-check-third {
+  0% {
+    transform: translateY(-275%) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-275%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(-0%) rotate(180deg);
+  }
+}
+
+// From Plus to Check
+@-webkit-keyframes plus-to-check-first {
+  0% {
+  transform-origin: 50% 50%;
+  transform: translateY(275%) rotate(90deg);
+  }
+  50% {
+  transform-origin: 50% 50%;
+  transform: translateY(275%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(262%) rotate(45deg) scaleX(0.45);
+    transform-origin: 0% 70%;
+  }
+}
+@-webkit-keyframes plus-to-check-second {
+  0% {
+    visibility: visible;
+  }
+  50% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes plus-to-check-third {
+  0% {
+    transform-origin: 50% 50%;
+    transform: translateY(-275%) rotate(90deg);
+  }
+  50% {
+    transform-origin: 50% 50%;
+    transform: translateY(-275%) rotate(0deg);
+  }
+  51% {
+    transform-origin: 100% 70%;
+  }
+  100% {
+    transform: translateY(-580%) rotate(-45deg);
+    transform-origin: 100% 70%;
+  }
+}
+
+// From Close to Check
+@-webkit-keyframes close-to-check-first {
+  0% {
+  transform-origin: 50% 50%;
+  transform: translateY(275%) rotate(90deg);
+  }
+  50% {
+  transform-origin: 50% 50%;
+  transform: translateY(275%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(262%) rotate(45deg) scaleX(0.45);
+    transform-origin: 0% 70%;
+  }
+}
+@-webkit-keyframes close-to-check-second {
+  0% {
+    visibility: visible;
+  }
+  50% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes close-to-check-third {
+  0% {
+    transform-origin: 50% 50%;
+    transform: translateY(-275%) rotate(90deg);
+  }
+  50% {
+    transform-origin: 50% 50%;
+    transform: translateY(-275%) rotate(0deg);
+  }
+  51% {
+    transform-origin: 100% 70%;
+  }
+  100% {
+    transform: translateY(-580%) rotate(-45deg);
+    transform-origin: 100% 70%;
+  }
+}
+
+
+
+
+
+
+
+  // Generalized 'come-in' animation for icons (when svg is replaced).
+  &[type="from-none-to-user"], &[type="from-none-to-menu"], &[type="from-none-to-plus"] {
+    &:extend(.icon-scaleup);
+  }
+
+  // Generalized 'go out' animation for icons (when svg is replaced).
+  &[type="from-user-to-none"], &[type="from-menu-to-none"], &[type="from-plus-to-none"] {
+    &:extend(.icon-fadeout);
+  }
+}
+
+.icon-scaleup {
+  display: block;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation: icon-scaleup @general-icon-mutation-duration
+}
+
+.icon-fadeout {
+  display: block;
+  -webkit-animation: icon-fade @general-icon-mutation-duration;
+  -webkit-animation-fill-mode: forwards;
+}
+
+
+@-webkit-keyframes icon-scaleup {
+  from { -webkit-transform: scale(0.0); }
+  to { -webkit-transform: scale(1); }
+}
+
+@-webkit-keyframes icon-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@-webkit-keyframes from-none-to-close {
+  from {
+    -webkit-transform: rotate(0deg) scale(0);
+  }
+  to {
+    -webkit-transform: rotate(45deg) scale(1);
+  }
+}
+@-webkit-keyframes from-none-to-check {
+  from {
+    -webkit-transform: rotate(0deg) scale(0);
+  }
+  to {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+}
+@-webkit-keyframes from-close-to-check {
+  0% {
+    -webkit-transform: rotate(-45deg) scale(1);
+  }
+  50% {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+  100% {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+}
+// Alternate variant
+// @-webkit-keyframes from-close-to-check {
+//   from {
+//     -webkit-transform: rotate(135deg) scale(1);
+//   }
+//   to {
+//     -webkit-transform: rotate(0deg) scale(1);
+//   }
+// }
+// Alternate variant
+// @-webkit-keyframes from-close-to-check {
+//   0% {
+//     -webkit-transform: rotate(45deg) scale(1);
+//   }
+//   50% {
+//     -webkit-transform: rotate(45deg) scale(1);
+//   }
+//   100% {
+//     -webkit-transform: rotate(0deg) scale(1);
+//   }
+// }
+@-webkit-keyframes from-check-to-none {
+  from {
+    -webkit-transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: rotate(0deg) scale(0);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes from-close-to-none {
+  from {
+    -webkit-transform: rotate(45deg) scale(1);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: rotate(0deg) scale(0);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes from-plus-to-close {
+  from {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+  to {
+    -webkit-transform: rotate(45deg) scale(1);
+  }
+}
+@-webkit-keyframes from-check-to-close {
+  from {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+  to {
+    -webkit-transform: rotate(45deg) scale(1);
+  }
+}
+@-webkit-keyframes from-close-to-plus {
+  from {
+    -webkit-transform: rotate(45deg) scale(1);
+  }
+  to {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+}
+@-webkit-keyframes from-menu-to-close {
+  from {
+    -webkit-transform: rotate(0deg) scale(1);
+  }
+  to {
+    -webkit-transform: rotate(45deg) scale(1);
   }
 }
