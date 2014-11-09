@@ -13,6 +13,9 @@ goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.Icon');
 goog.require('pstj.material.template');
 
+goog.scope(function() {
+var ER = pstj.material.ElementRenderer;
+
 
 /**
  * Implementation
@@ -31,55 +34,50 @@ pstj.material.InputError = goog.defineClass(pstj.material.Element, {
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
-  },
-
-
-  /** @override */
-  getModel: function() {
-    return this.getContent();
   }
 });
 
 
 /** implementation */
-pstj.material.InputErrorRenderer = goog.defineClass(
-    pstj.material.ElementRenderer, {
-      /**
-       * @constructor
-       * @extends {pstj.material.ElementRenderer}
-       * @struct
-       */
-      constructor: function() {
-        pstj.material.ElementRenderer.call(this);
-      },
+pstj.material.InputErrorRenderer = goog.defineClass(ER, {
+  /**
+   * @constructor
+   * @extends {pstj.material.ElementRenderer}
+   * @struct
+   */
+  constructor: function() {
+    pstj.material.ElementRenderer.call(this);
+  },
 
 
-      /** @override */
-      generateTemplateData: function(control) {
-        return {
-          error: control.getModel()
-        };
-      },
+  /** @override */
+  generateTemplateData: function(control) {
+    return {
+      error: control.getContent()
+    };
+  },
 
 
-      /** @override */
-      getTemplate: function(model) {
-        return pstj.material.template.InputError(model);
-      },
+  /** @override */
+  getTemplate: function(model) {
+    return pstj.material.template.InputError(model);
+  },
 
-      getCssClass: function() {
-        return pstj.material.InputErrorRenderer.CSS_CLASS;
-      }
-    });
+
+  /** @inheritDoc */
+  getCssClass: function() {
+    return pstj.material.InputErrorRenderer.CSS_CLASS;
+  },
+
+  statics: {
+    /**
+     * @type {string}
+     * @final
+     */
+    CSS_CLASS: goog.getCssName('material-input-error')
+  }
+});
 goog.addSingletonGetter(pstj.material.InputErrorRenderer);
-
-
-/**
- * @type {string}
- * @final
- */
-pstj.material.InputErrorRenderer.CSS_CLASS = goog.getCssName(
-    'material-input-error');
 
 
 // Register the default renderer.
@@ -92,3 +90,5 @@ goog.ui.registry.setDecoratorByClassName(
     pstj.material.InputErrorRenderer.CSS_CLASS, function() {
       return new pstj.material.InputError(null);
     });
+
+});  // goog.scope
