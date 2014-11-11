@@ -475,6 +475,16 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /**
+   * Returns true if the component is configured to bind to the pointer
+   * agent.
+   * @return {boolean}
+   */
+  hasUsePointerAgent: function() {
+    return this.usePointerAgent_;
+  },
+
+
+  /**
    * Updates the registration state of the component with the Pointer agent.
    * @private
    */

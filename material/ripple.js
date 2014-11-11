@@ -111,12 +111,17 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
 
   /** @override */
-  // This is commented out as TAP is preffered. If you have really good reason
-  // you can use press/release as triggers as shown here.
   onPress: function(e) {
     this.wave_ = this.getNewWave();
-    this.getHandler().listenOnce(this, pstj.agent.Pointer.EventType.RELEASE,
-        this.onRelease);
+    // If the item is configured to use the pointer agent we assume
+    // that the release event will come to us at some point and by default
+    // we listen once for it to remove the wave.
+    // Usually ripple is targeted externally (i.e. z-index -1) so the user
+    // of the ripple should trigger those event manually.
+    if (this.hasUsePointerAgent()) {
+      this.getHandler().listenOnce(this, pstj.agent.Pointer.EventType.RELEASE,
+          this.onRelease);
+    }
     this.wave_.handlePress(e);
   },
 

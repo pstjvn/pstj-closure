@@ -343,7 +343,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         e.preventDefault();
         if (e.type == goog.events.EventType.TOUCHEND) {
           if (this.getTouchesCount(e) == 0) {
-            this.currentPoint_.timestamp = this.getTouchEvent(e).timeStamp;
+            this.currentPoint_.timestamp = ts;
           } else {
             // TODO: figure out how to handle multiple touches.
             // for now just ignore the event completely
@@ -351,7 +351,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
           }
         } else if (e.type == goog.events.EventType.MOUSEUP) {
-          this.currentPoint_.timestamp = this.getMouseEvent(e).timeStamp;
+          this.currentPoint_.timestamp = ts;
           this.enableDocumentMouseHandling(false);
         } else if (e.type == goog.events.EventType.POINTERUP) {
           console.log('Unsupported - POINTERUP');
