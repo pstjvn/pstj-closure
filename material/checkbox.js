@@ -78,6 +78,8 @@ var r = pstj.material.CheckboxRenderer.prototype;
 
 /** @inheritDoc */
 _.enterDocument = function() {
+  // Before the ripple enters the document make sure to enable pointer handling
+  this.getChildAt(0).setUsePointerAgent(true);
   goog.base(this, 'enterDocument');
   this.getHandler().listen(goog.dom.getElementByClass(
       goog.getCssName('material-checkbox-icon'), this.getElement()),
