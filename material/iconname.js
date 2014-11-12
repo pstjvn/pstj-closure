@@ -1,3 +1,4 @@
+//File auto generated, please do not edit!
 goog.provide('pstj.material.icon');
 
 goog.require('pstj.material.IconRenderer');
@@ -19,30 +20,35 @@ icon.resolveRenderer = function(iconName) {
     return null;
   }
 
-  if (iconName == icon.Name.MENU || iconName == icon.Name.PLUS ||
-      iconName == icon.Name.CLOSE || iconName == icon.Name.CHECK ||
-      iconName == icon.Name.BACK_ARROW) {
-    return icon.Menu.getInstance();
+  //Branch for Close
+  if (iconName == pstj.material.icon.CLOSE ||
+      iconName == pstj.material.icon.MENU ||
+      iconName == pstj.material.icon.PLUS ||
+      iconName == pstj.material.icon.CLOSE ||
+      iconName == pstj.material.icon.BACK_ARROW ||
+      iconName == pstj.material.icon.CHECK) {
+    return icon.Close.getInstance();
   }
 
-  if (iconName == icon.Name.USER) {
+  //Branch for User
+  if (iconName == pstj.material.icon.USER) {
     return icon.User.getInstance();
   }
 
-  if (iconName == icon.Name.WARNING) {
-    return icon.Warning.getInstance();
+  //Branch for ForwardArrow
+  if (iconName == pstj.material.icon.FORWARD_ARROW ||
+      iconName == pstj.material.icon.WARNING) {
+    return icon.ForwardArrow.getInstance();
   }
 
   return null;
-
 };
 
 
-/** Menu icon */
-icon.Menu = goog.defineClass(IR, {
+/** Renderer for Close */
+icon.Close = goog.defineClass(IR, {
   /**
    * @constructor
-   * @struct
    * @extends {IR}
    */
   constructor: function() {
@@ -52,17 +58,16 @@ icon.Menu = goog.defineClass(IR, {
 
   /** @inheritDoc */
   getTemplate: function(m) {
-    return pstj.material.icons.Menu(m);
+    return pstj.material.icons.Close(m);
   }
 });
-goog.addSingletonGetter(icon.Menu);
+goog.addSingletonGetter(icon.Close);
 
 
-/** User icon */
+/** Renderer for User */
 icon.User = goog.defineClass(IR, {
   /**
    * @constructor
-   * @struct
    * @extends {IR}
    */
   constructor: function() {
@@ -78,11 +83,10 @@ icon.User = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.User);
 
 
-/** Warning icon */
-icon.Warning = goog.defineClass(IR, {
+/** Renderer for ForwardArrow */
+icon.ForwardArrow = goog.defineClass(IR, {
   /**
    * @constructor
-   * @struct
    * @extends {IR}
    */
   constructor: function() {
@@ -92,10 +96,10 @@ icon.Warning = goog.defineClass(IR, {
 
   /** @inheritDoc */
   getTemplate: function(m) {
-    return pstj.material.icons.Warning(m);
+    return pstj.material.icons.ForwardArrow(m);
   }
 });
-goog.addSingletonGetter(icon.Warning);
+goog.addSingletonGetter(icon.ForwardArrow);
 
 
 /**
@@ -104,16 +108,16 @@ goog.addSingletonGetter(icon.Warning);
  */
 icon.Name = {
   NONE: 'none',
-  // MenuIcon
+  CLOSE: 'close',
   MENU: 'menu',
   PLUS: 'plus',
   CLOSE: 'close',
+  BACK_ARROW: 'back-arrow',
   CHECK: 'check',
-  BACK_ARROW: 'arrow',
-  // UserIcon
   USER: 'user',
-  // Warning
-  WARNING: 'warning'
+  FORWARD_ARROW: 'forward-arrow',
+  WARNING: 'warning',
+  NONEXISTING: 'nonexisting'
 };
 
 });  // goog.scope

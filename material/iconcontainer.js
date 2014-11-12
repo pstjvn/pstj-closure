@@ -333,7 +333,9 @@ goog.ui.registry.setDecoratorByClassName(
 if (!COMPILED) {
   goog.labs.net.xhr.get(goog.asserts.assertString(
       pstj.configure.getRuntimeValue(
-          'XML_ICON_SOURCE', 'assets/icons.xml', 'PSTJ.MATERIAL'))).then(
+          'XML_ICON_SOURCE',
+          '../pstj/templates/icons.xml',
+          'PSTJ.MATERIAL'))).then(
       function(txt) {
         var dom = goog.dom.htmlToDocumentFragment(txt);
         pstj.material.IconContainer.dom_ = dom;
