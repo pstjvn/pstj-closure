@@ -34,14 +34,34 @@
     &:extend(.fit);
   }
   & .ripple {
+    background-color: inherit;
+    color: inherit;
     pointer-events: none;
     z-index: -1;
+  }
+
+  & .material-icon-container {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+    & svg {
+      fill: @material-button-color;
+    }
+  }
+
+  & > .core-element {
+    display: inline-block;
+    vertical-align: middle;
   }
 
   &-disabled {
     background-color: @material-button-bg-disabled;
     .material-button-label {
       color: @material-button-color-disabled;
+    }
+
+    .material-icon-container > svg {
+      fill: @material-button-color-disabled;
     }
     cursor: auto;
     pointer-events: none;
