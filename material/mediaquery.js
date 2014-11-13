@@ -123,4 +123,3 @@ pstj.material.MediaQuery = goog.defineClass(goog.events.EventTarget, {
     hasMediaSupport: ('matchMedia' in window)
   }
 });
-

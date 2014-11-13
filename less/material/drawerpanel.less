@@ -1,10 +1,15 @@
+// Implements the drawer panel for material design
 @import "common";
+@import "../transitions";
+@import "../transform";
+@import "layout";
+@import "panel";
 
 
-.drawer-panel {
-  .fillall();
+.material-drawer-panel {
   overflow: hidden;
-  &-narrow &-main {
+  .fillall();
+  &-narrow .material-panel {
     left: 0 ! important;
     padding: 0;
   }
@@ -13,16 +18,14 @@
     /* @alternate */
     transition: transform ease-in-out 0.3s, width ease-in-out 0.3s;
   }
-  &-transition &-main {
+  &-transition .material-panel {
     transition: left ease-in-out 0.3s, padding ease-in-out 0.3s;
   }
   &-narrow .core-element-selected {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
   }
   &-narrow &-drawer:not(.core-element-selected) {
-    -webkit-transform: translateX(-100%);
-    /* @alternate */
-    transform: translateX(-100%);
+    .transform(translateX(-100%));
   }
   &-drawer {
     position: absolute;
@@ -37,23 +40,10 @@
       .borderbox();
     }
   }
-  &-main {
+  .material-panel {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
   }
-  &-narrow .scrim-panel:not(.scrim-panel-selected) .scrim {
-    visibility: visible;
-    opacity: 1;
-  }
 }
-
-.scrim {
-  &:extend(.core-fill-position);
-  background-color: rgba(0, 0, 0, 0.3);
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity ease-in-out 0.38s, visibility ease-in-out 0.38s;
-}
-

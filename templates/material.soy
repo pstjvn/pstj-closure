@@ -23,17 +23,24 @@
 {/template}
 
 
-/**
- * Template for the DrawerPanel component.
- */
-{template .DrawerPanel}
-  <div class="{css drawer-panel} {css core-swipe}">
-    <div is class="{css scrim-panel} {css drawer-panel-main}">
-      <div is class="{css core-element} {css core-tap} {css scrim}"></div>
-    </div>
-    <div is class="{css core-element} {css drawer-panel-drawer}"></div>
+
+/** Template for a panel that can be screened. */
+{template .Panel}
+  <div is class="{css material-panel}">
+    {call .Shadow /}
+    <div is class="{css core-element} {css material-panel-scrim}"></div>
   </div>
 {/template}
+
+
+/** The drawer panel template */
+{template .DrawerPanel}
+  <div class="{css material-drawer-panel}">
+    {call .Panel /}
+    <div is class="{css core-element} {css material-drawer-panel-drawer}"></div>
+  </div>
+{/template}
+
 
 /** The main panel fo rthe header panel. */
 {template .HeaderPanelMain}

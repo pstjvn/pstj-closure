@@ -1,0 +1,21 @@
+// Configures the material deisgn base panel
+
+@import "layout";
+@import "shadow";
+@import "common";
+
+.material-panel {
+  display: block;
+  &:extend(.fit);
+  & &-scrim {
+    &:extend(.core-fill-position);
+    background-color: rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity ease-in-out 0.38s, visibility ease-in-out 0.38s;
+  }
+  &-scrim &-scrim {
+    visibility: visible;
+    opacity: 1;
+  }
+}

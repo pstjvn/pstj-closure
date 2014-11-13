@@ -147,6 +147,15 @@ goog.ui.Component.State.RAISED = /** @type {!goog.ui.Component.State} */ (
 /**
  * Augments the Component State enumeration to allow us to host the material
  * element states in the same place and use the code in control renderer.
+ * @type {!goog.ui.Component.State}
+ */
+goog.ui.Component.State.SCRIM = /** @type {!goog.ui.Component.State} */ (
+    0x200000);
+
+
+/**
+ * Augments the Component State enumeration to allow us to host the material
+ * element states in the same place and use the code in control renderer.
  */
 goog.ui.Component.State.ALLALL = /** @type {!goog.ui.Component.State} */ (
     0xFFFFFF);

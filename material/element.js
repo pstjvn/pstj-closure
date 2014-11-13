@@ -95,7 +95,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
         State.INVALID, goog.getCssName(baseClass, 'invalid'),
         State.EMPTY, goog.getCssName(baseClass, 'empty'),
         State.INVISIBLE, goog.getCssName(baseClass, 'invisible'),
-        State.RAISED, goog.getCssName(baseClass, 'raised'));
+        State.RAISED, goog.getCssName(baseClass, 'raised'),
+        State.SCRIM, goog.getCssName(baseClass, 'scrim'));
   },
 
 
@@ -742,6 +743,40 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   setTransitioning: function(enable) {
     this.setState(State.TRANSITIONING, enable);
+  },
+
+
+  /**
+   * Checks if the component is scrimed.
+   * @return {boolean}
+   */
+  isScrimed: function() {
+    return this.hasState(State.SCRIM);
+  },
+
+
+  /**
+   * Sets the scrim state
+   * @param {boolean} enable
+   */
+  setScrimed: function(enable) {
+    this.setState(State.SCRIM, enable);
+  },
+
+
+  /**
+   * @return {boolean}
+   */
+  isShadow: function() {
+    return this.hasState(State.SHADOW);
+  },
+
+
+  /**
+   * @param {boolean} enable
+   */
+  setShadow: function(enable) {
+    this.setState(State.SHADOW, enable);
   },
 
 
