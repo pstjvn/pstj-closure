@@ -108,7 +108,7 @@ _.createClasses = function(config, template) {
     array.forEach(value, function(name, i, list) {
       enums.push(TAB + _.getEnum(name) + ': \'' + name + '\',');
       ifelse.push(TAB + ((i == 0) ? 'if (' : (TAB + TAB)) +
-          'iconName == pstj.material.icon.' + _.getEnum(name) +
+          'iconName == pstj.material.icon.Name.' + _.getEnum(name) +
           ((i == list.length - 1) ? ') {' : ' ||'));
     });
     ifelse.push(TAB + TAB + 'return icon.' + key + '.getInstance();');

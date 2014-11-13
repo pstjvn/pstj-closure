@@ -277,6 +277,10 @@ libdeps:
 	--root_with_prefix="./ ../../../$(APPS_PATH)$(APPDIR)/" \
 	--output_file="deps.js"
 
+
+codegen:
+	nodejs/compiler.js templates/icons.xml
+
 demos: tpl libdeps
 
 .PHONY: tpl css cssbuild deps all compile check
