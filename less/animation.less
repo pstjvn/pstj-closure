@@ -25,3 +25,32 @@
   /* @alternate */
   animation-direction: @value;
 }
+
+
+// Mixin to create new keyframes.
+.keyframes(@name) {
+  @-webkit-keyframes @name {
+    .-frames(-webkit-);
+  }
+  @-moz-keyframes @name {
+    .-frames(-moz-);
+  }
+  @keyframes @name {
+    .-frames();
+  }
+}
+
+// How to use.
+// & {
+//   .keyframes(testanimation);.-frames(@-...){
+//     0% {
+//       left: 0;
+//       @{-}transform: translate(10px, 20px);
+//     }
+
+//     100% {
+//       left: 100%;
+//       @{-}transform: translate(100px, 200px);
+//     }
+//   }
+// }
