@@ -177,6 +177,13 @@ pstj.material.Wave = function() {
       goog.getCssName('wave-container'));
   dom.appendChild(this.waveContainer_, this.wave_);
   this.delay_ = new goog.async.Delay(this.completeTap_, 70, this);
+
+  /**
+   * Caches the wave radius and the denominator. Saves a few calculations.
+   * @type {Array<number>}
+   * @private
+   */
+  this.cache_ = [0, 0];
 };
 goog.inherits(pstj.material.Wave, goog.Disposable);
 
@@ -337,13 +344,19 @@ pstj.material.Wave.prototype.getWaveAlpha = function() {
  * @protected
  */
 pstj.material.Wave.prototype.getWaveRadius = function() {
-  var waveRadius = Math.min(
-      mutils.diagonal(this.containerSize_),
-      pstj.material.Wave.WaveMaxRadius) * 1.1 + 5;
-
-  return (waveRadius * (1 - Math.pow(80, -(((this.pressElapsedTime_ / 1000) +
-      (this.releaseElapsedTime_ / 1000)) / (1.1 - (0.2 * (
-      waveRadius / pstj.material.Wave.WaveMaxRadius)))))));
+  return (
+      this.cache_[0] * (
+          1 - Math.pow(
+              80,
+              -(
+                (
+                  (this.pressElapsedTime_ / 1000) +
+                  (this.releaseElapsedTime_ / 1000)
+                ) / this.cache_[1]
+              )
+              )
+          )
+  );
 };
 
 
@@ -426,6 +439,12 @@ pstj.material.Wave.prototype.handlePress = function(e) {
 
   this.maxRadius_ = mutils.distanceToFurthestCorner(this.startPoint_,
       clientRect);
+
+  // Update the cache.
+  this.cache_[0] = ((Math.min(mutils.diagonal(this.containerSize_),
+      pstj.material.Wave.WaveMaxRadius) * 1.1) + 5);
+  this.cache_[1] = (1.1 - (0.2 * (this.cache_[0] /
+      pstj.material.Wave.WaveMaxRadius)));
 
   style.setStyle(this.waveContainer_, {
     'top' : (
