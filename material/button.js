@@ -8,6 +8,7 @@ goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
+goog.require('pstj.material.EventType');
 goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.Ripple');
 goog.require('pstj.material.Shadow');
@@ -65,6 +66,18 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
      * @protected
      */
     this.icon = pstj.material.icon.Name.NONE;
+    /**
+     * Flag, if we should suppress the icon animation until the
+     * ripple fx is done.
+     * @type {boolean}
+     * @private
+     */
+    this.suppressIconAnimation_ = false;
+    /**
+     * Public flag for using delay in setting the icon's new value.
+     * @type {boolean}
+     */
+    this.useIconAnimationDelay = false;
 
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.RAISED, true);
@@ -94,6 +107,30 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   },
 
 
+  /** @inheritDoc */
+  enterDocument: function() {
+    goog.base(this, 'enterDocument');
+    if (this.getRipple()) {
+      this.getHandler().listen(this.getRipple(),
+          pstj.material.EventType.RIPPLE_END,
+          this.setIconAfterDelay);
+    }
+  },
+
+
+  /**
+   * Method used solely to delay the icon setter.
+   * @param {goog.events.Event} e The ripple-ready event.
+   * @protected
+   */
+  setIconAfterDelay: function(e) {
+    this.suppressIconAnimation_ = false;
+    if (this.useIconAnimationDelay) {
+      this.setIcon(this.icon);
+    }
+  },
+
+
   /**
    * Sets the icon to be used in the button, if icon is supported by the
    * renderer.
@@ -101,7 +138,9 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
    */
   setIcon: function(icon) {
     this.icon = icon;
-    if (this.getIcon()) this.getIcon().setIcon(icon);
+    if (!this.useIconAnimationDelay || !this.suppressIconAnimation_) {
+      if (this.getIcon()) this.getIcon().setIcon(this.icon);
+    }
   },
 
 
@@ -130,10 +169,12 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /** @inheritDoc */
   onPress: function(e) {
     if (this.isEnabled()) {
+      if (this.getRipple()) {
+        this.getRipple().onPress(e);
+        this.suppressIconAnimation_ = true;
+      }
       if (this.isAutoState(goog.ui.Component.State.ACTIVE)) {
         this.setActive(true);
-        // Immediately invoke the
-        if (this.getRipple()) this.getRipple().onPress(e);
       }
       this.adjustDepth_();
     }
@@ -142,7 +183,9 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
 
   /** @inheritDoc */
   onRelease: function(e) {
-    if (this.getRipple()) this.getRipple().onRelease(e);
+    if (this.getRipple()) {
+      this.getRipple().onRelease(e);
+    }
     this.handleMouseUp(null);
     this.adjustDepth_();
   },
