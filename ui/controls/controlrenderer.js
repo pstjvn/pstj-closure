@@ -43,7 +43,7 @@ pstj.ui.ControlRenderer.prototype.getCssClass = function() {
 /**
  * Should return the string template.
  * @param {goog.ui.Component} component The component instance.
- * @return {string}
+ * @return {soydata.SanitizedHtml}
  * @protected
  */
 pstj.ui.ControlRenderer.prototype.getTemplate = function(component) {
@@ -85,5 +85,5 @@ pstj.ui.ControlRenderer.prototype.createDom = function(control) {
  */
 pstj.ui.ControlRenderer.prototype.getCompiledTemplate_ = function(component) {
   return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
-      this.getTemplate(component)));
+      this.getTemplate(component).getContent()));
 };
