@@ -40,6 +40,12 @@ icon.resolveRenderer = function(iconName) {
     return icon.Warning.getInstance();
   }
 
+  //Branch for CastReady
+  if (iconName == pstj.material.icon.Name.CAST_READY ||
+      iconName == pstj.material.icon.Name.CAST_ACTIVE) {
+    return icon.CastReady.getInstance();
+  }
+
   return null;
 };
 
@@ -101,6 +107,25 @@ icon.Warning = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.Warning);
 
 
+/** Renderer for CastReady */
+icon.CastReady = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.CastReady(m);
+  }
+});
+goog.addSingletonGetter(icon.CastReady);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -115,6 +140,8 @@ icon.Name = {
   FORWARD_ARROW: 'forward-arrow',
   USER: 'user',
   WARNING: 'warning',
+  CAST_READY: 'cast-ready',
+  CAST_ACTIVE: 'cast-active',
   NONEXISTING: 'nonexisting'
 };
 
