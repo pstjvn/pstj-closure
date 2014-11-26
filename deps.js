@@ -13,6 +13,17 @@ goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.o
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], []);
 goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], []);
 goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj.ds.ImageList', 'pstj.ds.ImageList.EventType'], ['goog.async.Delay', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.net.ImageLoader', 'goog.string', 'pstj.ds.List', 'pstj.ds.ListItem']);
+goog.addDependency('../../../apps/pstj/ds/jstype/constructor.js', ['pstj.ds.jstype.Constructor'], ['pstj.ds.jstype.Function', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/extrator.js', ['pstj.ds.jstype.Extractor'], ['goog.array', 'goog.dom', 'pstj.ds.jstype.Constructor', 'pstj.ds.jstype.Method', 'pstj.ds.jstype.Namespace', 'pstj.ds.jstype.Parameter', 'pstj.ds.jstype.Property', 'pstj.ds.jstype.StaticMethod', 'pstj.ds.jstype.StaticProperty']);
+goog.addDependency('../../../apps/pstj/ds/jstype/function.js', ['pstj.ds.jstype.Function'], ['goog.array', 'pstj.ds.jstype.Record', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/method.js', ['pstj.ds.jstype.Method'], ['pstj.ds.jstype.Function', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/namespace.js', ['pstj.ds.jstype.Namespace'], ['pstj.ds.jstype.Record']);
+goog.addDependency('../../../apps/pstj/ds/jstype/parameter.js', ['pstj.ds.jstype.Parameter'], ['goog.string', 'pstj.ds.jstype.Record', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/property.js', ['pstj.ds.jstype.Property'], ['pstj.ds.jstype.Record', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/record.js', ['pstj.ds.jstype.Record'], ['goog.array', 'goog.string', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/staticmethod.js', ['pstj.ds.jstype.StaticMethod'], ['pstj.ds.jstype.Method']);
+goog.addDependency('../../../apps/pstj/ds/jstype/staticproperty.js', ['pstj.ds.jstype.StaticProperty'], ['pstj.ds.jstype.Property', 'pstj.ds.jstype.Type']);
+goog.addDependency('../../../apps/pstj/ds/jstype/type.js', ['pstj.ds.jstype.Type'], []);
 goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.List.Event', 'pstj.ds.List.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.ListItem']);
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.ds.IListItem', 'pstj.object']);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable']);
