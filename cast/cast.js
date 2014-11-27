@@ -494,22 +494,24 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * that at this point it is assumed that you have an active session.
    * Active session is requested by clicking the cast button.
    * @param {string} url The url to start streaming.
+   * @param {string} title The title of the channel.
    */
-  castUrl: function(url) {
+  castUrl: function(url, title) {
     console.log('Casting url: ' + url);
     this.mediaTime = 0;
     this.playerState_ = pstj.cast.Cast.PlayerState.IDLE;
-    this.play(url);
+    this.play(url, title);
   },
 
 
   /**
    * Attempt to play a new media stream.
    * @param {string} url The url of the video to play.
+   * @param {string} title The title to show in the ext.
    * @param {number=} opt_offset The position to witch to rewind the video.
    * @param {string=} opt_image The thumbnail if any while loading the media.
    */
-  play: function(url, opt_offset, opt_image) {
+  play: function(url, title, opt_offset, opt_image) {
     this.mediaTime = opt_offset || 0;
     if (goog.isNull(this.media_)) {
       // we need a new media session.
@@ -518,7 +520,7 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
       mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
       mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
       mediaInfo.contentType = 'video/mp4';
-      mediaInfo.metadata.title = 'Test video from Bobo';
+      mediaInfo.metadata.title = title;
       if (goog.isDef(opt_image)) {
         mediaInfo.metadata.images = [{'url': opt_image}];
       }
