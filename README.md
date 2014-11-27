@@ -1,49 +1,27 @@
-## Reusable units and components derived on top of closure library.
+# Reusable units and components derived on top of closure library.
 
+The repo is a collection of helper functions, utitlities and components that have been used in several projects and are abstract enough to allow for further reuse.
 
-Closure library utilities shared between many projects. Because of the shared name space those are put together in a single project. It is worth noting that the compiler makes tree shaking in advanced mode and thus the size of the compiled application will not be affected by the size of this code directly.
+### Hot to use?
 
-### How to use?
+Please read [this](https://github.com/pstjvn/closure-seed-project/blob/master/README.md)
 
-The code structure is opinionated and should any of the UI components be used the templates should be copied over to your template folder to allow them to compile to javascript. This is done intentionally to allow for i18n and l10n in the applications.
+### Q&A:
 
-Supposed code structure should look somthing similar to this:
-```
-/
-  library/
-    closure/
-      goog/
-        base.js
-  compiler/
-    compiler.jar
-  templates/
-    SoyToJsSrcCompiler.jar
-    SoyMsgExtractor.jar
-    soyutils_usegoog.js
-    soyutils.js
-  stylesheets/
-    cs.jar
-  externs/*
-  apps/
-    pstj/ <--- this is git clone of the additional library
-    my-awesome-app/ <--- this is your app code
-```
+__Library is too big__
 
-If you want to use the ready made Makefile to easily build your application the structure of your applications should be as follows:
+I don't care, neither should you (assuming you are using the compiler in
+advanced mode)
 
-```
-/
-  index.html
-  js/ <-- all your javascript to be built
-  template/ <-- your templates and copies of third party templates.
-    *.soy
-  build/ <-- builds will go here including deps.js and build js/css
-  assets/ <-- static resources, like images
-  gss/* <-- gss/css files to be concatenated and renamed
-  i18n/ <-- this will be populated with xlf file to ease translation
-  options/ <-- could be copied over from this project
-  tpl/ <-- the built templates will go here.
-```
+**Feature 'X' is missing (or feature 'Y' is broken)**
 
-One can also kick-start a project following this structure pattern using a copy of the Makefile in this project. The available options in the Makefile are in the top of the file. To start issue ```make initproject```.
+File an issue (in github). Or better yet make a pull request.
+
+**Is it free to be used?**
+
+Yes, all parts and the project itself is free as in free beer.
+
+**Licensing information is missing**
+
+I know, I have been alerted about it, but unfortunately I am no layer and I cannot make my mind on which license if best for this use case. Basically use it as you find fit and if you cite the source I will be thankful.
 
