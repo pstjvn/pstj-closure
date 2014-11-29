@@ -31,7 +31,7 @@ goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'
 goog.addDependency('../../../apps/pstj/ds/poolcache.js', ['pstj.ds.PoolCache'], ['pstj.ds.Cache']);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure', 'pstj.ds.IClock']);
 goog.addDependency('../../../apps/pstj/error/errorhandler.js', ['pstj.error', 'pstj.error.ErrorHandler'], ['goog.pubsub.PubSub', 'pstj.control.Base']);
-goog.addDependency('../../../apps/pstj/fx/abstractanimation.js', ['pstj.fx.AbstractAnimation'], []);
+goog.addDependency('../../../apps/pstj/fx/abstractanimation.js', ['pstj.fx.animation'], ['goog.async.AnimationDelay', 'goog.events', 'goog.events.EventType', 'goog.fx.easing', 'goog.math.Coordinate', 'goog.style', 'pstj.lab.style.css', 'pstj.math.utils']);
 goog.addDependency('../../../apps/pstj/fx/dragdropgroup.js', ['pstj.fx.DragDropGroup'], ['goog.dom.classlist', 'goog.fx.DragDropGroup', 'pstj.fx.Dragger']);
 goog.addDependency('../../../apps/pstj/fx/dragger.js', ['pstj.fx.Dragger'], ['goog.async.AnimationDelay', 'goog.fx.Dragger', 'pstj.style.css']);
 goog.addDependency('../../../apps/pstj/graphics/canvas.js', ['pstj.graphics.Canvas'], ['goog.dom', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.style']);
