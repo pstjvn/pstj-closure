@@ -1,5 +1,9 @@
 # Material Icons
 
+### Todo
+The styling used in some icons are using tranformation origin for the inner elements in the SVG node which is not currently supported in Firefox (including latest stable and the developer release, but to be addressed as per their bugzilla) which makes the use of those icons unreliable for production. A fallback is being worked on, but in the mean time make sure that you provide all icons in pure SVG (i.e. without the need of special styling). Those should have the 'ff-' prefix in their name and will be used explicitly in FF only until the rendering issue is resolved upstream from Mozilla.
+
+
 Material icons are expected to be able to mutate from state to state when it makes sense.
 
 In this implementation two postulates are used:
