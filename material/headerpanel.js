@@ -109,6 +109,7 @@ pstj.material.HeaderPanel.prototype.setState = function(state, enable) {
       this.getHandler().listenOnce(this.getHeader().getElement(),
           goog.events.EventType.TRANSITIONEND, function() {
             this.setState(goog.ui.Component.State.TRANSITIONING, false);
+            this.getMain().dispatchEvent(goog.events.EventType.RESIZE);
           });
     } else {
       this.setState(goog.ui.Component.State.TRANSITIONING, true);
