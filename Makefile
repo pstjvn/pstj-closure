@@ -50,7 +50,7 @@ LOCALE=en
 
 # Where the compiled templates should be kept
 # Basically we want them out of the build dir as they are not a build result of its own
-TEMPLATE_TMP_DIR=tpl/
+TEMPLATE_TMP_DIR=tpl
 
 # The sources of the templates.
 TEMPLATES_SOURCE_DIR=templates/
@@ -67,221 +67,59 @@ EXTERNS_PATH=../../externs/
 STYLES_COMPILER_JAR=../../stylesheets/cs.jar
 SOY_COMPILER_JAR=../../templates/SoyToJsSrcCompiler.jar
 MESSAGE_EXTRACTOR_JAR=../../templates/SoyMsgExtractor.jar
-
-define newline
-
-
-endef
-
-define INDEXFILE
-<!doctype html>
-<html>
-	<head>
-		<title></title>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<link rel="stylesheet" href="build/$(NS).css" type="text/css">
-	</head>
-	<body>
-
-		<script src="build/$(NS)-cssmap.js"></script>
-		<script src="../../library/closure/goog/base.js"></script>
-		<script src="../pstj/deps.js"></script>
-		<script src="build/deps.js"></script>
-		<script>goog.require('$(NS)');</script>
-
-		<!--
-
-		<script src="build/$(NS).build.js"></script>
-
-		-->
-	</body>
-</html>
-endef
-
-define APPFILE
-goog.provide('$(NS)');
-$(NS) = function() {};
-endef
-
-# Make sure we use all warnings for the lib files.
-define BUILDOPTIONSFILE
---compilation_level=ADVANCED_OPTIMIZATIONS
---warning_level=VERBOSE
---js=../../library/closure/goog/deps.js
---js=../pstj/deps.js
---use_types_for_optimization
---jscomp_warning accessControls
---jscomp_warning ambiguousFunctionDecl
---jscomp_warning checkTypes
---jscomp_warning checkVars
---jscomp_warning visibility
---jscomp_warning checkRegExp
---jscomp_warning invalidCasts
---jscomp_warning strictModuleDepCheck
---jscomp_warning typeInvalidation
---jscomp_warning undefinedVars
---jscomp_warning unknownDefines
---jscomp_warning uselessCode
---externs=../../externs/webkit_console.js
-endef
-
-define CSSINI
---allowed-non-standard-function color-stop
---allowed-non-standard-function blur
---allowed-unrecognized-property -webkit-filter
---output-renaming-map-format CLOSURE_UNCOMPILED
---rename NONE
---pretty-print
-endef
-
-define CSSBUILDINI
---allowed-non-standard-function color-stop
---allowed-non-standard-function blur
---allowed-unrecognized-property -webkit-filter
---output-renaming-map-format CLOSURE_COMPILED
---rename CLOSURE
-endef
-
-define GITIGNOREFILE
-build/
-$(TEMPLATE_TMP_DIR)
-help/
-*sublime-*
-endef
+TERMPLATES_SOURCES = templates/*.soy
 
 # Default build to execute on 'make'.
 all: libdeps
-
-################ Application level setups #####################
-
-# write dep file in js/build/
-# This should happen AFTER building the templates as to assure the templates
-# have all the provides needed for the dependencies.
-deps:
-	python $(DEPSWRITER_BIN) \
-	--root_with_prefix="$(TEMPLATES_PATH) ../$(TEMPLATES_PATH)" \
-	--root_with_prefix="js ../../../$(APPS_PATH)$(APPDIR)/js" \
-	--root_with_prefix="$(TEMPLATE_TMP_DIR)/$(LOCALE) ../../../$(APPS_PATH)/$(APPDIR)/$(TEMPLATE_TMP_DIR)/$(LOCALE)/" \
-	--output_file="$(BUILDDIR)/deps.js"
-
-# Compile template soy files from js/templates/ and put them in tpl/$(LOCALE)/
-tpl:
-	java -jar $(SOY_COMPILER_JAR) \
-	--locales $(LOCALE) \
-	--messageFilePathFormat "$(I18NDIR)/translations_$(LOCALE).xlf" \
-	--shouldProvideRequireSoyNamespaces \
-	--shouldGenerateJsdoc \
-	--codeStyle concat \
-	--cssHandlingScheme GOOG \
-	--outputPathFormat '$(TEMPLATE_TMP_DIR)/$(LOCALE)/{INPUT_FILE_NAME_NO_EXT}.soy.js' \
-	$(TEMPLATES_SOURCE_DIR)/*.soy
-
-# Extracts the translation messages from the templates in a file
-# Translated file should be used to compile to a different locale.
-extractmsgs:
-	java -jar $(MESSAGE_EXTRACTOR_JAR) \
-	--outputFile "$(I18NDIR)/translations_$(LOCALE).xlf" \
-	--targetLocaleString $(LOCALE) \
-	$(TEMPLATES_SOURCE_DIR)/*.soy
-
-
-# Create CSS file for name space and put name mapping in js/build/
-css:
-	java -jar $(STYLES_COMPILER_JAR) \
-	`cat options/css.ini | tr '\n' ' '` \
-	--output-file $(BUILDDIR)/$(NS).css \
-	--output-renaming-map $(BUILDDIR)/$(NS)-cssmap.js \
-	gss/*.gss \
-	gss/$(NS)/*.gss
-
-# Build the css into one file using renaming policy (minification).
-cssbuild:
-	java -jar $(STYLES_COMPILER_JAR) \
-	`cat options/cssbuild.ini | tr '\n' ' '` \
-	--output-file $(BUILDDIR)/$(NS).css \
-	--output-renaming-map $(BUILDDIR)/cssmap-build.js \
-	gss/*.gss \
-	gss/$(NS)/*.gss
-
-
-compile: cssbuild tpl deps
-	python $(LIBRARY_PATH)/closure/bin/build/closurebuilder.py \
-	-n $(NS) \
-	--root=js/ \
-	--root=$(TEMPLATE_TMP_DIR)/$(LOCALE)/ \
-	--root=$(TEMPLATES_PATH) \
-	--root=$(LIBRARY_PATH) \
-	-o compiled \
-	-f --define='goog.LOCALE="$(LOCALE)"' \
-	-c $(COMPILER_JAR) \
-	-f --flagfile=options/compile.ini \
-	--output_file=$(BUILDDIR)/$(NS).build.js
-	rm $(BUILDDIR)/cssmap-build.js
-
-######################### Debugging and work flow set ups ######################
-
-debug: css
-	python $(LIBRARY_PATH)/closure/bin/build/closurebuilder.py \
-	-n $(NS) \
-	--root=js/ \
-	--root=$(TEMPLATE_TMP_DIR)/$(LOCALE)/ \
-	--root=$(TEMPLATES_PATH) \
-	--root=$(LIBRARY_PATH) \
-	-o compiled \
-	-c $(COMPILER_JAR) \
-	-f --define="goog.LOCALE $(LOCALE)" \
-	-f --debug \
-	-f --flagfile=options/compile.ini \
-	--output_file=$(BUILDDIR)/$(NS).build.js
-	rm $(BUILDDIR)/cssmap-build.js
-
-# Create a structure for a new closure project.
-initproject:
-	mkdir -p gss/$(NS) js $(TEMPLATES_SOURCE_DIR) $(I18NDIR) $(BUILDDIR) \
-	assets $(TEMPLATE_TMP_DIR) options
-	touch index.html
-	touch js/$(NS).js
-	touch $(TEMPLATES_SOURCE_DIR)/$(NS).soy
-	touch gss/$(NS)/$(NS).gss
-	touch gss/base.gss
-	touch options/{css.ini,cssbuild.ini,compile.ini}
-	echo '$(subst $(newline),\n,${INDEXFILE})' > index.html
-	echo '$(subst $(newline),\n,${APPFILE})' > js/$(NS).js
-	echo '$(subst $(newline),\n,${CSSINI})' > options/css.ini
-	echo '$(subst $(newline),\n,${CSSBUILDINI})' > options/css.ini
-	echo '$(subst $(newline),\n,${BUILDOPTIONSFILE})' > options/compile.ini
-	echo '$(subst $(newline),\n,${GITIGNOREFILE})' > .gitignore
-
-# Run the compalier against a specific name space only for the checks.
-# This includes the templates (so it is compatible with applications and the
-# library as well).
-#
-# To use it with application code replace the first root include to js/
-check:
-	python ../../library/closure/bin/build/closurebuilder.py \
-	-n $(NS) \
-	--root=./ \
-	--root=$(TEMPLATES_PATH) \
-	--root=$(LIBRARY_PATH) \
-	-o compiled \
-	-c $(COMPILER_JAR) \
-	-f --flagfile=options/compile.ini \
-	--output_file=/dev/null
 
 #### Calls specific to library development (i.e. no application code) #####
 
 # Provides the deps file for the library, should be available to the compiler to
 # provide the types used as parameters but not really required.
+# libdeps:
+# 	python $(DEPSWRITER_BIN) \
+# 	--root_with_prefix="./ ../../../$(APPS_PATH)$(APPDIR)/" \
+# 	--output_file="deps.js"
+
 libdeps:
 	python $(DEPSWRITER_BIN) \
-	--root_with_prefix="./ ../../../$(APPS_PATH)$(APPDIR)/" \
+	--root_with_prefix="./animation/ ../../../$(APPS_PATH)$(APPDIR)/animation" \
+	--root_with_prefix="./cast/ ../../../$(APPS_PATH)$(APPDIR)/cast" \
+	--root_with_prefix="./color/ ../../../$(APPS_PATH)$(APPDIR)/color" \
+	--root_with_prefix="./config/ ../../../$(APPS_PATH)$(APPDIR)/config" \
+	--root_with_prefix="./control/ ../../../$(APPS_PATH)$(APPDIR)/control" \
+	--root_with_prefix="./date/ ../../../$(APPS_PATH)$(APPDIR)/date" \
+	--root_with_prefix="./debug/ ../../../$(APPS_PATH)$(APPDIR)/debug" \
+	--root_with_prefix="./ds/ ../../../$(APPS_PATH)$(APPDIR)/ds" \
+	--root_with_prefix="./error/ ../../../$(APPS_PATH)$(APPDIR)/error" \
+	--root_with_prefix="./fx/ ../../../$(APPS_PATH)$(APPDIR)/fx" \
+	--root_with_prefix="./graphics/ ../../../$(APPS_PATH)$(APPDIR)/graphics" \
+	--root_with_prefix="./material/ ../../../$(APPS_PATH)$(APPDIR)/material" \
+	--root_with_prefix="./math/ ../../../$(APPS_PATH)$(APPDIR)/math" \
+	--root_with_prefix="./mvc/ ../../../$(APPS_PATH)$(APPDIR)/mvc" \
+	--root_with_prefix="./ng/ ../../../$(APPS_PATH)$(APPDIR)/ng" \
+	--root_with_prefix="./nodejs/ ../../../$(APPS_PATH)$(APPDIR)/nodejs" \
+	--root_with_prefix="./object/ ../../../$(APPS_PATH)$(APPDIR)/object" \
+	--root_with_prefix="./resource/ ../../../$(APPS_PATH)$(APPDIR)/resource" \
+	--root_with_prefix="./storage/ ../../../$(APPS_PATH)$(APPDIR)/storage" \
+	--root_with_prefix="./style/ ../../../$(APPS_PATH)$(APPDIR)/style" \
+	--root_with_prefix="./themes/ ../../../$(APPS_PATH)$(APPDIR)/themes" \
+	--root_with_prefix="./ui/ ../../../$(APPS_PATH)$(APPDIR)/ui" \
 	--output_file="deps.js"
-
 
 codegen:
 	nodejs/compiler.js templates/icons.xml
 
-demos: tpl libdeps
+$(TEMPLATE_TMP_DIR)/$(LOCALE)/*: templates/*
+	java -jar $(SOY_COMPILER_JAR) \
+	--shouldProvideRequireSoyNamespaces \
+	--shouldGenerateJsdoc \
+	--codeStyle concat \
+	--cssHandlingScheme GOOG \
+	--outputPathFormat '$(TEMPLATE_TMP_DIR)/{INPUT_FILE_NAME_NO_EXT}.soy.js' \
+	$(TERMPLATES_SOURCES)
 
-.PHONY: tpl css cssbuild deps all compile check
+templates: $(TEMPLATE_TMP_DIR)/$(LOCALE)/*
+
+.PHONY:
 
