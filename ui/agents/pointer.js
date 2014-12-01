@@ -28,6 +28,11 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   constructor: function() {
     pstj.ui.Agent.call(this, null);
     /**
+     * @type {goog.dom.DomHelper}
+     * @private
+     */
+    this.dom_ = goog.dom.getDomHelper();
+    /**
      * Reference to the currently locked element.
      * @type {Element}
      * @private
@@ -56,7 +61,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * the component need to react differently based on the tap initial target.
      * For example when there are several areas and to spare the need of several
      * distinct component but instead filter the behaviour based on the pressed
-     * aarea.
+     * area.
      *
      * @type {Element}
      * @private
@@ -97,6 +102,24 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * @private
      */
     this.isDocumentBound_ = false;
+
+    this.setupListeners();
+  },
+
+
+  /**
+   * Sets up the document listeners when event delegation is used.
+   * @protected
+   */
+  setupListeners: function() {
+    if (pstj.agent.Pointer.USE_EVENT_DELEGATION) {
+      this.handler.listen(this.dom_.getDocument(), [
+        goog.events.EventType.TOUCHSTART,
+        goog.events.EventType.TOUCHMOVE,
+        goog.events.EventType.TOUCHEND,
+        goog.events.EventType.TOUCHCANCEL,
+        goog.events.EventType.MOUSEDOWN], this.handleEvents);
+    }
   },
 
 
@@ -120,33 +143,87 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   },
 
 
+  /**
+   * Resolves the element that is designed to be listened on for events.
+   * In the default implementation the target of the event is recorded as the
+   * original source element and the current target is considered to be an
+   * element that has the listener on it and thus matches directly to a
+   * component instance.
+   *
+   * When global listeners are used the element must be looked up and only then
+   * matched to a component.
+   *
+   * @param {!Element} element The original source of the event as reported
+   * by the browser.
+   * @return {Element} An element that directly corresponds to a component.
+   * @protected
+   */
+  resolveElement: function(element) {
+    if (pstj.agent.Pointer.USE_EVENT_DELEGATION) {
+      if (goog.array.contains(this.elements_, element)) {
+        return element;
+      } else {
+        var currentElement = element.parentElement;
+        var limit = this.dom_.getDocument().body;
+        if (pstj.agent.Pointer.USE_DOM_ATTRIBUTE) {
+          while (currentElement != limit) {
+            if (currentElement.hasAttribute(pstj.agent.Pointer.DOM_ATTRIBUTE)) {
+              return currentElement;
+            }
+            currentElement = currentElement.parentElement;
+          }
+          return null;
+        } else {
+          while (currentElement != limit) {
+            if (goog.array.contains(this.elements_, currentElement)) {
+              return currentElement;
+            }
+            currentElement = currentElement.parentElement;
+          }
+          return null;
+        }
+      }
+    } else {
+      return element;
+    }
+  },
+
+
   /** @override */
   updateCache: function(component) {
-    // We need the element in out list so we can easily resolve
+    // We need the element in our list so we can easily resolve
     // between elements and component.
-    this.elements_[this.indexOf(component)] = component.getContentElement();
+    var el = component.getContentElement();
+    this.elements_[this.indexOf(component)] = el;
 
-    this.handler.listen(component.getContentElement(), [
-      goog.events.EventType.TOUCHSTART,
-      goog.events.EventType.TOUCHMOVE,
-      goog.events.EventType.TOUCHEND,
-      goog.events.EventType.TOUCHCANCEL,
-      goog.events.EventType.MOUSEDOWN
-    ], this.handleEvents);
+    if (pstj.agent.Pointer.USE_DOM_ATTRIBUTE) {
+      el.setAttribute(
+          pstj.agent.Pointer.DOM_ATTRIBUTE, this.elements_.length);
+    }
 
-    if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
-      this.handler.listen(component.getContentElement(), [
-        goog.events.EventType.POINTERDOWN,
-        goog.events.EventType.POINTERMOVE,
-        goog.events.EventType.POINTERUP,
-        goog.events.EventType.POINTERCANCEL
+    if (!pstj.agent.Pointer.USE_EVENT_DELEGATION) {
+      this.handler.listen(el, [
+        goog.events.EventType.TOUCHSTART,
+        goog.events.EventType.TOUCHMOVE,
+        goog.events.EventType.TOUCHEND,
+        goog.events.EventType.TOUCHCANCEL,
+        goog.events.EventType.MOUSEDOWN
       ], this.handleEvents);
+
+      if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
+        this.handler.listen(el, [
+          goog.events.EventType.POINTERDOWN,
+          goog.events.EventType.POINTERMOVE,
+          goog.events.EventType.POINTERUP,
+          goog.events.EventType.POINTERCANCEL
+        ], this.handleEvents);
+      }
     }
   },
 
 
   /**
-   * ENable handling the mouse on document level. This is needed because
+   * Enable handling the mouse on document level. This is needed because
    * the mouse down target might not moove fast enought with the mouse and thus
    * it can be lost (not under the mouse) and the event not finished properly.
    *
@@ -159,12 +236,12 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   enableDocumentMouseHandling: function(enable) {
     if (enable && !this.isDocumentBound_) {
       this.isDocumentBound_ = true;
-      this.handler.listen(goog.dom.getDocument(), [
+      this.handler.listen(this.dom_.getDocument(), [
         goog.events.EventType.MOUSEMOVE,
         goog.events.EventType.MOUSEUP], this.handleEvents);
     } else if (!enable && this.isDocumentBound_) {
       this.isDocumentBound_ = false;
-      this.handler.unlisten(goog.dom.getDocument(), [
+      this.handler.unlisten(this.dom_.getDocument(), [
         goog.events.EventType.MOUSEMOVE,
         goog.events.EventType.MOUSEUP], this.handleEvents);
     }
@@ -182,25 +259,31 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
     var index = this.indexOf(component);
     if (index != -1 && this.elements_[index]) {
-      this.handler.unlisten(this.elements_[index], [
-        goog.events.EventType.TOUCHSTART,
-        goog.events.EventType.TOUCHMOVE,
-        goog.events.EventType.TOUCHEND,
-        goog.events.EventType.TOUCHCANCEL,
-        goog.events.EventType.MOUSEDOWN
-      ], this.handleEvents);
-
-      if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
-        this.handler.unlisten(component.getContentElement(), [
-          goog.events.EventType.POINTERDOWN,
-          goog.events.EventType.POINTERMOVE,
-          goog.events.EventType.POINTERUP,
-          goog.events.EventType.POINTERCANCEL
+      var el = this.elements_[index];
+      if (pstj.agent.Pointer.USE_DOM_ATTRIBUTE) {
+        el.removeAttribute(pstj.agent.Pointer.DOM_ATTRIBUTE);
+      }
+      if (!pstj.agent.Pointer.USE_EVENT_DELEGATION) {
+        this.handler.unlisten(el, [
+          goog.events.EventType.TOUCHSTART,
+          goog.events.EventType.TOUCHMOVE,
+          goog.events.EventType.TOUCHEND,
+          goog.events.EventType.TOUCHCANCEL,
+          goog.events.EventType.MOUSEDOWN
         ], this.handleEvents);
+
+        if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
+          this.handler.unlisten(el, [
+            goog.events.EventType.POINTERDOWN,
+            goog.events.EventType.POINTERMOVE,
+            goog.events.EventType.POINTERUP,
+            goog.events.EventType.POINTERCANCEL
+          ], this.handleEvents);
+        }
       }
     }
 
-    this.elements_[this.indexOf(component)] = null;
+    this.elements_[index] = null;
     goog.base(this, 'detach', component);
   },
 
@@ -267,7 +350,14 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         e.type == goog.events.EventType.MOUSEDOWN) {
 
       if (!this.isLocked()) {
-        this.lock(goog.asserts.assertInstanceof(e.currentTarget, Element));
+        if (!this.lock(goog.asserts.assertInstanceof(
+            // Use the original target is event delegation is in use.
+            (pstj.agent.Pointer.USE_EVENT_DELEGATION ?
+                e.target :
+                e.currentTarget),
+            Element))) {
+          return;
+        }
       }
       // PRESS
       if (e.type == goog.events.EventType.TOUCHSTART) {
@@ -390,13 +480,19 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * element once ouse is outside of it. This makes all event
    * behave like the touch events.
    *
-   * @param {Element} element The element to lock to.
+   * @param {!Element} element The element to lock to.
+   * @return {boolean} True if the agent successfully locked on an event source
+   * element.
    */
   lock: function(element) {
     if (this.isLocked()) throw new Error('Agent already locked');
 
-    this.currentElement_ = element;
-    this.currentComponent_ = this.resolveComponent(element);
+    this.currentElement_ = this.resolveElement(element);
+    if (goog.isNull(this.currentElement_)) {
+      return false;
+    }
+    this.currentComponent_ = this.resolveComponent(this.currentElement_);
+    return true;
   },
 
 
@@ -511,6 +607,14 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
   statics: {
     /**
+     * The attribute to use when forced to use dom attributes.
+     * @type {string}
+     * @final
+     */
+    DOM_ATTRIBUTE: 'pa',
+
+
+    /**
      * The type of initiation event.
      * @enum {number}
      */
@@ -535,6 +639,30 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
 });
 goog.addSingletonGetter(pstj.agent.Pointer);
+
+
+/**
+ * @define {boolean} A global flag to control is agent should use delegation.
+ *
+ * By default all registered component trigger a new registration of event
+ * listeners on their DOM elements which can cause hundreds of listeners to be
+ * attached. Some sources suggest that using only one global set of listeners
+ * could lower the power consumption on mobile devices, thus we support that
+ * as well at the cost of resolving the element once per pointer inisiation.
+ */
+goog.define('pstj.agent.Pointer.USE_EVENT_DELEGATION', false);
+
+
+/**
+ * @define {boolean} Use DOM attribute to mark elements used by the agent.
+ *
+ * If this is set to true the agent will set an attribute on the DOM nodes that
+ * is setup listeners for. This is useful in conotation with the event
+ * delegation and allows the component's element target look up to be done with
+ * access to the attribute instead of array index lookup (which can be
+ * potentially slower on larget lists).
+ */
+goog.define('pstj.agent.Pointer.USE_DOM_ATTRIBUTE', false);
 
 
 /**
