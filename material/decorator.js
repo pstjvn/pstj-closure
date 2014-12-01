@@ -47,6 +47,52 @@ _.create = function(json, root) {
 
 
 /**
+ * Decorates all elements found under a node.
+ * This solves the decoration patern for the complex elements.
+ *
+ * @param {!Element} root The root node to start decoration from.
+ * @return {goog.ui.Control} The decorated node.
+ */
+_.decorateDom = function(root) {
+  var control = goog.ui.decorate(root);
+  if (goog.isNull(control)) {
+    throw new Error('Cannot decorate root element');
+  }
+  var candidates = control.getElement().querySelectorAll('[is]');
+  if (goog.DEBUG) {
+    console.log('Decorative elements', candidates, candidates.length);
+  }
+  var controls = [control];
+  var elements = [root];
+  var i = 0;
+  var len = 0;
+  var c = null;
+  for (len = candidates.length; i < len; i++) {
+    c = goog.ui.decorate(candidates[i]);
+    if (!goog.isNull(c)) {
+      controls.push(c);
+      elements.push(candidates[i]);
+    }
+  }
+  i = 0;
+  len = controls.length;
+  var index = -1;
+  for (; i < len; i++) {
+    c = controls[i].getElement().parentElement;
+    while (c != root) {
+      index = elements.indexOf(c);
+      if (index != -1) {
+        controls[index].addChild(controls[i]);
+        break;
+      }
+      c = c.parentElement;
+    }
+  }
+  return goog.asserts.assertInstanceof(control, pstj.material.Element);
+};
+
+
+/**
  * Create a particular element
  * @param {MaterialUIItem} item
  * @private
