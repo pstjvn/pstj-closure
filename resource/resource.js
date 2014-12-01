@@ -185,7 +185,7 @@ pstj.resource.getJsonProcessor = function() {
 /**
  * Builds query data for an URL from map / object.
  *
- * @param {Object} data The data to use to build the query string.
+ * @param {!Object<string, *>} data The data to use to build the query string.
  * @return {string} The built query string.
  */
 pstj.resource.buildRequestParams = function(data) {
@@ -271,13 +271,14 @@ pstj.resource.Resource.prototype.registerRunCallback = function(run_name,
 /**
  * Retrieves a resource by its name.
  *
- * @param  {Object} data Descriptior for the resource to retrieve. It should
- * contain property matching the 'run' property of the configuration.
+ * @param  {Object<string, *>} data Descriptior for the resource to retrieve.
+ *    It should contain property matching the 'run' property of the
+ *    configuration.
  * @param  {function(Error, ?): void=} opt_callback The callback to execute
- * when a reply arrives.
+ *    when a reply arrives.
  * @param {boolean=} opt_cache_request If set to true the response will be
- * cached and will be dumped only when {@link #dumpCache} method is called,
- * otherwise it will be used for subsequent response value.
+ *    cached and will be dumped only when {@link #dumpCache} method is called,
+ *    otherwise it will be used for subsequent response value.
  */
 pstj.resource.Resource.prototype.get = function(data, opt_callback,
     opt_cache_request) {
