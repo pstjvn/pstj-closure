@@ -15,7 +15,42 @@
 
 goog.provide('pstj.material.State');
 
+goog.require('goog.ui.Component');
+goog.require('goog.ui.Component.Error');
 goog.require('goog.ui.Component.State');
+
+
+(function() {
+  var tmp = goog.ui.Component.getStateTransitionEvent;
+  /** @override */
+  goog.ui.Component.getStateTransitionEvent = function(state, isEntering) {
+    try {
+      var result = tmp(state, isEntering);
+      if (result) return result;
+    } catch (e) {
+      // error will be only if the type was not recognized
+      switch (state) {
+        case goog.ui.Component.State.TRANSITIONING:
+          return isEntering ? goog.ui.Component.EventType.TRANSITIONSTART :
+              goog.ui.Component.EventType.TRANSITIONEND;
+      }
+    }
+
+    throw Error(goog.ui.Component.Error.STATE_INVALID);
+  };
+})();
+
+
+/** @type {!goog.ui.Component.EventType} */
+goog.ui.Component.EventType.TRANSITIONSTART = (
+    /** @type {!goog.ui.Component.EventType} */ (goog.events.getUniqueId(
+    'transition-start')));
+
+
+/** @type {!goog.ui.Component.EventType} */
+goog.ui.Component.EventType.TRANSITIONEND = (
+    /** @type {!goog.ui.Component.EventType} */ (goog.events.getUniqueId(
+    'transition-end')));
 
 
 /**
