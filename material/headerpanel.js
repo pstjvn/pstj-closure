@@ -99,11 +99,12 @@ pstj.material.HeaderPanel.prototype.onScroll = function(e) {
 
 
 /** @override */
-pstj.material.HeaderPanel.prototype.setState = function(state, enable) {
+pstj.material.HeaderPanel.prototype.setState = function(
+    state, enable, opt_calledFrom) {
   if (state == goog.ui.Component.State.TALL) {
     var oldTall = this.hasState(goog.ui.Component.State.TALL);
   }
-  goog.base(this, 'setState', state, enable);
+  goog.base(this, 'setState', state, enable, opt_calledFrom);
   if (state == goog.ui.Component.State.TALL) {
     if (oldTall && !this.isTall()) {
       this.getHandler().listenOnce(this.getHeader().getElement(),

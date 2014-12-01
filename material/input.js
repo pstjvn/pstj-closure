@@ -391,13 +391,14 @@ pstj.material.Input.prototype.checkValidity = function() {
  * state changes (as the animations depend on that state in the css).
  * @override
  */
-pstj.material.Input.prototype.setState = function(state, enable) {
+pstj.material.Input.prototype.setState = function(state, enable,
+    opt_calledFrom) {
   var c = false;
   if (this.isInDocument() && state == goog.ui.Component.State.EMPTY &&
       this.isEmpty() != enable) {
     c = true;
   }
-  goog.base(this, 'setState', state, enable);
+  goog.base(this, 'setState', state, enable, opt_calledFrom);
   if (c) {
     this.transitionLabel(!enable);
   }
