@@ -90,6 +90,7 @@ libdeps:
 	--root_with_prefix="./control/ ../../../$(APPS_PATH)$(APPDIR)/control" \
 	--root_with_prefix="./date/ ../../../$(APPS_PATH)$(APPDIR)/date" \
 	--root_with_prefix="./debug/ ../../../$(APPS_PATH)$(APPDIR)/debug" \
+	--root_with_prefix="./demos/ ../../../$(APPS_PATH)$(APPDIR)/demos" \
 	--root_with_prefix="./ds/ ../../../$(APPS_PATH)$(APPDIR)/ds" \
 	--root_with_prefix="./error/ ../../../$(APPS_PATH)$(APPDIR)/error" \
 	--root_with_prefix="./fx/ ../../../$(APPS_PATH)$(APPDIR)/fx" \
