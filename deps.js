@@ -9,7 +9,6 @@ goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configu
 goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], ['goog.Disposable', 'goog.asserts', 'goog.events.EventHandler']);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string']);
 goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.PubSub']);
-goog.addDependency('../../../apps/pstj/demos/tableview/tableview_demo.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView']);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object', 'pstj.debug']);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], []);
 goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], []);
@@ -65,8 +64,7 @@ goog.addDependency('../../../apps/pstj/material/panel.js', ['pstj.material.Panel
 goog.addDependency('../../../apps/pstj/material/progressbar.js', ['pstj.material.Progressbar', 'pstj.material.ProgressbarRenderer'], ['goog.ui.Component.State', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.material.EventType', 'pstj.material.State', 'pstj.material.template']);
 goog.addDependency('../../../apps/pstj/material/radiobutton.js', ['pstj.material.RadioButton', 'pstj.material.RadioButtonRenderer'], ['goog.ui.Component.State', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.material.EventMap', 'pstj.material.Ripple', 'pstj.material.State', 'pstj.material.template']);
 goog.addDependency('../../../apps/pstj/material/radiogroup.js', ['pstj.material.RadioGroup', 'pstj.material.RadioGroupRenderer'], ['goog.array', 'goog.string', 'goog.ui.Component.EventType', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.material.RadioButton', 'pstj.material.RadioButtonRenderer']);
-goog.addDependency('../../../apps/pstj/material/ripple.js', ['pstj.material.Ripple'], ['pstj.material.Element', 'pstj.material.EventMap', 'pstj.material.RippleRenderer', 'pstj.material.Wave']);
-goog.addDependency('../../../apps/pstj/material/ripplerenderer.js', ['pstj.material.RippleRenderer'], ['pstj.material.ElementRenderer']);
+goog.addDependency('../../../apps/pstj/material/ripple.js', ['pstj.material.Ripple', 'pstj.material.RippleRenderer'], ['pstj.material.Element', 'pstj.material.EventMap', 'pstj.material.Wave']);
 goog.addDependency('../../../apps/pstj/material/scrimpanel.js', ['pstj.material.ScrimPanel'], ['goog.asserts', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ScrimPanelRenderer']);
 goog.addDependency('../../../apps/pstj/material/scrimpanelrenderer.js', ['pstj.material.ScrimPanelRenderer'], ['pstj.material.ElementRenderer']);
 goog.addDependency('../../../apps/pstj/material/shadow.js', ['pstj.material.Shadow', 'pstj.material.ShadowRenderer'], ['goog.dom', 'goog.dom.classlist', 'goog.ui.Component.State', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.material.State', 'pstj.material.template']);
