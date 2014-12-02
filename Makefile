@@ -90,7 +90,6 @@ libdeps:
 	--root_with_prefix="./control/ ../../../$(APPS_PATH)$(APPDIR)/control" \
 	--root_with_prefix="./date/ ../../../$(APPS_PATH)$(APPDIR)/date" \
 	--root_with_prefix="./debug/ ../../../$(APPS_PATH)$(APPDIR)/debug" \
-	--root_with_prefix="./demos/ ../../../$(APPS_PATH)$(APPDIR)/demos" \
 	--root_with_prefix="./ds/ ../../../$(APPS_PATH)$(APPDIR)/ds" \
 	--root_with_prefix="./error/ ../../../$(APPS_PATH)$(APPDIR)/error" \
 	--root_with_prefix="./fx/ ../../../$(APPS_PATH)$(APPDIR)/fx" \
@@ -120,7 +119,11 @@ $(TEMPLATE_TMP_DIR)/$(LOCALE)/*: templates/*
 	--outputPathFormat '$(TEMPLATE_TMP_DIR)/{INPUT_FILE_NAME_NO_EXT}.soy.js' \
 	$(TERMPLATES_SOURCES)
 
-templates: $(TEMPLATE_TMP_DIR)/$(LOCALE)/*
+tpldeps: $(TEMPLATE_TMP_DIR)/$(LOCALE)/*
+	python $(DEPSWRITER_BIN) \
+	--root_with_prefix="./tpl/ ../../../$(APPS_PATH)$(APPDIR)/tpl" \
+	--output_file="demos/deps.js"
+
 
 .PHONY:
 
