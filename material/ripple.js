@@ -11,6 +11,7 @@
 goog.provide('pstj.material.Ripple');
 goog.provide('pstj.material.RippleRenderer');
 
+goog.require('goog.dom');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.Wave');
@@ -170,7 +171,6 @@ pstj.material.RippleRenderer = goog.defineClass(ER, {
 
   /** @override */
   getTemplate: function(model) {
-    console.log('Data for template', model);
     return pstj.material.template.Ripple(model);
   },
 
@@ -178,6 +178,12 @@ pstj.material.RippleRenderer = goog.defineClass(ER, {
   /** @override */
   getCssClass: function() {
     return pstj.material.RippleRenderer.CSS_CLASS;
+  },
+
+  /** @override */
+  getContentElement: function(el) {
+    return goog.dom.getElementByClass(goog.getCssName(this.getCssClass(),
+        'content'), el);
   },
 
 
