@@ -76,12 +76,14 @@
  * Template for the base ripple
  */
 {template .Ripple}
+  {@param? content: string}
   {@param? circle: bool}
   {@param? recenter: bool}
   {@param? opacity: number}
   <div is class="{css ripple}{if $circle}{sp}{css ripple-circle}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}>
     <div class="{css ripple-bg}"></div>
     <div class="{css ripple-waves}"></div>
+    <div class="{css ripple-content}">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 
