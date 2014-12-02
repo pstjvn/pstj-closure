@@ -193,7 +193,9 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   updateCache: function(component) {
     // We need the element in our list so we can easily resolve
     // between elements and component.
-    var el = component.getContentElement();
+    // Note that we cannot call material specific element here because
+    // we want to preserve compatibility with other components.
+    var el = component.getElementStrict();
     this.elements_[this.indexOf(component)] = el;
 
     if (pstj.agent.Pointer.USE_DOM_ATTRIBUTE) {
