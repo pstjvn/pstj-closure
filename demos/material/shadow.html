@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Shadow </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/element.less">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/shadow.less">
+    <style>
+      .core-element, .render-target {
+        width: 200px;
+        height: 200px;
+        display: inline-block;
+        position: absolute;
+        margin: 30px;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script type="text/javascript" src="../deps.js"></script>
+    <script>
+      goog.require('pstj.material.Shadow');
+      goog.require('pstj.material.Element');
+    </script>
+  </head>
+  <body>
+    <div is class="core-element">
+      <div>Decorated (click me! - no transition)</div>
+      <div is class="material-shadow material-shadow-0">
+        <div class="material-shadow-bottom"></div>
+        <div class="material-shadow-top"></div>
+      </div>
+    </div>
+
+    <div is class="core-element withtransition" style="left: 290px">
+      <div>Decorated (with transitioning)</div>
+      <div is class="material-shadow material-shadow-0 material-shadow-transition">
+        <div class="material-shadow-bottom"></div>
+        <div class="material-shadow-top"></div>
+      </div>
+    </div>
+
+    <div class="render-target" style="left: 560px">
+      Render target (transitioning).
+    </div>
+
+    <script>
+      var shadow = new pstj.material.Shadow();
+      shadow.setTransitioning(true);
+      shadow.render(document.querySelector('.render-target'));
+
+      var el2 = new pstj.material.Element();
+      el2.decorate(document.querySelector('.core-element'));
+
+      var el3 = new pstj.material.Element();
+      el3.decorate(document.querySelector('.core-element.withtransition'))
+
+      var inc = true;
+      var depth = 0;
+      el2.getElement().addEventListener('click', function(e) {
+        depth = depth + (inc ? 1 : -1);
+        if (depth >= 5 || depth <= 0) inc = !inc;
+        el2.getChildAt(0).setDepth(depth);
+        el3.getChildAt(0).setDepth(depth);
+        shadow.setDepth(depth);
+      });
+
+    </script>
+  </body>
+</html>

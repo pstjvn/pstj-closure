@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Ripple </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/element.less">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/ripple.less">
+    <style>
+      .rendertarget, .core-element {
+        width: 300px;
+        height: 80px;
+        position: relative;
+        color: blue;
+        border: 1px solid blue;
+      }
+      .ontop {
+        z-index: 2;
+        position: absolute;
+      }
+
+      .ripple {
+        background-color: white;
+        color: blue;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {
+        'goog.ui.Component.ALLOW_DETACHED_DECORATION':true,
+        'pstj.agent.Pointer.USE_EVENT_DELEGATION':true,
+        'pstj.agent.Pointer.USE_DOM_ATTRIBUTE':true
+      };
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script type="text/javascript" src="../deps.js"></script>
+    <script>
+      goog.require('pstj.material.Element');
+      goog.require('pstj.material.Ripple');
+      goog.require('goog.ui.decorate');
+    </script>
+  </head>
+  <body>
+    <div is class="core-element">
+      <div is class="ripple" opacity="0.2" recenter use-pointer>
+        <div class="ripple-bg"></div>
+        <div class="ripple-waves"></div>
+        <div>Decorated</div>
+      </div>
+    </div>
+
+    <div class="rendertarget" style="left:400px">
+    </div>
+
+    <select id="recenter">
+      <option value="1">Recenter</option>
+      <option value="0">No Recenter</option>
+    </select>
+
+    <input id="opacity" value="0.2">
+
+    <script>
+      var ripple = new pstj.material.Ripple('Rendered');
+      ripple.setOpacity(0.2);
+      ripple.setRecenterRipples(true);
+      ripple.setUsePointerAgent(true);
+      ripple.render(document.querySelector('.rendertarget'));
+
+      var el = goog.ui.decorate(document.querySelector('.core-element'));
+
+      document.querySelector('#opacity').addEventListener('change', function(e) {
+        var val = e.target.value;
+        var opacity = parseFloat(val);
+        if (!isNaN(opacity)) {
+          if (opacity > 1) opacity = 1;
+          if (opacity < 0) opacity = 0;
+          ripple.setOpacity(opacity);
+          el.getChildAt(0).setOpacity(opacity);
+        }
+      });
+
+      document.querySelector('#recenter').addEventListener('change', function(e) {
+        var recenter = (e.target.value == 1);
+        ripple.setRecenterRipples(recenter);
+        el.getChildAt(0).setRecenterRipples(recenter);
+      });
+
+
+    </script>
+  </body>
+</html>
