@@ -153,6 +153,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @return {Element}
    */
   createDom: function(control) {
+    // Make sure that we are indeed a material element.
     goog.asserts.assertInstanceof(control, pstj.material.Element);
     var el = this.createRootElement(this.getTemplate(this.generateTemplateData(
         control)));
@@ -236,17 +237,20 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     goog.base(this, 'decorate', control, element);
     goog.asserts.assertInstanceof(control, pstj.material.Element);
     this.setupAutoEvents(control, element);
+    this.setupAgents(control, element);
     return element;
   },
 
 
   /**
-   * We do not want to override the content of the elements as they are
-   * carefully crafted to have a particular structure that is linked to the
-   * visual behavior.
-   * @override
+   * Sets up agents from decorated elements.
+   * @param {pstj.material.Element} control
+   * @param {Element} el
    */
-  // setContent: function(a, b) {},
+  setupAgents: function(control, el) {
+    control.setUsePointerAgent(el.hasAttribute('use-pointer'));
+    control.setUseScrollAgent(el.hasAttribute('use-scroll'));
+  },
 
 
   /**
@@ -352,6 +356,15 @@ goog.addSingletonGetter(pstj.material.ElementRenderer);
 
 /**
  * Implementation of the Element / Material design base control.
+ * The design of complex material elements requires that the children elements
+ * be positioned anywhere in the DOM structure of the parent and thus we require
+ * that all sub-elements (known onse coming from the template) be accessed as
+ * indexes (i.e. getChildAt()). If an element can go without a sub-element it
+ * still must be created but can be set to display:none / setVisible false.
+ *
+ * Note that if you render a very complex DOM structure and you then need
+ * access to specific sub-components you need to look them up in the children
+ * chain.
  */
 pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
@@ -519,13 +532,52 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   createDom: function() {
     goog.base(this, 'createDom');
+    // Check if we have direct descendants that need to be decorated.
+    this.addMaterialChildren();
+
     // here we are assuming too much, basically allowing the the more complex
     // and 'coposed' elements to be created naturally (from the template).
     // This however bvreaks the 'decorate/rendered' pattern. This should change
     // in future to allow the composition to work automatically and augment
     // elements in a separate method that can be called from either the
     // rendering or the decoration.
-    this.decorateInternal(this.getElement());
+    // this.decorateInternal(this.getElement());
+  },
+
+
+  /**
+   * Works around the inefficiencies of decoration.
+   * @protected
+   */
+  addMaterialChildren: function() {
+    // at this point we are still not in the document and the element is a
+    // fragment only, thus this requires decoration of fragments to be alloed
+    var candidates = this.querySelectorAll('[is]');
+    console.log(candidates);
+    var ctrls = [this];
+    var els = [this.getElement()];
+    goog.array.forEach(candidates, function(candidate) {
+      console.log(candidate);
+      var ctor = goog.ui.registry.getDecorator(candidate);
+      console.log(ctor);
+      if (!goog.isNull(ctor)) {
+        ctrls.push(ctor);
+        els.push(candidate);
+      }
+    });
+    console.log(ctrls, els)
+    goog.array.forEach(els, function(el, i) {
+      el = el.parentElement;
+      while (el) {
+        var index = goog.array.indexOf(els, el);
+        if (index != -1) {
+          ctrls[index].addChild(ctrls[i]);
+          ctrls[i].decorate(els[i]);
+          break;
+        }
+        el = el.parentElement;
+      }
+    });
   },
 
 
@@ -536,32 +588,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   decorateInternal: function(element) {
     goog.base(this, 'decorateInternal', element);
-    // Automatically find decorative children.
-    // NOTE: this was initially designed to allow one element to decorate its
-    // mandatory children (i.e. Header panel -> Header and Main) and then
-    // decorate its actual children (i.e. input in the main panel etc) but
-    // because the child is created with decorate and the parent is not yet
-    // finished with the decoration phase the "ALREADY RENDERED" error is
-    // thrown. For fix see bellow.
-
-    // Currently there is no interest in making this work and instead
-    // only the imperative construction of complex UI patterns will be
-    // supported.
-
-    // THIS IS NOT WORKING! WE NEED TO FIX IT WITH smjsapp / js / tw / decrator
-    var nodes = this.getDecorativeChildren();
-    if (nodes.length > 0) {
-      nodes = goog.array.toArray(nodes);
-      for (var i = 0; i < nodes.length; i++) {
-        console.log('Auto decorating:', nodes[i].className);
-        var child = goog.ui.decorate(nodes[i]);
-        this.addChild(child);
-        var toRemove = goog.array.toArray(child.getDecorativeChildren());
-        for (var j = 0; j < toRemove.length; j++) {
-          goog.array.remove(nodes, toRemove[j]);
-        }
-      }
-    }
+    this.addMaterialChildren();
   },
 
 
@@ -915,8 +942,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   statics: {
-
-
     /**
      * Map of events that if we have one of them we should attach the instance
      * to the Pointer agent.
