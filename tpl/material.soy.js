@@ -374,16 +374,16 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    label: string
+ *    content: string
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
 pstj.material.template.Checkbox = function(opt_data, opt_ignored) {
-  goog.asserts.assert(goog.isString(opt_data.label) || (opt_data.label instanceof goog.soy.data.SanitizedContent), "expected param 'label' of type string|goog.soy.data.SanitizedContent.");
-  var label = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.label);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-checkbox') + '" role="checkbox"><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-label') + '">' + soy.$$escapeHtml(label) + '</div></div>');
+  goog.asserts.assert(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), "expected param 'content' of type string|goog.soy.data.SanitizedContent.");
+  var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-checkbox') + '" role="checkbox"><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Checkbox.soyTemplateName = 'pstj.material.template.Checkbox';

@@ -261,8 +261,8 @@
 
 /** Template for the material checkbox */
 {template .Checkbox}
-  {@param label: string}
-  <div class="{css material-checkbox}" role="checkbox">
+  {@param content: string}
+  <div is class="{css material-checkbox}" role="checkbox">
     <div class="{css material-checkbox-container}">
       <div class="{css material-checkbox-icon}"></div>
       {call .Ripple}
@@ -270,7 +270,7 @@
         {param recenter: true /}
       {/call}
     </div>
-    <div class="{css material-checkbox-label}">{$label}</div>
+    <div class="{css material-checkbox-content}">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 

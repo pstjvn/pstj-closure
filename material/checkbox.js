@@ -81,8 +81,7 @@ _.enterDocument = function() {
   // Before the ripple enters the document make sure to enable pointer handling
   this.getChildAt(0).setUsePointerAgent(true);
   goog.base(this, 'enterDocument');
-  this.getHandler().listen(goog.dom.getElementByClass(
-      goog.getCssName('material-checkbox-icon'), this.getElement()),
+  this.getHandler().listen(this.getRenderer().getIconElement(this.getElement()),
       goog.events.EventType.ANIMATIONEND, this.onTransitionEnd);
 };
 
@@ -119,17 +118,21 @@ r.getTemplate = function(model) {
 
 
 /** @inheritDoc */
-r.generateTemplateData = function(control) {
-  return {
-    label: control.getContent() || ''
-  };
+r.getContentElement = function(el) {
+  return goog.dom.getElementByClass(goog.getCssName(this.getCssClass(),
+      'content'), el);
 };
 
 
-/** @inheritDoc */
-r.getContentElement = function(el) {
+/**
+ * Getter for the icon element. We need it in the control to setup
+ * animations.
+ * @param {Element} el
+ * @return {Element}
+ */
+r.getIconElement = function(el) {
   return goog.dom.getElementByClass(goog.getCssName(this.getCssClass(),
-      'label'), el);
+      'icon'), el);
 };
 
 
