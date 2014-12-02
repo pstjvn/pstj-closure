@@ -310,6 +310,16 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
   },
 
 
+  /** @inheritDoc */
+  decorate: function(control, element) {
+    var e = goog.base(this, 'decorate', control, element);
+    var type = element.getAttribute('type');
+    if (!type) type = 'none';
+    control.setIcon(type);
+    return e;
+  },
+
+
   statics: {
     /**
      * @type {string}
