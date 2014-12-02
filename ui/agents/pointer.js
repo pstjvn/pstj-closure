@@ -166,7 +166,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         var currentElement = element.parentElement;
         var limit = this.dom_.getDocument().body;
         if (pstj.agent.Pointer.USE_DOM_ATTRIBUTE) {
-          while (currentElement != limit) {
+          while (currentElement != limit && !goog.isNull(currentElement)) {
             if (currentElement.hasAttribute(pstj.agent.Pointer.DOM_ATTRIBUTE)) {
               return currentElement;
             }
