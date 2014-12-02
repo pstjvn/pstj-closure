@@ -565,7 +565,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
         els.push(candidate);
       }
     });
-    console.log(ctrls, els)
     goog.array.forEach(els, function(el, i) {
       el = el.parentElement;
       while (el) {

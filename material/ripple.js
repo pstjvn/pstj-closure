@@ -19,7 +19,6 @@ goog.require('pstj.material.Wave');
 goog.scope(function() {
 var Wave = pstj.material.Wave;
 var EventMap = pstj.material.EventMap;
-var RR = pstj.material.RippleRenderer;
 var ER = pstj.material.ElementRenderer;
 
 
