@@ -130,7 +130,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
   /**
    * Helper method to check if the parent is enabled.
-   * @return {param}
+   * @return {boolean}
    * @protected
    */
   isParentEnabled: function() {

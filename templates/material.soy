@@ -155,6 +155,17 @@
 /**
  * Provides the template for the RadioButton. Internally uses the ripple effect.
  * No need to set aria states as the control renderers do that always.
+ *
+ * NOTE: there is a rendering bug when display = inline-block that work as this:
+ * The node with the text that is after another node that is in a node with
+ * display inline block
+ * must not have a new line in the source HTML for the auto margin to be ommited
+ *
+ * This problem does not exists when components are rendered because html is
+ * always concatenated but when decoration is used extra attention is required
+ * to avoid the problem. In the template bellow the problematic item is the
+ * content div and thus it is put directly next to the previous closing div
+ * element instead on a new line.
  */
 {template .RadioButton}
   {@param? content: string}
@@ -169,8 +180,7 @@
         {param recenter: true /}
         {param usepointer: true/}
       {/call}
-    </div>
-    <div class="{css material-radio-button-content}" aria-hidden="true">{if $content}{$content}{/if}</div>
+    </div><div class="{css material-radio-button-content}" aria-hidden="true">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 

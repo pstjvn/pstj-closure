@@ -109,7 +109,7 @@ r.getTemplate = function(model) {
 
 /**
  * @override
- * @return {{label: string}}
+ * @return {Object.<string, *>}
  */
 r.generateTemplateData = function(control) {
   var c = control.getContent();
