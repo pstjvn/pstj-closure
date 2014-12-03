@@ -1,0 +1,52 @@
+// Provides styling for the FAB button
+
+@import "shadow";
+@import "ripple";
+@import "icon";
+
+@fab-color: white;
+@fab-background-color: black;
+@fab-disabled-color: gray;
+
+
+.material-fab {
+  color: @fab-color;
+  background-color: @fab-background-color;
+  display: inline-block;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+  z-index: 0;
+  box-sizing: border-box;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 10px;
+
+  &-disabled {
+    color: @fab-disabled-color;
+    pointer-events: none;
+    cursor: auto;
+  }
+
+  & .ripple {
+    pointer-events: none;
+    z-index: -1;
+    color: inherit;
+    background-color: inherit;
+  }
+
+  & .material-shadow {
+    border-radius: inherit;
+  }
+
+  & .material-icon {
+    display: block;
+    width: 36px;
+    height: 36px;
+    fill: @fab-color;
+  }
+}
+
+
+

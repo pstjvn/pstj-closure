@@ -1,0 +1,9 @@
+{
+  "name": "MaterialCodeGenerators",
+  "description": "Collection of utilities that generate code for the compiler",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "jsdom": "*"
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Radiobutton </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/radiobutton.less">
+    <style>
+      .material-radio-button {
+        margin: 20px;
+        display: block;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script type="text/javascript" src="../deps.js"></script>
+    <script>
+      goog.require('goog.array');
+      goog.require('goog.ui.decorate');
+      goog.require('pstj.material.RadioButton');
+    </script>
+  </head>
+  <body>
+
+    <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="demo" value="decoration demo">
+      <div class="material-radio-button-container">
+        <div class="material-radio-button-off"></div>
+        <div class="material-radio-button-on"></div>
+        <div is class="ripple ripple-circle" recenter use-pointer>
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div><div class="material-radio-button-content" aria-hidden="true">Decorated</div>
+    </div>
+
+    <div is class="material-radio-button material-radio-button-checked" use-pointer role="radio" tabindex="0" name="demo" value="decoration demo">
+      <div class="material-radio-button-container">
+        <div class="material-radio-button-off"></div>
+        <div class="material-radio-button-on"></div>
+        <div is class="ripple ripple-circle" recenter use-pointer>
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div><div class="material-radio-button-content" aria-hidden="true">Decorated (checked)</div>
+    </div>
+
+
+    <div is class="material-radio-button material-radio-button-disabled" use-pointer role="radio" tabindex="0" name="demo" value="decoration demo">
+      <div class="material-radio-button-container">
+        <div class="material-radio-button-off"></div>
+        <div class="material-radio-button-on"></div>
+        <div is class="ripple ripple-circle" recenter use-pointer>
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div><div class="material-radio-button-content" aria-hidden="true">Decorated (disabled)</div>
+    </div>
+
+    <div is class="material-radio-button material-radio-button-disabled material-radio-button-checked" use-pointer role="radio" tabindex="0" name="demo" value="decoration demo">
+      <div class="material-radio-button-container">
+        <div class="material-radio-button-off"></div>
+        <div class="material-radio-button-on"></div>
+        <div is class="ripple ripple-circle" recenter use-pointer>
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div><div class="material-radio-button-content" aria-hidden="true">Decorated (disabled, checked)</div>
+    </div>
+
+    <script>
+      goog.array.forEach(document.querySelectorAll('[is]'), function(el) {
+        goog.ui.decorate(el);
+      });
+
+      var rb0 = new pstj.material.RadioButton('Rendered (checked)');
+      var rb1 = new pstj.material.RadioButton('Rendered (disabled, checked)');
+      var rb2 = new pstj.material.RadioButton('Rendered (disabled)');
+      var rb3 = new pstj.material.RadioButton('Rendered');
+
+      rb0.setChecked(true);
+
+      rb1.setChecked(true);
+      rb1.setEnabled(false);
+
+      rb2.setEnabled(false);
+
+
+      rb1.render();
+      rb0.render();
+      rb2.render();
+      rb3.render();
+
+    </script>
+  </body>
+</html>

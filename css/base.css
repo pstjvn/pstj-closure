@@ -1,0 +1,38 @@
+/* Make the styles use the border as part of the container */
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* Make the boxy and html fill in the entiere screen */
+html, body {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+ 	margin: 0;
+}
+
+.float-left {
+  float: left;
+}
+
+.d-table {
+  display: table;
+}
+
+.d-table-cell {
+  display: table-cell;
+}
+
+/* Separate the retina display rules here */
+@media (min--moz-device-pixel-ratio: 1.5),
+       (-o-min-device-pixel-ratio: 3/2),
+       (-webkit-min-device-pixel-ratio: 1.5),
+       (min-device-pixel-ratio: 1.5),
+       (min-resolution: 144dpi),
+       (min-resolution: 1.5dppx) {
+
+/* Retina rules! */
+
+}

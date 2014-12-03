@@ -1,0 +1,58 @@
+// Provides the styling for the toggle button.
+
+@import "radiobutton";
+
+
+.material-toggle-button {
+  display: inline-block;
+
+  &:focus {
+    outline: none;
+  }
+
+  &-container {
+    position: relative;
+    width: 64px;
+    height: 16px;
+  }
+
+  &-bar {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    height: 1px;
+    width: 32px;
+    background-color: @material-radio-button-color;
+    pointer-events: none;
+  }
+
+  &-checked &-bar {
+    background-color: @material-radio-button-checked-color;
+  }
+
+  // The radio button section
+  & .material-radio-button {
+    position: absolute;
+    left: 0;
+    // padding: 8px 48px 8px 0;
+    // margin: -8px -48px -8px 0;
+    -webkit-transition: -webkit-transform linear .08s;
+    /* @alternative */
+    transition: transform linear .08s;
+
+    &-checked {
+      -webkit-transform: translate(48px, 0);
+      /* @alternative */
+      transform: translate(48px, 0);
+      // padding: 8px 0 8px 48px;
+      // margin: -8px 0 -8px -48px;
+    }
+
+    // Make sure there is no transitioning when we manually animate the circle
+    .material-toggle-button-transition .material-radio-button {
+      -webkit-transition: none;
+      /* @alternative */
+      transition: none;
+    }
+  }
+}

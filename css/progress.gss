@@ -1,0 +1,34 @@
+@def PSTJ_WIDGET_PROGRESS_BG #EEEEEE;
+@def PSTJ_WIDGET_PROGRESS_BORDER 2px solid black;
+@def PSTJ_WIDGET_PROGRESS_HEIGHT 20px;
+@def PSTJ_WIDGET_PROGRESS_BAR_BG #0070C0;
+
+.pstj-widget-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 50px 0 0 0;
+  background: PSTJ_WIDGET_PROGRESS_BG;
+  z-index: 9999;
+}
+
+.pstj-widget-progress-container {
+  width: 60%;
+  margin: 5px auto;
+  border: PSTJ_WIDGET_PROGRESS_BORDER;
+  height: PSTJ_WIDGET_PROGRESS_HEIGHT;
+}
+
+.pstj-widget-progress-text {
+  width: 60%;
+  margin: auto;
+}
+
+.pstj-widget-progress-bar {
+  width: 0;
+  height: 100%;
+  background: PSTJ_WIDGET_PROGRESS_BAR_BG;
+}

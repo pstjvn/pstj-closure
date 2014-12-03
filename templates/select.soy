@@ -1,0 +1,31 @@
+{namespace pstj.select}
+
+/**
+ * Provides the selection widget.
+ */
+{template .Select}
+  <div class="{css pstj-select}">
+    <div class="{css pstj-select-view}">
+      <div class="{css pstj-select-title}">{msg desc="Select item"}Select item{/msg}</div>
+      <div class="{css pstj-select-body}"></div>
+      <div class="{css pstj-select-footer}">
+        <div class="{css form-button} {css text-button} {css pstj-select-text-button} {css pstj-action-select}">{msg desc="Select"}Select{/msg}</div>
+        <div class="{css form-button} {css text-button} {css pstj-select-text-button} {css pstj-action-cancel}">{msg desc="Cancel"}Cancel{/msg}</div>
+      </div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Provides the selection item view.
+ * @param thumbnail The image thumbnail.
+ * @param name The name of the channel.
+ */
+{template .SelectionItem}
+  <div class="{css pstj-select-item}">
+    <div class="{css pstj-select-item-image-holder}">
+      <img src="{$thumbnail}" class="{css pstj-select-item-thumbnail}" />
+    </div>
+    <div class="{css pstj-select-item-name}">{$name}</div>
+  </div>
+{/template}

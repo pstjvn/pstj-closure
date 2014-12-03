@@ -1,0 +1,302 @@
+{namespace pstj.material.template}
+
+
+/** Base template */
+{template .CoreElement}
+  {@param? content: string}
+  <div is class="{css core-element}">{if $content}{$content}{/if}</div>
+{/template}
+
+
+/** Item template */
+{template .Item}
+  {@param? content: string}
+  <div is class="{css core-item}">{if $content}{$content}{/if}</div>
+{/template}
+
+
+/** Template for the scrim panel */
+{template .ScrimPanel}
+  <div is class="{css scrim-panel} {css drawer-panel-main}">
+    <div is class="{css core-element} {css core-tap} {css scrim}"></div>
+  </div>
+{/template}
+
+
+
+/** Template for a panel that can be screened. */
+{template .Panel}
+  <div is class="{css material-panel}">
+    {call .Shadow /}
+    <div is class="{css core-element} {css material-panel-scrim}"></div>
+  </div>
+{/template}
+
+
+/** The drawer panel template */
+{template .DrawerPanel}
+  <div class="{css material-drawer-panel}">
+    {call .Panel /}
+    <div is class="{css core-element} {css material-drawer-panel-drawer}"></div>
+  </div>
+{/template}
+
+
+/** The main panel fo rthe header panel. */
+{template .HeaderPanelMain}
+  <div is class="{css material-header-panel-main}">
+    <div class="{css material-header-panel-main-container}">
+      <div class="{css material-header-panel-main-content}"></div>
+    </div>
+    <div class="{css material-drop-shadow}"></div>
+  </div>
+{/template}
+
+
+/** The header in the header panel. */
+{template .HeaderPanelHeader}
+  <div is class="{css material-header-panel-header}"></div>
+{/template}
+
+
+/**
+  * Template for the header panel material element
+  * It intentionally does not contain the header and main panels as we want to
+  * create them programatically with their own children from the JSON config.
+  */
+{template .HeaderPanel}
+  <div class="{css material-header-panel}">
+    <div class="{css material-header-panel-outer-container}">
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * Template for the base ripple
+ */
+{template .Ripple}
+  {@param? content: string}
+  {@param? circle: bool}
+  {@param? recenter: bool}
+  {@param? opacity: number}
+  {@param? usepointer: bool}
+  <div is class="{css ripple}{if $circle}{sp}{css ripple-circle}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}{if $usepointer}{sp}use-pointer{/if}>
+    <div class="{css ripple-bg}"></div>
+    <div class="{css ripple-waves}"></div>
+    <div class="{css ripple-content}">{if $content}{$content}{/if}</div>
+  </div>
+{/template}
+
+
+/**
+ * The floating label for the inputs.
+ * @param label
+ */
+{template .FloatingLabel}
+  <div class="{css floating-label}">
+    <span class="{css floating-label-text}">{$label}</span>
+  </div>
+{/template}
+
+
+/**
+ * The underline effect for the inputs.
+ */
+{template .InputUnderline}
+  <div class="{css material-input-underline}">
+    <div class="{css material-input-underline-unfocused}"></div>
+    <div class="{css material-input-underline-focused}"></div>
+  </div>
+{/template}
+
+
+/**
+ * The error message for the inputs
+ * @param error The error to display.
+ */
+{template .InputError}
+  <div class="{css material-input-error}">
+    <div class="{css material-input-error-text}" role="alert">{$error}</div>
+    <div is class="{css material-icon} {css material-input-error-icon}" icon="warning" size="20"></div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the template for the default Input in material design. Note
+ * that this is NOT the paper input
+ */
+{template .Input}
+  <div class="{css material-input}"></div>
+{/template}
+
+
+/**
+ * The template for the input body that overlays the actual input element.
+ * @param label
+ * @param type
+ * @param value
+ * @param name
+ */
+{template .InputBody}
+  <div is class="{css material-input-body}">
+    <div class="{css material-input-body-label}">
+      <span class="{css material-input-body-label-text}">{$label}</span>
+    </div>
+    <div is class="{css core-element} {css material-input-body-cursor}"></div>
+    <div class="{css material-input-body-container}">
+      <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="{$type}" value="{$value}" name="{$name}">
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the template for the RadioButton. Internally uses the ripple effect.
+ * No need to set aria states as the control renderers do that always.
+ *
+ * NOTE: there is a rendering bug when display = inline-block that work as this:
+ * The node with the text that is after another node that is in a node with
+ * display inline block
+ * must not have a new line in the source HTML for the auto margin to be ommited
+ *
+ * This problem does not exists when components are rendered because html is
+ * always concatenated but when decoration is used extra attention is required
+ * to avoid the problem. In the template bellow the problematic item is the
+ * content div and thus it is put directly next to the previous closing div
+ * element instead on a new line.
+ */
+{template .RadioButton}
+  {@param? content: string}
+  {@param? name: string}
+  {@param? value: string}
+  <div is class="{css material-radio-button}" role="radio" tabindex="0" name="{$name}" value="{$value}">
+    <div class="{css material-radio-button-container}">
+      <div class="{css material-radio-button-off}"></div>
+      <div class="{css material-radio-button-on}"></div>
+      {call .Ripple}
+        {param circle: true /}
+        {param recenter: true /}
+        {param usepointer: true/}
+      {/call}
+    </div><div class="{css material-radio-button-content}" aria-hidden="true">{if $content}{$content}{/if}</div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the template for the toggle button
+ */
+{template .ToggleButton}
+  <div is class="{css material-toggle-button}" role="button" aria-pressed="false" tabindex="0">
+    <div class="{css material-toggle-button-container}">
+      <div class="{css material-toggle-button-bar}"></div>
+      {call .RadioButton}
+        {param label: '' /}
+      {/call}
+    </div>
+  </div>
+{/template}
+
+
+/** Template for the Radio Group */
+{template .RadioGroup}
+  <div is class="{css material-radio-group}"></div>
+{/template}
+
+
+/** Progress bar element */
+{template .Progressbar}
+  <div class="{css material-progress-bar}">
+    <div class="{css material-progress-bar-inner}"></div>
+  </div>
+{/template}
+
+
+/** Provides template for the shadow element. */
+{template .Shadow}
+  <div is class="{css material-shadow} {css material-shadow-0}">
+    <div class="{css material-shadow-bottom}"></div>
+    <div class="{css material-shadow-top}"></div>
+  </div>
+{/template}
+
+
+/** Template for the internal button label. */
+{template .ButtonContent}
+  {@param? label: string}
+  <div is class="{css core-element} {css relative}">
+    <div class="{css material-button-label}">{$label}</div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the template for the material button. Note that it does not
+ * support icons etc, it is purely material impementation
+ */
+{template .Button}
+  {@param? label: string}
+  <div is class="{css material-button}">
+    {call .Shadow /}
+    {call .IconContainer /}
+    {call .ButtonContent}
+      {param label: $label /}
+    {/call}
+    {call .Ripple}
+      {param recenter: false /}
+      {param opacity: 0.30 /}
+    {/call}
+  </div>
+{/template}
+
+
+/**
+ * Provides the icon container.
+ */
+{template .IconContainer}
+  <div is class="{css material-icon-container} {css material-icon-container-empty}"></div>
+{/template}
+
+
+/** Implements the FAB button */
+{template .Fab}
+  <div is class="{css material-fab}">
+    {call .Shadow /}
+    {call .IconContainer /}
+    {call .Ripple}
+      {param recenter: true /}
+    {/call}
+  </div>
+{/template}
+
+
+/** Template for the material checkbox */
+{template .Checkbox}
+  {@param content: string}
+  <div is class="{css material-checkbox}" role="checkbox">
+    <div class="{css material-checkbox-container}">
+      <div class="{css material-checkbox-icon}"></div>
+      {call .Ripple}
+        {param circle: true /}
+        {param recenter: true /}
+      {/call}
+    </div>
+    <div class="{css material-checkbox-content}">{if $content}{$content}{/if}</div>
+  </div>
+{/template}
+
+
+/** Menu item template. */
+{template .MenuItem}
+  {@param? content: string}
+  <div is class="{css material-menu-item}">
+    {call .IconContainer /}
+    <div class="{css material-menu-item-content}">
+      {call .Item}
+        {param content: $content /}
+      {/call}
+    </div>
+  </div>
+{/template}

@@ -1,0 +1,14 @@
+@import "layout";
+@import "common";
+
+.core-item {
+  min-height: 40px;
+  &:extend(.flex);
+  &:extend(.relative);
+  white-space: nowrap;
+
+  & > a {
+    background-color: rgba(0, 0, 0, 0.000001);
+    &:extend(.core-fill-position);
+  }
+}

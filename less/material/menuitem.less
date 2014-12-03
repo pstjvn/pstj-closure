@@ -1,0 +1,29 @@
+// States the menuitem thingies
+
+@import "typography";
+@import "layout";
+
+@menu-color: black;
+
+.material-menu-item {
+  min-height: 40px;
+
+  & .material-icon-container {
+    width: 30px;
+    height: 30px;
+  }
+
+  &-content {
+    &:extend(.flex);
+  }
+
+  &-empty {
+    .material-icon-container {
+      display: none;
+    }
+  }
+
+  & .core-item {
+    .menu(@menu-color);
+  }
+}

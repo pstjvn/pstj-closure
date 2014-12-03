@@ -1,0 +1,69 @@
+@import "layout";
+@import "typography";
+@import "ripple";
+@import "shadow";
+@import "icon";
+
+@material-button-color: white;
+@material-button-bg-disabled: #eaeaea;
+@material-button-color-disabled: #a8a8a8;
+
+.material-button {
+  display: inline-block;
+  // This is needed for the ripple
+  color: @material-button-color;
+  position: relative;
+  min-width: 5.14em;
+  padding: 0.7em 0.57em;
+  margin: 0 0.29em;
+  background: transparent;
+  text-align: center;
+  font: inherit;
+  outline: none;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 0;
+  &:extend(.horizontal);
+  // sets up the color of the label of the button
+  &-label {
+    // Setup the font
+    .button(@material-button-color);
+  }
+  & .material-shadow {
+    border-radius: inherit;
+    &:extend(.fit);
+  }
+  & .ripple {
+    background-color: inherit;
+    color: inherit;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  & .material-icon-container {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+    & svg {
+      fill: @material-button-color;
+    }
+  }
+
+  & > .core-element {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &-disabled {
+    background-color: @material-button-bg-disabled;
+    .material-button-label {
+      color: @material-button-color-disabled;
+    }
+
+    .material-icon-container > svg {
+      fill: @material-button-color-disabled;
+    }
+    cursor: auto;
+    pointer-events: none;
+  }
+}

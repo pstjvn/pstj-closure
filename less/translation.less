@@ -1,0 +1,25 @@
+.translation (@x: 0; @y: 0) {
+  -webkit-transform: translate(@x, @y);
+  /* @alternate */
+  -moz-transform: translate(@x, @y);
+  /* @alternate */
+  -ms-transform: translate(@x, @y);
+  /* @alternate */
+  transform: translate(@x, @y);
+}
+
+.transitiontranslate (@time: 1000ms) {
+  -webkit-transition: -webkit-transform @time;
+  /* @alternate */
+  -moz-transition: -moz-transform @time;
+  /* @alternate */
+  transition: transform @time;
+}
+
+.notransition {
+  -webkit-transition: none;
+  /* @alternate */
+  -moz-transition: none;
+  /* @alternate */
+  transition: none;
+}

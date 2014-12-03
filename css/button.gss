@@ -1,0 +1,90 @@
+/**
+ * Provides the button style template
+ */
+
+@def PSTJ_BUTTON_BORDER_RADIUS 3px;
+@def PSTJ_BUTTON_TEXT_COLOR #3A3A3A;
+@def PSTJ_BUTTON_BASE_COLOR #CACACA;
+@def PSTJ_BUTTON_BASE_HIGHLIGHT red;
+@def PSTJ_BUTTON_DEFAULT_BORDER 1px solid #C1C1BF;
+
+
+.pstj-button {
+  position: relative;
+  background-color: PSTJ_BUTTON_BASE_COLOR;
+  color: PSTJ_BUTTON_TEXT_COLOR;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 11px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background-position: center;
+  line-height: 0;
+}
+
+.pstj-button {
+  background-image: -webkit-linear-gradient(top,  rgba(221,221,221,1) 0%,rgba(242,242,242,1) 49%,rgba(198,198,198,1) 100%);
+  /* @alternate */
+  background-image: linear-gradient(to bottom,  rgba(221,221,221,1) 0%,rgba(242,242,242,1) 49%,rgba(198,198,198,1) 100%);
+}
+
+.pstj-button-active {
+  top: PSTJ_BUTTON_BORDER_RADIUS;
+}
+
+.pstj-button-hover {
+  background-image: -webkit-linear-gradient(top,  rgba(216,216,216,1) 0%,rgba(255,255,255,1) 49%,rgba(216,216,216,1) 100%);
+  /* @alternate */
+  background-image: linear-gradient(to bottom,  rgba(216,216,216,1) 0%,rgba(255,255,255,1) 49%,rgba(216,216,216,1) 100%);
+}
+
+.pstj-button-group {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+/** Setup borders */
+.pstj-button {
+  border: PSTJ_BUTTON_DEFAULT_BORDER;
+}
+
+.pstj-button-group .pstj-button {
+  border-left: none;
+}
+
+.pstj-button-group .pstj-button:first-child {
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+  /** @alternate */
+  -moz-border-radius-topleft: 8px;
+  /** @alternate */
+  -moz-border-radius-bottomleft: 8px;
+  /** @alternate */
+  border-top-left-radius: 8px;
+  /** @alternate */
+  border-bottom-left-radius: 8px;
+  border-left: PSTJ_BUTTON_DEFAULT_BORDER;
+}
+
+.pstj-button-group .pstj-button:last-child {
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  /** @alternate */
+  -moz-border-radius-topright: 8px;
+  /** @alternate */
+  -moz-border-radius-bottomright: 8px;
+  /** @alternate */
+  border-top-right-radius: 8px;
+  /** @alternate */
+  border-bottom-right-radius: 8px;
+}
+
+
+/* CUSTOMIZATIONS */
+
+.program-button, .date-button {
+  float: right;
+  margin: 0 6px;
+}

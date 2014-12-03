@@ -1,0 +1,179 @@
+{namespace pstj.templates}
+
+/**
+ * Template for the custom scroll area widget.
+ * Content goes on custom-scroll-div so it should be returned by getContentElement
+ */
+{template .CustomScrollArea}
+  <div class="{css custom-scroll-area}">
+    <div class="{css custom-scroll-internal}">
+      <div class="{css custom-scroll-div}"></div>
+    </div>
+    <div class="{css custom-scroll-bar} {css goog-slider}">
+      <div class="{css custom-scroll-bar-line}"></div>
+      <div class="{css goog-slider-thumb} {css custom-scroll-bar-thumb}"></div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * The basic item in the pager.
+ */
+{template .page}
+  <div class="{css pstj-pager-item}">
+    <div class="{css pstj-pager-item-vertical-adjustment}">
+      <div class="{css pstj-pager-item-text}" data-model="description"></div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Provides the default template for static pager.
+ * In this default version you get 4 items.
+ * @param itemsCount The number of items to include in a page.
+ */
+{template .pager}
+  <div class="{css pstj-pager-wrapper}">
+    <div class="{css pstj-pager-items}">
+      {for $item in range($itemsCount)}
+        {call .page /}
+      {/for}
+    </div>
+    <div class="{css pstj-pager-page-indicator}">
+      {msg desc="The word page in the page N of number of X pages"}Page{/msg}{sp}
+      <span class="{css pstj-pager-page}"></span>
+      {sp}{msg desc="the word of in page N of X pages"}of{/msg}{sp}
+      <span class="{css pstj-pager-pages}"></span>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Provides the default template for the list item representation.
+ * @param thumbnail The image to use as thumbnail.
+ * @param name The name of the item.
+ */
+{template .listitem}
+  <div class="{css pstj-list-item}">
+    <div class="{css pstj-list-item-container}">
+      <div class="{css pstj-list-item-image-holder}">
+        <img src="{$thumbnail}" class="{css pstj-list-item-thumbnail}" />
+      </div>
+      <div class="{css pstj-list-item-name}">{$name}</div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Provides the list container for list items to roll.
+ */
+{template .list}
+  <div class="{css pstj-list}">
+    <div class="{css pstj-list-container}">
+    <span class="{css pstj-list-notice}"></span>
+    </div>
+  </div>
+{/template}
+
+/**
+ * The upload form template used by the pstj.ui.Upload helper component.
+ * @param url The url of the ACTIOn for the form.
+ * @param inputname The name to set on the input for it to be recognized on
+ *   the backend.
+ */
+{template .upload}
+  <div class="{css pstj-upload-form}">
+    <form method="post" enctype="multipart/form-data" action="{$url}" name="uploadform">
+      <input id="attachment" name="{$inputname}" type="file" style="display:none" class="{css pstj-upload-form-input}" />
+    </form>
+  </div>
+{/template}
+
+/**
+ * Template for a control group. Just edit the template to add you control
+ *   buttons. This is an example template! You will need to make one of your
+ *   own and wrap it in pstj.ui.Template and pass it to the constructor. in
+ *   order to have usable instance.
+ */
+{template .controlgroup}
+  <div class="{css pstj-control-group} {css d-table}">
+    <div class="{css pstj-control-group-button} {css d-table-cell}" data-action="namedaction">
+      <div class="{css d-table} {css margin-auto}">
+        <img src="assets/left-arrow.png" class="{css d-table-cell} {css pstj-control-group-button-image}" />
+      </div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Provides the progress bar widget's html
+ * @param text The text to show for the progress if any.
+ */
+{template .progress}
+  <div class="{css pstj-widget-progress}">
+    {if $text != ''}
+      <div class="{css pstj-widget-progress-text}">
+        {$text}
+      </div>
+    {/if}
+    <div class="{css pstj-widget-progress-container}">
+      <div class="{css pstj-widget-progress-bar}"></div>
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * Provides the selection widget.
+ */
+{template .select}
+  <div class="{css pstj-widget-select}">
+    <div class="{css pstj-widget-select-view}">
+      <div class="{css pstj-widget-select-title}">{msg desc="Select item"}Select item{/msg}</div>
+      <div class="{css pstj-widget-select-body}">
+        {call .list /}
+      </div>
+      <div class="{css pstj-widget-select-footer}">
+        <div class="{css form-button} {css text-button} {css pstj-widget-select-text-button} {css pstj-action-select}" data-action="select">{msg desc="Select"}Select{/msg}</div>
+        <div class="{css form-button} {css text-button} {css pstj-widget-select-text-button} {css pstj-action-cancel}" data-action="cancel">{msg desc="Cancel"}Cancel{/msg}</div>
+      </div>
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * Pop over frame blocker with embedding capabilities.
+ */
+{template .popover}
+  <div class="{css pstj-popover-event-blocker}">
+    <div class="{css pstj-popover-frame}"></div>
+  </div>
+{/template}
+
+/**
+ * The default control template.
+ */
+{template .Control}
+  <div></div>
+{/template}
+
+
+/**
+ * The clock example template.
+ * Demoes the data filtering and data binding (one way).
+ */
+{template .clock}
+  <div class="{css pstj-widget-clock}">
+    <div class="{css pstj-widget-clock-time}" data-model="time" data-filter="datetime(HH:mm:ss)"></div>
+  </div>
+{/template}
+
+/**
+ * Super-simple table view item template use to demo the tableview widget.
+ */
+{template .TableViewItem}
+  <div class="{css tableviewitem}">
+    <div data-model="id"></div>
+  </div>
+{/template}

@@ -1,0 +1,49 @@
+// Implements the drawer panel for material design
+@import "common";
+@import "../transitions";
+@import "../transform";
+@import "layout";
+@import "panel";
+
+
+.material-drawer-panel {
+  overflow: hidden;
+  .fillall();
+  &-narrow .material-panel {
+    left: 0 ! important;
+    padding: 0;
+  }
+  &-transition &-drawer {
+    transition: -webkit-transform ease-in-out 0.3s, width ease-in-out 0.3s;
+    /* @alternate */
+    transition: transform ease-in-out 0.3s, width ease-in-out 0.3s;
+  }
+  &-transition .material-panel {
+    transition: left ease-in-out 0.3s, padding ease-in-out 0.3s;
+  }
+  &-narrow .core-element-selected {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  &-narrow &-drawer:not(.core-element-selected) {
+    .transform(translateX(-100%));
+  }
+  &-drawer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    // Speed up things on Chrome with gpu rendering.
+    will-change: transform;
+    .borderbox();
+    & > * {
+      .fillall();
+      .borderbox();
+    }
+  }
+  .material-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
