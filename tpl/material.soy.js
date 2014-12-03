@@ -139,7 +139,8 @@ if (goog.DEBUG) {
  *    content: (null|string|undefined),
  *    circle: (boolean|null|undefined),
  *    recenter: (boolean|null|undefined),
- *    opacity: (null|number|undefined)
+ *    opacity: (null|number|undefined),
+ *    usepointer: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -155,7 +156,9 @@ pstj.material.template.Ripple = function(opt_data, opt_ignored) {
   var recenter = /** @type {boolean|null|undefined} */ (opt_data.recenter);
   goog.asserts.assert(opt_data.opacity == null || goog.isNumber(opt_data.opacity), "expected param 'opacity' of type null|number|undefined.");
   var opacity = /** @type {null|number|undefined} */ (opt_data.opacity);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('ripple') + ((circle) ? ' ' + goog.getCssName('ripple-circle') : '') + '"' + ((recenter) ? ' recenter' : '') + ((opacity) ? ' opacity="' + soy.$$escapeHtmlAttribute(opacity) + '"' : '') + '><div class="' + goog.getCssName('ripple-bg') + '"></div><div class="' + goog.getCssName('ripple-waves') + '"></div><div class="' + goog.getCssName('ripple-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
+  goog.asserts.assert(opt_data.usepointer == null || goog.isBoolean(opt_data.usepointer), "expected param 'usepointer' of type boolean|null|undefined.");
+  var usepointer = /** @type {boolean|null|undefined} */ (opt_data.usepointer);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('ripple') + ((circle) ? ' ' + goog.getCssName('ripple-circle') : '') + '"' + ((recenter) ? ' recenter' : '') + ((opacity) ? ' opacity="' + soy.$$escapeHtmlAttribute(opacity) + '"' : '') + ((usepointer) ? ' use-pointer' : '') + '><div class="' + goog.getCssName('ripple-bg') + '"></div><div class="' + goog.getCssName('ripple-waves') + '"></div><div class="' + goog.getCssName('ripple-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Ripple.soyTemplateName = 'pstj.material.template.Ripple';
@@ -234,7 +237,9 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    label: (null|string|undefined)
+ *    content: (null|string|undefined),
+ *    name: (null|string|undefined),
+ *    value: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -242,9 +247,13 @@ if (goog.DEBUG) {
  */
 pstj.material.template.RadioButton = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
-  goog.asserts.assert(opt_data.label == null || (opt_data.label instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.label), "expected param 'label' of type null|string|undefined.");
-  var label = /** @type {null|string|undefined} */ (opt_data.label);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-radio-button') + '" role="radio" tabindex="0" aria-checked="false"><div class="' + goog.getCssName('material-radio-button-container') + '"><div class="' + goog.getCssName('material-radio-button-off') + '"></div><div class="' + goog.getCssName('material-radio-button-on') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div>' + ((label) ? '<div class="' + goog.getCssName('material-radio-button-label') + '" aria-hidden="true">' + soy.$$escapeHtml(label) + '</div>' : '') + '</div>');
+  goog.asserts.assert(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), "expected param 'content' of type null|string|undefined.");
+  var content = /** @type {null|string|undefined} */ (opt_data.content);
+  goog.asserts.assert(opt_data.name == null || (opt_data.name instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.name), "expected param 'name' of type null|string|undefined.");
+  var name = /** @type {null|string|undefined} */ (opt_data.name);
+  goog.asserts.assert(opt_data.value == null || (opt_data.value instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.value), "expected param 'value' of type null|string|undefined.");
+  var value = /** @type {null|string|undefined} */ (opt_data.value);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-radio-button') + '" role="radio" tabindex="0" name="' + soy.$$escapeHtmlAttribute(name) + '" value="' + soy.$$escapeHtmlAttribute(value) + '"><div class="' + goog.getCssName('material-radio-button-container') + '"><div class="' + goog.getCssName('material-radio-button-off') + '"></div><div class="' + goog.getCssName('material-radio-button-on') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true, usepointer: true}) + '</div><div class="' + goog.getCssName('material-radio-button-content') + '" aria-hidden="true">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.RadioButton.soyTemplateName = 'pstj.material.template.RadioButton';
@@ -383,7 +392,7 @@ if (goog.DEBUG) {
 pstj.material.template.Checkbox = function(opt_data, opt_ignored) {
   goog.asserts.assert(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), "expected param 'content' of type string|goog.soy.data.SanitizedContent.");
   var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-checkbox') + '" role="checkbox"><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-checkbox') + '" role="checkbox"><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Checkbox.soyTemplateName = 'pstj.material.template.Checkbox';

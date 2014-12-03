@@ -80,7 +80,8 @@
   {@param? circle: bool}
   {@param? recenter: bool}
   {@param? opacity: number}
-  <div is class="{css ripple}{if $circle}{sp}{css ripple-circle}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}>
+  {@param? usepointer: bool}
+  <div is class="{css ripple}{if $circle}{sp}{css ripple-circle}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}{if $usepointer}{sp}use-pointer{/if}>
     <div class="{css ripple-bg}"></div>
     <div class="{css ripple-waves}"></div>
     <div class="{css ripple-content}">{if $content}{$content}{/if}</div>
@@ -153,21 +154,23 @@
 
 /**
  * Provides the template for the RadioButton. Internally uses the ripple effect.
+ * No need to set aria states as the control renderers do that always.
  */
 {template .RadioButton}
-  {@param? label: string}
-  <div is class="{css material-radio-button}" role="radio" tabindex="0" aria-checked="false">
+  {@param? content: string}
+  {@param? name: string}
+  {@param? value: string}
+  <div is class="{css material-radio-button}" role="radio" tabindex="0" name="{$name}" value="{$value}">
     <div class="{css material-radio-button-container}">
       <div class="{css material-radio-button-off}"></div>
       <div class="{css material-radio-button-on}"></div>
       {call .Ripple}
         {param circle: true /}
         {param recenter: true /}
+        {param usepointer: true/}
       {/call}
     </div>
-    {if $label}
-      <div class="{css material-radio-button-label}" aria-hidden="true">{$label}</div>
-    {/if}
+    <div class="{css material-radio-button-content}" aria-hidden="true">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 

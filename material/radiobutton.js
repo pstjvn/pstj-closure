@@ -10,13 +10,16 @@ goog.require('pstj.material.Ripple');
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
 
-
 goog.scope(function() {
 
 
 
 /**
  * Provides implementation for the material radio button.
+ * Note that the ripple will use the pointer agent when rendering, but when
+ * decorating the template MUST provide the 'use-pointer' attribute on the
+ * ripple element for the ripple to work.
+ *
  * @constructor
  * @extends {pstj.material.Element}
  * @struct
@@ -33,10 +36,14 @@ pstj.material.RadioButton = function(opt_content, opt_renderer, opt_domHelper) {
   this.name = '';
   /** @type {string} */
   this.value = '';
+
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
+  this.setSupportedState(goog.ui.Component.State.DISABLED, true);
+
   this.setAutoStates(goog.ui.Component.State.FOCUSED |
       goog.ui.Component.State.DISABLED, true);
+
   this.setDispatchTransitionEvents(goog.ui.Component.State.FOCUSED |
       goog.ui.Component.State.DISABLED |
       goog.ui.Component.State.CHECKED, true);
@@ -74,20 +81,17 @@ var r = pstj.material.RadioButtonRenderer.prototype;
 
 /** @inheritDoc */
 _.decorateInternal = function(el) {
-  var label = el.getAttribute('label');
-  if (label) {
-    this.setContent(label);
-  }
   goog.base(this, 'decorateInternal', el);
-  this.setChecked(el.hasAttribute('checked'));
-  if (!this.name) this.name = el.getAttribute('name') || '';
-  if (!this.value) this.value = el.getAttribute('value') || '';
+  this.name = el.getAttribute('name') || '';
+  this.value = el.getAttribute('value') || '';
 };
 
 
 /** @inheritDoc */
 _.onTap = function(e) {
-  this.setChecked(!this.isChecked());
+  if (this.isEnabled()) {
+    this.setChecked(!this.isChecked());
+  }
 };
 
 
@@ -110,7 +114,7 @@ r.getTemplate = function(model) {
 r.generateTemplateData = function(control) {
   var c = control.getContent();
   return {
-    label: ((c) ? c.toString() : ''),
+    content: ((c) ? c.toString() : ''),
     name: control.name,
     value: control.value
   };

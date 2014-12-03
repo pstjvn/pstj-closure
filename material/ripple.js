@@ -52,7 +52,6 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
-    this.setAutoEventsInternal(EventMap.EventFlag.TAP);
     /**
      * Recentering flag for the wave.
      * @type {boolean}
@@ -71,6 +70,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
      * @private
      */
     this.opacity_ = 0.25;
+    this.setAutoEventsInternal(EventMap.EventFlag.TAP);
   },
 
 
@@ -112,17 +112,29 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
   /** @override */
   onPress: function(e) {
-    this.wave_ = this.getNewWave();
-    // If the item is configured to use the pointer agent we assume
-    // that the release event will come to us at some point and by default
-    // we listen once for it to remove the wave.
-    // Usually ripple is targeted externally (i.e. z-index -1) so the user
-    // of the ripple should trigger those event manually.
-    if (this.hasUsePointerAgent()) {
-      this.getHandler().listenOnce(this, pstj.agent.Pointer.EventType.RELEASE,
-          this.onRelease);
+    if (this.isParentEnabled()) {
+      this.wave_ = this.getNewWave();
+      // If the item is configured to use the pointer agent we assume
+      // that the release event will come to us at some point and by default
+      // we listen once for it to remove the wave.
+      // Usually ripple is targeted externally (i.e. z-index -1) so the user
+      // of the ripple should trigger those event manually.
+      if (this.hasUsePointerAgent()) {
+        this.getHandler().listenOnce(this, pstj.agent.Pointer.EventType.RELEASE,
+            this.onRelease);
+      }
+      this.wave_.handlePress(e);
     }
-    this.wave_.handlePress(e);
+  },
+
+
+  /**
+   * Helper method to check if the parent is enabled.
+   * @return {param}
+   * @protected
+   */
+  isParentEnabled: function() {
+    return !this.getParent() || this.getParent().isEnabled();
   },
 
 
@@ -137,7 +149,9 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
   /** @override */
   onTap: function(e) {
-    this.getNewWave().handleTap(e);
+    if (this.isParentEnabled()) {
+      this.getNewWave().handleTap(e);
+    }
   },
 
 

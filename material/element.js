@@ -157,13 +157,11 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     goog.asserts.assertInstanceof(control, pstj.material.Element);
     var el = this.createRootElement(this.getTemplate(this.generateTemplateData(
         control)));
-    // FIXME: this breaks the extra class names because we mix render and
-    // decorate: first we start with render and we create the DOM, but then
-    // we go via the decorate path and update the states based on classes that
-    // were
-    // just set based on state (?) and at this point we have set the additional
-    // class names but the in decorate in the renderer we try to do it again
-    // which doubles the class names for some reason...
+    // This is now fixed as we do not call 'decorateInternal' on the
+    // base component that was rendered (with createDom)
+    // This call simplifies the template so that we do not need to pass the
+    // class names list as parameter to the template, instead we set the classes
+    // after that.
     goog.dom.classlist.addAll(el, this.getClassNames(control));
     this.setAriaStates(control, el);
     this.setupAutoEvents(control, el);
@@ -553,13 +551,13 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     // at this point we are still not in the document and the element is a
     // fragment only, thus this requires decoration of fragments to be alloed
     var candidates = this.querySelectorAll('[is]');
-    console.log(candidates);
+    // console.log(candidates);
     var ctrls = [this];
     var els = [this.getElement()];
     goog.array.forEach(candidates, function(candidate) {
-      console.log(candidate);
+      // console.log(candidate);
       var ctor = goog.ui.registry.getDecorator(candidate);
-      console.log(ctor);
+      // console.log(ctor);
       if (!goog.isNull(ctor)) {
         ctrls.push(ctor);
         els.push(candidate);
