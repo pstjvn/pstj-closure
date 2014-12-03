@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Radio group </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/radiogroup.less">
+    <style>
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script type="text/javascript" src="../deps.js"></script>
+    <script>
+      goog.require('goog.ui.decorate');
+      goog.require('pstj.material.RadioGroup');
+    </script>
+  </head>
+  <body>
+    <div>
+      <div>Radio group decorated from properties only.</div>
+      <div id="dec1" is class="material-radio-group" values="1,2,3,0" labels="Mon,Fri,Sun,None" value="2" name="pd"></div>
+    </div>
+    <div>
+      <div>Radio group decorated from properties only (disabled).</div>
+      <div id="dec3" is class="material-radio-group material-radio-group-disabled" values="1,2,3,0" labels="Mon,Fri,Sun,None" value="2" name="pd"></div>
+    </div>
+    <div>
+      <div>Radio group decorated from children.</div>
+      <div id="dec2" is class="material-radio-group" name="pd">
+        <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="pd" value="1">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">Mon</div>
+        </div>
+        <div is class="material-radio-button material-radio-button-checked" use-pointer role="radio" tabindex="0" name="pd" value="2">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">Fri</div>
+        </div>
+        <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="pd" value="3">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">Sun</div>
+        </div>
+        <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="pd" value="0">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">None</div>
+        </div>
+      </div>
+    </div>
+    <div>
+    <div>Radio group decorated from children (disabled)</div>
+      <div id="dec4" is class="material-radio-group material-radio-group-disabled" name="pd">
+        <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="pd" value="1">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">Mon</div>
+        </div>
+        <div is class="material-radio-button material-radio-button-checked" use-pointer role="radio" tabindex="0" name="pd" value="2">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">Fri</div>
+        </div>
+        <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="pd" value="3">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">Sun</div>
+        </div>
+        <div is class="material-radio-button" use-pointer role="radio" tabindex="0" name="pd" value="0">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true">None</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="rend1">
+      <div>Radio group rendered</div>
+    </div>
+    <div id="rend2">
+      <div>Radio group rendered (disabled)</div>
+    </div>
+    <div id="rend3">
+      <div>Radio group rendered (disabled with delay)</div>
+    </div>
+
+    <script>
+      var _1 = goog.ui.decorate(document.getElementById('dec1'));
+      var _3 = goog.ui.decorate(document.getElementById('dec3'));
+      var _2 = goog.ui.decorate(document.getElementById('dec2'));
+      var _3 = goog.ui.decorate(document.getElementById('dec4'));
+
+      var a = new pstj.material.RadioGroup();
+      a.values = '1,2,3,0';
+      a.labels = 'Mon,Fri,Sun,None';
+      a.value = '2';
+      a.name = 'PreferredDay';
+      a.render(document.getElementById('rend1'));
+
+      var b = new pstj.material.RadioGroup();
+      b.setEnabled(false);
+      b.values = '1,2,3,0';
+      b.labels = 'Mon,Fri,Sun,None';
+      b.value = '2';
+      b.name = 'PreferredDay';
+      b.render(document.getElementById('rend2'));
+
+      var c = new pstj.material.RadioGroup();
+      c.values = '1,2,3,0';
+      c.labels = 'Mon,Fri,Sun,None';
+      c.value = '2';
+      c.name = 'PreferredDay';
+      c.render(document.getElementById('rend3'));
+
+      setTimeout(function() {c.setEnabled(false)}, 2000);
+    </script>
+  </body>
+</html>

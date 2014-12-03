@@ -545,6 +545,9 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
   /**
    * Works around the inefficiencies of decoration.
+   * Could be called either from decorateInternal (when decorating) or
+   * createDom (when rendering). In both cases we already have the element.
+   *
    * @protected
    */
   addMaterialChildren: function() {

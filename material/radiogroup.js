@@ -4,6 +4,7 @@ goog.provide('pstj.material.RadioGroupRenderer');
 goog.require('goog.array');
 goog.require('goog.string');
 goog.require('goog.ui.Component.EventType');
+goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
@@ -42,6 +43,7 @@ pstj.material.RadioGroup = function(opt_content, opt_renderer, opt_domHelper) {
    * @private
    */
   this.selectedChild_ = null;
+  this.setSupportedState(goog.ui.Component.State.DISABLED, true);
 };
 goog.inherits(pstj.material.RadioGroup, pstj.material.Element);
 
@@ -88,50 +90,13 @@ var r = pstj.material.RadioGroupRenderer.prototype;
 
 /** @inheritDoc */
 _.decorateInternal = function(el) {
-  if (!this.values) {
-    this.values = el.getAttribute('values') || '';
-  }
-  if (!this.labels) {
-    this.labels = el.getAttribute('labels') || this.values;
-  }
-  if (!this.name) this.name = el.getAttribute('name') || '';
+
+  this.values = el.getAttribute('values') || '';
+  this.labels = el.getAttribute('labels') || this.values;
+  this.name = el.getAttribute('name') || '';
+  this.value = el.getAttribute('value') || '';
+
   goog.base(this, 'decorateInternal', el);
-  // If there are no children BUT we have values, we should add the children
-  // manually.
-  if (this.getChildCount() == 0) {
-    if (this.values) {
-      var vals = this.values.split(',');
-      var labels = this.labels.split(',');
-      goog.array.forEach(vals, function(val, i) {
-        var v = goog.string.trim(val);
-        var rb = new pstj.material.RadioButton(v);
-        rb.name = this.name;
-        rb.value = v;
-        rb.setContent(labels[i]);
-        this.addChild(rb, true);
-        if (this.value == v) {
-          rb.setChecked(true);
-          this.selectedChild_ = rb;
-        }
-      }, this);
-    }
-  } else {
-    // we have our children, figure out which one is selected
-    if (!this.value) {
-      this.forEachChild(function(child) {
-        if (child.isChecked()) {
-          this.value = child.value;
-          this.selectedChild_ = child;
-        }
-      }, this);
-    } else {
-      this.forEachChild(function(child) {
-        if (child.value == this.value) {
-          child.setChecked(true);
-        }
-      }, this);
-    }
-  }
 };
 
 
@@ -145,6 +110,27 @@ _.enterDocument = function() {
 
 
 /**
+ * Overrides the default behavior: if we are being disabled we need to disable
+ * the children first and only then disabled us. If we are being enabled first
+ * we need to be enabled and only then enable the children.
+ * @override
+ */
+_.setEnabled = function(enable) {
+  if (enable) {
+    goog.base(this, 'setEnabled', enable);
+    this.forEachChild(function(c) {
+      c.setEnabled(enable);
+    });
+  } else {
+    this.forEachChild(function(c) {
+      c.setEnabled(enable);
+    });
+    goog.base(this, 'setEnabled', enable);
+  }
+};
+
+
+/**
  * Handles the check event of the children and updates the value intrinsically.
  * @param {goog.events.Event} e
  * @protected
@@ -152,6 +138,10 @@ _.enterDocument = function() {
 _.onCheckHandler = function(e) {
   // Stop the check/uncheck events, instead we use CHANGE from here on.
   e.stopPropagation();
+  if (!this.isEnabled()) {
+    e.preventDefault();
+    return;
+  }
 
   // Update values if checking
   if (e.type == goog.ui.Component.EventType.CHECK) {
@@ -170,6 +160,68 @@ _.onCheckHandler = function(e) {
     if (e.target == this.selectedChild_) {
       e.preventDefault();
     }
+  }
+};
+
+
+/** @inheritDoc */
+_.addMaterialChildren = function() {
+  goog.base(this, 'addMaterialChildren');
+
+  // There are two ways to configure this component. One is via properties
+  // that are evaluated and the children will be created based on those props
+  // (mostly useful when the server is suited with form generation) or the
+  // children are provided as separate elements in which case those are used
+  // and the props are ignored
+
+  // If there were no children from the server html we should create them.
+  if (this.getChildCount() == 0) {
+    if (this.values) {
+      var vals = this.values.split(',');
+      var labels = this.labels.split(',');
+
+      goog.array.forEach(vals, function(val, i) {
+        var v = goog.string.trim(val);
+        var rb = new pstj.material.RadioButton(goog.string.trim(labels[i]));
+        rb.name = this.name;
+        rb.value = v;
+        if (this.value == v) {
+          rb.setChecked(true);
+          this.selectedChild_ = rb;
+        }
+        // Here it is okay to use direct call as the radui button still does
+        // not have a parent.
+        rb.setEnabled(this.isEnabled());
+        this.addChild(rb, true);
+      }, this);
+    }
+  } else {
+    // we have our children preconfigured, use them instead.
+    if (!this.value) {
+      this.forEachChild(function(child) {
+        if (child.isChecked()) {
+          this.value = child.value;
+          this.selectedChild_ = child;
+        }
+      }, this);
+    } else {
+      this.forEachChild(function(child) {
+        if (child.value == this.value) {
+          child.setChecked(true);
+        } else {
+          child.setChecked(false);
+        }
+      }, this);
+    }
+
+    // We need to work around the limitation of children that cannot be disabled
+    // if their parent is disabled. This solves it for us.
+    this.forEachChild(function(child) {
+      child.setState(goog.ui.Component.State.DISABLED, !this.isEnabled(), true);
+      if (child.isVisible()) {
+        child.getRenderer().setFocusable(child, this.isEnabled());
+      }
+    }, this);
   }
 };
 
