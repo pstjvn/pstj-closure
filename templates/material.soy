@@ -189,7 +189,8 @@
  * Provides the template for the toggle button
  */
 {template .ToggleButton}
-  <div is class="{css material-toggle-button}" role="button" aria-pressed="false" tabindex="0">
+  {@param? name: string}
+  <div is class="{css material-toggle-button}" role="button" name="{$name}">
     <div class="{css material-toggle-button-container}">
       <div class="{css material-toggle-button-bar}"></div>
       {call .RadioButton}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Material demos - Radiobutton </title>
+    <title>Material demos - Radio button </title>
     <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
     <link rel="stylesheet/less" type="text/css" href="../../less/material/radiobutton.less">
     <style>
@@ -53,7 +53,6 @@
       </div><div class="material-radio-button-content" aria-hidden="true">Decorated (checked)</div>
     </div>
 
-
     <div is class="material-radio-button material-radio-button-disabled" use-pointer role="radio" tabindex="0" name="demo" value="decoration demo">
       <div class="material-radio-button-container">
         <div class="material-radio-button-off"></div>
@@ -75,32 +74,28 @@
           <div class="ripple-waves"></div>
           <div class="ripple-content"></div>
         </div>
-      </div><div class="material-radio-button-content" aria-hidden="true">Decorated (disabled, checked)</div>
+      </div><div class="material-radio-button-content" aria-hidden="true">Decorated (checked, disabled)</div>
     </div>
 
     <script>
-      goog.array.forEach(document.querySelectorAll('[is]'), function(el) {
+      goog.array.forEach(document.querySelectorAll('.material-radio-button'), function(el) {
         goog.ui.decorate(el);
       });
 
-      var rb0 = new pstj.material.RadioButton('Rendered (checked)');
-      var rb1 = new pstj.material.RadioButton('Rendered (disabled, checked)');
+      var rb0 = new pstj.material.RadioButton('Rendered');
+      var rb1 = new pstj.material.RadioButton('Rendered (checked)');
       var rb2 = new pstj.material.RadioButton('Rendered (disabled)');
-      var rb3 = new pstj.material.RadioButton('Rendered');
-
-      rb0.setChecked(true);
+      var rb3 = new pstj.material.RadioButton('Rendered (checked, disabled');
 
       rb1.setChecked(true);
-      rb1.setEnabled(false);
-
       rb2.setEnabled(false);
+      rb3.setChecked(true);
+      rb3.setEnabled(false);
 
-
-      rb1.render();
       rb0.render();
+      rb1.render();
       rb2.render();
       rb3.render();
-
     </script>
   </body>
 </html>

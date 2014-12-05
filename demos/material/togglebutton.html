@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Toggle button </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/togglebutton.less">
+    <style>
+      .c {
+        display: block;
+        width: 200px;
+        height: 50px;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script type="text/javascript" src="../deps.js"></script>
+    <script>
+      goog.require('goog.array');
+      goog.require('goog.ui.decorate');
+      goog.require('pstj.material.ToggleButton');
+    </script>
+  </head>
+  <body>
+    <div>Decorated</div>
+    <div is class="material-toggle-button" role="button" name="togglebtn" use-pointer>
+      <div class="material-toggle-button-container">
+        <div class="material-toggle-button-bar"></div>
+        <div is class="material-radio-button" role="radio">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <div>Decorated, checked</div>
+    <div is class="material-toggle-button material-toggle-button-checked" role="button" name="togglebtn" use-pointer>
+      <div class="material-toggle-button-container">
+        <div class="material-toggle-button-bar"></div>
+        <div is class="material-radio-button" role="radio">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <div>Decorated, disabled</div>
+    <div is class="material-toggle-button material-toggle-button-disabled" role="button" name="togglebtn" use-pointer>
+      <div class="material-toggle-button-container">
+        <div class="material-toggle-button-bar"></div>
+        <div is class="material-radio-button" role="radio">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <div>Decorated, checked, disabled</div>
+    <div is class="material-toggle-button material-toggle-button-checked material-toggle-button-disabled" use-pointer role="button" name="togglebtn">
+      <div class="material-toggle-button-container">
+        <div class="material-toggle-button-bar"></div>
+        <div is class="material-radio-button" role="radio">
+          <div class="material-radio-button-container">
+            <div class="material-radio-button-off"></div>
+            <div class="material-radio-button-on"></div>
+            <div is class="ripple ripple-circle" recenter use-pointer>
+              <div class="ripple-bg"></div>
+              <div class="ripple-waves"></div>
+              <div class="ripple-content"></div>
+            </div>
+          </div><div class="material-radio-button-content" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <div id="c1">
+      <div>Rendered</div>
+    </div>
+    <div id="c2">
+      <div>Rendered, checked</div>
+    </div>
+    <div id="c3">
+      <div>Rendered, disabled</div>
+    </div>
+    <div id="c4">
+      <div>Rendered, checked, disabled</div>
+    </div>
+    <div id="c5">
+      <div>Rendered, delayed disabled</div>
+    </div>
+    <script>
+      goog.array.forEach(document.querySelectorAll('.material-toggle-button'), function(node) {
+        goog.ui.decorate(node);
+      });
+
+      var t1 = new pstj.material.ToggleButton();
+      var t2 = new pstj.material.ToggleButton();
+      var t3 = new pstj.material.ToggleButton();
+      var t4 = new pstj.material.ToggleButton();
+      var t5 = new pstj.material.ToggleButton();
+
+      t2.setChecked(true);
+      t3.setEnabled(false);
+      t4.setChecked(true);
+      t4.setEnabled(false);
+
+      t1.render(document.getElementById('c1'));
+      t2.render(document.getElementById('c2'));
+      t3.render(document.getElementById('c3'));
+      t4.render(document.getElementById('c4'));
+      t5.render(document.getElementById('c5'));
+
+      setTimeout(function() {
+        t5.setEnabled(false);
+      }, 5000);
+    </script>
+  </body>
+</html>
