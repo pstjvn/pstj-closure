@@ -532,14 +532,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     goog.base(this, 'createDom');
     // Check if we have direct descendants that need to be decorated.
     this.addMaterialChildren();
-
-    // here we are assuming too much, basically allowing the the more complex
-    // and 'coposed' elements to be created naturally (from the template).
-    // This however bvreaks the 'decorate/rendered' pattern. This should change
-    // in future to allow the composition to work automatically and augment
-    // elements in a separate method that can be called from either the
-    // rendering or the decoration.
-    // this.decorateInternal(this.getElement());
   },
 
 
@@ -553,31 +545,22 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   addMaterialChildren: function() {
     // at this point we are still not in the document and the element is a
     // fragment only, thus this requires decoration of fragments to be alloed
-    var candidates = this.querySelectorAll('[is]');
-    // console.log(candidates);
-    var ctrls = [this];
-    var els = [this.getElement()];
+    var candidates = goog.array.toArray(this.querySelectorAll('[is]'));
+
+    // remove all candidates that are not direct children
     goog.array.forEach(candidates, function(candidate) {
-      // console.log(candidate);
+      var toRemove = goog.array.toArray(candidate.querySelectorAll('[is]'));
+      goog.array.forEach(toRemove, function(to_rem) {
+        goog.array.remove(candidates, to_rem);
+      });
+    });
+
+    // Now we have only the children that are direct descendants of our element.
+    goog.array.forEach(candidates, function(candidate) {
       var ctor = goog.ui.registry.getDecorator(candidate);
-      // console.log(ctor);
-      if (!goog.isNull(ctor)) {
-        ctrls.push(ctor);
-        els.push(candidate);
-      }
-    });
-    goog.array.forEach(els, function(el, i) {
-      el = el.parentElement;
-      while (el) {
-        var index = goog.array.indexOf(els, el);
-        if (index != -1) {
-          ctrls[index].addChild(ctrls[i]);
-          ctrls[i].decorate(els[i]);
-          break;
-        }
-        el = el.parentElement;
-      }
-    });
+      this.addChild(ctor);
+      ctor.decorate(candidate);
+    }, this);
   },
 
 
