@@ -78,6 +78,12 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
      * @type {boolean}
      */
     this.useIconAnimationDelay = false;
+    /**
+     * If ink should be utilized on the button
+     * @type {boolean}
+     * @private
+     */
+    this.useInk_ = false;
 
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.RAISED, true);
@@ -89,8 +95,6 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     // Enable automatic handlers for PRESS and RELEASE pointer events.
     this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS |
         pstj.material.EventMap.EventFlag.RELEASE);
-    // ENable transitions by default
-    this.setTransitioning(true);
     // Use the pointer agent to subscribe to DOM events.
     this.setUsePointerAgent(true);
   },
@@ -99,11 +103,55 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /** @inheritDoc */
   decorateInternal: function(el) {
     goog.base(this, 'decorateInternal', el);
+
+    var es = this.getElementStrict();
+    if (es.hasAttribute('icon')) {
+      var icon = es.getAttribute('icon');
+      if (icon) {
+        this.icon = /** @type {pstj.material.icon.Name} */ (icon);
+      } else {
+        if (this.getIcon()) {
+          this.icon = this.getIcon().type;
+        }
+      }
+    }
+    this.setIcon(this.icon);
+    if (es.hasAttribute('ink')) {
+      this.setUseInk(true);
+    }
+    this.useIconAnimationDelay = es.hasAttribute('delay');
+  },
+
+  createDom: function() {
+    goog.base(this, 'createDom');
+    this.setIcon(this.icon);
+  },
+
+
+  /** @inheritDoc */
+  addMaterialChildren: function() {
+    goog.base(this, 'addMaterialChildren');
+    // adjust shadow transitioning to always perform with animation.
     if (this.getShadow()) {
       this.getShadow().setTransitioning(this.isTransitioning());
     }
     this.adjustDepth_();
-    this.setIcon(this.icon);
+  },
+
+
+  /** @inherotDoc */
+  setTransitioning: function(enable) {
+    goog.base(this, 'setTransitioning', enable);
+    if (this.getShadow()) this.getShadow().setTransitioning(enable);
+  },
+
+
+  /**
+   * Setter for if we should use ink on the button
+   * @param {boolean}
+   */
+  setUseInk: function(enable) {
+    this.useInk_ = enable;
   },
 
 
@@ -160,6 +208,8 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
           } else {
             this.getShadow().setDepth(this.baseDepth);
           }
+        } else {
+          this.getShadow().setDepth(this.disabledDepth);
         }
       }
     }
@@ -169,9 +219,11 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /** @inheritDoc */
   onPress: function(e) {
     if (this.isEnabled()) {
-      if (this.getRipple()) {
-        this.getRipple().onPress(e);
-        this.suppressIconAnimation_ = true;
+      if (this.useInk_) {
+        if (this.getRipple()) {
+          this.getRipple().onPress(e);
+          this.suppressIconAnimation_ = true;
+        }
       }
       if (this.isAutoState(goog.ui.Component.State.ACTIVE)) {
         this.setActive(true);
@@ -183,12 +235,15 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
 
   /** @inheritDoc */
   onRelease: function(e) {
-    if (this.getRipple()) {
-      this.getRipple().onRelease(e);
+    if (this.useInk_) {
+      if (this.getRipple()) {
+        this.getRipple().onRelease(e);
+      }
     }
     this.handleMouseUp(null);
     this.adjustDepth_();
   },
+
 
   /** @inheritDoc */
   setContent: function(cont) {
@@ -277,22 +332,6 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
 
   statics: {
     /**
-     * Constructs the instance from UI config.
-     * @param {MaterialConfig} conf
-     * @return {pstj.material.Button}
-     */
-    fromJSON: function(conf) {
-      // Initialization takes care of the label
-      var i = new pstj.material.Button(conf.label || 'Button');
-      // consifure raised, enable state and icon
-      i.setRaised(conf.raised);
-      i.setEnabled(!conf.disabled);
-      i.setIcon(conf.icon || pstj.material.icon.Name.NONE);
-      return i;
-    },
-
-
-    /**
      * Enumaration of the names the renderer should understand and point to
      * as children of the main component.
      * @enum {string}
@@ -336,9 +375,10 @@ pstj.material.ButtonRenderer = goog.defineClass(ER, {
 
   /** @inheritDoc */
   generateTemplateData: function(control) {
-    goog.asserts.assertInstanceof(control, pstj.material.Element);
+    goog.asserts.assertInstanceof(control, pstj.material.Button);
     return {
-      label: control.getContent()
+      content: control.getContent() || '',
+      icon: control.icon
     };
   },
 

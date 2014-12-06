@@ -4,7 +4,7 @@
 @import "shadow";
 @import "icon";
 
-@material-button-color: white;
+@material-button-color: black;
 @material-button-bg-disabled: #eaeaea;
 @material-button-color-disabled: #a8a8a8;
 
@@ -49,9 +49,17 @@
     }
   }
 
+  & .material-icon-container-empty {
+    display: none;
+  }
+
   & > .core-element {
     display: inline-block;
     vertical-align: middle;
+  }
+
+  .material-button-label {
+    line-height: 25px;
   }
 
   &-disabled {

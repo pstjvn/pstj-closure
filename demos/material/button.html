@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Button </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/button.less">
+    <style>
+    body > div {
+      margin: 20px;
+    }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script type="text/javascript" src="../deps.js"></script>
+    <script>
+      goog.require('goog.array');
+      goog.require('goog.events');
+      goog.require('goog.ui.Component.EventType');
+      goog.require('goog.ui.decorate');
+      goog.require('pstj.material.Button');
+    </script>
+  </head>
+  <body>
+    <div>
+      <div is class="material-button" use-pointer>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button" use-pointer ink>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (ink)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised" use-pointer>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (raised)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised" use-pointer ink>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (ink, raised)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised material-button-transition" use-pointer>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (raised, animated)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised material-button-transition" use-pointer ink>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (ink, raised, animated)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button" use-pointer icon="user">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button" use-pointer ink icon="menu">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (ink)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised" use-pointer icon="plus">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon, raised)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised" use-pointer ink icon="close">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon, ink, raised)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised material-button-transition" use-pointer icon="user">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon, raised, animated)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised material-button-transition" use-pointer ink icon="cast-ready">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon, ink, raised, animated)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised material-button-transition" use-pointer ink icon="cast-ready">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon - no icon)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button" use-pointer icon="cast-ready">
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon morphing)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button" use-pointer icon="cast-ready" ink>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon morphing, ink)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button" use-pointer icon="cast-ready" ink delay>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon morphing, ink, delay)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised" use-pointer icon="cast-ready" ink delay>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon morphing, ink, delay, raised)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div is class="material-button material-button-raised material-button-transition" use-pointer icon="cast-ready" ink delay>
+        <div is class="material-shadow material-shadow-0">
+          <div class="material-shadow-bottom"></div>
+          <div class="material-shadow-top"></div>
+        </div>
+        <div is class="material-icon-container material-icon-container-empty" type="none"></div>
+        <div is class="core-element relative">
+          <div class="material-button-label">Decorated (icon morphing, ink, delay, raised, transition)</div>
+        </div>
+        <div is class="ripple" opacity="0.3">
+          <div class="ripple-bg"></div>
+          <div class="ripple-waves"></div>
+          <div class="ripple-content"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+    var decorated = [];
+    goog.array.forEach(document.querySelectorAll('.material-button'), function(node) {
+      decorated.push(goog.ui.decorate(node));
+    });
+    goog.events.listen(decorated[12], goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon != 'none' ? 'none' : 'cast-ready');
+    });
+    goog.events.listen(decorated[13], goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active' : 'cast-ready');
+    });
+    goog.events.listen(decorated[14], goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active' : 'cast-ready');
+    });
+    goog.events.listen(decorated[15], goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active' : 'cast-ready');
+    });
+    goog.events.listen(decorated[16], goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active' : 'cast-ready');
+    });
+    goog.events.listen(decorated[17], goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active' : 'cast-ready');
+    });
+
+    function useInk() { goog.array.forEach(arguments, function(i) {i.setUseInk(true);})}
+    function setRaised() { goog.array.forEach(arguments, function(i) {i.setRaised(true);})}
+    function setAnimated() { goog.array.forEach(arguments, function(i) {i.setTransitioning(true);})}
+    function setIcon() { goog.array.forEach(arguments, function(i) {i.setIcon('cast-ready');})}
+    function render() {
+      goog.array.forEach(arguments, function(i) {
+        var dom = goog.dom.createDom('div');
+        document.body.appendChild(dom);
+        i.render(dom);
+      });
+    }
+
+    var b1 = new pstj.material.Button('Rendered');
+    var b2 = new pstj.material.Button('Rendered ink');
+    var b3 = new pstj.material.Button('Rendered raised');
+    var b4 = new pstj.material.Button('Rendered ink raised');
+    var b5 = new pstj.material.Button('Rendered raised animated');
+    var b6 = new pstj.material.Button('Rendered ink raised animated');
+    var b7 = new pstj.material.Button('Rendered icon');
+    var b8 = new pstj.material.Button('Rendered icon ink');
+    var b9 = new pstj.material.Button('Rendered icon raised');
+    var b10 = new pstj.material.Button('Rendered icon ink raised');
+    var b11 = new pstj.material.Button('Rendered icon raised animated');
+    var b12 = new pstj.material.Button('Rendered icon ink raised animated');
+    var b13 = new pstj.material.Button('Rendered icon - none');
+    var b14 = new pstj.material.Button('Rendered icon morph');
+    var b15 = new pstj.material.Button('Rendered icon morph delay ink raised animated');
+
+    useInk(b2, b4, b6, b8, b10, b12, b15);
+    setRaised(b3, b4, b5, b6, b9, b10, b11, b12, b15);
+    setAnimated(b5, b6, b11, b12, b15);
+    setIcon(b7, b8, b9, b10, b11, b12, b13, b14, b15)
+    b15.useIconAnimationDelay = true;
+    render(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15);
+
+    goog.events.listen(b13, goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon != 'none' ? 'none': 'cast-ready');
+    });
+    goog.events.listen(b14, goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active': 'cast-ready');
+    });
+    goog.events.listen(b15, goog.ui.Component.EventType.ACTION, function(e) {
+      e.target.setIcon(e.target.icon == 'cast-ready' ? 'cast-active': 'cast-ready');
+    });
+
+    </script>
+  </body>
+</html>
