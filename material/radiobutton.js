@@ -90,6 +90,7 @@ _.decorateInternal = function(el) {
 /** @inheritDoc */
 _.onTap = function(e) {
   if (this.isEnabled()) {
+    this.getChildAt(0).onTap(e);
     this.setChecked(!this.isChecked());
   }
 };

@@ -428,6 +428,18 @@ pstj.material.Wave.prototype.handlePress = function(e) {
   this.startPoint_.x = e.getPoint().x - clientRect.left;
   this.startPoint_.y = e.getPoint().y - clientRect.top;
 
+  // This needs some tweaking for cases when the event is actually transfered by
+  // another element to the ripple (passive ripples).
+  if (this.startPoint_.x < 0) this.startPoint_.x = 1;
+  if (this.startPoint_.x > clientRect.width) {
+    this.startPoint_.x = clientRect.width - 1;
+  }
+
+  if (this.startPoint_.y < 0) this.startPoint_.y = 1;
+  if (this.startPoint_.y > clientRect.height) {
+    this.startPoint_.y = clientRect.height - 1;
+  }
+
   if (this.recenter_) {
     this.endPoint_.x = clientRect.width / 2;
     this.endPoint_.y = clientRect.height / 2;

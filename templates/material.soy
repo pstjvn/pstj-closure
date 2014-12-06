@@ -178,7 +178,7 @@
       {call .Ripple}
         {param circle: true /}
         {param recenter: true /}
-        {param usepointer: true/}
+        {param usepointer: false/}
       {/call}
     </div><div class="{css material-radio-button-content}" aria-hidden="true">{if $content}{$content}{/if}</div>
   </div>
@@ -226,9 +226,9 @@
 
 /** Template for the internal button label. */
 {template .ButtonContent}
-  {@param? label: string}
+  {@param? content: string}
   <div is class="{css core-element} {css relative}">
-    <div class="{css material-button-label}">{$label}</div>
+    <div class="{css material-button-label}">{$content}</div>
   </div>
 {/template}
 
@@ -238,12 +238,15 @@
  * support icons etc, it is purely material impementation
  */
 {template .Button}
-  {@param? label: string}
+  {@param icon: string}
+  {@param content: string}
   <div is class="{css material-button}">
     {call .Shadow /}
-    {call .IconContainer /}
+    {call .IconContainer}
+      {param type: $icon /}
+    {/call}
     {call .ButtonContent}
-      {param label: $label /}
+      {param content: $content /}
     {/call}
     {call .Ripple}
       {param recenter: false /}
@@ -257,15 +260,19 @@
  * Provides the icon container.
  */
 {template .IconContainer}
-  <div is class="{css material-icon-container} {css material-icon-container-empty}"></div>
+  {@param type: string}
+  <div is class="{css material-icon-container} {css material-icon-container-empty}" type="{$type}"></div>
 {/template}
 
 
 /** Implements the FAB button */
 {template .Fab}
+  {@param icon: string}
   <div is class="{css material-fab}">
     {call .Shadow /}
-    {call .IconContainer /}
+    {call .IconContainer}
+      {param type: $icon /}
+    {/call}
     {call .Ripple}
       {param recenter: true /}
     {/call}
@@ -291,9 +298,12 @@
 
 /** Menu item template. */
 {template .MenuItem}
+  {@param icon: string}
   {@param? content: string}
   <div is class="{css material-menu-item}">
-    {call .IconContainer /}
+    {call .IconContainer}
+      {param type: $icon /}
+    {/call}
     <div class="{css material-menu-item-content}">
       {call .Item}
         {param content: $content /}
