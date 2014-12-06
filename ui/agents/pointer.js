@@ -368,7 +368,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           // this is the primary touch so we assume it is a single finger
           // touch for now
           var touch = this.getTouchByIndex(this.getTouchEvent(e));
-          this.startPoint_.update(touch.clientX, touch.clientY, ts);
+          this.startPoint_.update(touch.pageX, touch.pageY, ts);
           this.sourceElement_ = /** @type {Element} */(e.target);
         } else {
           this.longPressDelay_.stop();
@@ -383,7 +383,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         // there is only one mause assuming...
         this.currentEventType_ = pstj.agent.Pointer.Type.MOUSE;
         var event = this.getMouseEvent(e);
-        this.startPoint_.update(event.clientX, event.clientY, ts);
+        this.startPoint_.update(event.pageX, event.pageY, ts);
         this.sourceElement_ = /** @type {Element} */(e.target);
         // Start listening on the document for move events as mouse
         // events are not bound to their original target.
@@ -410,11 +410,11 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           if (!this.isDocumentBound_) return;
           // assuming this is coming from the document now...
           var event = this.getMouseEvent(e);
-          this.currentPoint_.update(event.clientX, event.clientY, ts);
+          this.currentPoint_.update(event.pageX, event.pageY, ts);
         } else if (e.type == goog.events.EventType.TOUCHMOVE) {
           if (this.getTouchesCount(e) == 1) {
             var touch = this.getTouchByIndex(this.getTouchEvent(e));
-            this.currentPoint_.update(touch.clientX, touch.clientY, ts);
+            this.currentPoint_.update(touch.pageX, touch.pageY, ts);
           } else {
             console.log('Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
