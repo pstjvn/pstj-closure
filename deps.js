@@ -76,7 +76,6 @@ goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['go
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events']);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils']);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable']);
-goog.addDependency('../../../apps/pstj/nodejs/compiler.js', ['pstj.bin'], ['goog.Promise', 'goog.array', 'goog.dom.classlist', 'goog.string']);
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object']);
 goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.async.nextTick', 'goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.string', 'goog.uri.utils', 'pstj.configure', 'pstj.storage.Storage']);
 goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Storage'], ['goog.json.NativeJsonProcessor', 'goog.storage.Storage', 'goog.storage.mechanism.mechanismfactory']);
