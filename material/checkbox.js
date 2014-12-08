@@ -32,10 +32,10 @@ pstj.material.Checkbox = function(opt_content, opt_renderer, opt_domHelper) {
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
-
   this.setAutoStates(goog.ui.Component.State.CHECKED, true);
-
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
+  // We want to be active/slickable by default.
+  this.setUsePointerAgent(true);
 };
 goog.inherits(pstj.material.Checkbox, pstj.material.Element);
 
@@ -81,8 +81,6 @@ var r = pstj.material.CheckboxRenderer.prototype;
 
 /** @inheritDoc */
 _.enterDocument = function() {
-  // Before the ripple enters the document make sure to enable pointer handling
-  this.getChildAt(0).setUsePointerAgent(true);
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this.getRenderer().getIconElement(this.getElement()),
       goog.events.EventType.ANIMATIONEND, this.onTransitionEnd);
@@ -94,6 +92,7 @@ _.onTap = function(e) {
   if (this.isEnabled()) {
     this.setChecked(!this.isChecked());
     this.setTransitioning(true);
+    this.getChildAt(0).onTap(e);
   }
 };
 
