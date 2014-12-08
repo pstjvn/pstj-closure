@@ -2,8 +2,16 @@
 // Please do not edit.
 goog.addDependency('../../../apps/pstj/demos/material/button.js', ['pstj.demos.button'], ['goog.array', 'goog.events', 'goog.ui.Component.EventType', 'goog.ui.decorate', 'pstj.material.Button']);
 goog.addDependency('../../../apps/pstj/demos/material/checkbox.js', ['pstj.demos.checkbox'], ['goog.array', 'goog.ui.decorate', 'pstj.material.Checkbox']);
+goog.addDependency('../../../apps/pstj/demos/material/element.js', ['pstj.demos.element'], ['pstj.material.Element']);
+goog.addDependency('../../../apps/pstj/demos/material/iconcontainer.js', ['pstj.demos.iconcontainer'], ['goog.ui.decorate', 'pstj.material.IconContainer']);
+goog.addDependency('../../../apps/pstj/demos/material/radiobutton.js', ['pstj.demos.radiobutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.RadioButton']);
+goog.addDependency('../../../apps/pstj/demos/material/radiogroup.js', ['pstj.demos.radiogroup'], ['goog.ui.decorate', 'pstj.material.RadioGroup']);
+goog.addDependency('../../../apps/pstj/demos/material/ripple.js', ['pstj.demos.ripple'], ['goog.ui.decorate', 'pstj.material.Element', 'pstj.material.Ripple']);
+goog.addDependency('../../../apps/pstj/demos/material/shadow.js', ['pstj.demos.shadow'], ['pstj.material.Element', 'pstj.material.Shadow']);
+goog.addDependency('../../../apps/pstj/demos/material/togglebutton.js', ['pstj.demos.togglebutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.ToggleButton']);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigation.js', ['pstj.demos.navigation'], ['goog.dom', 'goog.ui.tree.TreeControl', 'pstj.demos.navigationdata']);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigationdata.js', ['pstj.demos.navigationdata'], []);
+goog.addDependency('../../../apps/pstj/demos/tableview/tableview.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView']);
 goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.material.icons'], ['soy', 'soydata']);
 goog.addDependency('../../../apps/pstj/tpl/material.soy.js', ['pstj.material.template'], ['goog.asserts', 'soy', 'soydata']);
 goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['soy', 'soydata']);

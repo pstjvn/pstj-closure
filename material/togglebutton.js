@@ -56,11 +56,8 @@ pstj.material.ToggleButton = function(
 
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
-
   this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
-  // Enable subscribe to taps
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
-  // Enable pointer agent, also it should not be enabled on the children
   this.setUsePointerAgent(true);
 };
 goog.inherits(pstj.material.ToggleButton, pstj.material.Element);
@@ -103,6 +100,7 @@ _.decorateInternal = function(el) {
 _.onTap = function(e) {
   if (this.isEnabled()) {
     this.setChecked(!this.isChecked());
+    this.getChildAt(0).getChildAt(0).onTap(e);
   }
 };
 

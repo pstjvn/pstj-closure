@@ -22,17 +22,9 @@
     <script src="../../../../templates/deps.js"></script>
     <script src="../../deps.js"></script>
     <script src="../../demodeps.js"></script>
-    <script>
-      goog.require('pstj.material.Element');
-    </script>
   </head>
   <body>
     <div is class="core-element">Decorated</div>
-    <script>
-      var el = new pstj.material.Element('Rendered');
-      el.render(document.body);
-      var el2 = new pstj.material.Element();
-      el2.decorate(document.querySelector('.core-element'));
-    </script>
+    <script>goog.require('pstj.demos.element');</script>
   </body>
 </html>

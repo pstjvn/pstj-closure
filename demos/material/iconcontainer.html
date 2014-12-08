@@ -23,22 +23,12 @@
     <script src="../../../../templates/deps.js"></script>
     <script src="../../deps.js"></script>
     <script src="../../demodeps.js"></script>
-    <script>
-      goog.require('goog.ui.decorate');
-      goog.require('pstj.material.IconContainer');
-    </script>
   </head>
   <body>
     <div class="container">
       <div is class="material-icon-container material-icon-container-empty" type="menu"></div>
     </div>
     <div class="container rendertarget"></div>
-    <script>
-      goog.ui.decorate(document.querySelector('[is]'));
-
-      var ic = new pstj.material.IconContainer();
-      ic.setIcon('menu');
-      ic.render(document.querySelector('.rendertarget'));
-    </script>
+    <script>goog.require('pstj.demos.iconcontainer');</script>
   </body>
 </html>

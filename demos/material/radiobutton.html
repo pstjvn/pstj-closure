@@ -21,11 +21,6 @@
     <script src="../../../../templates/deps.js"></script>
     <script src="../../deps.js"></script>
     <script src="../../demodeps.js"></script>
-    <script>
-      goog.require('goog.array');
-      goog.require('goog.ui.decorate');
-      goog.require('pstj.material.RadioButton');
-    </script>
   </head>
   <body>
 
@@ -76,26 +71,6 @@
         </div>
       </div><div class="material-radio-button-content" aria-hidden="true">Decorated (checked, disabled)</div>
     </div>
-
-    <script>
-      goog.array.forEach(document.querySelectorAll('.material-radio-button'), function(el) {
-        goog.ui.decorate(el);
-      });
-
-      var rb0 = new pstj.material.RadioButton('Rendered');
-      var rb1 = new pstj.material.RadioButton('Rendered (checked)');
-      var rb2 = new pstj.material.RadioButton('Rendered (disabled)');
-      var rb3 = new pstj.material.RadioButton('Rendered (checked, disabled');
-
-      rb1.setChecked(true);
-      rb2.setEnabled(false);
-      rb3.setChecked(true);
-      rb3.setEnabled(false);
-
-      rb0.render();
-      rb1.render();
-      rb2.render();
-      rb3.render();
-    </script>
+    <script>goog.require('pstj.demos.radiobutton');</script>
   </body>
 </html>
