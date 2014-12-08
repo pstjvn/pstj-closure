@@ -111,7 +111,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
         this.icon = /** @type {pstj.material.icon.Name} */ (icon);
       } else {
         if (this.getIcon()) {
-          this.icon = this.getIcon().type;
+          this.icon = this.getIcon().getIcon();
         }
       }
     }
@@ -139,7 +139,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   },
 
 
-  /** @inherotDoc */
+  /** @inheritDoc */
   setTransitioning: function(enable) {
     goog.base(this, 'setTransitioning', enable);
     if (this.getShadow()) this.getShadow().setTransitioning(enable);
@@ -148,7 +148,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
 
   /**
    * Setter for if we should use ink on the button
-   * @param {boolean}
+   * @param {boolean} enable
    */
   setUseInk: function(enable) {
     this.useInk_ = enable;

@@ -94,6 +94,15 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
 
   /**
+   * Accessor method for the current icon / type applied to the container.
+   * @return {icon.Name}
+   */
+  getIcon: function() {
+    return this.type;
+  },
+
+
+  /**
    * Sets the icon to use by its name.
    * @param {icon.Name} iconName
    */
