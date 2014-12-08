@@ -1,0 +1,66 @@
+public_source_dirs := \
+animation \
+cast \
+color \
+config \
+control \
+date \
+debug \
+ds \
+error \
+fx \
+graphics \
+material \
+math \
+mvc \
+ng \
+object \
+options \
+resource \
+storage \
+style \
+themes \
+ui
+
+template_source_dir := templates
+
+python = python
+java = java -jar
+closure_library = ../../library
+closure_library_bin = $(closure_library)/closure/bin/build
+depswriter = $(closure_library_bin)/depswriter.py
+builder = $(closure_library_bin)/closurebuilder.py
+soy_compiler = ../../templates/SoyToJsSrcCompiler.jar
+soy_message_extractor = ../../templates/SoyMsgExtractor.jar
+gss_compiler = ../../stylesheets/closure-stylesheets.jar
+js_compiler = ../../compiler/compiler.jar
+
+build_js_compiler_option = \
+--charset=UTF-8 \
+--closure_entry_point=$(ns) \
+--define='goog.LOCALE="$(locale)"' \
+--define='goog.DEBUG=$(debug)' \
+--manage_closure_dependencies \
+--process_closure_primitives \
+--use_types_for_optimization \
+--warning_level=VERBOSE
+
+lint_cmd = gjslint \
+--jslint_error=all \
+--strict \
+--disable 0251 \
+--max_line_length 80
+
+public_deps_file := deps.js
+private_deps_file := demodeps.js
+lintfile = .linted
+
+library_relative_path = ../../../
+apps_dir = apps
+this_dir = $(shell basename `pwd`)
+
+
+sed_tokenizer = [^ ]*
+sed_jsifier = &/*.js &/*/*.js
+sed_unglob = 's+ [^ ]*\*[^ ]*++g'
+sed_deps_subst = --root_with_prefix=&\\ $(library_relative_path)$(apps_dir)/$(this_dir)/&
