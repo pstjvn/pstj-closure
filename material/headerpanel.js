@@ -14,6 +14,8 @@ goog.require('pstj.agent.ScrollEvent');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
+goog.require('pstj.material.HeaderPanelHeader');
+goog.require('pstj.material.HeaderPanelMain');
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
 
@@ -44,22 +46,6 @@ pstj.material.HeaderPanel = function(opt_content, opt_renderer, opt_domHelper) {
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.SCROLL);
 };
 goog.inherits(pstj.material.HeaderPanel, pstj.material.Element);
-
-
-/**
- * Create a new instance of the header panel from a config file.
- * @param {MaterialConfig} json
- * @return {pstj.material.HeaderPanel}
- */
-pstj.material.HeaderPanel.fromJSON = function(json) {
-  var i = new pstj.material.HeaderPanel();
-  i.setUseScrollAgent(json.useScroll || false);
-  pstj.material.Element.fromJSON(json, i);
-  if (json.type) {
-    i.setType(json.type);
-  }
-  return i;
-};
 
 
 /**
@@ -122,10 +108,7 @@ pstj.material.HeaderPanel.prototype.setState = function(
 /** @override */
 pstj.material.HeaderPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  if (this.hasUseScrollAgent()) {
-    // simulate a scroll event for the initial tweaking of the UI
-    this.dispatchEvent(new pstj.agent.ScrollEvent(this));
-  }
+  this.dispatchEvent(new pstj.agent.ScrollEvent(this));
 };
 
 

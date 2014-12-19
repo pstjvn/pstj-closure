@@ -44,7 +44,7 @@
 
 /** The main panel fo rthe header panel. */
 {template .HeaderPanelMain}
-  <div is class="{css material-header-panel-main}">
+  <div is class="{css material-header-panel-main}" use-scroll>
     <div class="{css material-header-panel-main-container}">
       <div class="{css material-header-panel-main-content}"></div>
     </div>
@@ -65,12 +65,13 @@
   * create them programatically with their own children from the JSON config.
   */
 {template .HeaderPanel}
-  <div class="{css material-header-panel}">
+  <div is class="{css material-header-panel}">
     <div class="{css material-header-panel-outer-container}">
+    {call .HeaderPanelHeader /}
+    {call .HeaderPanelMain /}
     </div>
   </div>
 {/template}
-
 
 /**
  * Template for the base ripple

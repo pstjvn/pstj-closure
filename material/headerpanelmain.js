@@ -25,6 +25,7 @@ goog.require('pstj.material.template');
 pstj.material.HeaderPanelMain = function(
     opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
+  this.setUseScrollAgent(true);
 };
 goog.inherits(pstj.material.HeaderPanelMain, pstj.material.Element);
 

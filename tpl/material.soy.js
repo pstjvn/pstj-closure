@@ -99,7 +99,7 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.material.template.HeaderPanelMain = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel-main') + '"><div class="' + goog.getCssName('material-header-panel-main-container') + '"><div class="' + goog.getCssName('material-header-panel-main-content') + '"></div></div><div class="' + goog.getCssName('material-drop-shadow') + '"></div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel-main') + '" use-scroll><div class="' + goog.getCssName('material-header-panel-main-container') + '"><div class="' + goog.getCssName('material-header-panel-main-content') + '"></div></div><div class="' + goog.getCssName('material-drop-shadow') + '"></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.HeaderPanelMain.soyTemplateName = 'pstj.material.template.HeaderPanelMain';
@@ -127,7 +127,7 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.material.template.HeaderPanel = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-header-panel') + '"><div class="' + goog.getCssName('material-header-panel-outer-container') + '"></div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel') + '"><div class="' + goog.getCssName('material-header-panel-outer-container') + '">' + pstj.material.template.HeaderPanelHeader(null) + pstj.material.template.HeaderPanelMain(null) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.HeaderPanel.soyTemplateName = 'pstj.material.template.HeaderPanel';

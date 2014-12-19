@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Header panel </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/headerpanel.less">
+    <style>
+      .container {
+        width: 500px;
+        height: 500px;
+        position: absolute;
+        left: 520px;
+      }
+      .container2 {
+        width: 500px;
+        height: 500px;
+        position: absolute;
+      }
+      .material-header-panel-header {
+        background-color: red;
+      }
+      .content {
+        height: 1000px;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="../less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script src="../../demodeps.js"></script>
+  </head>
+  <body>
+    <div class="container2">
+      <div is class="material-header-panel material-header-panel-waterfall-tall material-header-panel-transition material-header-panel-tall">
+        <div class="material-header-panel-outer-container">
+          <div is class="material-header-panel-header">Decorated</div>
+          <div is class="material-header-panel-main" use-scroll>
+            <div class="material-header-panel-main-container">
+              <div class="material-header-panel-main-content">
+                <div class="content"></div>
+              </div>
+            </div>
+            <div class="material-drop-shadow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container"></div>
+    <script>goog.require('pstj.demos.headerpanel');</script>
+  </body>
+</html>
