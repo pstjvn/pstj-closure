@@ -13,6 +13,7 @@ goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.nextTick');
 goog.require('goog.events');
+goog.require('goog.events.Event');
 goog.require('goog.events.EventType');
 goog.require('goog.events.Key');
 goog.require('pstj.configure');
