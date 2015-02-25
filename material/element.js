@@ -60,17 +60,19 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     /**
      * Provides the additional classes to be used when determining the
      * class names to apply by the current state.
+     *
      * @type {Object.<number, string>}
-     * @private
+     * @protected
      */
-    this.classByMaterialState_ = null;
+    this.classByMaterialState = null;
     /**
      * Provides the additional mappings for retrieving the state from the
      * class names applied to an html DOM structure.
+     *
      * @type {Object.<string, number>}
-     * @private
+     * @protected
      */
-    this.materialStateByClass_ = null;
+    this.materialStateByClass = null;
   },
 
 
@@ -81,7 +83,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    */
   createClassToStateMapping: function() {
     var baseClass = this.getStructuralCssClass();
-    this.classByMaterialState_ = goog.object.create(
+    this.classByMaterialState = goog.object.create(
         State.NARROW, goog.getCssName(baseClass, 'narrow'),
         State.TRANSITIONING, goog.getCssName(baseClass, 'transition'),
         State.SEAMED, goog.getCssName(baseClass, 'seamed'),
@@ -108,8 +110,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     if (goog.isNull(this.classByMaterialState_)) {
       this.createClassToStateMapping();
     }
-    this.materialStateByClass_ = goog.object.transpose(
-        this.classByMaterialState_);
+    this.materialStateByClass = goog.object.transpose(
+        this.classByMaterialState);
   },
 
 
@@ -174,6 +176,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * the soy template thus it should be able to parse and prepare the model of
    * the control element and submit it to the soy template function. If your
    * control contains complex data you should override this method.
+   *
    * @param {!goog.ui.Control} control The control that needs the template.
    * @return {?}
    * @protected
@@ -443,8 +446,10 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
      * @private
      */
     this.usePointerAgent_ = false;
+
     // by default we disable all event handling (mouse and keyboard).
     this.setHandleMouseEvents(false);
+
     // Disable all states by default (make it more like the Component).
     this.setSupportedState(goog.ui.Component.State.ALLALL, false);
     this.setAutoStates(goog.ui.Component.State.ALLALL, false);

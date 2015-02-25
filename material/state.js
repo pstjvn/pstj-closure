@@ -20,6 +20,11 @@ goog.require('goog.ui.Component.Error');
 goog.require('goog.ui.Component.State');
 
 
+/**
+ * Quite possible the ugliest hack ever: overrides the static method from
+ * goog.ui.Component so it can support our extended version of transitioning
+ * events for material elements.
+ */
 (function() {
   var tmp = goog.ui.Component.getStateTransitionEvent;
   /** @override */
