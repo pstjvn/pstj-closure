@@ -117,9 +117,9 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
      * @type {function(this: pstj.cast.Cast, chrome.cast.Session): void}
      * @private
      */
-    this.sessionListenerBound_ = goog.bind(this.sessionListener, this);
+    // this.sessionListenerBound_ = goog.bind(this.sessionListener, this);
     /**
-     * @type {function(this:pstj.cast.Cast): void}
+     * @type {function(this:pstj.cast.Cast, boolean): void}
      * @private
      */
     this.sessionUpdateListenerBound_ = goog.bind(this.sessionUpdateListener,
@@ -276,7 +276,12 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
     // a previous session is still alive on the device.
     var config = new chrome.cast.ApiConfig(
         sessionRequest,
-        goog.bind(this.sessionListener, this),
+        goog.bind(function(e) {
+          if (goog.DEBUG) {
+            console.log('Original session listener instantiation');
+          }
+          this.sessionListener(e);
+        }, this),
         goog.bind(this.receiverListener, this),
         chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED);
     // Initialize session discovery. The session is actually a link
@@ -300,6 +305,9 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
     // is the old session has media in it we should try to notify listeners
     if (!goog.isNull(this.session_) &&
         !goog.array.isEmpty(this.session_.media)) {
+      if (goog.DEBUG) {
+        console.log('Old media session discovered');
+      }
       this.updateOnMediaDiscovered(this.session_.media[0]);
     }
   },
@@ -313,6 +321,11 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * @protected
    */
   updateOnMediaDiscovered: function(media) {
+    if (goog.DEBUG) {
+      console.log('Discovered media on session!' + media.mediaSessionId);
+    }
+    this.media_ = media;
+    this.media_.addUpdateListener(goog.bind(this.onMediaInfo, this));
     this.setPlayerStateFromRemoteState_(media.playerState);
     this.mediaTime = media.currentTime;
     this.audioVolume = media.volume;
@@ -378,19 +391,24 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    */
   sessionListener: function(session) {
     if (goog.DEBUG) {
-      console.log('Session listener triggerd', session);
+      console.log('Session listener triggerd: ' + session.sessionId);
     }
     this.session_ = session;
     // Assuming a working session with the remote end.
     if (this.session_) {
       this.deviceState_ = pstj.cast.Cast.DeviceState.ACTIVE;
       this.session_.addUpdateListener(this.sessionUpdateListenerBound_);
-      // Fireing this means we are ready to play something.
-      this.dispatchEvent(pstj.cast.Cast.EventType.READY);
+      this.session_.addMediaListener(
+          goog.bind(this.updateOnMediaDiscovered, this));
       // Check if the session is coming from us creating a new one or is it
       // an already existing session and possibly with media inside of it. If
       // media is present it will be synced with our instance.
       this.onOldSessionDiscovered_();
+      // Fireing this means we are ready to play something.
+      if (goog.DEBUG) {
+        console.log('Dispatch CONNECTED');
+      }
+      this.dispatchEvent(pstj.cast.Cast.EventType.CONNECTED);
     }
   },
 
@@ -408,21 +426,44 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
   /**
    * Handles the updates for the session to the receiver application.
    * @protected
+   * @param {boolean} alive Deprecated parameter that is used in the old API.
    */
-  sessionUpdateListener: function() {
-    if (this.session_.status != chrome.cast.SessionStatus.CONNECTED) {
-      this.dispatchEvent(pstj.cast.Cast.EventType.DISCONNECT);
+  sessionUpdateListener: function(alive) {
+    if (goog.DEBUG) {
+      console.log('Session update listener:' + alive);
+    }
+    if (pstj.cast.OldAPI) {
+      if (!alive) {
+        this.session_.status = /** @type {!chrome.cast.SessionStatus} */(
+            chrome.cast.SessionStatus.DISCONNECTED);
+        this.dispatchEvent(pstj.cast.Cast.EventType.DISCONNECTED);
+      }
+    } else {
+      if (this.session_.status != chrome.cast.SessionStatus.CONNECTED) {
+        this.dispatchEvent(pstj.cast.Cast.EventType.DISCONNECTED);
+      }
     }
   },
+
 
   /**
    * Stops the session.
    */
   destroySession: function() {
+    if (goog.DEBUG) {
+      console.log('Calling session stop..');
+    }
     if (!goog.isNull(this.session_)) {
+      if (goog.DEBUG) {
+        console.log('Session exists, stopping it');
+      }
       this.session_.stop(
           goog.bind(this.handleStopSuccess, this),
           goog.bind(this.handleStopError, this));
+    } else {
+      if (goog.DEBUG) {
+        console.log('There is no session');
+      }
     }
   },
 
@@ -431,7 +472,13 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * Handles successful stop of the playback.
    * @protected
    */
-  handleStopSuccess: function() {},
+  handleStopSuccess: function() {
+    if (goog.DEBUG) {
+      console.log('Session stopped successfully');
+    }
+    this.session_ = null;
+    this.dispatchEvent(pstj.cast.Cast.EventType.DISCONNECTED);
+  },
 
 
   /**
@@ -442,7 +489,11 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * @param {chrome.cast.Error} err
    * @protected
    */
-  handleStopError: function(err) {},
+  handleStopError: function(err) {
+    if (goog.DEBUG) {
+      console.log('Stopping a session did not work: ' + err.description);
+    }
+  },
 
 
   /**
@@ -484,7 +535,15 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    */
   createSession: function() {
     chrome.cast.requestSession(
-        this.sessionListenerBound_,
+        goog.bind(function(e) {
+          if (!pstj.cast.OldAPI) {
+            if (goog.DEBUG) {
+              console.log('Subscribed from create session - for cordova');
+            }
+            this.sessionListener(e);
+          }
+        }, this),
+        // this.sessionListenerBound_,
         this.onLaunchErrorBound_);
   },
 
@@ -497,7 +556,9 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * @param {string} title The title of the channel.
    */
   castUrl: function(url, title) {
-    console.log('Casting url: ' + url);
+    if (goog.DEBUG) {
+      console.log('Start asting url: ' + url);
+    }
     this.mediaTime = 0;
     this.playerState_ = pstj.cast.Cast.PlayerState.IDLE;
     this.play(url, title);
@@ -513,31 +574,33 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    */
   play: function(url, title, opt_offset, opt_image) {
     this.mediaTime = opt_offset || 0;
-    if (goog.isNull(this.media_)) {
-      // we need a new media session.
-      // no active media session. loadin media
-      var mediaInfo = new chrome.cast.media.MediaInfo(url, 'video/mp4');
-      mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-      mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-      mediaInfo.contentType = 'video/mp4';
-      mediaInfo.metadata.title = title;
-      if (goog.isDef(opt_image)) {
-        mediaInfo.metadata.images = [{'url': opt_image}];
-      }
-
-      var request = new chrome.cast.media.LoadRequest(mediaInfo);
-      // we want to always to auto-play new media
-      request.autoplay = true;
-      request.currentTime = this.mediaTime;
-
-      this.playerState_ = pstj.cast.Cast.PlayerState.LOADING;
-      this.session_.loadMedia(request,
-          this.onLoadMediaSuccess_.bind(this),
-          this.onLoadMediaError_.bind(this));
-
-    } else {
-      console.log('There is active media object playing... ');
+    // if (goog.isNull(this.media_)) {
+    // we need a new media session.
+    // no active media session. loadin media
+    var mediaInfo = new chrome.cast.media.MediaInfo(url, 'video/mp4');
+    mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+    mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+    mediaInfo.contentType = 'video/mp4';
+    mediaInfo.metadata.title = title;
+    if (goog.isDef(opt_image)) {
+      mediaInfo.metadata.images = [{'url': opt_image}];
     }
+
+    var request = new chrome.cast.media.LoadRequest(mediaInfo);
+    // we want to always to auto-play new media
+    request.autoplay = true;
+    request.currentTime = this.mediaTime;
+
+    this.playerState_ = pstj.cast.Cast.PlayerState.LOADING;
+    this.session_.loadMedia(request,
+        this.onLoadMediaSuccess_.bind(this),
+        this.onLoadMediaError_.bind(this));
+
+    // } else {
+    //   if (goog.DEBUG) {
+    //     console.log('There is active media object playing, ignore');
+    //   }
+    // }
   },
 
 
@@ -563,7 +626,7 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    */
   onLoadMediaError_: function(err) {
     if (goog.DEBUG) {
-      console.log('Error while loadin media on the server', err);
+      console.log('Error while loadin media on the server' + err.description);
     }
   },
 
@@ -647,9 +710,9 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
       // When at least one device is found or device dissapears
       AVAILABILITY_CHANGE: goog.events.getUniqueId('availability-change'),
       // When ready to talk to the device to create a new session
-      READY: goog.events.getUniqueId('ready'),
+      CONNECTED: goog.events.getUniqueId('connected'),
       PLAYER_STATE_CHANGE: goog.events.getUniqueId('player-state-change'),
-      DISCONNECT: goog.events.getUniqueId('disconnect'),
+      DISCONNECTED: goog.events.getUniqueId('disconnected'),
       // When user canceled the session initiation.
       CANCEL: goog.events.getUniqueId('user-cancel')
     }
@@ -659,14 +722,15 @@ goog.addSingletonGetter(pstj.cast.Cast);
 
 
 /**
- * @define {boolean} If we should use the new method to initialize the
- * Cast subsystem (i.e. automatically). If this is false the cast must be
- * manually initialized with instance.initialize();
+ *
+ * @define {boolean} If this is set to true the code will use the old API as
+ *   implemented in some third party plugins, which changes how some methods
+ *   operate.
  */
-goog.define('pstj.cast.UseAutoInitialization', true);
+goog.define('pstj.cast.OldAPI', false);
 
 
-if (pstj.cast.UseAutoInitialization) {
+if (!pstj.cast.OldAPI) {
   if (goog.DEBUG) {
     console.log('Automatic cast registration');
   }
