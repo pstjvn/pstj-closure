@@ -3,6 +3,7 @@ goog.provide('pstj.demos.ripple');
 goog.require('goog.ui.decorate');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.Ripple');
+goog.require('pstj.material.EventMap');
 
 (function() {
   var ripple = new pstj.material.Ripple('Rendered');
@@ -28,5 +29,15 @@ goog.require('pstj.material.Ripple');
     var recenter = (e.target.value == 1);
     ripple.setRecenterRipples(recenter);
     el.getChildAt(0).setRecenterRipples(recenter);
+  });
+
+  document.querySelector('#eventtypes').addEventListener('change', function(e) {
+    var autoevents = (e.target.value == 1) ?
+        pstj.material.EventMap.EventFlag.TAP : (
+            pstj.material.EventMap.EventFlag.PRESS |
+            pstj.material.EventMap.EventFlag.RELEASE);
+
+    ripple.setAutoEventsInternal(autoevents);
+    el.getChildAt(0).setAutoEventsInternal(autoevents);
   });
 })();
