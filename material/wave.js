@@ -176,6 +176,13 @@ pstj.material.Wave = function() {
   this.waveContainer_ = dom.createDom('div',
       goog.getCssName('wave-container'));
   dom.appendChild(this.waveContainer_, this.wave_);
+  /**
+   * Cached delayed call to complete a tap gesture. Used when the tap
+   * event is bound to the wave instead of the touchstart-touchend pair.
+   *
+   * @type {function(this: pstj.material.Wave):void}
+   * @private
+   */
   this.delay_ = new goog.async.Delay(this.completeTap_, 70, this);
 
   /**

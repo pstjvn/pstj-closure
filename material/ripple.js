@@ -34,7 +34,7 @@ var ER = pstj.material.ElementRenderer;
  * parents of the ripple.
  *
  * If you want to use the ripple as a stand alone effect note that it uses
- * TAP by default. Also note thatthe pointer agent will generate all of
+ * TAP by default. Also note that the pointer agent will generate all of
  * those events in that order: press, release, tap; but listeners will be
  * assigned as per the auto event mask.
  */
@@ -86,8 +86,10 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
   /** @inheritDoc */
   decorateInternal: function(el) {
     this.recenterRipples_ = el.hasAttribute('recenter');
+    // Determine opacity of the ripple. If we cannot extract it from the markup
+    // we use the default one (or one set directly on the instance).
     var opacity = el.getAttribute('opacity');
-    if (opacity) {
+    if (!goog.isNull(opacity)) {
       opacity = parseFloat(opacity);
       if (isNaN(opacity) || opacity < 0 || opacity > 1) {
         opacity = this.opacity_;
@@ -113,17 +115,20 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
   /** @override */
   onPress: function(e) {
     if (this.isParentEnabled()) {
-      this.wave_ = this.getNewWave();
-      // If the item is configured to use the pointer agent we assume
-      // that the release event will come to us at some point and by default
-      // we listen once for it to remove the wave.
-      // Usually ripple is targeted externally (i.e. z-index -1) so the user
-      // of the ripple should trigger those event manually.
-      if (this.hasUsePointerAgent()) {
-        this.getHandler().listenOnce(this, pstj.agent.Pointer.EventType.RELEASE,
-            this.onRelease);
+      // only start a new wave if the prevuous one has finished.
+      if (goog.isNull(this.wave_)) {
+        this.wave_ = this.getNewWave();
+        // If the item is configured to use the pointer agent we assume
+        // that the release event will come to us at some point and by default
+        // we listen once for it to remove the wave.
+        // Usually ripple is targeted externally (i.e. z-index -1) so the user
+        // of the ripple should trigger those event manually.
+        if (this.hasUsePointerAgent()) {
+          this.getHandler().listenOnce(this,
+              pstj.agent.Pointer.EventType.RELEASE, this.onRelease);
+        }
+        this.wave_.handlePress(e);
       }
-      this.wave_.handlePress(e);
     }
   },
 
@@ -140,7 +145,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
   /** @inheritDoc */
   onRelease: function(e) {
-    if (this.wave_) {
+    if (!goog.isNull(this.wave_)) {
       this.wave_.handleRelease(e);
       this.wave_ = null;
     }
