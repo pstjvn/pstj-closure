@@ -13,6 +13,7 @@ goog.provide('pstj.material.RippleRenderer');
 
 goog.require('goog.dom');
 goog.require('pstj.material.Element');
+goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.Wave');
 

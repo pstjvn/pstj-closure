@@ -26,6 +26,7 @@ goog.require('goog.ui.registry');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.agent.Scroll');
+goog.require('pstj.ds.ListItem');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
@@ -61,7 +62,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      * Provides the additional classes to be used when determining the
      * class names to apply by the current state.
      *
-     * @type {Object.<number, string>}
+     * @type {Object<number, string>}
      * @protected
      */
     this.classByMaterialState = null;
@@ -69,7 +70,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      * Provides the additional mappings for retrieving the state from the
      * class names applied to an html DOM structure.
      *
-     * @type {Object.<string, number>}
+     * @type {Object<string, number>}
      * @protected
      */
     this.materialStateByClass = null;
@@ -107,7 +108,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @protected
    */
   createMaterialStateByClassMapping: function() {
-    if (goog.isNull(this.classByMaterialState_)) {
+    if (goog.isNull(this.classByMaterialState)) {
       this.createClassToStateMapping();
     }
     this.materialStateByClass = goog.object.transpose(
@@ -122,10 +123,10 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   getClassForState: function(state) {
     var result = goog.base(this, 'getClassForState', state);
     if (!goog.isDef(result)) {
-      if (goog.isNull(this.classByMaterialState_)) {
+      if (goog.isNull(this.classByMaterialState)) {
         this.createClassToStateMapping();
       }
-      return this.classByMaterialState_[state];
+      return this.classByMaterialState[state];
     } else {
       return result;
     }
@@ -139,10 +140,10 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   getStateFromClass: function(className) {
     var state = goog.base(this, 'getStateFromClass', className);
     if (state == 0) {
-      if (goog.isNull(this.materialStateByClass_)) {
+      if (goog.isNull(this.materialStateByClass)) {
         this.createMaterialStateByClassMapping();
       }
-      state = parseInt(this.materialStateByClass_[className], 10);
+      state = parseInt(this.materialStateByClass[className], 10);
     }
     return /** @type {State} */ (isNaN(state) ? 0 : state);
   },
@@ -183,8 +184,9 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    */
   generateTemplateData: function(control) {
     var model = control.getModel();
-    if (model) {
-      return { model: model.getRawData() };
+    if (model != null) {
+      var li = goog.asserts.assertInstanceof(model, pstj.ds.ListItem);
+      return { model: li.getRawData() };
     } else if (control.getContent()) {
       return {
         content: control.getContent()
@@ -675,6 +677,10 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   setAutoEventsInternal: function(eventMask) {
     this.autoEvents_ = eventMask;
+    // allows changing the auto events midflight
+    if (this.isInDocument()) {
+      this.enableAutoEvents();
+    }
   },
 
 
