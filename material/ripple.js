@@ -2,8 +2,39 @@
  * @fileoverview Provides the default implementation for the ripple effect
  * as found in the paper reference implementation.
  *
- * Note that while it is usable, a more robust variant that leaves less DOM
- * nodes inside the tree is available.
+ * By default the ripple subscribe to automatially listen for
+ * TAP events (i.e. if a TAP event hits the ripple it will react). TAP
+ * event can hit the ripple from a child or from itself if pointer agent
+ * is enabled.
+ *
+ * To alter the effect's triggers use the {@code setAutoEventsInternal}
+ * method, example:
+ *
+ * <pre>
+ * var instance = new pstj.material.Ripple();
+ * // Sets the ripple effect to be bound to 'press' and release events.
+ * instance.setAutoEventsInternal((
+            pstj.material.EventMap.EventFlag.PRESS |
+            pstj.material.EventMap.EventFlag.RELEASE));
+ * </pre>
+ *
+ * Note that by default the pointer agent is NOT enabled, but you can call
+ * manually the onPress/onRelase or onTap methods to simulate clicks from
+ * parents of the ripple. To enable the pointer simply subscribe the instance
+ * to the pointer agent:
+ *
+ * <pre>
+ * instance.setUsePointerAgent(true);
+ * </pre>
+ *
+ * This is done to avoid double work/confision for composite elements that
+ * use the ripple as a visual effect but want to handle their own state,
+ * for example checkboxes and toggle button listening on DOM root node and
+ * triggering the ripple even when the event was away from it. For more details
+ * see {@link pstj.material.ToggleButton} implementation.
+ *
+ * If you want to use the ripple as a stand alone effect note that it uses
+ * TAP by default.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
@@ -24,20 +55,7 @@ var ER = pstj.material.ElementRenderer;
 
 
 /**
- * Implements the ripple effect element.
- * Note that by default the ripple subscribe to automatially listen for
- * TAP events (i.e. if a TAP event hits the ripple it will react). TAP
- * event can hit the ripple from a child or from itself if pointer agent
- * is enabled.
- *
- * Note that by default the pointer agent is NOT enabled, but you can call
- * manually the onPress/onRelase or onTap methods to simulate clicks from
- * parents of the ripple.
- *
- * If you want to use the ripple as a stand alone effect note that it uses
- * TAP by default. Also note that the pointer agent will generate all of
- * those events in that order: press, release, tap; but listeners will be
- * assigned as per the auto event mask.
+ * @extends {pstj.material.Element}
  */
 pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
   /**
@@ -47,9 +65,6 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
    *     decorate the component; defaults to {@link goog.ui.ControlRenderer}.
    * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
    *     document interaction.
-   * @constructor
-   * @extends {pstj.material.Element}
-   * @struct
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
@@ -115,7 +130,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
   /** @override */
   onPress: function(e) {
-    if (this.isParentEnabled()) {
+    if (this.isEnabled()) {
       // only start a new wave if the prevuous one has finished.
       if (goog.isNull(this.wave_)) {
         this.wave_ = this.getNewWave();
@@ -138,9 +153,18 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
    * Helper method to check if the parent is enabled.
    * @return {boolean}
    * @protected
+   * @deprecated Use the standard {@code isEnabled} method instead.
    */
   isParentEnabled: function() {
     return !this.getParent() || this.getParent().isEnabled();
+  },
+
+
+  /** @override */
+  isEnabled: function() {
+    var parent = this.getParent();
+    if (parent == null) return true;
+    return parent.isEnabled();
   },
 
 
@@ -155,7 +179,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
 
   /** @override */
   onTap: function(e) {
-    if (this.isParentEnabled()) {
+    if (this.isEnabled()) {
       this.getNewWave().handleTap(e);
     }
   },
