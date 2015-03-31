@@ -197,7 +197,7 @@ pstj.material.Wave = function() {
    * @type {Array<number>}
    * @private
    */
-  this.cache_ = [0, 0];
+  this.cache_ = [0, 0, 0, 0];
 };
 goog.inherits(pstj.material.Wave, goog.Disposable);
 
@@ -378,16 +378,13 @@ pstj.material.Wave.prototype.getWaveRadius = function() {
   if (pstj.material.Wave.USE_NATIVE_RIPPLE) {
     if (this.pressed_) {
       var elapsedTime = pstj.material.Wave.LastTs_ - this.pressTimestamp_;
-      var speed = this.maxRadius_ / pstj.material.Wave.pressAnimationDuration_;
-      var pixels = speed * elapsedTime;
+      var pixels = this.cache_[2] * elapsedTime;
       if (pixels > this.maxRadius_) pixels = this.maxRadius_;
       this.lastAppliedRadius_ = pixels;
       return pixels;
     } else {
       var elapsedTime = pstj.material.Wave.LastTs_ - this.releaseTimestamp_;
-      var speed = (
-          this.maxRadius_ / pstj.material.Wave.releaseAnimationDuration_);
-      var pixels = speed * elapsedTime + this.lastAppliedRadius_;
+      var pixels = this.cache_[3] * elapsedTime + this.lastAppliedRadius_;
       if (pixels > this.maxRadius_) pixels = this.maxRadius_;
       return pixels;
     }
@@ -494,10 +491,17 @@ pstj.material.Wave.prototype.handlePress = function(e) {
       clientRect);
 
   // Update the cache.
-  this.cache_[0] = ((Math.min(mutils.diagonal(this.containerSize_),
-      pstj.material.Wave.WaveMaxRadius) * 1.1) + 5);
-  this.cache_[1] = (1.1 - (0.2 * (this.cache_[0] /
-      pstj.material.Wave.WaveMaxRadius)));
+  if (!pstj.material.Wave.USE_NATIVE_RIPPLE) {
+    this.cache_[0] = ((Math.min(mutils.diagonal(this.containerSize_),
+        pstj.material.Wave.WaveMaxRadius) * 1.1) + 5);
+    this.cache_[1] = (1.1 - (0.2 * (this.cache_[0] /
+        pstj.material.Wave.WaveMaxRadius)));
+  } else {
+    this.cache_[2] = (
+        this.maxRadius_ / pstj.material.Wave.pressAnimationDuration_);
+    this.cache_[3] = (
+        this.maxRadius_ / pstj.material.Wave.releaseAnimationDuration_);
+  }
 
   style.setStyle(this.waveContainer_, {
     'top' : (
