@@ -40,4 +40,9 @@ goog.require('pstj.material.EventMap');
     ripple.setAutoEventsInternal(autoevents);
     el.getChildAt(0).setAutoEventsInternal(autoevents);
   });
+
+  document.querySelector('#rippletype').addEventListener('change', function(e) {
+    var android = (e.target.value == 1);
+    window.pstj.material.Wave.USE_NATIVE_RIPPLE = android;
+  });
 })();

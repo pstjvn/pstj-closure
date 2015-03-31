@@ -28,7 +28,8 @@
       var CLOSURE_UNCOMPILED_DEFINES = {
         'goog.ui.Component.ALLOW_DETACHED_DECORATION':true,
         'pstj.agent.Pointer.USE_EVENT_DELEGATION':true,
-        'pstj.agent.Pointer.USE_DOM_ATTRIBUTE':true
+        'pstj.agent.Pointer.USE_DOM_ATTRIBUTE':true,
+        'pstj.material.Wave.USE_NATIVE_RIPPLE': false
       };
       var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
     </script>
@@ -57,6 +58,10 @@
     <select id="eventtypes">
       <option value="1">Tap</option>
       <option value="0">Press/Release</option>
+    </select>
+    <select id="rippletype">
+      <option value="1">Android</option>
+      <option value="0">Web/Polymer</option>
     </select>
     <script>goog.require('pstj.demos.ripple');</script>
   </body>
