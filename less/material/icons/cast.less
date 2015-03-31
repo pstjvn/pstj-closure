@@ -1,0 +1,54 @@
+//Definition for the cast icon
+@import "../icon";
+
+.material-icon {
+  //CAST
+  &[type="from-cast-ready-to-cast-active"] {
+    .scale {
+      transform-origin: left bottom;
+      -webkit-animation: from-cast-ready-to-cast-active @general-icon-mutation-duration forwards;
+      @-webkit-keyframes from-cast-ready-to-cast-active {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(3);
+        }
+        100% {
+          transform: scale(3);
+        }
+      }
+    }
+  }
+  &[type="from-cast-active-to-cast-ready"] {
+    .scale {
+      transform-origin: left bottom;
+      -webkit-animation: from-cast-active-to-cast-ready @general-icon-mutation-duration forwards;
+      @-webkit-keyframes from-cast-active-to-cast-ready {
+        0% {
+          transform: scale(3);
+        }
+        50% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    }
+  }
+  &[type="from-none-to-cast-active"] {
+    .scale {
+      transform-origin: left bottom;
+      -webkit-animation: from-none-to-cast-active @general-icon-mutation-duration forwards;
+      @-webkit-keyframes from-none-to-cast-active {
+        0% {
+          transform: scale(3);
+        }
+        100% {
+          transform: scale(3);
+        }
+      }
+    }
+  }
+}

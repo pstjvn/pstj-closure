@@ -1,0 +1,13 @@
+// Definition for the user icon
+
+@import "../icon";
+
+.material-icon {
+  &[type="from-none-to-user"] {
+    &:extend(.icon-scaleup);
+  }
+
+  &[type="from-user-to-none"] {
+    &:extend(.icon-fadeout);
+  }
+}
