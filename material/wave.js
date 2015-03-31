@@ -130,6 +130,13 @@ pstj.material.Wave = function() {
    */
   this.maxRadius_ = 0;
   /**
+   * References the last known radius - this is used to calculate the jump from
+   * pressed to released state change in the velocity.
+   * @type {number}
+   * @private
+   */
+  this.lastAppliedRadius_ = 0;
+  /**
    * @type {boolean}
    * @private
    */
@@ -180,7 +187,7 @@ pstj.material.Wave = function() {
    * Cached delayed call to complete a tap gesture. Used when the tap
    * event is bound to the wave instead of the touchstart-touchend pair.
    *
-   * @type {function(this: pstj.material.Wave):void}
+   * @type {!goog.async.Delay<!pstj.material.Wave>}
    * @private
    */
   this.delay_ = new goog.async.Delay(this.completeTap_, 70, this);
@@ -247,7 +254,6 @@ pstj.material.Wave.prototype.nextFrame = function() {
 
   this.drawRipple(radius, alpha, bgFillAlpha);
 
-
   if (this.releaseTimestamp_ == 0) {
     // the wave still needs to be here as the user has not released
     // his/her finger
@@ -277,6 +283,11 @@ pstj.material.Wave.prototype.drawRipple = function(
   if (goog.isDef(opt_outherAlpha)) {
     style.setStyle(this.background_, 'opacity', opt_outherAlpha);
   }
+
+  // Cap the radius for NATIVE_RIPPLE can go over the limit when
+  // calculated
+  if (radius > this.maxRadius_) radius = this.maxRadius_;
+
   style.setStyle(this.wave_, 'opacity', innerAlpha);
   var x = this.startPoint_.x;
   var y = this.startPoint_.y;
@@ -347,23 +358,46 @@ pstj.material.Wave.prototype.getWaveAlpha = function() {
 /**
  * Returns the radius that should be applied to the wave as per the currently
  * elapsed time since the last user interaction (press/release).
+ *
+ * Sidenotes:
+ * We calculate constant speed of movement for pressed and released state
+ * in advance.
+ *
+ * The pressed state speed is v = 150px / 2000ms -> 0.075;
+ * The released state speed is v = 150px / 400ms -> 0.375;
+ *
+ * Given that speed we can calculate now the traveled pixels for any given time
+ * frame as follows:
+ *
+ * ?px = (pressed) ? 0.075 : 0.375 * ts_difference + (radius pixels);
+ *
  * @return {number}
  * @protected
  */
 pstj.material.Wave.prototype.getWaveRadius = function() {
-  return (
-      this.cache_[0] * (
-          1 - Math.pow(
-              80,
-              -(
-                (
-                  (this.pressElapsedTime_ / 1000) +
-                  (this.releaseElapsedTime_ / 1000)
-                ) / this.cache_[1]
-              )
-              )
-          )
-  );
+  if (pstj.material.Wave.USE_NATIVE_RIPPLE) {
+    if (this.pressed_) {
+      var elapsedTime = pstj.material.Wave.LastTs_ - this.pressTimestamp_;
+      var speed = this.maxRadius_ / pstj.material.Wave.pressAnimationDuration_;
+      var pixels = speed * elapsedTime;
+      if (pixels > this.maxRadius_) pixels = this.maxRadius_;
+      this.lastAppliedRadius_ = pixels;
+      return pixels;
+    } else {
+      var elapsedTime = pstj.material.Wave.LastTs_ - this.releaseTimestamp_;
+      var speed = (
+          this.maxRadius_ / pstj.material.Wave.releaseAnimationDuration_);
+      var pixels = speed * elapsedTime + this.lastAppliedRadius_;
+      if (pixels > this.maxRadius_) pixels = this.maxRadius_;
+      return pixels;
+    }
+  } else {
+    return (
+        this.cache_[0] * (1 - Math.pow(80,
+            -(((this.pressElapsedTime_ / 1000) +
+            (this.releaseElapsedTime_ / 1000)) / this.cache_[1]))));
+
+  }
 };
 
 
@@ -499,15 +533,15 @@ pstj.material.Wave.prototype.handleTap = function(e) {
 /**
  * Completes the press/release cycle. This is a separate method because if TAP
  * is used the release delay is simulated.
- * @param {number} ts The time stamp. In press/release this is the time stamp if
- * the release event, in TAP handling this is the goog.now() result.
+ * @param {number=} opt_ts The time stamp. In press/release this is the time
+ * stamp if the release event, in TAP handling this is the goog.now() result.
  * @private
  */
-pstj.material.Wave.prototype.completeTap_ = function(ts) {
-  if (!goog.isDef(ts)) ts = goog.now();
+pstj.material.Wave.prototype.completeTap_ = function(opt_ts) {
+  if (!goog.isDef(opt_ts)) opt_ts = goog.now();
   if (this.pressed_) {
     this.pressed_ = false;
-    this.releaseTimestamp_ = ts;
+    this.releaseTimestamp_ = opt_ts;
     this.pressTimestamp_ = 0;
     this.releaseElapsedTime_ = 0.0;
   }
@@ -534,6 +568,7 @@ pstj.material.Wave.prototype.clear = function() {
   this.pressed_ = false;
   this.initialOpacity_ = pstj.material.Wave.InitialOpacity_;
   this.opacityDecayVelocity_ = pstj.material.Wave.OpacityDecayVelocity_;
+  this.lastAppliedRadius_ = 0;
 };
 
 
@@ -561,6 +596,24 @@ pstj.material.Wave.prototype.disposeInternal = function() {
   this.startPoint_ = null;
   this.containerSize_ = null;
 };
+
+
+/**
+ * The default duration for animation when the wave is still in pressed state.
+ * @type {number}
+ * @final
+ * @private
+ */
+pstj.material.Wave.pressAnimationDuration_ = 2000;
+
+
+/**
+ * The default duration for animation when the wave stops being pressed.
+ * @type {number}
+ * @final
+ * @private
+ */
+pstj.material.Wave.releaseAnimationDuration_ = 350;
 
 
 /**
@@ -596,6 +649,22 @@ pstj.material.Wave.WaveMaxRadius = 150;
  * @private
  */
 pstj.material.Wave.Cache_ = (pstj.ds.Cache.create('WaveCache'));
+
+
+/**
+ * Allows access to the last time stampof the raf event for consistent
+ * access to timing in animations.
+ * @type {number}
+ * @private
+ */
+pstj.material.Wave.LastTs_ = 0;
+
+
+/**
+ * @define {boolean} If set to true the Lolipop 5.0 ripple will be used,
+ * otherwise the polymer 0.5 version will be used.
+ */
+goog.define('pstj.material.Wave.USE_NATIVE_RIPPLE', true);
 
 
 /**
