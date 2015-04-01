@@ -6,3 +6,4 @@ goog.require('pstj.material.DrawerPanel');
   var dp = new pstj.material.DrawerPanel();
   dp.render();
 })();
+
