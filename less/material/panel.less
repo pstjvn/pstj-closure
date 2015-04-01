@@ -7,14 +7,18 @@
 .material-panel {
   display: block;
   &:extend(.fit);
-  & &-scrim {
+
+  // The overlay part
+  & &-overlay {
     &:extend(.core-fill-position);
     background-color: rgba(0, 0, 0, 0.3);
     visibility: hidden;
     opacity: 0;
     transition: opacity ease-in-out 0.38s, visibility ease-in-out 0.38s;
   }
-  &-scrim &-scrim {
+
+  // The overlay active state
+  &-overlayed > .material-panel-overlay {
     visibility: visible;
     opacity: 1;
   }

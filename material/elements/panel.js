@@ -1,3 +1,19 @@
+/**
+ * @fileoverview Provides basic element to be used as panel.
+ *
+ * By itself the panel is just a conatiner element.
+ *
+ * In additional it has two children elements that can be used in relation to
+ * the panel state:
+ *
+ * * shadow element attached to it for raising the panel visually
+ * * scrim element to protect the panel content from interaction (similar to
+ * guarding overlay)
+ *
+ * The panel can be used on its own, but the design is influenced to in such
+ * a way as to be useful for the drawer panel implementation.
+ */
+
 goog.provide('pstj.material.Panel');
 
 goog.require('goog.ui.Component.State');
@@ -14,12 +30,10 @@ var State = goog.ui.Component.State;
 
 
 /**
- * Implements a regular panel that can be screened and can have shadow as well.
+ * @extends {E}
  */
 pstj.material.Panel = goog.defineClass(E, {
   /**
-   * @constructor
-   * @extends {E}
    * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
    * @param {goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
@@ -36,27 +50,34 @@ pstj.material.Panel = goog.defineClass(E, {
      */
     this.shadowDepth = 1;
     this.setSupportedState(State.SHADOW, true);
-    this.setSupportedState(State.SCRIM, true);
+    this.setSupportedState(State.OVERLAY, true);
   },
 
-
   /**
-   * Getter for the shadow element.
+   * Returns the shadow component - should be a child of the panel.
+   *
+   * The method is considered protected and should be only accessed by
+   * extending classes.
+   *
+   * @protected
    * @return {Shadow}
    */
-  getShadow: function() {
+  getShadowComponent: function() {
     return goog.asserts.assertInstanceof(this.getChildAt(0), Shadow);
   },
 
-
   /**
-   * Getter for the scrim element.
+   * Returns the overlay component - should be a child of the panel instance.
+   *
+   * The method is considered protected and should be only accessed from
+   * extenders.
+   *
+   * @protected
    * @return {E}
    */
-  getScrim: function() {
+  getOverlayComponent: function() {
     return goog.asserts.assertInstanceof(this.getChildAt(1), E);
   },
-
 
   /** @inheritDoc */
   enterDocument: function() {
@@ -64,25 +85,21 @@ pstj.material.Panel = goog.defineClass(E, {
     this.setShadow(this.isShadow());
   },
 
+  /** @override */
   setShadow: function(enable) {
     goog.base(this, 'setShadow', enable);
     if (this.getElement()) {
-      this.getShadow().setDepth(enable ? this.shadowDepth : 0);
+      this.getShadowComponent().setDepth(enable ? this.shadowDepth : 0);
     }
   }
 });
 
 
-/** Implementeation for the default renderer */
+/** @extends {ER} */
 pstj.material.PanelRenderer = goog.defineClass(ER, {
-  /**
-   * @constructor
-   * @extends {ER}
-   */
   constructor: function() {
     goog.base(this);
   },
-
 
   /** @inheritDoc */
   getTemplate: function(m) {

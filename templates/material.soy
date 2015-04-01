@@ -15,20 +15,14 @@
 {/template}
 
 
-/** Template for the scrim panel */
-{template .ScrimPanel}
-  <div is class="{css scrim-panel} {css drawer-panel-main}">
-    <div is class="{css core-element} {css core-tap} {css scrim}"></div>
-  </div>
-{/template}
-
-
-
-/** Template for a panel that can be screened. */
+/**
+ * Template for a basic class that can display shadows and can have an
+ * overlay applied on it.
+ */
 {template .Panel}
   <div is class="{css material-panel}">
     {call .Shadow /}
-    <div is class="{css core-element} {css material-panel-scrim}"></div>
+    <div is class="{css core-element} {css material-panel-overlay}"></div>
   </div>
 {/template}
 
