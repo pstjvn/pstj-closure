@@ -13,10 +13,10 @@ goog.require('pstj.material.Panel');
 
   document.body.addEventListener('click', function(e) {
     panel1.setShadow(!panel1.isShadow());
-    panel1.setOverley(!panel1.isOverlay());
+    panel1.setOverlay(!panel1.isOverlay());
 
     panel2.setShadow(!panel2.isShadow());
-    panel2.setOverley(!panel2.isOverlay());
+    panel2.setOverlay(!panel2.isOverlay());
   });
 
 })();

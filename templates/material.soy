@@ -22,16 +22,26 @@
 {template .Panel}
   <div is class="{css material-panel}">
     {call .Shadow /}
+    <div class="{css material-panel-content-holder}"></div>
     <div is class="{css core-element} {css material-panel-overlay}"></div>
   </div>
 {/template}
 
 
-/** The drawer panel template */
+/**
+ * Template for the drawer panel UI component.
+ * The imlementation consists of two panels that are neatly arranged with
+ * CSS to look like one cohesive component. You can style them as any other
+ * .Panel element
+ *
+ * The template is desined to always use the pointer agent.
+ */
 {template .DrawerPanel}
-  <div class="{css material-drawer-panel}">
+  <div is class="{css material-drawer-panel}" use-pointer>
     {call .Panel /}
-    <div is class="{css core-element} {css material-drawer-panel-drawer}"></div>
+    <div class="{css material-drawer-panel-sidebar}">
+      {call .Panel /}
+    </div>
   </div>
 {/template}
 

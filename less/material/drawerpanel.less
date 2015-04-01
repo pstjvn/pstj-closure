@@ -7,39 +7,54 @@
 
 
 .material-drawer-panel {
+  // Common
   overflow: hidden;
   .fillall();
-  &-narrow .material-panel {
+
+  // Sets the position of the main panel when the view is narrow: that is
+  // it should be on the left side.
+  &-narrow > .material-panel {
     left: 0 ! important;
     padding: 0;
   }
-  &-transition &-drawer {
+
+  // Sets the transition of the sidebar container div - it should hold
+  // the side panel instance.
+  &-transition > &-sidebar {
     transition: -webkit-transform ease-in-out 0.3s, width ease-in-out 0.3s;
     /* @alternate */
     transition: transform ease-in-out 0.3s, width ease-in-out 0.3s;
   }
+
+  // Sets the transition on the main panel instance.
   &-transition .material-panel {
     transition: left ease-in-out 0.3s, padding ease-in-out 0.3s;
   }
-  &-narrow .core-element-selected {
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-  }
-  &-narrow &-drawer:not(.core-element-selected) {
+
+  // When the view is narrow and the main panel is selected the sidebar should
+  // not be visible
+  &-narrow > .material-panel-selected + &-sidebar {
     .transform(translateX(-100%));
   }
-  &-drawer {
+
+  // The sidebar that contains the drawer panel instance.
+  &-sidebar {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    // Speed up things on Chrome with gpu rendering.
+    // Speed up things on Chrome with gpu rendering??
     will-change: transform;
     .borderbox();
-    & > * {
-      .fillall();
-      .borderbox();
-    }
+
+    // Not needed for it is a panel?
+    // & > * {
+    //   .fillall();
+    //   .borderbox();
+    // }
   }
+
+  // possibly override the material panel style?
   .material-panel {
     position: absolute;
     top: 0;

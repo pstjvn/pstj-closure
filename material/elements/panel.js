@@ -59,7 +59,7 @@ pstj.material.Panel = goog.defineClass(E, {
    * The method is considered protected and should be only accessed by
    * extending classes.
    *
-   * @protected
+   * @package
    * @return {Shadow}
    */
   getShadowComponent: function() {
@@ -72,11 +72,12 @@ pstj.material.Panel = goog.defineClass(E, {
    * The method is considered protected and should be only accessed from
    * extenders.
    *
-   * @protected
+   * @package
    * @return {E}
    */
   getOverlayComponent: function() {
-    return goog.asserts.assertInstanceof(this.getChildAt(1), E);
+    return goog.asserts.assertInstanceof(this.getChildAt(
+        this.getChildCount() - 1), E);
   },
 
   /** @inheritDoc */
@@ -110,6 +111,17 @@ pstj.material.PanelRenderer = goog.defineClass(ER, {
   /** @inheritDoc */
   getCssClass: function() {
     return pstj.material.PanelRenderer.CSS_CLASS;
+  },
+
+  /**
+   * Attempts to find where to put all the children that are added.
+   * @param {Element} rootElement
+   * @return {Element} The element to put children in.
+   */
+  getContentElement: function(rootElement) {
+    return goog.dom.getElementByClass(
+        goog.getCssName(this.getCssClass(), 'content-holder'),
+        rootElement);
   },
 
   statics: {

@@ -4,21 +4,22 @@
  * main panel.
  *
  * When the screen is wide enough the menu panel is displayed at the
- * left hand side and the main panel is positioned right next to it on its right
+ * left hand side and the main panel is positioned next to it on the right
  * and is taking up the rest of the screen. When the screen is not wide enough
  * the menu panel is hidden on the left and the main panel is taking the whole
  * screen.
  *
- * The 'enough' threshold is configurable on instantiation time and is 640
- * pixels by default.
- *
- * This implementation does not support right hand menu panel, should this be of
- * any interest it can be easily added.
+ * The determination of the view (narrow vs wide) is based on a threshold that
+ * is configurable on instantiation time and is 640 pixels by default (
+ * {@see setResponsiveWidth}).
  *
  * The idea for the panel is taken directly from the polymer's own
  * core-drawer-panel code.
  *
- * NOTE: because of the complex structure of the component it cannot add child
+ *
+ * Limitations:
+ * - Right hand menu panel is not currently supported.
+ * - Because of the complex structure of the component it cannot add child
  * nodes before it is decorated/element created as the drawer/main panels are
  * actually children of the drawer panel. Future implementation that is a
  * composite of two independent nodes will not have this limitation. For now
@@ -32,17 +33,19 @@ goog.provide('pstj.material.DrawerPanel');
 goog.provide('pstj.material.DrawerPanelRenderer');
 
 goog.require('goog.asserts');
+goog.require('goog.async.AnimationDelay');
+goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.material.Element');
+goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.EventType');
 goog.require('pstj.material.MediaQuery');
 goog.require('pstj.material.Panel');
 goog.require('pstj.material.State');
-
 
 goog.scope(function() {
 var css = pstj.lab.style.css;
@@ -55,14 +58,9 @@ var Panel = pstj.material.Panel;
 var State = goog.ui.Component.State;
 
 
-/**
- * Implementation for the material drawer panel.
- */
+/** @extends {E} */
 pstj.material.DrawerPanel = goog.defineClass(E, {
   /**
-   * @constructor
-   * @struct
-   * @extends {E}
    * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
    * @param {pstj.material.DrawerPanelRenderer=} opt_renderer Renderer used to
@@ -106,57 +104,63 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     // enable narrow and transitioning.
     this.setSupportedState(State.NARROW, true);
     this.setSupportedState(State.TRANSITIONING, true);
+
+    // Auto subscribe for the events as they are always used in this component.
     this.setAutoEventsInternal(
         EventMap.EventFlag.PRESS |
         EventMap.EventFlag.MOVE |
         EventMap.EventFlag.RELEASE |
         EventMap.EventFlag.TAP);
 
+    // Always use the pointer agent. This line makes sure that when creating
+    // the element imperatively we still get the pointer agent bindings.
+    // When decoration pattern is used it is set up in the default template.
     this.setUsePointerAgent(true);
   },
-
 
   /**
    * Getter for the sub-element designated as a drawer by the template.
    * @return {E}
    */
-  getDrawer: function() {
+  getDrawerPanel: function() {
     return goog.asserts.assertInstanceof(this.getChildAt(
         pstj.material.DrawerPanel.Section.DRAWER), E);
   },
-
 
   /**
    * Getter for the sub-element designated as main container.
    * @return {Panel}
    */
-  getPanel: function() {
+  getMainPanel: function() {
     return goog.asserts.assertInstanceof(this.getChildAt(
         pstj.material.DrawerPanel.Section.MAIN), Panel);
   },
 
-
   /** @override */
-  decorateInternal: function(element) {
-    goog.base(this, 'decorateInternal', element);
-    // Allow selected state for the two sub-components.
-    this.getDrawer().setSupportedState(goog.ui.Component.State.SELECTED, true);
-    this.getPanel().setSupportedState(goog.ui.Component.State.SELECTED, true);
-    // Update the
+  addMaterialChildren: function() {
+    goog.base(this, 'addMaterialChildren');
+
+    this.getDrawerPanel().setSupportedState(
+        goog.ui.Component.State.SELECTED, true);
+    this.getMainPanel().setSupportedState(
+        goog.ui.Component.State.SELECTED, true);
+
     this.getRenderer().setDrawerWidth(this, this.getDrawerWidth());
     this.setSelectedSection(this.selectedSection_);
   },
-
 
   /**
    * Update / set the responsive with for the panel.
    * @param {number} width
    */
   setResponsiveWidth: function(width) {
+    // dispose of the old instance
     this.getHandler().unlisten(this.mediaquery_,
         pstj.material.EventType.MEDIA_CHANGE,
         this.onMediaChange);
     this.mediaquery_.dispose();
+
+    // create new media query instance.
     this.mediaquery_ = new MediaQuery('max-width: ' + width + 'px');
     if (this.isInDocument()) {
       this.getHandler().listen(this.mediaquery_,
@@ -165,16 +169,12 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     }
   },
 
-
   /** @override */
   enterDocument: function() {
+    goog.base(this, 'enterDocument');
     this.getHandler().listen(this.mediaquery_,
         pstj.material.EventType.MEDIA_CHANGE,
         this.onMediaChange);
-    // Update state artificially on entering the doc.
-    this.onMediaChange(null);
-
-    goog.base(this, 'enterDocument');
     // wait for layout and then wait for next animation frame to
     // enable transitioning.
     (new goog.async.AnimationDelay(function() {
@@ -182,13 +182,11 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     }, this.getDomHelper().getWindow(), this)).start();
   },
 
-
   /** @override */
   exitDocument: function() {
     goog.base(this, 'exitDocument');
     this.setTransitioning(false);
   },
-
 
   /**
    * Handler for the media matching events.
@@ -196,33 +194,41 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
    * @protected
    */
   onMediaChange: function(e) {
+    // Do not propagate to parents, we use this only internally, a different
+    // event is use in the component hierarchy.
     if (!goog.isNull(e)) {
       e.stopPropagation();
     }
+
     this.setNarrow(this.mediaquery_.queryMatches);
     // if we get into narrow mode hide the drawer.
     if (this.isNarrow()) {
       this.setSelectedSection(pstj.material.DrawerPanel.Section.MAIN);
     }
+    // Emit the event for the change
     this.dispatchEvent(EventType.RESPONSIVE_CHANGE);
   },
 
-
   /**
    * Choses a new selected section. The corresponding classes are updated.
-   * @param {number} section The section to set as active/selected.
+   * @param {pstj.material.DrawerPanel.Section} section The section to set
+   *    as active/selected.
    */
   setSelectedSection: function(section) {
     this.selectedSection_ = section;
-    this.getDrawer().setSelected(
+
+    this.getDrawerPanel().setSelected(
         this.selectedSection_ == pstj.material.DrawerPanel.Section.DRAWER);
-    this.getPanel().setSelected(
+    this.getMainPanel().setSelected(
         this.selectedSection_ == pstj.material.DrawerPanel.Section.MAIN);
+
+    // If the view is narrow and he selected section is the drawer show
+    // the overlay of the main panel
     if (this.isNarrow()) {
       if (this.selectedSection_ == pstj.material.DrawerPanel.Section.DRAWER) {
-        this.getPanel().setScrimed(true);
+        this.getMainPanel().setOverlay(true);
       } else {
-        this.getPanel().setScrimed(false);
+        this.getMainPanel().setOverlay(false);
       }
     }
   },
@@ -230,11 +236,16 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
 
   /** @override */
   onTap: function(e) {
-    if (e.getSourceElement() == this.getPanel().getScrim().getElement()) {
+    // If the event is coming from the overlay of the main panel we need to
+    // toggle the sidebar. The overlay component is sitting
+    // on top of the shadow component, make sure to protect that order for
+    // this to work.
+    if (e.getSourceElement() == this.getMainPanel()
+        .getOverlayComponent().getElement()) {
+
       this.toggleDrawer();
     }
   },
-
 
   /** @override */
   onPress: function(e) {
@@ -248,7 +259,8 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
       } else {
         // If the drawer is selected (thus visible) swiping on the scrim can
         // hide it.
-        if (e.getSourceElement() == this.getPanel().getScrim().getElement()) {
+        if (e.getSourceElement() == this.getMainPanel()
+            .getOverlayComponent().getElement()) {
           this.setDragging(true);
           // potentially hide the scrim.
         }
@@ -256,14 +268,12 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     }
   },
 
-
   /** @override */
   onMove: function(e) {
     if (this.isDragging()) {
       this.setDrawerPosition(e.getDistance(pstj.agent.Pointer.Direction.X));
     }
   },
-
 
   /** @override */
   onRelease: function(e) {
@@ -284,7 +294,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     }
   },
 
-
   /**
    * Sets the dragging state.
    * @param {boolean} dragging If we are currently dragging state.
@@ -295,7 +304,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     this.setTransitioning(!this.isDragging());
   },
 
-
   /**
    * Returns the current state of the dragger.
    * @return {boolean}
@@ -303,7 +311,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
   isDragging: function() {
     return this.dragging_;
   },
-
 
   /**
    * Toggles the panel state.
@@ -315,8 +322,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
         pstj.material.DrawerPanel.Section.MAIN);
   },
 
-
-
   /**
    * Getter for the width of the drawer panel.
    * @return {number}
@@ -324,7 +329,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
   getDrawerWidth: function() {
     return this.drawerWidth_;
   },
-
 
   /**
    * Sets the width to be used for the drawer.
@@ -339,15 +343,18 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     }
   },
 
-
   /** @override */
   setNarrow: function(enable) {
     goog.base(this, 'setNarrow', enable);
     if (this.getElement()) {
-      this.getRenderer().setNarrow(this, this.isNarrow());
+      this.getRenderer().setNarrow(this);
+      // if we are not narrow anymore hide the overlay on the
+      // main panel.
+      if (!enable && this.getMainPanel().isOverlay()) {
+        this.getMainPanel().setOverlay(false);
+      }
     }
   },
-
 
   /**
    * Sets the drawer position when swiping on the component. Needed precaution
@@ -357,9 +364,15 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
    * @protected
    */
   setDrawerPosition: function(opt_offset) {
+    var sidebar = this.getRenderer().getSidebar(this);
+    goog.asserts.assert(sidebar);
+
     if (!goog.isDef(opt_offset)) {
-      css.clearTranslation(this.getDrawer().getElement());
+
+      css.clearTranslation(sidebar);
+
     } else {
+
       if (this.selectedSection_ == pstj.material.DrawerPanel.Section.MAIN) {
         if (Math.abs(opt_offset) > this.drawerWidth_) {
           opt_offset = this.drawerWidth_ * -1;
@@ -369,10 +382,10 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
         if (opt_offset < 0) opt_offset = 0;
         opt_offset = opt_offset * -1;
       }
-      css.setTranslation(this.getDrawer().getElement(), opt_offset, 0);
+
+      css.setTranslation(sidebar, opt_offset, 0);
     }
   },
-
 
   /**
    * Override to allow to state the exact type of the renderer.
@@ -383,7 +396,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
         pstj.material.DrawerPanelRenderer);
   },
-
 
   statics: {
     /**
@@ -415,29 +427,41 @@ pstj.material.DrawerPanelRenderer = goog.defineClass(ER, {
   },
 
   /** @inheritDoc */
-  getTemplate: function(m) {
-    return pstj.material.template.DrawerPanel(m);
+  getTemplate: function(model) {
+    return pstj.material.template.DrawerPanel(model);
   },
 
   /**
-   * Updates the DOm for the narrow / not-norrow state.
+   * Updates the DOM for the narrow / not-norrow state.
    * @param {pstj.material.DrawerPanel} instance
    */
   setNarrow: function(instance) {
-    goog.style.setStyle(instance.getPanel().getElement(), 'left',
+    goog.style.setStyle(instance.getMainPanel().getElement(), 'left',
         (instance.isNarrow()) ? 0 : instance.getDrawerWidth() + 'px');
   },
 
-
   /**
-   * Sets the drawer width for this rendered dom structure.
+   * Sets the drawer width, assumes the drawer is a regular panel.
    * @param {pstj.material.DrawerPanel} instance
    * @param {number} width
    */
   setDrawerWidth: function(instance, width) {
-    var el = this.querySelector(instance.getElement(), '.' + goog.getCssName(
-        this.getCssClass(), 'drawer'));
-    goog.style.setStyle(el, 'width', width + 'px');
+    var el = this.getSidebar(instance);
+    if (!goog.isNull(el)) {
+      goog.style.setStyle(el, 'width', width + 'px');
+    }
+  },
+
+  /**
+   * Provided an instance of the DrawerPanel that already has a root
+   * component returns the sidebar div element.
+   *
+   * @param {pstj.material.DrawerPanel} instance
+   * @return {Element}
+   */
+  getSidebar: function(instance) {
+    return instance.getElementByClass(goog.getCssName(
+        this.getCssClass(), 'sidebar'));
   },
 
   statics: {

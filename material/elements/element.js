@@ -788,7 +788,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @param {boolean} enable If enabled the component is expected to be covered
    * by some sort of overlay.
    */
-  setOverley: function(enable) {
+  setOverlay: function(enable) {
     this.setState(State.OVERLAY, enable);
   },
 
