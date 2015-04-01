@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Drawer panel </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/drawerpanel.less">
+    <style>
+
+      .material-panel {
+        background-color: red;
+      }
+
+      .material-drawer-panel-sidebar .material-panel {
+        background-color: yellow;
+      }
+
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="../less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script src="../../demodeps.js"></script>
+  </head>
+  <body>
+    <script>goog.require('pstj.demos.drawerpanel');</script>
+  </body>
+</html>

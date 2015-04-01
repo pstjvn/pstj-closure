@@ -2,6 +2,7 @@
 // Please do not edit.
 goog.addDependency('../../../apps/pstj/demos/material/button.js', ['pstj.demos.button'], ['goog.array', 'goog.events', 'goog.ui.Component.EventType', 'goog.ui.decorate', 'pstj.material.Button'], false);
 goog.addDependency('../../../apps/pstj/demos/material/checkbox.js', ['pstj.demos.checkbox'], ['goog.array', 'goog.ui.decorate', 'pstj.material.Checkbox'], false);
+goog.addDependency('../../../apps/pstj/demos/material/drawerpanel.js', ['pstj.demos.drawerpanel'], ['pstj.material.DrawerPanel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/element.js', ['pstj.demos.element'], ['pstj.material.Element'], false);
 goog.addDependency('../../../apps/pstj/demos/material/headerpanel.js', ['pstj.demos.headerpanel'], ['goog.ui.decorate', 'pstj.material.HeaderPanel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/iconcontainer.js', ['pstj.demos.iconcontainer'], ['goog.ui.decorate', 'pstj.material.IconContainer'], false);

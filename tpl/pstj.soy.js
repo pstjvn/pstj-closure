@@ -47,8 +47,8 @@ if (goog.DEBUG) {
  */
 pstj.templates.pager = function(opt_data, opt_ignored) {
   var output = '<div class="' + goog.getCssName('pstj-pager-wrapper') + '"><div class="' + goog.getCssName('pstj-pager-items') + '">';
-  var itemLimit393 = opt_data.itemsCount;
-  for (var item393 = 0; item393 < itemLimit393; item393++) {
+  var itemLimit395 = opt_data.itemsCount;
+  for (var item395 = 0; item395 < itemLimit395; item395++) {
     output += pstj.templates.page(null);
   }
   output += '</div><div class="' + goog.getCssName('pstj-pager-page-indicator') + '">Page <span class="' + goog.getCssName('pstj-pager-page') + '"></span> of <span class="' + goog.getCssName('pstj-pager-pages') + '"></span></div></div>';

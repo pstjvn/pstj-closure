@@ -50,6 +50,7 @@ lint_cmd = gjslint \
 --jslint_error=all \
 --strict \
 --disable 0251 \
+--custom_jsdoc_tags=package \
 --max_line_length 80
 
 public_deps_file := deps.js

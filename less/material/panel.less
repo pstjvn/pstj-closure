@@ -8,6 +8,15 @@
   display: block;
   &:extend(.fit);
 
+  // The DIV element to put all programatically added children in.
+  // The element is constructed in such a way as to allow the service
+  // components to be added anyware and still the developer's components
+  // to be added on the right place.
+  &-content-holder {
+    display: block;
+    &:extend(.fit);
+  }
+
   // The overlay part
   & &-overlay {
     &:extend(.core-fill-position);

@@ -57,7 +57,7 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.material.template.Panel = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-panel') + '">' + pstj.material.template.Shadow(null) + '<div is class="' + goog.getCssName('core-element') + ' ' + goog.getCssName('material-panel-overlay') + '"></div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-panel') + '">' + pstj.material.template.Shadow(null) + '<div class="' + goog.getCssName('material-panel-content-holder') + '"></div><div is class="' + goog.getCssName('core-element') + ' ' + goog.getCssName('material-panel-overlay') + '"></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Panel.soyTemplateName = 'pstj.material.template.Panel';
@@ -71,7 +71,7 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.material.template.DrawerPanel = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-drawer-panel') + '">' + pstj.material.template.Panel(null) + '<div is class="' + goog.getCssName('core-element') + ' ' + goog.getCssName('material-drawer-panel-drawer') + '"></div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-drawer-panel') + '" use-pointer>' + pstj.material.template.Panel(null) + '<div class="' + goog.getCssName('material-drawer-panel-sidebar') + '">' + pstj.material.template.Panel(null) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.DrawerPanel.soyTemplateName = 'pstj.material.template.DrawerPanel';
