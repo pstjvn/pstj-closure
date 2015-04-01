@@ -99,7 +99,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
         State.EMPTY, goog.getCssName(baseClass, 'empty'),
         State.INVISIBLE, goog.getCssName(baseClass, 'invisible'),
         State.RAISED, goog.getCssName(baseClass, 'raised'),
-        State.SCRIM, goog.getCssName(baseClass, 'scrim'));
+        State.OVERLAY, goog.getCssName(baseClass, 'overlayed'));
   },
 
 
@@ -179,7 +179,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * control contains complex data you should override this method.
    *
    * @param {!goog.ui.Control} control The control that needs the template.
-   * @return {?}
+   * @return {?Object<string, *>}
    * @protected
    */
   generateTemplateData: function(control) {
@@ -768,20 +768,28 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
 
   /**
-   * Checks if the component is scrimed.
+   * Checks if the component has the OVERLAY bit turned on.
    * @return {boolean}
    */
-  isScrimed: function() {
-    return this.hasState(State.SCRIM);
+  isOverlay: function() {
+    return this.hasState(State.OVERLAY);
   },
 
 
   /**
-   * Sets the scrim state
-   * @param {boolean} enable
+   * Enables / disables the overlay state of the component.
+   *
+   * The state is purely UI related and does not impose any logical changes
+   * in operation.
+   *
+   * Implementations should take care to process occordingly. The default
+   * implementation does not interpret the state ionternally.
+   *
+   * @param {boolean} enable If enabled the component is expected to be covered
+   * by some sort of overlay.
    */
-  setScrimed: function(enable) {
-    this.setState(State.SCRIM, enable);
+  setOverley: function(enable) {
+    this.setState(State.OVERLAY, enable);
   },
 
 

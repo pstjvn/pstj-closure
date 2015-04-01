@@ -1,7 +1,9 @@
 /**
  * @fileoverview The drawer panel is a two section user interface abstraction
  * that simplifies the responsive layout for an application with menu panel and
- * main panel. When the screen is wide enough the menu panel is displayed at the
+ * main panel.
+ *
+ * When the screen is wide enough the menu panel is displayed at the
  * left hand side and the main panel is positioned right next to it on its right
  * and is taking up the rest of the screen. When the screen is not wide enough
  * the menu panel is hidden on the left and the main panel is taking the whole
@@ -25,6 +27,7 @@
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
+
 goog.provide('pstj.material.DrawerPanel');
 goog.provide('pstj.material.DrawerPanelRenderer');
 

@@ -134,14 +134,15 @@
  * @param value
  * @param name
  */
-{template .InputBody}
+{template .InputElement}
   <div is class="{css material-input-body}">
     <div class="{css material-input-body-label}">
       <span class="{css material-input-body-label-text}">{$label}</span>
     </div>
     <div is class="{css core-element} {css material-input-body-cursor}"></div>
     <div class="{css material-input-body-container}">
-      <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="{$type}" value="{$value}" name="{$name}">
+      <input autocomplete="off" autocorrect="off" autocapitalize="off"
+        spellcheck="false" type="{$type}" value="{$value}" name="{$name}">
     </div>
   </div>
 {/template}
@@ -303,6 +304,39 @@
       {call .Item}
         {param content: $content /}
       {/call}
+    </div>
+  </div>
+{/template}
+
+
+/** Provides the template for the Material Input implementation */
+{template .MaterialInput}
+  {@param? label: string}
+  {@param? error: string}
+  {@param name: string}
+  {@param type: string}
+  {@param value: string}
+  <div is class="{css material-input}">
+    <div class="{css material-input-floating-label}">
+      <span class="{css material-input-floating-label-text}">{if $label}{$label}{/if}</span>
+    </div>
+    <div class="{css material-input-body}">
+      <div class="{css material-input-body-label}">
+        <span class="{css material-input-body-label-text}">{if $label}{$label}{/if}</span>
+      </div>
+      <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"value="{$value}" type="{$type}" name="{$name}">
+    </div>
+    <div class="{css material-input-unedrline}">
+      <div class="{css material-input-underline-unfocused}"></div>
+      <div class="{css material-input-underline-focused}"></div>
+    </div>
+    <div class="{css material-input-footer}">
+      <div class="{css material-input-error}">
+        <div class="{css material-input-error-text}">{if $error}{$error}{/if}</div>
+        {call .IconContainer}
+          {param type: 'warning' /}
+        {/call}
+      </div>
     </div>
   </div>
 {/template}

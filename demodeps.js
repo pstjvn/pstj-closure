@@ -6,6 +6,7 @@ goog.addDependency('../../../apps/pstj/demos/material/element.js', ['pstj.demos.
 goog.addDependency('../../../apps/pstj/demos/material/headerpanel.js', ['pstj.demos.headerpanel'], ['goog.ui.decorate', 'pstj.material.HeaderPanel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/iconcontainer.js', ['pstj.demos.iconcontainer'], ['goog.ui.decorate', 'pstj.material.IconContainer'], false);
 goog.addDependency('../../../apps/pstj/demos/material/input.js', ['pstj.demos.input'], ['pstj.material.InputElement'], false);
+goog.addDependency('../../../apps/pstj/demos/material/materialinput.js', ['pstj.demos.materialinput'], ['pstj.material.MaterialInput'], false);
 goog.addDependency('../../../apps/pstj/demos/material/panel.js', ['pstj.demos.panel'], ['pstj.material.Panel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/radiobutton.js', ['pstj.demos.radiobutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.RadioButton'], false);
 goog.addDependency('../../../apps/pstj/demos/material/radiogroup.js', ['pstj.demos.radiogroup'], ['goog.ui.decorate', 'pstj.material.RadioGroup'], false);
