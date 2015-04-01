@@ -24,6 +24,10 @@ var _ = pstj.material.decorator;
  * Providing an UI structure builds the corresponding material UI.
  * @param {MaterialUIList} json
  * @param {pstj.material.Element} root
+ * @deprecated Instead use the soy template to generate the HTML for
+ * the complex UI structures. Alternatively use static code generation
+ * to output JS code that can actually be optimized by the compiler as opposite
+ * to pulling all dependencies in the build and resolve component at runtime.
  */
 _.create = function(json, root) {
 
