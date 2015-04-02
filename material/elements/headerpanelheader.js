@@ -28,18 +28,6 @@ goog.inherits(pstj.material.HeaderPanelHeader, pstj.material.Element);
 
 
 /**
- * Creates a new instance from a JSON config.
- * @param {MaterialConfig} json
- * @return {pstj.material.HeaderPanelHeader}
- */
-pstj.material.HeaderPanelHeader.fromJSON = function(json) {
-  var i = new pstj.material.HeaderPanelHeader();
-  return i;
-};
-
-
-
-/**
  * Implements the renderer for the element.
  * @constructor
  * @struct

@@ -11,16 +11,17 @@ goog.require('pstj.material.icon');
  * Implements the material icon. The class representa a single icon and is
  * static, meaning that its renderer will pick up the icon at creation time and
  * from then on the icon can only mutate to known configurations. Should
- * the icon need to mutate to somethinf else it will fire the 'REPLACE' event
- * and the container should instanciate a new icon which contains the required
- * SVG set for that icon instead and dispose of the previous instance.
+ * the icon need to mutate to a form it does not support it will fire the
+ * 'REPLACE' event and the container should instanciate a new icon which
+ * contains the required SVG set for that icon instead and dispose of the
+ * previous instance.
  *
  * The class implements a single instance with its mutations. The allowed
- * mutations are pre-defined fir each SVG set. The IconContainer class should
+ * mutations are pre-defined for each SVG set. The IconContainer class should
  * manage those.
  *
  * In order to allow animated change of icons when the same renderer does not
- * support the state we want to go into 'indirect mutation' could be aplpied.
+ * support the state we want to go into 'indirect mutation' could be applied.
  * For this to work you need to use the {@see IconContainer} class.
  */
 pstj.material.Icon = goog.defineClass(pstj.material.Element, {
