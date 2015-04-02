@@ -9,6 +9,7 @@ goog.addDependency('../../../apps/pstj/demos/material/iconcontainer.js', ['pstj.
 goog.addDependency('../../../apps/pstj/demos/material/input.js', ['pstj.demos.input'], ['pstj.material.InputElement'], false);
 goog.addDependency('../../../apps/pstj/demos/material/materialinput.js', ['pstj.demos.materialinput'], ['pstj.material.MaterialInput'], false);
 goog.addDependency('../../../apps/pstj/demos/material/panel.js', ['pstj.demos.panel'], ['pstj.material.Panel'], false);
+goog.addDependency('../../../apps/pstj/demos/material/progressbar.js', ['pstj.demos.progressbar'], ['pstj.material.Progressbar'], false);
 goog.addDependency('../../../apps/pstj/demos/material/radiobutton.js', ['pstj.demos.radiobutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.RadioButton'], false);
 goog.addDependency('../../../apps/pstj/demos/material/radiogroup.js', ['pstj.demos.radiogroup'], ['goog.ui.decorate', 'pstj.material.RadioGroup'], false);
 goog.addDependency('../../../apps/pstj/demos/material/ripple.js', ['pstj.demos.ripple'], ['goog.ui.decorate', 'pstj.material.Element', 'pstj.material.EventMap', 'pstj.material.Ripple'], false);

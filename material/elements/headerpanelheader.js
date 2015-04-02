@@ -27,6 +27,7 @@ pstj.material.HeaderPanelHeader = function(
 goog.inherits(pstj.material.HeaderPanelHeader, pstj.material.Element);
 
 
+
 /**
  * Implements the renderer for the element.
  * @constructor
