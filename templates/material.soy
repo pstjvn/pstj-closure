@@ -129,15 +129,6 @@
 
 
 /**
- * Provides the template for the default Input in material design. Note
- * that this is NOT the paper input
- */
-{template .Input}
-  <div class="{css material-input}"></div>
-{/template}
-
-
-/**
  * The template for the input body that overlays the actual input element.
  * @param label
  * @param type
@@ -318,35 +309,49 @@
   </div>
 {/template}
 
+/** Provides the template for a very basic input */
+{template .InputBase}
+  {@param? label: string}
+  {@param? error: string}
+  {@param name: string}
+  {@param type: string}
+  {@param value: string}
+  <div is class="{css material-base-input}">
+    <label>{if $label}{$label}{/if}</label>
+    <input
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      value="{$value}"
+      type="{$type}"
+      name="{$name}">
+      <div class="{css material-base-input-error}">{if $error}{$error}{/if}</div>
+  </div>
+{/template}
 
-/** Provides the template for the Material Input implementation */
-{template .MaterialInput}
+/**
+ * This is the default template for an input element that is designed as a
+ * material element.
+ * It follows the same lines as the base input, but has additional visual
+ * tweaks and support for validity pattern.
+ */
+{template .Input}
   {@param? label: string}
   {@param? error: string}
   {@param name: string}
   {@param type: string}
   {@param value: string}
   <div is class="{css material-input}">
-    <div class="{css material-input-floating-label}">
-      <span class="{css material-input-floating-label-text}">{if $label}{$label}{/if}</span>
-    </div>
-    <div class="{css material-input-body}">
-      <div class="{css material-input-body-label}">
-        <span class="{css material-input-body-label-text}">{if $label}{$label}{/if}</span>
-      </div>
-      <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"value="{$value}" type="{$type}" name="{$name}">
-    </div>
-    <div class="{css material-input-unedrline}">
-      <div class="{css material-input-underline-unfocused}"></div>
-      <div class="{css material-input-underline-focused}"></div>
-    </div>
-    <div class="{css material-input-footer}">
-      <div class="{css material-input-error}">
-        <div class="{css material-input-error-text}">{if $error}{$error}{/if}</div>
-        {call .IconContainer}
-          {param type: 'warning' /}
-        {/call}
-      </div>
-    </div>
+    <label>{$label}</label>
+    <input
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      value="{$value}"
+      type="{$type}"
+      name="{$name}">
+      <div class="{css material-input-error}">{$error}</div>
   </div>
 {/template}

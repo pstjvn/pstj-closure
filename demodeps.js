@@ -6,7 +6,8 @@ goog.addDependency('../../../apps/pstj/demos/material/drawerpanel.js', ['pstj.de
 goog.addDependency('../../../apps/pstj/demos/material/element.js', ['pstj.demos.element'], ['pstj.material.Element'], false);
 goog.addDependency('../../../apps/pstj/demos/material/headerpanel.js', ['pstj.demos.headerpanel'], ['goog.ui.decorate', 'pstj.material.HeaderPanel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/iconcontainer.js', ['pstj.demos.iconcontainer'], ['goog.ui.decorate', 'pstj.material.IconContainer'], false);
-goog.addDependency('../../../apps/pstj/demos/material/input.js', ['pstj.demos.input'], ['pstj.material.InputElement'], false);
+goog.addDependency('../../../apps/pstj/demos/material/input.js', ['pstj.demos.input'], ['pstj.material.Input'], false);
+goog.addDependency('../../../apps/pstj/demos/material/inputbase.js', ['pstj.demos.inputbase'], ['pstj.material.InputBase'], false);
 goog.addDependency('../../../apps/pstj/demos/material/materialinput.js', ['pstj.demos.materialinput'], ['pstj.material.MaterialInput'], false);
 goog.addDependency('../../../apps/pstj/demos/material/panel.js', ['pstj.demos.panel'], ['pstj.material.Panel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/progressbar.js', ['pstj.demos.progressbar'], ['pstj.material.Progressbar'], false);
