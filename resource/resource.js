@@ -55,12 +55,20 @@ goog.require('pstj.storage.Storage');
 
 
 /**
+ * The object that we expect for configuration of the resource package.
+ *
+ * @typedef {{run:string, execPath:string, crossdomain: (boolean|undefined)}}
+ */
+pstj.resource.Configuration;
+
+
+/**
  * Configures the resource loader factory. Note that once an instance is
  * created, configuration cannot be applied any longer, so make sure you
  * configure it before you require the instance.
  *
- * @param {{run:string, execPath:string, crossdomain: (boolean|undefined)}}
- * options The configuration options to apply to the instance to be created.
+ * @param {!pstj.resource.Configuration} options The configuration options
+ *    to apply to the instance to be created.
  */
 pstj.resource.configure = function(options) {
   if (!goog.isNull(pstj.resource.instance_)) {
