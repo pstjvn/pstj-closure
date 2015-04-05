@@ -1,6 +1,8 @@
 goog.provide('pstj.ds.DtoBase');
 
 goog.require('goog.array');
+goog.require('goog.async.Delay');
+goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 
 
@@ -24,7 +26,38 @@ pstj.ds.DtoBase = goog.defineClass(goog.events.EventTarget, {
     throw new Error('Serialization not implemented');
   },
 
+  /**
+   * Configures the instance based on a new map with values.
+   * @param {Object<string, *>} map
+   */
+  fromJSON: function(map) {
+    this.handleChange();
+  },
+
   statics: {
+    /**
+     * The events that this class can produce.
+     * @enum {string}
+     */
+    EventType: {
+      CHANGE: goog.events.getUniqueId('change'),
+      SORT: goog.events.getUniqueId('sort')
+    },
+
+    /**
+     * @final
+     * @private
+     * @type {!goog.async.Delay}
+     */
+    updateDelay_: (new goog.async.Delay(function() {
+      if (!goog.array.isEmpty(pstj.ds.DtoBase.updateQueue_)) {
+        goog.array.forEach(pstj.ds.DtoBase.updateQueue_, function(item) {
+          item.dispatchEvent(pstj.ds.DtoBase.EventType.CHANGE);
+        });
+        goog.array.clear(pstj.ds.DtoBase.updateQueue_);
+      }
+    }, 200)),
+
     /**
      * @final
      * @private
@@ -41,6 +74,7 @@ pstj.ds.DtoBase = goog.defineClass(goog.events.EventTarget, {
      */
     addToQueue_: function(item) {
       goog.array.insert(pstj.ds.DtoBase.updateQueue_, item);
+      pstj.ds.DtoBase.updateDelay_.start();
     }
   }
 });
