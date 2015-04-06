@@ -9,6 +9,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventType');
+goog.require('goog.log');
 goog.require('goog.math.Coordinate');
 goog.require('pstj.ui.Agent');
 
@@ -67,8 +68,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * @private
      */
     this.sourceElement_ = null;
-
-
     /**
      * Our bound event handler.
      * @type {goog.events.EventHandler}
@@ -91,8 +90,25 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         1650, this);
 
     // generate our point and keep them for the app live cycle.
+    /**
+     * The start point for a movement.
+     * @type {!pstj.agent.Point_}
+     * @private
+     */
     this.startPoint_ = new pstj.agent.Point_();
+    /**
+     * The currently known point - this point will be updated constantly
+     * by the movement handler.
+     * @type {!pstj.agent.Point_}
+     * @private
+     */
     this.currentPoint_ = new pstj.agent.Point_();
+    /**
+     * The last known point - this is the point that was last reported via
+     * an event. It is updated once the current point is handled via RAF.
+     * @type {!pstj.agent.Point_}
+     * @private
+     */
     this.lastPoint_ = new pstj.agent.Point_();
 
     /**
@@ -102,6 +118,11 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * @private
      */
     this.isDocumentBound_ = false;
+    /**
+     * @type {goog.log.Logger}
+     * @private
+     */
+    this.logger_ = goog.log.getLogger('pstj.agent.Pointer');
 
     this.setupListeners();
   },
@@ -389,7 +410,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         // events are not bound to their original target.
         this.enableDocumentMouseHandling(true);
       } else if (e.type == goog.events.EventType.POINTERDOWN) {
-        console.log('Unsupported - POINTERDOWN');
+        goog.log.error(this.logger_, 'Unsupported - POINTERDOWN');
         //TODO: handle the MS events.
       }
       // Reset all points
@@ -416,14 +437,16 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
             var touch = this.getTouchByIndex(this.getTouchEvent(e));
             this.currentPoint_.update(touch.pageX, touch.pageY, ts);
           } else {
-            console.log('Unsupported - TOUCHMOVE with more than one touch');
+            goog.log.error(this.logger_,
+                'Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
           }
         } else if (e.type == goog.events.EventType.POINTERMOVE) {
-          console.log('Unsupported - POINTERMOVE');
+          goog.log.error(this.logger_, 'Unsupported - POINTERMOVE');
           // TODO: handle pointer events
         }
         this.longPressDelay_.stop();
+
         if (!this.raf_.isActive()) this.raf_.start();
       }
     // RELEASE
@@ -446,7 +469,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           this.currentPoint_.timestamp = ts;
           this.enableDocumentMouseHandling(false);
         } else if (e.type == goog.events.EventType.POINTERUP) {
-          console.log('Unsupported - POINTERUP');
+          goog.log.error(this.logger_, 'Unsupported - POINTERUP');
           // TODO: handle pointer events for IE
         }
 
@@ -469,7 +492,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // CANCEL
     } else if (e.type == goog.events.EventType.TOUCHCANCEL ||
         e.type == goog.events.EventType.POINTERCANCEL) {
-      console.log('TODO: handle cancel events');
+      goog.log.warning(this.logger_, 'TODO: handle cancel events');
       // TODO: handle cancel events
     }
   },
