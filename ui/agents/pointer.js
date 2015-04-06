@@ -110,7 +110,54 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * @private
      */
     this.lastPoint_ = new pstj.agent.Point_();
-
+    /**
+     * Flag - will be set to true if we are in an increasingly higher
+     * velocity movement on X ordinate.
+     * @private
+     * @type {boolean}
+     */
+    this.isIncreasingVelocityX_ = false;
+    /**
+     * Flag - will be set to true is we are in an increasingly higher
+     * velocity movement on Y ordinate.
+     * @private
+     * @type {boolean}
+     */
+    this.isIncreasingVelocityY_ = false;
+    /**
+     * Placeholer for the last movement difference (i.e. for the almost
+     * same amount of time how much did the pointer traveled).
+     * @private
+     * @type {number}
+     */
+    this.lastDiffX_ = 0;
+    /**
+     * Placeholder for the last movement difference (i.e. for the ~same time
+     * how much did the poiner traveled).
+     * @private
+     * @type {number}
+     */
+    this.lastDiffY_ = 0;
+    /**
+     * Flag: will be set to true if the acceleration that was detected is
+     * increasing the point value for X.
+     * @package
+     * @type {boolean}
+     */
+    this.isPositiveX = false;
+    /**
+     * Flag: will be set to true if the acceleration that was detected is
+     * increasing the point value for Y.
+     * @package
+     * @type {boolean}
+     */
+    this.isPositiveY = false;
+    /**
+     * A single swipe reference to be reused in the agent.
+     * @type {!pstj.agent.Swipe}
+     * @private
+     */
+    this.swipe_ = new pstj.agent.Swipe();
     /**
      * Flag if the mouse was used to lock the element and we should monitor
      * the document for move and unlock.
@@ -127,6 +174,13 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     this.setupListeners();
   },
 
+  /**
+   * Getter for the swipe configuration instance.
+   * @return {!pstj.agent.Swipe}
+   */
+  getSwipe: function() {
+    return this.swipe_;
+  },
 
   /**
    * Sets up the document listeners when event delegation is used.
@@ -372,6 +426,15 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         e.type == goog.events.EventType.POINTERDOWN ||
         e.type == goog.events.EventType.MOUSEDOWN) {
 
+      // Reset velocity detectors
+      this.lastDiffX_ = 0;
+      this.lastDiffY_ = 0;
+      this.isIncreasingVelocityX_ = false;
+      this.isIncreasingVelocityY_ = false;
+      this.isPositiveX = false;
+      this.isPositiveX = false;
+      this.swipe_.reset();
+
       if (!this.isLocked()) {
         if (!this.lock(goog.asserts.assertInstanceof(
             // Use the original target is event delegation is in use.
@@ -431,10 +494,36 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           if (!this.isDocumentBound_) return;
           // assuming this is coming from the document now...
           var event = this.getMouseEvent(e);
-          this.currentPoint_.update(event.pageX, event.pageY, ts);
+
+          var x = event.pageX;
+          var y = event.pageY;
+          var diffX = Math.abs(this.currentPoint_.x - x);
+          var diffY = Math.abs(this.currentPoint_.y - y);
+
+          this.isPositiveX = x > this.currentPoint_.x;
+          this.isPositiveY = y > this.currentPoint_.y;
+          this.isIncreasingVelocityX_ = (this.lastDiffX_ < diffX);
+          this.isIncreasingVelocityY_ = (this.lastDiffY_ < diffY);
+          this.lastDiffX_ = diffX;
+          this.lastDiffY_ = diffY;
+
+          this.currentPoint_.update(x, y, ts);
         } else if (e.type == goog.events.EventType.TOUCHMOVE) {
           if (this.getTouchesCount(e) == 1) {
             var touch = this.getTouchByIndex(this.getTouchEvent(e));
+
+            var x = touch.pageX;
+            var y = touch.pageY;
+            var diffX = Math.abs(this.currentPoint_.x - x);
+            var diffY = Math.abs(this.currentPoint_.y - y);
+
+            this.isPositiveX = x > this.currentPoint_.x;
+            this.isPositiveY = y > this.currentPoint_.y;
+            this.isIncreasingVelocityX_ = (this.lastDiffX_ < diffX);
+            this.isIncreasingVelocityY_ = (this.lastDiffY_ < diffY);
+            this.lastDiffX_ = diffX;
+            this.lastDiffY_ = diffY;
+
             this.currentPoint_.update(touch.pageX, touch.pageY, ts);
           } else {
             goog.log.error(this.logger_,
@@ -484,6 +573,27 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
           this.createEvent(pstj.agent.Pointer.EventType.TAP);
         }
+
+
+
+        if (this.isIncreasingVelocityX_) {
+          if (this.isPositiveX) {
+            this.swipe_.enableDirection(pstj.agent.Swipe.Direction.RIGHT);
+          } else {
+            this.swipe_.enableDirection(pstj.agent.Swipe.Direction.LEFT);
+          }
+        }
+        if (this.isIncreasingVelocityY_) {
+          if (this.isPositiveY) {
+            this.swipe_.enableDirection(pstj.agent.Swipe.Direction.BOTTOM);
+          } else {
+            this.swipe_.enableDirection(pstj.agent.Swipe.Direction.TOP);
+          }
+        }
+        if (this.swipe_.hasSwipe()) {
+          this.createEvent(pstj.agent.Pointer.EventType.SWIPE);
+        }
+
         // makes sure this does not get stuck.
         this.currentEventType_ = pstj.agent.Pointer.Type.UNKNOWN;
         this.sourceElement_ = null;
@@ -700,7 +810,8 @@ pstj.agent.Pointer.EventType = {
   MOVE: goog.events.getUniqueId('move'),
   RELEASE: goog.events.getUniqueId('release'),
   LONGPRESS: goog.events.getUniqueId('longpress'),
-  TAP: goog.events.getUniqueId('tap')
+  TAP: goog.events.getUniqueId('tap'),
+  SWIPE: goog.events.getUniqueId('swipe')
 };
 
 
@@ -709,6 +820,86 @@ pstj.agent.Pointer.EventType = {
  * end to consider the gesture as tap event.
  */
 goog.define('pstj.agent.Pointer.TapDelay', 150);
+
+
+/**
+ * Implementes a simple swipe configuration object.
+ */
+pstj.agent.Swipe = goog.defineClass(null, {
+  constructor: function() {
+    this.directions_ = 0;
+  },
+
+  /**
+   * Enables a direction for this swipe.
+   * @package
+   * @param {pstj.agent.Swipe.Direction} direction
+   */
+  enableDirection: function(direction) {
+    this.directions_ = this.directions_ | direction;
+  },
+
+  /**
+   * Check if the swipe was to the left.
+   * @return {boolean}
+   */
+  isLeft: function() {
+    return !!(this.directions_ & pstj.agent.Swipe.Direction.LEFT);
+  },
+
+  /**
+   * Check if the swipe was to the right.
+   * @return {boolean}
+   */
+  isRight: function() {
+    return !!(this.directions_ & pstj.agent.Swipe.Direction.RIGHT);
+  },
+
+  /**
+   * Check if the swipe was to the top.
+   * @return {boolean}
+   */
+  isTop: function() {
+    return !!(this.directions_ & pstj.agent.Swipe.Direction.TOP);
+  },
+
+  /**
+   * Check if the swipe was to the bottom.
+   * @return {boolean}
+   */
+  isBottom: function() {
+    return !!(this.directions_ & pstj.agent.Swipe.Direction.BOTTOM);
+  },
+
+  /**
+   * Checks if currently there is a swipe direction recorded.
+   * @return {boolean} True if at leas one direction swipe is added.
+   */
+  hasSwipe: function() {
+    return this.directions_ != 0;
+  },
+
+  /**
+   * Resets the swipe direction state.
+   * @package
+   */
+  reset: function() {
+    this.directions_ = 0;
+  },
+
+  statics: {
+    /**
+     * The direction we understand.
+     * @enum {number}
+     */
+    Direction: {
+      TOP: 1,
+      BOTTOM: 2,
+      LEFT: 4,
+      RIGHT: 8
+    }
+  }
+});
 
 
 /**
@@ -845,6 +1036,16 @@ pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
     } else {
       return 0;
     }
+  },
+
+  /**
+   * Getter for the swipe positivity (i.e. left(negative)/right(positive) and
+   * top(negative)/bottom(positive)).
+   *
+   * @return {!pstj.agent.Swipe}
+   */
+  getSwipe: function() {
+    return pstj.agent.Pointer.getInstance().getSwipe();
   },
 
 

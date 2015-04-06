@@ -618,6 +618,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @private
    */
   assignAutoEventHandlers_: function() {
+
     if (this.hasAutoEvent(EventMap.EventFlag.PRESS)) {
       this.getHandler().listen(this, pev.PRESS, this.onPress);
     } else {
@@ -641,6 +642,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       this.getHandler().listen(this, pev.PRESS, this.onPress);
       this.getHandler().listen(this, pev.MOVE, this.onMove);
       this.getHandler().listen(this, pev.RELEASE, this.onRelease);
+      this.getHandler().listen(this, pev.SWIPE, this.onSwipe);
     }
 
     // Handle ripples - note that it should NOT be used
@@ -872,6 +874,12 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   onRelease: goog.functions.TRUE,
 
+  /**
+   * Default handler for auto event of type SWIPE.
+   * @protected
+   * @param {pstj.agent.PointerEvent} e Wapped event from pointer agent.
+   */
+  onSwipe: goog.functions.TRUE,
 
   /**
    * Default handler for the long press event.
