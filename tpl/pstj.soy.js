@@ -9,6 +9,7 @@ goog.provide('pstj.templates');
 
 goog.require('soy');
 goog.require('soydata');
+goog.require('goog.asserts');
 
 
 /**
@@ -196,4 +197,50 @@ pstj.templates.TableViewItem = function(opt_data, opt_ignored) {
 };
 if (goog.DEBUG) {
   pstj.templates.TableViewItem.soyTemplateName = 'pstj.templates.TableViewItem';
+}
+
+
+/**
+ * @param {{
+ *    src: string,
+ *    text: (null|string|undefined)
+ * }} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.templates.Swipetile = function(opt_data, opt_ignored) {
+  goog.asserts.assert(goog.isString(opt_data.src) || (opt_data.src instanceof goog.soy.data.SanitizedContent), "expected param 'src' of type string|goog.soy.data.SanitizedContent.");
+  var src = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.src);
+  goog.asserts.assert(opt_data.text == null || (opt_data.text instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.text), "expected param 'text' of type null|string|undefined.");
+  var text = /** @type {null|string|undefined} */ (opt_data.text);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('pstj-swipetile') + '"><div class="' + goog.getCssName('pstj-swipetile-image') + '" style="background-image: url(' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(src)) + ')">' + ((text) ? '<div class="' + goog.getCssName('pstj-swipetile-text-container') + '"><div class="' + goog.getCssName('pstj-swipetile-text') + '">' + soy.$$escapeHtml(text) + '</div></div>' : '') + '</div></div>');
+};
+if (goog.DEBUG) {
+  pstj.templates.Swipetile.soyTemplateName = 'pstj.templates.Swipetile';
+}
+
+
+/**
+ * @param {{
+ *    items: !Array.<?>
+ * }} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.templates.Swiper = function(opt_data, opt_ignored) {
+  var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<unknown>.");
+  var output = '<div is class="' + goog.getCssName('pstj-swiper') + ' ' + goog.getCssName('core-swipe') + '" use-pointer>';
+  var itemList549 = items;
+  var itemListLen549 = itemList549.length;
+  for (var itemIndex549 = 0; itemIndex549 < itemListLen549; itemIndex549++) {
+    var itemData549 = itemList549[itemIndex549];
+    output += pstj.templates.Swipetile(itemData549);
+  }
+  output += '</div>';
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);
+};
+if (goog.DEBUG) {
+  pstj.templates.Swiper.soyTemplateName = 'pstj.templates.Swiper';
 }

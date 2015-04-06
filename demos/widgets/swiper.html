@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Swipetile demo</title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/widgets/swiper.less">
+    <style>
+      .container {
+        width: 500px;
+        height: 360px;
+        position: relative;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="../less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script src="../../demodeps.js"></script>
+  </head>
+  <body>
+    <div class="container"></div>
+    <script>goog.require('pstj.demos.widget.swiper');</script>
+  </body>
+</html>

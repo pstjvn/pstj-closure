@@ -47,6 +47,15 @@
   align-items: center;
 }
 
+.core-flex-align-end {
+  -ms-flex-align: end;
+  /* @alternative */
+  -webkit-align-items: flex-end;
+  /* @alternative */
+  align-items: flex-end;
+
+}
+
 .core-fit {
   &:extend(.core-fill-position);
 }
@@ -82,6 +91,10 @@
 
 .center {
   &:extend(.core-flex-align-center);
+}
+
+.end {
+  &:extend(.core-flex-align-end);
 }
 
 .animated {

@@ -177,3 +177,29 @@
     <div data-model="id"></div>
   </div>
 {/template}
+
+
+/** Template for the default swipe tile */
+{template .Swipetile}
+  {@param src: string}
+  {@param? text: string}
+  <div is class="{css pstj-swipetile}">
+    <div class="{css pstj-swipetile-image}" style="background-image: url({$src})">
+      {if $text}
+        <div class="{css pstj-swipetile-text-container}">
+          <div class="{css pstj-swipetile-text}">{$text}</div>
+        </div>
+      {/if}
+    </div>
+  </div>
+{/template}
+
+/** Template for the swiper widget */
+{template .Swiper}
+  {@param items: list<?>}
+  <div is class="{css pstj-swiper} {css core-swipe}" use-pointer>
+    {foreach $item in $items}
+      {call .Swipetile data="$item" /}
+    {/foreach}
+  </div>
+{/template}

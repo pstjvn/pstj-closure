@@ -8,7 +8,6 @@ goog.addDependency('../../../apps/pstj/demos/material/headerpanel.js', ['pstj.de
 goog.addDependency('../../../apps/pstj/demos/material/iconcontainer.js', ['pstj.demos.iconcontainer'], ['goog.ui.decorate', 'pstj.material.IconContainer'], false);
 goog.addDependency('../../../apps/pstj/demos/material/input.js', ['pstj.demos.input'], ['pstj.material.Input'], false);
 goog.addDependency('../../../apps/pstj/demos/material/inputbase.js', ['pstj.demos.inputbase'], ['pstj.material.InputBase'], false);
-goog.addDependency('../../../apps/pstj/demos/material/materialinput.js', ['pstj.demos.materialinput'], ['pstj.material.MaterialInput'], false);
 goog.addDependency('../../../apps/pstj/demos/material/panel.js', ['pstj.demos.panel'], ['pstj.material.Panel'], false);
 goog.addDependency('../../../apps/pstj/demos/material/progressbar.js', ['pstj.demos.progressbar'], ['pstj.material.Progressbar'], false);
 goog.addDependency('../../../apps/pstj/demos/material/radiobutton.js', ['pstj.demos.radiobutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.RadioButton'], false);
@@ -19,7 +18,9 @@ goog.addDependency('../../../apps/pstj/demos/material/togglebutton.js', ['pstj.d
 goog.addDependency('../../../apps/pstj/demos/navigation/navigation.js', ['pstj.demos.navigation'], ['goog.dom', 'goog.ui.tree.TreeControl', 'pstj.demos.navigationdata'], false);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigationdata.js', ['pstj.demos.navigationdata'], [], false);
 goog.addDependency('../../../apps/pstj/demos/tableview/tableview.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView'], false);
+goog.addDependency('../../../apps/pstj/demos/widgets/swiper.js', ['pstj.demos.widget.swiper'], ['pstj.ds.dto.SwipetileList', 'pstj.widget.Swiper'], false);
+goog.addDependency('../../../apps/pstj/demos/widgets/swipetile.js', ['pstj.demos.widget.swipetile'], ['pstj.widget.Swipetile'], false);
 goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.material.icons'], ['soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/material.soy.js', ['pstj.material.template'], ['goog.asserts', 'soy', 'soydata'], false);
-goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['soy', 'soydata'], false);
+goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['goog.asserts', 'soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/select.soy.js', ['pstj.select'], ['soy', 'soydata'], false);

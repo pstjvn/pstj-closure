@@ -12,6 +12,7 @@ goog.addDependency('../../../apps/pstj/control/control.js', ['pstj.control.Contr
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string'], false);
 goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.PubSub'], false);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object', 'pstj.debug'], false);
+goog.addDependency('../../../apps/pstj/ds/dto/swipetile.js', ['pstj.ds.dto.Swipetile', 'pstj.ds.dto.SwipetileList'], ['goog.asserts', 'pstj.ds.DtoBase'], false);
 goog.addDependency('../../../apps/pstj/ds/dtobase.js', ['pstj.ds.DtoBase'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget'], false);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], [], false);
 goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], [], false);
@@ -129,4 +130,6 @@ goog.addDependency('../../../apps/pstj/ui/widget/multiviewwrapper.js', ['pstj.wi
 goog.addDependency('../../../apps/pstj/ui/widget/pager.js', ['pstj.widget.Pager', 'pstj.widget.PagerTemplate'], ['goog.array', 'goog.dom', 'goog.dom.classlist', 'pstj.ds.List', 'pstj.ds.ListItem', 'pstj.ng.Template', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Templated'], false);
 goog.addDependency('../../../apps/pstj/ui/widget/progress.js', ['pstj.widget.Progress', 'pstj.widget.ProgressTemplate'], ['goog.asserts', 'goog.async.Delay', 'goog.events.EventType', 'pstj.math.utils', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.Template'], false);
 goog.addDependency('../../../apps/pstj/ui/widget/select.js', ['pstj.widget.Select', 'pstj.widget.SelectTemplate'], ['goog.ui.Component.EventType', 'pstj.templates', 'pstj.ui.Button', 'pstj.ui.List', 'pstj.ui.Template', 'pstj.ui.Templated'], false);
+goog.addDependency('../../../apps/pstj/ui/widget/swiper.js', ['pstj.widget.Swiper'], ['goog.async.Delay', 'goog.async.nextTick', 'goog.log', 'goog.ui.Component.State', 'pstj.agent.Pointer', 'pstj.ds.dto.SwipetileList', 'pstj.lab.style.css', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.material.State', 'pstj.templates', 'pstj.widget.Swipetile'], false);
+goog.addDependency('../../../apps/pstj/ui/widget/swipetile.js', ['pstj.widget.Swipetile'], ['pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.templates'], false);
 goog.addDependency('../../../apps/pstj/ui/widget/togglegroup.js', ['pstj.widget.ToggleGroup'], ['goog.ui.Component.EventType', 'goog.ui.Component.State', 'pstj.widget.ControlGroup'], false);

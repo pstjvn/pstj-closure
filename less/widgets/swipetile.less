@@ -1,0 +1,52 @@
+@import "../material/common";
+@import "../material/layout";
+@import "../material/typography";
+
+.pstj-swipetile {
+
+  &:extend(.fillall);
+
+  -webkit-transform-style: preserve-3d;
+  /* @alternate */
+  -moz-transform-style: preserve-3d;
+  /* @alternate */
+  -ms-transform-style: preserve-3d;
+  /* @alternate */
+  -o-transform-style: preserve-3d;
+  /* @alternate */
+  transform-style: preserve-3d;
+
+
+  -webkit-backface-visibility: hidden;
+  /* @alternate */
+  -moz-backface-visibility: hidden;
+  /* @alternate */
+  -ms-backface-visibility: hidden;
+  /* @alternate */
+  -o-backface-visibility: hidden;
+  /* @alternate */
+  backface-visibility: hidden;
+
+  // This is the main container, including the image.
+  &-image {
+    .typography(white, 90, 48px, 600);
+    &:extend(.horizontal);
+    &:extend(.end);
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    -moz-user-select: none;
+    /* @alternate */
+    -webkit-user-select: none;
+    /* @alternate */
+    -ms-user-select: none;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+
+  }
+
+  // Limit the text container to 50% height and put it in the bottom.
+  &-text-container {
+    height: 50%;
+    padding-left: 10px;
+  }
+}
