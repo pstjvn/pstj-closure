@@ -47,15 +47,27 @@ _.load = function(paths) {
   var promises = [];
   goog.array.forEach(paths, function(path) {
     promises.push(
-        xhr.get(_.prefix_ + path + '.json').then(function(jsonstring) {
-          var obj = goog.json.parse(jsonstring);
-          var klass = new pstj.ds.jsonschema.Class(_.namespacePrefix_);
-          klass.setSourceDefinition(obj);
-          goog.object.set(_.map_, path, klass);
-          return klass;
-        }));
+        xhr.get(_.prefix_ + path + '.json').then(
+            goog.partial(_.handleSingleLoad, _.namespacePrefix_, path)
+        ));
   });
-  return new goog.Promise.all(promises);
+  return goog.Promise.all(promises);
+};
+
+
+/**
+ * Special function to apply partially for handling load of files.
+ * @param {string} namespaceprefix
+ * @param {string} path The name of the file
+ * @param {string} jsonstring The serialized object.
+ * @return {!pstj.ds.jsonschema.Class}
+ */
+_.handleSingleLoad = function(namespaceprefix, path, jsonstring) {
+  var obj = goog.json.parse(jsonstring);
+  var klass = new pstj.ds.jsonschema.Class(namespaceprefix);
+  klass.setSourceDefinition(obj);
+  goog.object.set(_.map_, path, klass);
+  return klass;
 };
 
 

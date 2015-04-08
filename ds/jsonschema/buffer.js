@@ -169,6 +169,14 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
   dump: function() {
     goog.log.info(this.logger_, 'Dumping the current buffer');
     goog.log.info(this.logger_, this.buffer_.join(''));
+  },
+
+  /**
+   * Allows access to the buffer for other printer to use.
+   * @return {Array<string>}
+   */
+  getBuffer: function() {
+    return this.buffer_;
   }
 });
 
