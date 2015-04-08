@@ -239,7 +239,7 @@ pstj.ds.jsonschema.Class = goog.defineClass(Buffer, {
    * Prints out the provide statement for the class.
    */
   printProvides: function() {
-    this.addLine('goog.provide(' + this.namespace + ');');
+    this.addLine('goog.provide(\'' + this.namespace + '\');');
   },
 
   /**
@@ -264,7 +264,7 @@ pstj.ds.jsonschema.Class = goog.defineClass(Buffer, {
    * @param {string} ns The namespace to require.
    */
   printRequire: function(ns) {
-    this.addLine('goog.require(' + ns + ');');
+    this.addLine('goog.require(\'' + ns + '\');');
   },
 
   /**

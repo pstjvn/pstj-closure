@@ -1,12 +1,12 @@
 
 // This code is auto generate, please do not edit.
 
-goog.provide(pstj.ds.dto.Base);
+goog.provide('pstj.ds.dto.Base');
 
-goog.require(goog.array);
-goog.require(goog.asserts);
-goog.require(pstj.ds.DtoBase);
-goog.require(pstj.ds.dto.ForExtend);
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('pstj.ds.DtoBase');
+goog.require('pstj.ds.dto.ForExtend');
 
 
 goog.scope(function() {

@@ -1,10 +1,10 @@
 
 // This code is auto generate, please do not edit.
 
-goog.provide(pstj.ds.dto.ForExtend);
+goog.provide('pstj.ds.dto.ForExtend');
 
-goog.require(goog.asserts);
-goog.require(pstj.ds.DtoBase);
+goog.require('goog.asserts');
+goog.require('pstj.ds.DtoBase');
 
 
 goog.scope(function() {
