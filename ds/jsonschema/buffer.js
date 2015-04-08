@@ -50,7 +50,7 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
      * The symbol to be used for starting a comment.
      * @type {string}
      */
-    this.commentStart = '/** ';
+    this.commentStart = '/**';
     /**
      * The symbol to be used for ending a comment.
      * @type {string}
