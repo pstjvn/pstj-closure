@@ -17,6 +17,11 @@ goog.addDependency('../../../apps/pstj/ds/dtobase.js', ['pstj.ds.DtoBase'], ['go
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], [], false);
 goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], [], false);
 goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj.ds.ImageList', 'pstj.ds.ImageList.EventType'], ['goog.async.Delay', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.net.ImageLoader', 'goog.string', 'pstj.ds.List', 'pstj.ds.ListItem'], false);
+goog.addDependency('../../../apps/pstj/ds/jsonschema/buffer.js', ['pstj.ds.jsonschema.Buffer'], ['goog.log', 'goog.string'], false);
+goog.addDependency('../../../apps/pstj/ds/jsonschema/class.js', ['pstj.ds.jsonschema.Class'], ['goog.array', 'goog.asserts', 'pstj.ds.jsonschema.Buffer', 'pstj.ds.jsonschema.resolver'], false);
+goog.addDependency('../../../apps/pstj/ds/jsonschema/parser.js', ['pstj.ds.jsonschema.parser'], ['goog.Promise', 'goog.array', 'goog.labs.net.xhr', 'pstj.ds.jsonschema.Class', 'pstj.ds.jsonschema.Property', 'pstj.ds.jsonschema.resolver'], false);
+goog.addDependency('../../../apps/pstj/ds/jsonschema/property.js', ['pstj.ds.jsonschema.Property'], ['goog.string', 'pstj.ds.jsonschema.resolver'], false);
+goog.addDependency('../../../apps/pstj/ds/jsonschema/resolver.js', ['pstj.ds.jsonschema.resolver'], [], false);
 goog.addDependency('../../../apps/pstj/ds/jstype/constructor.js', ['pstj.ds.jstype.Constructor'], ['pstj.ds.jstype.Function', 'pstj.ds.jstype.Type'], false);
 goog.addDependency('../../../apps/pstj/ds/jstype/extrator.js', ['pstj.ds.jstype.Extractor'], ['goog.array', 'goog.dom', 'pstj.ds.jstype.Constructor', 'pstj.ds.jstype.Method', 'pstj.ds.jstype.Namespace', 'pstj.ds.jstype.Parameter', 'pstj.ds.jstype.Property', 'pstj.ds.jstype.StaticMethod', 'pstj.ds.jstype.StaticProperty'], false);
 goog.addDependency('../../../apps/pstj/ds/jstype/function.js', ['pstj.ds.jstype.Function'], ['goog.array', 'pstj.ds.jstype.Record', 'pstj.ds.jstype.Type'], false);

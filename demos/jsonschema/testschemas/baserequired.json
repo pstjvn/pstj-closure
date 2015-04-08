@@ -1,0 +1,109 @@
+{
+  "$schema": "",
+  "title": "Base",
+  "description": "Basic test",
+  "type": "object",
+  "properties": {
+
+
+    "prop1": {
+      "description": "Number",
+      "type": "number"
+    },
+    "prop2": {
+      "description": "Number to string",
+      "type": "number",
+      "$_type": "string"
+    },
+    "prop3": {
+      "description": "Number to Date",
+      "type": "number",
+      "$_type": "Date"
+    },
+    "prop4": {
+      "description": "Number (alternate name)",
+      "type": "number",
+      "$_name": "custom4"
+    },
+    "prop5": {
+      "description": "Number to boolean",
+      "type": "number",
+      "$_type": "boolean"
+    },
+
+
+    "prop6": {
+      "description": "String",
+      "type": "string"
+
+    },
+    "prop7": {
+      "description": "String to number",
+      "type": "string",
+      "$_type": "number"
+    },
+    "prop8": {
+      "description": "String to Date",
+      "type": "string",
+      "$_type": "Date"
+    },
+    "prop9": {
+      "description": "String to boolean",
+      "type": "string",
+      "$_type": "boolean"
+    },
+    "prop10": {
+      "description": "String (alternate name)",
+      "type": "string",
+      "$_name": "custom10"
+    },
+
+
+    "prop11": {
+      "description": "Boolean",
+      "type": "boolean"
+    },
+    "prop12": {
+      "description": "Boolean (alternate name)",
+      "type": "boolean",
+      "$_name": "custom12"
+    },
+
+
+    "prop13": {
+      "description": "Array with template number",
+      "type": "array",
+      "items" : {
+        "type": "number"
+      }
+    },
+    "prop14": {
+      "description": "Array with template string",
+      "type": "array",
+      "items" : {
+        "type": "string"
+      }
+    },
+    "prop15": {
+      "description": "Array with template boolean",
+      "type": "array",
+      "items" : {
+        "type": "boolean"
+      }
+    },
+    "prop16": {
+      "description": "Array with template of Named Type",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$_reference": "forextend"
+      }
+    },
+    "prop17": {
+      "description": "Object with template named type",
+      "type": "object",
+      "$_reference": "forextend"
+    }
+  },
+  "required": "$_all"
+}

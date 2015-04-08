@@ -1,0 +1,13 @@
+{
+  "$schema": "",
+  "title": "BaseExt",
+  "description": "Extends the base object",
+  "$_extends": "base",
+  "type": "object",
+  "properties": {
+    "prop100": {
+      "description": "Additional string property",
+      "type": "string"
+    }
+  }
+}

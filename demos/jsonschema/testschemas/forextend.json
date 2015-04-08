@@ -1,0 +1,11 @@
+{
+  "$schema": "",
+  "title": "ForExtend",
+  "description": "Simple type, used for testing references",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    }
+  }
+}
