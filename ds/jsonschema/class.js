@@ -386,8 +386,8 @@ pstj.ds.jsonschema.Class = goog.defineClass(Buffer, {
     this.unindent();
     this.addLine('};');
     if (this.extends_ != 'pstj.ds.DtoBase') {
-      this.addLine('return goog.object.extend(exports, ' +
-          'goog.base(this, \'toJSON\'));');
+      this.addLine('return goog.object.extend(exports,' +
+          '\n        a.assertObject(goog.base(this, \'toJSON\')));');
     }
     this.unindent();
     this.addLine('}');
