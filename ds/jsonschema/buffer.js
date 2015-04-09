@@ -143,7 +143,28 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
     if (this.inCommentBlock_) {
       indent += this.commentMiddle;
     }
-    this.buffer_.push(indent + text + this.newLine);
+
+
+    var line = indent + text + this.newLine;
+    if (line.length > 78) {
+      // If we are in a comment it is okay to break on whitespace.
+      if (this.inCommentBlock_) {
+        var end = 78 - indent.length;
+        while (end > 1) {
+          end = end - 1;
+          if (text[end] == ' ') {
+            this.addLine(text.substr(0, end));
+            this.addLine(text.substr(end));
+            break;
+          }
+        }
+      } else {
+        // TODO: handle code splitting
+        this.buffer_.push(line);
+      }
+    } else {
+      this.buffer_.push(line);
+    }
   },
 
   /**
