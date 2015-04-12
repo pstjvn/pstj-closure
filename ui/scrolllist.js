@@ -146,6 +146,7 @@ pstj.ui.ScrollList.prototype.onResize = function() {
  * the class that will be used to set the styling for the items. The ID will be
  * assigned to the scroll DIV element.
  * @inheritDoc
+ * @suppress {accessControls}
  */
 pstj.ui.ScrollList.prototype.decorateInternal = function(element) {
   goog.base(this, 'decorateInternal', element);

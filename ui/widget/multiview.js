@@ -79,7 +79,7 @@ _.addChild = function(child, opt_render) {
   if (this.currentChild_) {
     child.setVisible(false);
   } else {
-    this.currentChild_ = child;
+    this.currentChild_ = /** @type {goog.ui.Control} */(child);
     child.setVisible(true);
   }
 };
