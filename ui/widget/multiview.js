@@ -72,6 +72,20 @@ _.findVisibleChild_ = function() {
 
 
 /**
+ * @inheritDoc
+ */
+_.addChild = function(child, opt_render) {
+  goog.base(this, 'addChild', child, opt_render);
+  if (this.currentChild_) {
+    child.setVisible(false);
+  } else {
+    this.currentChild_ = child;
+    child.setVisible(true);
+  }
+};
+
+
+/**
  * Handles the SHOW event from any child. The child's parent to checked to
  * match one of the direct children of the component.
  * @param {goog.events.Event} e The SHOW component event.
