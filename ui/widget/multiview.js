@@ -75,11 +75,13 @@ _.findVisibleChild_ = function() {
  * @inheritDoc
  */
 _.addChild = function(child, opt_render) {
+  goog.asserts.assertInstanceof(child, goog.ui.Control,
+      'MultiView child must be a control');
   goog.base(this, 'addChild', child, opt_render);
   if (this.currentChild_) {
     child.setVisible(false);
   } else {
-    this.currentChild_ = /** @type {goog.ui.Control} */(child);
+    this.currentChild_ = child;
     child.setVisible(true);
   }
 };
