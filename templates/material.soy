@@ -237,7 +237,8 @@
 {template .Button}
   {@param icon: string}
   {@param content: string}
-  <div is class="{css material-button}">
+  {@param? ink: bool}
+  <div is class="{css material-button}" {if $ink}ink{/if} use-pointer>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}
@@ -280,7 +281,7 @@
 /** Template for the material checkbox */
 {template .Checkbox}
   {@param content: string}
-  <div is class="{css material-checkbox}" role="checkbox">
+  <div is class="{css material-checkbox}" role="checkbox" use-pointer>
     <div class="{css material-checkbox-container}">
       <div class="{css material-checkbox-icon}"></div>
       {call .Ripple}
@@ -339,19 +340,36 @@
 {template .Input}
   {@param? label: string}
   {@param? error: string}
+  {@param? required: bool}
   {@param name: string}
   {@param type: string}
   {@param value: string}
-  <div is class="{css material-input}">
-    <label>{$label}</label>
-    <input
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="false"
-      value="{$value}"
-      type="{$type}"
-      name="{$name}">
-      <div class="{css material-input-error}">{$error}</div>
+  <div is class="{css material-input}" {if $required}required{/if}>
+    <div class="{css material-input-floated-label}"
+      aria-hidden="true">
+      <!-- needed for floating label animation measurement -->
+      <span class="{css material-input-floated-label-text}">{$label}</span>
+    </div>
+    <div class="{css material-input-body}">
+      <div class="{css material-input-body-label}">
+        <!-- needed for floating label animation measurement -->
+        <span class="{css material-input-body-label-text}">{$label}</span>
+      </div>
+      <input autocomplete="off" autocorrect="off"
+          autocapitalize="off" spellcheck="false" value="{$value}"
+          type="{$type}" name="{$name}" />
+    </div>
+    <div class="{css material-input-underline}">
+      <div class="{css material-input-not-focused-underline}"></div>
+      <div class="{css material-input-focused-underline}"></div>
+    </div>
+    <div class="{css material-input-footer}">
+      <div class="{css material-input-footer-error}">
+        <div class="{css material-input-footer-error-text}" role="alert">{$error}</div>
+        {call .IconContainer}
+          {param type: 'warning' /}
+        {/call}
+      </div>
+    </div>
   </div>
 {/template}

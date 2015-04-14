@@ -5,9 +5,9 @@
 @import "icon";
 @import "typography";
 
-@input-accent-color-inactive: grey;
+@input-accent-color-inactive: #757575;
 @input-accent-color: blue;
-@input-accent-color-invalid: red;
+@input-accent-color-invalid: #D34336;
 
 .material-input-base {
   display: inline-block;
@@ -21,143 +21,55 @@
   outline: none;
   text-align: inherit;
   padding: 0.75em 0;
-  // Set the color fo the floating label to match the color the main
-  // accent color
-  & .floating-label {
-    color: @input-accent-color;
+
+  // Native input
+  & input {
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0.5em 0 0.25em;
+    width: 100%;
   }
-  & .material-icon {
-    fill: @input-accent-color-invalid;
-  }
-  // The states supported as DISABLED, EMPTY, TRANSITIONING, INVALID, FOCUSED
-  // If the input has transitioning state we want the label text to be animatable
-  &-transition {
-    & .material-input-body-label-text {
-      &:extend(.animated);
-    }
-  }
-  &-empty {
-    & .material-input-body-label-text {
-      visibility: visible;
-    }
-  }
-  &-focused {
-    .material-input-underline-focused {
-      &:extend(.animated);
-      -webkit-transform: none;
-      /* @alternative */
-      transform: none;
-    }
-  }
-  &-invalid {
-    & .material-input-underline-focused {
-      background-color: @input-accent-color-invalid;
-    }
-    & .floating-label {
+
+
+  &-floated-label {
+    // &:extend(.invisible);
+    font-size: 0.75em;
+    background: transparent;
+    white-space: nowrap;
+    &-text {
       color: @input-accent-color-invalid;
-    }
-    & .material-input-body-cursor {
-      background-color: @input-accent-color-invalid;
-    }
-  }
-  &-disabled {
-    & &-underline {
-      border-bottom: 1px dashed #757575;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      max-width: 100%;
+      -moz-transform-origin: 0% 0%;
+      /* @alternative */
+      -webkit-transform-origin: 0% 0%;
+      /* @alternative */
+      transform-origin: 0% 0%;
     }
   }
 
-  // Default styling for the sub-components
-  &-error {
-    &:extend(.center);
-    &:extend(.horizontal);
-    color: @input-accent-color-invalid;
-    &-text {
-      &:extend(.auto);
-      &:extend(.flex);
-      font-size: 0.75em;
-      padding: 0.5em 0;
-    }
-    &-icon {
-      height: 20px;
-      width: 20px;
-    }
-  }
-  &:not(.material-input-invalid) &-error {
-    &:extend(.invisible);
-  }
-  &-underline {
-    &:extend(.relative);
-    height: 0px;
-    overflow: visible;
-    &-focused {
-      visibility: hidden;
-      height: 2px;
-      -webkit-transform: scale3d(0,1,1);
-      transform: scale3d(0,1,1);
-      &:extend(.fit);
-      background-color: @input-accent-color;
-    }
-    &-unfocused {
-      height: 1px;
-      &:extend(.fit);
-      background-color: @input-accent-color-inactive;
-    }
-  }
+
   &-body {
     &:extend(.flex);
     &:extend(.auto);
-    position: relative;
-    &-container {
-      position: absolute;
-      /* simulate padding so the input/textarea can use 100% width/height */
-      top: 0.5em;
-      right: 0;
-      bottom: 0.25em;
-      left: 0;
-      & input {
-        font: inherit;
-        color: inherit;
-        padding: 0;
-        margin: 0;
-        background-color: transparent;
-        border: none;
-        outline: none;
-        /* see comments in template */
-        width: 100%;
-        height: 100%;
-      }
-    }
-    &-cursor {
-      &:extend(.invisible);
-      background-color: @input-accent-color;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1px;
-      height: 1.4em;
-      -moz-transform-origin: 0%;
-      /* @alternative */
-      -webkit-transform-origin: 0%;
-      /* @alternative */
-      transform-origin: 0%;
-      opacity: 0.75;
-      -webkit-transform: translate3d(3em,0,0) scale3d(50,1,1);
-      /* @alternative */
-      transform: translate3d(3em,0,0) scale3d(50,1,1);
-      &.core-element-transition {
-        &:extend(.animated);
-        opacity: 0.4;
-        -webkit-transform: none;
-        /* @alternative */
-        transform: none;
-      }
-    }
+    &:extend(.relative);
     &-label {
+      &:extend(.fit);
+      // &:extend(.invisible);
       padding: 0.5em 0 0.25em;
       background: transparent;
       pointer-events: none;
       &-text {
-        &:extend(.invisible);
+
+        // &:extend(.invisible);
+
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -171,4 +83,93 @@
       }
     }
   }
+
+  &.material-input-transition
+  .material-input-body
+  .material-input-body-label
+  .material-input-body-label-text {
+    &:extend(.animated);
+  }
+
+  &-underline {
+    &:extend(.relative);
+    height: 0px;
+    overflow: visible;
+  }
+
+  &-focused-underline {
+    &:extend(.fit);
+    visibility: hidden;
+    height: 2px;
+    -webkit-transform: scale3d(0,1,1);
+    transform: scale3d(0,1,1);
+    background-color: @input-accent-color;
+  }
+
+  &-not-focused-underline {
+    &:extend(.fit);
+    height: 1px;
+    background-color: @input-accent-color-inactive;
+  }
+
+  &-footer {
+    &:extend(.end);
+    &:extend(.horizontal);
+    &-error {
+      visibility: hidden;
+      &:extend(.flex);
+      &:extend(.horizontal);
+      &:extend(.center);
+      color: @input-accent-color-invalid;
+      &-text {
+        &:extend(.flex);
+        &:extend(.auto);
+        font-size: 0.75em;
+        padding: 0.5em 0;
+      }
+    }
+  }
+
+  & .material-icon {
+    fill: @input-accent-color-invalid;
+    width: 20px;
+    height: 20px;
+  }
+
+  & .material-icon-container {
+    width: 20px;
+    height: 20px;
+  }
+
+  &-invalid {
+    .material-input-footer {
+      &-error {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.material-input.material-input-focused {
+  .material-input-focused-underline {
+    &:extend(.animated);
+    -webkit-transform: none;
+    /* @alternative */
+    transform: none;
+  }
+}
+
+
+.material-input-invalid {
+  .material-input-focused-underline {
+    background-color: @input-accent-color-invalid;
+  }
+}
+
+.material-input .material-input-floated-label-text {
+  color: @input-accent-color;
+}
+
+.material-input.material-input-invalid .material-input-floated-label-text {
+  color: @input-accent-color-invalid;
 }
