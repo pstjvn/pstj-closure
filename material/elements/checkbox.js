@@ -32,7 +32,9 @@ pstj.material.Checkbox = function(opt_content, opt_renderer, opt_domHelper) {
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
+  this.setSupportedState(goog.ui.Component.State.FOCUSED, true);
   this.setAutoStates(goog.ui.Component.State.CHECKED, true);
+  this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
   // We want to be active/slickable by default.
   this.setUsePointerAgent(true);
@@ -94,6 +96,19 @@ _.onTap = function(e) {
     this.setTransitioning(true);
     this.getChildAt(0).onTap(e);
   }
+};
+
+
+/** @inheritDoc */
+_.getKeyEventTarget = function() {
+  return this.getElement();
+};
+
+
+/** @override */
+_.handleKeyEventInternal = function(e) {
+  return (e.keyCode == goog.events.KeyCodes.ENTER || e.keyCode ==
+      goog.events.KeyCodes.SPACE) && this.performActionInternal(e);
 };
 
 
