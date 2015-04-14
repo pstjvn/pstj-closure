@@ -1,6 +1,7 @@
 goog.provide('pstj.ui.TableViewItem');
 goog.provide('pstj.ui.TableViewItemRenderer');
 
+goog.require('goog.ui.Control');
 goog.require('pstj.templates');
 goog.require('pstj.ui.ControlRenderer');
 goog.require('pstj.ui.ngAgent');
