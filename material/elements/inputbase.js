@@ -301,6 +301,11 @@ pstj.material.InputBase = goog.defineClass(E, {
         }
       }
     }
+
+    var isreq = element.getAttribute('required');
+    if (!goog.isNull(isreq)) {
+      this.required_ = true;
+    }
   },
 
   /** @override */
@@ -386,9 +391,11 @@ pstj.material.InputBaseRenderer = goog.defineClass(ER, {
   /** @override */
   generateTemplateData: function(instance) {
     goog.asserts.assertInstanceof(instance, pstj.material.InputBase);
+    var type = instance.type;
+    if (type != 'text' && type != 'password') type = 'text';
     return {
       name: instance.name,
-      type: instance.type,
+      type: type,
       value: instance.value,
       label: instance.label,
       error: instance.errorMessage

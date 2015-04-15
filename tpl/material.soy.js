@@ -315,7 +315,8 @@ if (goog.DEBUG) {
 /**
  * @param {{
  *    icon: string,
- *    content: string
+ *    content: string,
+ *    ink: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -326,7 +327,9 @@ pstj.material.template.Button = function(opt_data, opt_ignored) {
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   goog.asserts.assert(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), "expected param 'content' of type string|goog.soy.data.SanitizedContent.");
   var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '">' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: false, opacity: 0.3}) + '</div>');
+  goog.asserts.assert(opt_data.ink == null || goog.isBoolean(opt_data.ink), "expected param 'ink' of type boolean|null|undefined.");
+  var ink = /** @type {boolean|null|undefined} */ (opt_data.ink);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: false, opacity: 0.3}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Button.soyTemplateName = 'pstj.material.template.Button';
@@ -380,7 +383,7 @@ if (goog.DEBUG) {
 pstj.material.template.Checkbox = function(opt_data, opt_ignored) {
   goog.asserts.assert(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), "expected param 'content' of type string|goog.soy.data.SanitizedContent.");
   var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-checkbox') + '" role="checkbox"><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-checkbox') + '" role="checkbox" use-pointer><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Checkbox.soyTemplateName = 'pstj.material.template.Checkbox';
@@ -442,6 +445,7 @@ if (goog.DEBUG) {
  * @param {{
  *    label: (null|string|undefined),
  *    error: (null|string|undefined),
+ *    required: (boolean|null|undefined),
  *    name: string,
  *    type: string,
  *    value: string
@@ -455,13 +459,15 @@ pstj.material.template.Input = function(opt_data, opt_ignored) {
   var label = /** @type {null|string|undefined} */ (opt_data.label);
   goog.asserts.assert(opt_data.error == null || (opt_data.error instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.error), "expected param 'error' of type null|string|undefined.");
   var error = /** @type {null|string|undefined} */ (opt_data.error);
+  goog.asserts.assert(opt_data.required == null || goog.isBoolean(opt_data.required), "expected param 'required' of type boolean|null|undefined.");
+  var required = /** @type {boolean|null|undefined} */ (opt_data.required);
   goog.asserts.assert(goog.isString(opt_data.name) || (opt_data.name instanceof goog.soy.data.SanitizedContent), "expected param 'name' of type string|goog.soy.data.SanitizedContent.");
   var name = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.name);
   goog.asserts.assert(goog.isString(opt_data.type) || (opt_data.type instanceof goog.soy.data.SanitizedContent), "expected param 'type' of type string|goog.soy.data.SanitizedContent.");
   var type = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.type);
   goog.asserts.assert(goog.isString(opt_data.value) || (opt_data.value instanceof goog.soy.data.SanitizedContent), "expected param 'value' of type string|goog.soy.data.SanitizedContent.");
   var value = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.value);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input') + '"><label>' + soy.$$escapeHtml(label) + '</label><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="' + soy.$$escapeHtmlAttribute(value) + '" type="' + soy.$$escapeHtmlAttribute(type) + '" name="' + soy.$$escapeHtmlAttribute(name) + '"><div class="' + goog.getCssName('material-input-error') + '">' + soy.$$escapeHtml(error) + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input') + '" ' + ((required) ? 'required' : '') + '><div class="' + goog.getCssName('material-input-floated-label') + '" aria-hidden="true"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-floated-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><div class="' + goog.getCssName('material-input-body') + '"><div class="' + goog.getCssName('material-input-body-label') + '"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-body-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="' + soy.$$escapeHtmlAttribute(value) + '" type="' + soy.$$escapeHtmlAttribute(type) + '" name="' + soy.$$escapeHtmlAttribute(name) + '" /></div><div class="' + goog.getCssName('material-input-underline') + '"><div class="' + goog.getCssName('material-input-not-focused-underline') + '"></div><div class="' + goog.getCssName('material-input-focused-underline') + '"></div></div><div class="' + goog.getCssName('material-input-footer') + '"><div class="' + goog.getCssName('material-input-footer-error') + '"><div class="' + goog.getCssName('material-input-footer-error-text') + '" role="alert">' + soy.$$escapeHtml(error) + '</div>' + pstj.material.template.IconContainer({type: 'warning'}) + '</div></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Input.soyTemplateName = 'pstj.material.template.Input';

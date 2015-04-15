@@ -92,6 +92,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
     // Enable automatic entering of ACTIVE state (when pressed)
     this.setAutoStates(goog.ui.Component.State.ACTIVE, true);
+    this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
     // Enable automatic handlers for PRESS and RELEASE pointer events.
     this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS |
         pstj.material.EventMap.EventFlag.RELEASE);
@@ -327,6 +328,11 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     if (ripple) return goog.asserts.assertInstanceof(ripple,
         pstj.material.Ripple);
     return ripple;
+  },
+
+  /** @override */
+  getKeyEventTarget: function() {
+    return this.getElement();
   },
 
 

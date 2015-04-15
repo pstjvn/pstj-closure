@@ -59,6 +59,30 @@
 .core-fit {
   &:extend(.core-fill-position);
 }
+
+.core-flex-align-start-justified {
+  -ms-flex-pack: start;
+  /* @alternative */
+  -webkit-justify-content: flex-start;
+  /* @alternative */
+  justify-content: flex-start;
+}
+
+.core-flex-align-center-justified, .core-flex-align-center-center {
+  -ms-flex-pack: center;
+  /* @alternative */
+  -webkit-justify-content: center;
+  /* @alternative */
+  justify-content: center;
+}
+
+.core-flex-align-end-justified {
+  -ms-flex-pack: end;
+  /* @alternative */
+  -webkit-justify-content: flex-end;
+  /* @alternative */
+  justify-content: flex-end;
+}
 //////////////////////////////////////////
 // The official layout names.
 //////////////////////////////////////////
@@ -89,12 +113,29 @@
   &:extend(.core-flex-direction-row);
 }
 
+.vertical {
+  &:extend(.core-flex-display);
+  &:extend(.core-flex-vertical);
+}
+
 .center {
   &:extend(.core-flex-align-center);
 }
 
 .end {
   &:extend(.core-flex-align-end);
+}
+
+.start-justified {
+  &:extend(.core-flex-align-start-justified);
+}
+
+.center-justified {
+  &:extend(.core-flex-align-center-justified);
+}
+
+.end-justified {
+  &:extend(.core-flex-align-end-justified);
 }
 
 .animated {

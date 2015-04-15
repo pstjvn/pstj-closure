@@ -811,6 +811,16 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   },
 
 
+  isInvisibible: function() {
+    return this.hasState(State.INVISIBLE);
+  },
+
+
+  setInvisible: function(enable) {
+    this.setState(State.INVISIBLE, enable);
+  },
+
+
   /**
    * Getter for the auto events currently configured on the material element.
    * @return {number}
