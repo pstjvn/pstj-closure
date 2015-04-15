@@ -23,45 +23,56 @@ goog.scope(function() {
 * all control instances should filter the bus signals by the emitter.
 */
 pstj.control.Control = goog.defineClass(null, {
-  /**
-  * @constructor
-  * @param {string=} opt_topic Optional name topic for the bus.
-  * @struct
-  */
-  constructor: function(opt_topic) {
-    this.topic = opt_topic || 'default';
+  constructor: function() {
+    /**
+     * If the control have been initialized.
+     * @type {boolean}
+     */
+    this.initialized = false;
   },
 
+  /**
+   * Default initializer. Put everything you need to initilize here.
+   * @protected
+   */
+  init: function() {
+    this.initialized = true;
+  },
 
   /**
-  * Handles the events from the components/UI controls.
-  * By default it will stop the event propagation and elevate it to the bus
-  * system for the other controls to receive it.
-  * @param {goog.events.Event} e The event (could be any kind).
-  * @protected
-  */
-  handleEvents: function(e) {
-    // by default all events are fired to the bus
-    e.stopPropagation();
-    pstj.control.getBus().publish(this.topic, e);
+   * Pushes a new publication to the global application bus.
+   * @param {string} topic The topic we would like to push.
+   */
+  push: function(topic) {
+    pstj.control.Control.getBus().publish(topic);
+  },
+
+  /**
+   * Listen for updates on a selected topic.
+   * @param {string} topic [description]
+   * @param {Function} handler The method handler.
+   */
+  listen: function(topic, handler) {
+    pstj.control.Control.getBus().subscribe(topic, handler, this);
+  },
+
+  statics: {
+    /**
+     * Provides the global application bus.
+     * @type {goog.pubsub.PubSub}
+     * @private
+     * @final
+     */
+    appBus_: (new goog.pubsub.PubSub()),
+
+    /**
+     * Access to the instance for control bus.
+     * @return {goog.pubsub.PubSub}
+     */
+    getBus: function() {
+      return pstj.control.Control.appBus_;
+    }
   }
 });
-
-
-/**
-* @type {goog.pubsub.PubSub}
-* @private
-* @final
-*/
-pstj.control.Control.bus_ = new goog.pubsub.PubSub();
-
-
-/**
-* Access to the instance for control bus.
-* @return {goog.pubsub.PubSub}
-*/
-pstj.control.getBus = function() {
-  return pstj.control.Control.bus_;
-};
 
 });  // goog.scope
