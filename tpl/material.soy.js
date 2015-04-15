@@ -446,6 +446,7 @@ if (goog.DEBUG) {
  *    label: (null|string|undefined),
  *    error: (null|string|undefined),
  *    required: (boolean|null|undefined),
+ *    pattern: (null|string|undefined),
  *    name: string,
  *    type: string,
  *    value: string
@@ -461,13 +462,15 @@ pstj.material.template.Input = function(opt_data, opt_ignored) {
   var error = /** @type {null|string|undefined} */ (opt_data.error);
   goog.asserts.assert(opt_data.required == null || goog.isBoolean(opt_data.required), "expected param 'required' of type boolean|null|undefined.");
   var required = /** @type {boolean|null|undefined} */ (opt_data.required);
+  goog.asserts.assert(opt_data.pattern == null || (opt_data.pattern instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.pattern), "expected param 'pattern' of type null|string|undefined.");
+  var pattern = /** @type {null|string|undefined} */ (opt_data.pattern);
   goog.asserts.assert(goog.isString(opt_data.name) || (opt_data.name instanceof goog.soy.data.SanitizedContent), "expected param 'name' of type string|goog.soy.data.SanitizedContent.");
   var name = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.name);
   goog.asserts.assert(goog.isString(opt_data.type) || (opt_data.type instanceof goog.soy.data.SanitizedContent), "expected param 'type' of type string|goog.soy.data.SanitizedContent.");
   var type = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.type);
   goog.asserts.assert(goog.isString(opt_data.value) || (opt_data.value instanceof goog.soy.data.SanitizedContent), "expected param 'value' of type string|goog.soy.data.SanitizedContent.");
   var value = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.value);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input') + '" ' + ((required) ? 'required' : '') + '><div class="' + goog.getCssName('material-input-floated-label') + '" aria-hidden="true"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-floated-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><div class="' + goog.getCssName('material-input-body') + '"><div class="' + goog.getCssName('material-input-body-label') + '"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-body-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="' + soy.$$escapeHtmlAttribute(value) + '" type="' + soy.$$escapeHtmlAttribute(type) + '" name="' + soy.$$escapeHtmlAttribute(name) + '" /></div><div class="' + goog.getCssName('material-input-underline') + '"><div class="' + goog.getCssName('material-input-not-focused-underline') + '"></div><div class="' + goog.getCssName('material-input-focused-underline') + '"></div></div><div class="' + goog.getCssName('material-input-footer') + '"><div class="' + goog.getCssName('material-input-footer-error') + '"><div class="' + goog.getCssName('material-input-footer-error-text') + '" role="alert">' + soy.$$escapeHtml(error) + '</div>' + pstj.material.template.IconContainer({type: 'warning'}) + '</div></div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input') + '" use-pointer' + ((required) ? ' required' : '') + ' ' + ((pattern) ? ' pattern="' + soy.$$escapeHtmlAttribute(pattern) + '"' : '') + '><div class="' + goog.getCssName('material-input-floated-label') + '" aria-hidden="true"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-floated-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><div class="' + goog.getCssName('material-input-body') + '"><div class="' + goog.getCssName('material-input-body-label') + '"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-body-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="' + soy.$$escapeHtmlAttribute(value) + '" type="' + soy.$$escapeHtmlAttribute(type) + '" name="' + soy.$$escapeHtmlAttribute(name) + '" /></div><div class="' + goog.getCssName('material-input-underline') + '"><div class="' + goog.getCssName('material-input-not-focused-underline') + '"></div><div class="' + goog.getCssName('material-input-focused-underline') + '"></div></div><div class="' + goog.getCssName('material-input-footer') + '"><div class="' + goog.getCssName('material-input-footer-error') + '"><div class="' + goog.getCssName('material-input-footer-error-text') + '" role="alert">' + soy.$$escapeHtml(error) + '</div>' + pstj.material.template.IconContainer({type: 'warning'}) + '</div></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Input.soyTemplateName = 'pstj.material.template.Input';

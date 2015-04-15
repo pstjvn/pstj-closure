@@ -341,10 +341,12 @@
   {@param? label: string}
   {@param? error: string}
   {@param? required: bool}
+  {@param? pattern: string}
   {@param name: string}
   {@param type: string}
   {@param value: string}
-  <div is class="{css material-input}" {if $required}required{/if}>
+  <div is class="{css material-input}" use-pointer
+    {if $required}{sp}required{/if} {if $pattern}{sp}pattern="{$pattern}"{/if}>
     <div class="{css material-input-floated-label}"
       aria-hidden="true">
       <!-- needed for floating label animation measurement -->
