@@ -29,12 +29,13 @@ body {
     @color: @typography-color,
     @opacity: 87,
     @size: 40px,
-    @weight: @typography-weight-regular
+    @weight: @typography-weight-regular,
+    @lineheight: @size
 ) {
   color: fade(@color, @opacity);
   font-size: @size;
   font-weight: @weight;
-  line-height: @size;
+  line-height: @lineheight;
 }
 
 // Named mixins
@@ -54,3 +55,6 @@ body {
   text-transform: uppercase;
 }
 
+.defaultinput (@color) {
+  .typography(@color, 87, 14px, @typography-weight-light, 15px);
+}
