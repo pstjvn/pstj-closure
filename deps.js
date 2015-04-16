@@ -8,7 +8,7 @@ goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test']
 goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], [], false);
 goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configure_test'], ['pstj.configure'], false);
 goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], ['goog.Disposable', 'goog.asserts', 'goog.events.EventHandler'], false);
-goog.addDependency('../../../apps/pstj/control/control.js', ['pstj.control.Control'], ['goog.pubsub.PubSub'], false);
+goog.addDependency('../../../apps/pstj/control/control.js', ['pstj.control.Control'], ['goog.events.EventHandler', 'goog.pubsub.PubSub'], false);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string'], false);
 goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.PubSub'], false);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object', 'pstj.debug'], false);

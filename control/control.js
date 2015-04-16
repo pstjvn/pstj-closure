@@ -1,5 +1,6 @@
 goog.provide('pstj.control.Control');
 
+goog.require('goog.events.EventHandler');
 goog.require('goog.pubsub.PubSub');
 
 goog.scope(function() {
@@ -29,6 +30,12 @@ pstj.control.Control = goog.defineClass(null, {
      * @type {boolean}
      */
     this.initialized = false;
+    /**
+     * Default event handler for dealing with events from compisited components.
+     * @type {goog.events.EventHandler}
+     * @private
+     */
+    this.handler_ = new goog.events.EventHandler(this);
   },
 
   /**
@@ -54,6 +61,14 @@ pstj.control.Control = goog.defineClass(null, {
    */
   listen: function(topic, handler) {
     pstj.control.Control.getBus().subscribe(topic, handler, this);
+  },
+
+  /**
+   * Accessor for the default handler.
+   * @return {goog.events.EventHandler}
+   */
+  getHandler: function() {
+    return this.handler_;
   },
 
   statics: {
