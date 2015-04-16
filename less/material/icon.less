@@ -42,12 +42,24 @@
     }
   }
   // Generalized 'come-in' animation for icons (when svg is replaced).
-  &[type="from-none-to-user"], &[type="from-none-to-menu"], &[type="from-none-to-plus"], &[type="from-none-to-cast-ready"], &[type="from-none-to-cast-active"] {
+  &[type="from-none-to-user"],
+  &[type="from-none-to-warning"],
+  &[type="from-none-to-menu"],
+  &[type="from-none-to-plus"],
+  &[type="from-none-to-cast-ready"],
+  &[type="from-none-to-cast-active"] {
     &:extend(.icon-scaleup);
   }
 
   // Generalized 'go out' animation for icons (when svg is replaced).
-  &[type="from-user-to-none"], &[type="from-menu-to-none"], &[type="from-plus-to-none"], &[type="from-back-arrow-to-none"], &[type="from-forward-arrow-to-none"], &[type="from-cast-ready-to-none"], &[type="from-cast-active-to-none"] {
+  &[type="from-user-to-none"],
+  &[type="from-warning-to-none"],
+  &[type="from-menu-to-none"],
+  &[type="from-plus-to-none"],
+  &[type="from-back-arrow-to-none"],
+  &[type="from-forward-arrow-to-none"],
+  &[type="from-cast-ready-to-none"],
+  &[type="from-cast-active-to-none"] {
     &:extend(.icon-fadeout);
   }
 }

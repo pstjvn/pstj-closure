@@ -297,7 +297,10 @@ pstj.material.InputBase = goog.defineClass(E, {
         this.setValidityPattern(pattern);
       } else {
         if (this.type == 'tel') {
-          this.validityPattern_ = /^\+?\d{3,12}$/;
+          this.validityPattern_ = pstj.material.InputBase.RegExps.TEL;
+        }
+        if (this.type == 'email') {
+          this.validityPattern_ = pstj.material.InputBase.RegExps.EMAIL;
         }
       }
     }
@@ -363,6 +366,19 @@ pstj.material.InputBase = goog.defineClass(E, {
    */
   getKeyEventTarget: function() {
     return this.inputElement;
+  },
+
+  statics: {
+    /**
+     * Provides the RE for inputs of known types.
+     * @enum {!RegExp}
+     */
+    RegExps: {
+      TEL: /^\+?\d{3,12}$/,
+      EMAIL: new RegExp(
+          '^[+a-zA-Z0-9_.!#$%&\'*\\/=?^`{|}~-]+@([a-zA-Z0-9-]+\\.)+' +
+          '[a-zA-Z0-9]{2,63}$')
+    }
   }
 });
 

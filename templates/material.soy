@@ -168,7 +168,7 @@
   {@param? content: string}
   {@param? name: string}
   {@param? value: string}
-  <div is class="{css material-radio-button}" role="radio" tabindex="0" name="{$name}" value="{$value}">
+  <div is class="{css material-radio-button}" use-pointer role="radio" tabindex="0" name="{$name}" value="{$value}">
     <div class="{css material-radio-button-container}">
       <div class="{css material-radio-button-off}"></div>
       <div class="{css material-radio-button-on}"></div>
@@ -341,10 +341,12 @@
   {@param? label: string}
   {@param? error: string}
   {@param? required: bool}
+  {@param? pattern: string}
   {@param name: string}
   {@param type: string}
   {@param value: string}
-  <div is class="{css material-input}" {if $required}required{/if}>
+  <div is class="{css material-input}" use-pointer
+    {if $required}{sp}required{/if} {if $pattern}{sp}pattern="{$pattern}"{/if}>
     <div class="{css material-input-floated-label}"
       aria-hidden="true">
       <!-- needed for floating label animation measurement -->

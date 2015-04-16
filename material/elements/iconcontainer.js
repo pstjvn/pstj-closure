@@ -155,6 +155,15 @@ pstj.material.IconContainer = goog.defineClass(E, {
     }
   },
 
+  /** @override */
+  addMaterialChildren: function() {
+    goog.base(this, 'addMaterialChildren');
+    var type = this.getElement().getAttribute('type');
+    if (!type) type = 'none';
+    // set icon - will update the type and set the icon internally.
+    this.setIcon(/** @type {pstj.material.icon.Name} */(type));
+  },
+
 
   /**
    * Easier way to get to a suitable renderer for an icon type.
@@ -324,17 +333,6 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
   /** @inheritDoc */
   getCssClass: function() {
     return pstj.material.IconContainerRenderer.CSS_CLASS;
-  },
-
-
-  /** @inheritDoc */
-  decorate: function(control, element) {
-    var e = goog.base(this, 'decorate', control, element);
-    var type = element.getAttribute('type');
-    if (!type) type = 'none';
-    // set icon - will update the type and set the icon internally.
-    control.setIcon(type);
-    return e;
   },
 
 

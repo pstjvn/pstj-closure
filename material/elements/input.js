@@ -12,6 +12,7 @@ goog.require('goog.string');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.lab.style.css');
+goog.require('pstj.material.EventMap');
 goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.InputBase');
 goog.require('pstj.material.InputBaseRenderer');
@@ -57,6 +58,8 @@ pstj.material.Input = goog.defineClass(IB, {
     // Enable additional states used by the material design.
     this.setSupportedState(state.INVISIBLE, true);
     this.setSupportedState(state.TRANSITIONING, true);
+    // we need the press for the effect
+    this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS);
   },
 
 
@@ -252,9 +255,9 @@ pstj.material.InputRenderer = goog.defineClass(IBR, {
   setUnderlineTransformationOrigin: function(input, x) {
     goog.style.setStyle(input.getNamedElement(
         pstj.material.Input.Name.FOCUSED_UNDERLINE),
-        'transformOriginX', (x - goog.style.getBounds(
+        'transformOrigin', (x - goog.style.getBounds(
             input.getNamedElement(pstj.material.Input.Name.UNDERLINE)).left) +
-            'px');
+            'px 0');
   },
 
   statics: {
