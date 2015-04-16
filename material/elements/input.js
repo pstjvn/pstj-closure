@@ -255,9 +255,9 @@ pstj.material.InputRenderer = goog.defineClass(IBR, {
   setUnderlineTransformationOrigin: function(input, x) {
     goog.style.setStyle(input.getNamedElement(
         pstj.material.Input.Name.FOCUSED_UNDERLINE),
-        'transformOriginX', (x - goog.style.getBounds(
+        'transformOrigin', (x - goog.style.getBounds(
             input.getNamedElement(pstj.material.Input.Name.UNDERLINE)).left) +
-            'px');
+            'px 0');
   },
 
   statics: {
