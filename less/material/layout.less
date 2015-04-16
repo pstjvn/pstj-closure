@@ -53,7 +53,22 @@
   -webkit-align-items: flex-end;
   /* @alternative */
   align-items: flex-end;
+}
 
+.core-flex-shrink(@val: 0) {
+  -ms-flex-shrink: @val;
+  /* @alternative */
+  -webkit-flex-shrink: @val;
+  /* @alternative */
+  flex-shrink: @val;
+}
+
+.core-flex-grow(@val: 0) {
+  -ms-flex-grow: @val;
+  /* @alternative */
+  -webkit-flex-grow: @val;
+  /* @alternative */
+  flex-grow: @val;
 }
 
 .core-fit {
