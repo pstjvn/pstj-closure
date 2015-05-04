@@ -138,10 +138,6 @@ _.setEnabled = function(enable) {
 _.onCheckHandler = function(e) {
   // Stop the check/uncheck events, instead we use CHANGE from here on.
   e.stopPropagation();
-  if (!this.isEnabled()) {
-    e.preventDefault();
-    return;
-  }
 
   // Update values if checking
   if (e.type == goog.ui.Component.EventType.CHECK) {
@@ -206,7 +202,8 @@ _.addMaterialChildren = function() {
       }, this);
       // At the end if we still do not have selected child select the first one
       if (this.getChildCount() > 0) {
-        var c = this.getChildAt(0);
+        var c = goog.asserts.assertInstanceof(this.getChildAt(0),
+            pstj.material.RadioButton);
         this.value = c.value;
         this.selectedChild_ = c;
         c.setChecked(true);
