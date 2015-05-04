@@ -204,6 +204,13 @@ _.addMaterialChildren = function() {
           this.selectedChild_ = child;
         }
       }, this);
+      // At the end if we still do not have selected child select the first one
+      if (this.getChildCount() > 0) {
+        var c = this.getChildAt(0);
+        this.value = c.value
+        this.selectedChild_ = c;
+        c.setChecked(true);
+      }
     } else {
       this.forEachChild(function(child) {
         if (child.value == this.value) {
