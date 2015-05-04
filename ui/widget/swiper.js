@@ -10,6 +10,7 @@ goog.provide('pstj.widget.Swiper');
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
 goog.require('goog.log');
+goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.ds.dto.SwipetileList');
@@ -134,10 +135,12 @@ pstj.widget.Swiper = goog.defineClass(E, {
   onSwipe: function(e) {
     if (e.getSwipe().isLeft()) {
       if (this.selectedIndex < this.getChildCount() - 1) {
-        this.selectedIndex++;
+        this.setSelectedIndex(this.selectedIndex + 1);
       }
     } else if (e.getSwipe().isRight()) {
-      if (this.selectedIndex > 0) this.selectedIndex--;
+      if (this.selectedIndex > 0) {
+        this.setSelectedIndex(this.selectedIndex - 1);
+      }
     }
   },
 
@@ -161,6 +164,8 @@ pstj.widget.Swiper = goog.defineClass(E, {
    * If the selected index is out of range nothing will be done. In debug
    * mode an error will be displayed using the Logger interface.
    *
+   * TODO: finish this functionality
+   *
    * @param {number} index The index to make active in the view.
    */
   selectIndex: function(index) {
@@ -173,13 +178,31 @@ pstj.widget.Swiper = goog.defineClass(E, {
   },
 
   /**
+   * Setter for the selected index
+   * @param {number} idx The index to set as selected
+   * @protected
+   */
+  setSelectedIndex: function(idx) {
+    this.selectedIndex = idx;
+    this.dispatchEvent(goog.ui.Component.EventType.SELECT);
+  },
+
+  /**
+   * Public accessor for the selected index.
+   * @return {number}
+   */
+  getSelectedIndex: function() {
+    return this.selectedIndex;
+  },
+
+  /**
    * Selected the next index in children so we can anmate the story.
    */
   goToNext: function() {
     if (this.selectedIndex + 1 < this.getChildCount()) {
-      this.selectedIndex++;
+      this.setSelectedIndex(this.selectedIndex + 1);
     } else {
-      this.selectedIndex = 0;
+      this.setSelectedIndex(0);
     }
     this.resetView_();
     this.goToNextDelayed_.start();
