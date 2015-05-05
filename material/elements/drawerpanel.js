@@ -444,7 +444,6 @@ pstj.material.DrawerPanelRenderer = goog.defineClass(ER, {
    * @param {pstj.material.DrawerPanel} instance
    */
   setNarrow: function(instance) {
-    console.log('Setting narrow drawer', instance.isNarrow());
     goog.style.setStyle(instance.getMainPanel().getElement(), 'left',
         (instance.isNarrow()) ? 0 : instance.getDrawerWidth() + 'px');
   },
