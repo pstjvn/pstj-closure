@@ -456,6 +456,10 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.setSupportedState(goog.ui.Component.State.ALLALL, false);
     this.setAutoStates(goog.ui.Component.State.ALLALL, false);
     this.setDispatchTransitionEvents(goog.ui.Component.State.ALLALL, false);
+
+    // Reset text selection settings - we want to be able to use that and only
+    // prohibit it where it makes sense.
+    this.setAllowTextSelection(true);
   },
 
 
