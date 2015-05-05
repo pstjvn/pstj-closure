@@ -154,6 +154,7 @@ pstj.ds.Cache.count_ = 0;
  * @return {pstj.ds.Cache}
  */
 pstj.ds.Cache.create = function(opt_name) {
+  // TODO: refactor this to use logging infrastructure.
   if (goog.DEBUG) {
     pstj.ds.Cache.count_++;
     console.log('Cache containers count:' + pstj.ds.Cache.count_);
