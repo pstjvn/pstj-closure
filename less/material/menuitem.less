@@ -8,6 +8,7 @@
 .material-menu-item {
   min-height: 40px;
   cursor: default;
+  .menu(@menu-color);
   &:extend(.horizontal);
   &:extend(.center);
 
@@ -24,9 +25,5 @@
     .material-icon-container {
       display: none;
     }
-  }
-
-  & .core-item {
-    .menu(@menu-color);
   }
 }
