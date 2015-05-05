@@ -35,6 +35,7 @@ goog.provide('pstj.material.DrawerPanelRenderer');
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 goog.require('goog.style');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -139,7 +140,6 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
   /** @override */
   addMaterialChildren: function() {
     goog.base(this, 'addMaterialChildren');
-
     this.getDrawerPanel().setSupportedState(
         goog.ui.Component.State.SELECTED, true);
     this.getMainPanel().setSupportedState(
@@ -180,6 +180,9 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     (new goog.async.AnimationDelay(function() {
       this.setTransitioning(true);
     }, this.getDomHelper().getWindow(), this)).start();
+    // Call this because we are often rendererd with delay and the left
+    // property is not set correctly
+    this.onMediaChange(null);
   },
 
   /** @override */
@@ -240,9 +243,14 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     // toggle the sidebar. The overlay component is sitting
     // on top of the shadow component, make sure to protect that order for
     // this to work.
-    if (e.getSourceElement() == this.getMainPanel()
-        .getOverlayComponent().getElement()) {
-
+    //
+    // NOTE: this is not working great; the order of components is not
+    // preserved when adding them imperatively: the new children are
+    // rendered in the content div but the order to access them is
+    // changed and thus to keep it simple is best if we can check for the
+    // element directly instead of looking up the overlay component
+    if (goog.dom.classlist.contains(e.getSourceElement(), goog.getCssName(
+        'material-panel-overlay'))) {
       this.toggleDrawer();
     }
   },
@@ -259,8 +267,8 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
       } else {
         // If the drawer is selected (thus visible) swiping on the scrim can
         // hide it.
-        if (e.getSourceElement() == this.getMainPanel()
-            .getOverlayComponent().getElement()) {
+        if (goog.dom.classlist.contains(e.getSourceElement(), goog.getCssName(
+            'material-panel-overlay'))) {
           this.setDragging(true);
           // potentially hide the scrim.
         }
@@ -436,6 +444,7 @@ pstj.material.DrawerPanelRenderer = goog.defineClass(ER, {
    * @param {pstj.material.DrawerPanel} instance
    */
   setNarrow: function(instance) {
+    console.log('Setting narrow drawer', instance.isNarrow());
     goog.style.setStyle(instance.getMainPanel().getElement(), 'left',
         (instance.isNarrow()) ? 0 : instance.getDrawerWidth() + 'px');
   },
