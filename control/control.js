@@ -40,7 +40,6 @@ pstj.control.Control = goog.defineClass(null, {
 
   /**
    * Default initializer. Put everything you need to initilize here.
-   * @protected
    */
   init: function() {
     this.initialized = true;
@@ -49,9 +48,10 @@ pstj.control.Control = goog.defineClass(null, {
   /**
    * Pushes a new publication to the global application bus.
    * @param {string} topic The topic we would like to push.
+   * @param {*=} opt_data Data to send with the signal.
    */
-  push: function(topic) {
-    pstj.control.Control.getBus().publish(topic);
+  push: function(topic, opt_data) {
+    pstj.control.Control.getBus().publish(topic, opt_data);
   },
 
   /**
