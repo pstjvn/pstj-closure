@@ -404,7 +404,7 @@ pstj.material.template.MenuItem = function(opt_data, opt_ignored) {
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   goog.asserts.assert(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), "expected param 'content' of type null|string|undefined.");
   var content = /** @type {null|string|undefined} */ (opt_data.content);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-menu-item') + '">' + pstj.material.template.IconContainer({type: icon}) + '<div class="' + goog.getCssName('material-menu-item-content') + '">' + pstj.material.template.Item(opt_data) + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-menu-item') + ' ' + goog.getCssName('core-tap') + '" use-pointer>' + pstj.material.template.IconContainer({type: icon}) + '<div class="' + goog.getCssName('material-menu-item-content') + '">' + pstj.material.template.Item(opt_data) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.MenuItem.soyTemplateName = 'pstj.material.template.MenuItem';

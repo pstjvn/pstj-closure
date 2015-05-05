@@ -28,6 +28,8 @@ pstj.material.MenuItem = goog.defineClass(pstj.material.Element, {
     this.setSupportedState(goog.ui.Component.State.EMPTY, true);
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.SELECTED, true);
+    this.setDispatchTransitionEvents(goog.ui.Component.State.SELECTED, true);
+    this.setUsePointerAgent(true);
     // by default we do not have an icon.
     this.setEmpty(true);
   },
@@ -49,6 +51,13 @@ pstj.material.MenuItem = goog.defineClass(pstj.material.Element, {
       this.getChildAt(1).setContent(c);
     }
     this.setContentInternal(c);
+  },
+
+  /** @override */
+  onTap: function(e) {
+    if (this.isEnabled()) {
+      this.setSelected(true);
+    }
   }
 });
 

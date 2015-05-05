@@ -298,7 +298,7 @@
 {template .MenuItem}
   {@param icon: string}
   {@param? content: string}
-  <div is class="{css material-menu-item}">
+  <div is class="{css material-menu-item} {css core-tap}" use-pointer>
     {call .IconContainer}
       {param type: $icon /}
     {/call}
