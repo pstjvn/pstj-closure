@@ -258,6 +258,7 @@ pstj.widget.SwiperRenderer = goog.defineClass(ER, {
     CSS_CLASS: goog.getCssName('pstj-swiper')
   }
 });
+goog.addSingletonGetter(pstj.widget.SwiperRenderer);
 
 // Register for default renderer.
 goog.ui.registry.setDefaultRenderer(pstj.widget.Swiper,
