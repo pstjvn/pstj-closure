@@ -23,6 +23,9 @@ goog.require('goog.events.EventHandler');
  * Provides the basic control flow.
  * @constructor
  * @extends {goog.Disposable}
+ * @deprecated Bad design, controls should not be in hierarchical structure.
+ * Instead use {pstj.control.Control} - by design it communicates to everyone
+ * who listens for a certain topic.
  */
 pstj.control.Base = function() {
   goog.base(this);
