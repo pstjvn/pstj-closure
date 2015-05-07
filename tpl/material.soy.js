@@ -347,7 +347,7 @@ if (goog.DEBUG) {
 pstj.material.template.IconButton = function(opt_data, opt_ignored) {
   goog.asserts.assert(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), "expected param 'icon' of type string|goog.soy.data.SanitizedContent.");
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-icon-button') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.IconContainer({type: icon}) + '</div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-icon-button') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.IconContainer({type: icon}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.IconButton.soyTemplateName = 'pstj.material.template.IconButton';

@@ -256,7 +256,7 @@
 /** Provides the template for the simple icon button */
 {template .IconButton}
   {@param icon: string}
-  <div class="{css material-icon-button}" use-pointer icon="{$icon}">
+  <div is class="{css material-icon-button}" use-pointer icon="{$icon}">
     {call .IconContainer}
       {param type: $icon /}
     {/call}
