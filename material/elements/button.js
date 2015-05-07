@@ -96,6 +96,8 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     // Enable automatic handlers for PRESS and RELEASE pointer events.
     this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS |
         pstj.material.EventMap.EventFlag.RELEASE);
+    // Dissallow text selection by accident
+    this.setAllowTextSelection(false);
     // Use the pointer agent to subscribe to DOM events.
     this.setUsePointerAgent(true);
   },
