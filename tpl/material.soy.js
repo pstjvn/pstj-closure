@@ -329,10 +329,28 @@ pstj.material.template.Button = function(opt_data, opt_ignored) {
   var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
   goog.asserts.assert(opt_data.ink == null || goog.isBoolean(opt_data.ink), "expected param 'ink' of type boolean|null|undefined.");
   var ink = /** @type {boolean|null|undefined} */ (opt_data.ink);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: false, opacity: 0.3}) + '</div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: false, opacity: 0.3}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Button.soyTemplateName = 'pstj.material.template.Button';
+}
+
+
+/**
+ * @param {{
+ *    icon: string
+ * }} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.template.IconButton = function(opt_data, opt_ignored) {
+  goog.asserts.assert(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), "expected param 'icon' of type string|goog.soy.data.SanitizedContent.");
+  var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-icon-button') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.IconContainer({type: icon}) + '</div>');
+};
+if (goog.DEBUG) {
+  pstj.material.template.IconButton.soyTemplateName = 'pstj.material.template.IconButton';
 }
 
 

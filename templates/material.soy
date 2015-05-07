@@ -238,7 +238,7 @@
   {@param icon: string}
   {@param content: string}
   {@param? ink: bool}
-  <div is class="{css material-button}" {if $ink}ink{/if} use-pointer>
+  <div is class="{css material-button}" {if $ink}ink{/if} use-pointer icon="{$icon}">
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}
@@ -253,6 +253,15 @@
   </div>
 {/template}
 
+/** Provides the template for the simple icon button */
+{template .IconButton}
+  {@param icon: string}
+  <div class="{css material-icon-button}" use-pointer icon="{$icon}">
+    {call .IconContainer}
+      {param type: $icon /}
+    {/call}
+  </div>
+{/template}
 
 /**
  * Provides the icon container.
