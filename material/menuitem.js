@@ -25,13 +25,10 @@ pstj.material.MenuItem = goog.defineClass(pstj.material.Element, {
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     goog.base(this, opt_content, opt_renderer, opt_domHelper);
-    this.setSupportedState(goog.ui.Component.State.EMPTY, true);
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.SELECTED, true);
     this.setDispatchTransitionEvents(goog.ui.Component.State.SELECTED, true);
     this.setUsePointerAgent(true);
-    // by default we do not have an icon.
-    this.setEmpty(true);
   },
 
   /**
@@ -39,7 +36,6 @@ pstj.material.MenuItem = goog.defineClass(pstj.material.Element, {
    * @param {pstj.material.icon.Name} icon The icon name.
    */
   setIcon: function(icon) {
-    this.setEmpty(icon == pstj.material.icon.Name.NONE);
     goog.asserts.assertInstanceof(this.getChildAt(0),
         pstj.material.IconContainer).setIcon(icon);
   },
