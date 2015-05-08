@@ -79,13 +79,14 @@ pstj.material.Wave = function() {
    * @type {Element}
    * @private
    */
-  this.waveContainer_ = null;
+  this.waveContainer_ = dom.createDom('div',
+      goog.getCssName('wave-container'));
   /**
    * Inner in-script created element (wave, inner).
    * @type {Element}
    * @private
    */
-  this.wave_ = null;
+  this.wave_ = dom.createDom('div', goog.getCssName('wave'));
   /**
    * The .bg element in the Ripple container element. Extracted from the
    * submitted element.
@@ -176,12 +177,7 @@ pstj.material.Wave = function() {
    * @type {number}
    * @private
    */
-  this.opacityDecayVelocity_ = 0.8;
-  // Setup cached DOM nodes.
-  this.wave_ = dom.createDom('div', goog.getCssName('wave'));
-  this.waveContainer_ = dom.createDom('div',
-      goog.getCssName('wave-container'));
-  dom.appendChild(this.waveContainer_, this.wave_);
+  this.opacityDecayVelocity_ = pstj.material.Wave.OpacityDecayVelocity_;
   /**
    * Cached delayed call to complete a tap gesture. Used when the tap
    * event is bound to the wave instead of the touchstart-touchend pair.
@@ -190,13 +186,16 @@ pstj.material.Wave = function() {
    * @private
    */
   this.delay_ = new goog.async.Delay(this.completeTap_, 70, this);
-
   /**
    * Caches the wave radius and the denominator. Saves a few calculations.
    * @type {Array<number>}
    * @private
    */
   this.cache_ = [0, 0, 0, 0];
+
+  // Setup cached DOM nodes.
+  dom.appendChild(this.waveContainer_, this.wave_);
+
 };
 goog.inherits(pstj.material.Wave, goog.Disposable);
 
@@ -634,7 +633,8 @@ pstj.material.Wave.InitialOpacity_ = 0.25;
  * @final
  * @private
  */
-pstj.material.Wave.OpacityDecayVelocity_ = 0.8;
+pstj.material.Wave.OpacityDecayVelocity_ = (
+    pstj.material.Wave.USE_NATIVE_RIPPLE ? 0.8 : 1.25);
 
 
 /**
