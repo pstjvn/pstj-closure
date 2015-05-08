@@ -11,6 +11,7 @@ goog.require('goog.format.EmailAddress');
 goog.require('goog.string');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
+goog.require('goog.userAgent.product');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.IconContainer');
@@ -164,6 +165,11 @@ pstj.material.Input = goog.defineClass(IB, {
   /** @override */
   onPress: function(e) {
     goog.base(this, 'onPress', e);
+    // On iOS the touch is ignored because we prevent the touchend event
+    // in the pointer agent so we need to focus the input here.
+    if (goog.userAgent.product.IPAD || goog.userAgent.product.IPHONE) {
+      this.inputElement.focus();
+    }
     this.getRenderer().setUnderlineTransformationOrigin(this, e.getPoint().x);
   },
 
