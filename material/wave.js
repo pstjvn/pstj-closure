@@ -616,7 +616,7 @@ pstj.material.Wave.pressAnimationDuration_ = 2000;
  * @final
  * @private
  */
-pstj.material.Wave.releaseAnimationDuration_ = 350;
+pstj.material.Wave.releaseAnimationDuration_ = 200;
 
 
 /**
