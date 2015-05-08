@@ -3,7 +3,6 @@
 
 /**
  * @fileoverview Templates in namespace pstj.select.
- * @public
  */
 
 goog.provide('pstj.select');
@@ -13,7 +12,7 @@ goog.require('soydata');
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -27,7 +26,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}

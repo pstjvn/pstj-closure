@@ -3,7 +3,6 @@
 
 /**
  * @fileoverview Templates in namespace pstj.templates.
- * @public
  */
 
 goog.provide('pstj.templates');
@@ -14,7 +13,7 @@ goog.require('goog.asserts');
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -28,7 +27,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -42,7 +41,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -62,7 +61,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -76,7 +75,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -90,7 +89,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -104,7 +103,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -118,7 +117,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -132,7 +131,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -146,7 +145,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -160,7 +159,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -174,7 +173,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -188,7 +187,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -224,7 +223,7 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    items: !Array<?>
+ *    items: !Array.<?>
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -233,11 +232,11 @@ if (goog.DEBUG) {
 pstj.templates.Swiper = function(opt_data, opt_ignored) {
   var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<unknown>.");
   var output = '<div is class="' + goog.getCssName('pstj-swiper') + ' ' + goog.getCssName('core-swipe') + '" use-pointer>';
-  var itemList602 = items;
-  var itemListLen602 = itemList602.length;
-  for (var itemIndex602 = 0; itemIndex602 < itemListLen602; itemIndex602++) {
-    var itemData602 = itemList602[itemIndex602];
-    output += pstj.templates.Swipetile(itemData602);
+  var itemList601 = items;
+  var itemListLen601 = itemList601.length;
+  for (var itemIndex601 = 0; itemIndex601 < itemListLen601; itemIndex601++) {
+    var itemData601 = itemList601[itemIndex601];
+    output += pstj.templates.Swipetile(itemData601);
   }
   output += '</div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);

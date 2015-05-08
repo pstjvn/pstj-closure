@@ -238,6 +238,7 @@
   {@param icon: string}
   {@param content: string}
   {@param? ink: bool}
+  {@param? recenter: bool}
   <div is class="{css material-button}" {if $ink}ink{/if} use-pointer icon="{$icon}">
     {call .Shadow /}
     {call .IconContainer}
@@ -247,7 +248,7 @@
       {param content: $content /}
     {/call}
     {call .Ripple}
-      {param recenter: false /}
+      {param recenter: $recenter /}
       {param opacity: 0.30 /}
     {/call}
   </div>
