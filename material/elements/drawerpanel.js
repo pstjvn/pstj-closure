@@ -236,6 +236,20 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     }
   },
 
+  /**
+   * Provides API for closing the drawer.
+   */
+  close: function() {
+    this.setSelectedSection(pstj.material.DrawerPanel.Section.MAIN);
+  },
+
+  /**
+   * Provides API to open the drawer.
+   */
+  open: function() {
+    this.setSelectedSection(pstj.material.DrawerPanel.Section.DRAWER);
+  },
+
 
   /** @override */
   onTap: function(e) {
