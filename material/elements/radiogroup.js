@@ -212,6 +212,7 @@ _.addMaterialChildren = function() {
       this.forEachChild(function(child) {
         if (child.value == this.value) {
           child.setChecked(true);
+          this.selectedChild_ = child;
         } else {
           child.setChecked(false);
         }
