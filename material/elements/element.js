@@ -54,7 +54,6 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @constructor
    * @struct
    * @extends {goog.ui.ControlRenderer}
-   * @suppress {checkStructDictInheritance}
    */
   constructor: function() {
     goog.ui.ControlRenderer.call(this);
@@ -414,7 +413,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @constructor
    * @extends {goog.ui.Control}
    * @struct
-   * @suppress {checkStructDictInheritance}
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     Control.call(this, opt_content, opt_renderer, opt_domHelper);

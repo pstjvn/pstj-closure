@@ -60,7 +60,6 @@ var style = goog.style;
  * @constructor
  * @extends {Disposable}
  * @struct
- * @suppress {checkStructDictInheritance}
  */
 pstj.material.Wave = function() {
   Disposable.call(this);
@@ -790,7 +789,6 @@ pstj.material.Wave.release = function(o) {
 /**
  * @constructor
  * @extends {goog.structs.Pool}
- * @suppress {checkStructDictInheritance}
  */
 pstj.material.WavePool = function() {
   goog.structs.Pool.call(this, 5, 10);

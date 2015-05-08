@@ -179,7 +179,7 @@ pstj.widget.Swiper = goog.defineClass(E, {
 
   /**
    * Setter for the selected index
-   * @param {number} idx The index to set as selected
+   * @param {number} idx The index to set as selected.
    * @protected
    */
   setSelectedIndex: function(idx) {

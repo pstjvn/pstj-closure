@@ -92,7 +92,6 @@ pstj.agent.ScrollEvent = goog.defineClass(goog.events.Event, {
    * @constructor
    * @extends {goog.events.Event}
    * @param {pstj.material.Element} target
-   * @suppress {checkStructDictInheritance}
    */
   constructor: function(target) {
     goog.events.Event.call(this, goog.events.EventType.SCROLL, target);

@@ -34,7 +34,6 @@ pstj.material.MediaQuery = goog.defineClass(goog.events.EventTarget, {
    * @constructor
    * @param {!string} query The query to match against.
    * @extends {goog.events.EventTarget}
-   * @suppress {checkStructDictInheritance}
    */
   constructor: function(query) {
     goog.events.EventTarget.call(this);

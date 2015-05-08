@@ -212,7 +212,7 @@ pstj.ds.jstype.Record = goog.defineClass(null, {
    * space character.
    * @protected
    * @param {string} str
-   * @param {number} i Start index
+   * @param {number} i Start index.
    * @param {number} width The maximum offset starting from the start index.
    * @return {number} The index found to split on.
    */

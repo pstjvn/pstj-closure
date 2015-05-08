@@ -56,7 +56,7 @@ pstj.control.Control = goog.defineClass(null, {
 
   /**
    * Listen for updates on a selected topic.
-   * @param {string} topic [description]
+   * @param {string} topic The topic name to listen on.
    * @param {Function} handler The method handler.
    */
   listen: function(topic, handler) {

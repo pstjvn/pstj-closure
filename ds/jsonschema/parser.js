@@ -40,7 +40,7 @@ _.map_ = {};
  * Starts the loading of the JSONSchema definitions. Will return a promise
  * that resolves to all parsers as a list.
  *
- * @param {!Array<string>} paths The paths to load
+ * @param {!Array<string>} paths The paths to load.
  * @return {goog.Promise<Array<pstj.ds.jsonschema.Parser>>}
  */
 _.load = function(paths) {
@@ -58,7 +58,7 @@ _.load = function(paths) {
 /**
  * Special function to apply partially for handling load of files.
  * @param {string} namespaceprefix
- * @param {string} path The name of the file
+ * @param {string} path The name of the file.
  * @param {string} jsonstring The serialized object.
  * @return {!pstj.ds.jsonschema.Class}
  */

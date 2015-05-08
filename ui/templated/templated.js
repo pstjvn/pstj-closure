@@ -23,7 +23,6 @@ goog.require('pstj.ui.Template');
  *   use complex DOM structured.
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance}
  * @extends {goog.ui.Component}
  * @param {pstj.ui.Template=} opt_template The template to use in the component.
  * @param {goog.dom.DomHelper=} opt_domHelper The DOM helper to use.

@@ -913,7 +913,6 @@ pstj.agent.Point_ = goog.defineClass(goog.math.Coordinate, {
    * @constructor
    * @extends {goog.math.Coordinate}
    * @private
-   * @suppress {checkStructDictInheritance}
    */
   constructor: function() {
     goog.math.Coordinate.call(this);
@@ -975,7 +974,6 @@ pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
    * @constructor
    * @extends {goog.events.Event}
    * @struct
-   * @suppress {checkStructDictInheritance}
    */
   constructor: function(type, target) {
     goog.events.Event.call(this, type, target);

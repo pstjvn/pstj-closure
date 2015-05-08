@@ -53,7 +53,6 @@ var EventTarget = goog.events.EventTarget;
 pstj.cast.Cast = goog.defineClass(EventTarget, {
   /**
    * @constructor
-   * @suppress {checkStructDictInheritance}
    * @extends {EventTarget}
    */
   constructor: function() {
