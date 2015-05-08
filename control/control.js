@@ -24,7 +24,15 @@ goog.scope(function() {
 * all control instances should filter the bus signals by the emitter.
 */
 pstj.control.Control = goog.defineClass(null, {
-  constructor: function() {
+  /**
+   * @param {Object=} opt_scope The default scope to execute the listeners in.
+   */
+  constructor: function(opt_scope) {
+    /**
+     * The scope to use when handling topics.
+     * @type {!Object}
+     */
+    this.scope_ = opt_scope || this;
     /**
      * If the control have been initialized.
      * @type {boolean}
@@ -60,7 +68,7 @@ pstj.control.Control = goog.defineClass(null, {
    * @param {Function} handler The method handler.
    */
   listen: function(topic, handler) {
-    pstj.control.Control.getBus().subscribe(topic, handler, this);
+    pstj.control.Control.getBus().subscribe(topic, handler, this.scope_);
   },
 
   /**
