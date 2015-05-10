@@ -249,8 +249,11 @@ pstj.material.InputBase = goog.defineClass(E, {
     var valid = true;
     var is_empty_string = goog.string.isEmptyString(goog.string.trim(value));
 
-    if (this.required_ && is_empty_string) valid = false;
-    else {
+    if (this.required_ && is_empty_string) {
+      if (this.isFocused()) {
+        valid = false;
+      }
+    } else {
       // Make more checks if the value is not an empty string
       if (!is_empty_string) {
         if (!goog.isNull(this.validityPattern_)) {
