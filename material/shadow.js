@@ -54,6 +54,7 @@ pstj.material.ShadowRenderer = function() {
   goog.base(this);
 };
 goog.inherits(pstj.material.ShadowRenderer, pstj.material.ElementRenderer);
+goog.addSingletonGetter(pstj.material.ShadowRenderer);
 
 
 /**
@@ -111,9 +112,42 @@ r.getTemplate = function(model) {
  * @param {number} to
  */
 r.setDepth = function(control, from, to) {
-  var oc = this.getCssClass() + '-' + from;
-  var nc = this.getCssClass() + '-' + to;
+  var oc = this.getCssNameByNumber_(from);
+  var nc = this.getCssNameByNumber_(to);
   goog.dom.classlist.swap(control.getElement(), oc, nc);
+};
+
+
+/**
+ * The CSS compiler does not understand the number part of a class name as
+ * a number and treats it as a regulsr string. Thus class names such as
+ * 'material-shadow-1' are renamed to something similar to 'a-b-c' instead of
+ * 'a-b-1' and this means that we cannot used the depth index directly in the
+ * css name when using css renaming.
+ *
+ * This method maps the numbers back to CSS names that the compiler can
+ * understand and inline and fixes the problem.
+ *
+ * @param {number} num The shadow depth to get CSS class name for.
+ * @return {string} The class name as the css compiler would see it.
+ * @private
+ */
+r.getCssNameByNumber_ = function(num) {
+  if (num == 0) {
+    return goog.getCssName(this.getCssClass(), '0');
+  } else if (num == 1) {
+    return goog.getCssName(this.getCssClass(), '1');
+  } else if (num == 2) {
+    return goog.getCssName(this.getCssClass(), '2');
+  } else if (num == 3) {
+    return goog.getCssName(this.getCssClass(), '3');
+  } else if (num == 4) {
+    return goog.getCssName(this.getCssClass(), '4');
+  } else if (num == 5) {
+    return goog.getCssName(this.getCssClass(), '5');
+  } else {
+    throw new Error('Unsupported shadow depth: ' + num);
+  }
 };
 
 
