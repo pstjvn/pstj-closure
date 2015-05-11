@@ -3,6 +3,7 @@
 @import "shadow";
 @import "ripple";
 @import "icon";
+@import "../layout";
 
 @fab-color: white;
 @fab-background-color: black;
@@ -12,7 +13,6 @@
 .material-fab {
   color: @fab-color;
   background-color: @fab-background-color;
-  display: inline-block;
   position: relative;
   outline: none;
   cursor: pointer;
@@ -22,6 +22,8 @@
   height: 56px;
   border-radius: 50%;
   padding: 10px;
+  &:extend(.core-flexd);
+  &:extend(.center-center);
 
   &-disabled {
     color: @fab-disabled-color;
@@ -42,8 +44,6 @@
 
   & .material-icon {
     display: block;
-    width: 36px;
-    height: 36px;
     fill: @fab-color;
   }
 }
