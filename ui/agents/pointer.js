@@ -286,15 +286,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         goog.events.EventType.TOUCHCANCEL,
         goog.events.EventType.MOUSEDOWN
       ], this.handleEvents);
-
-      if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
-        this.handler.listen(el, [
-          goog.events.EventType.POINTERDOWN,
-          goog.events.EventType.POINTERMOVE,
-          goog.events.EventType.POINTERUP,
-          goog.events.EventType.POINTERCANCEL
-        ], this.handleEvents);
-      }
     }
   },
 
@@ -348,15 +339,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           goog.events.EventType.TOUCHCANCEL,
           goog.events.EventType.MOUSEDOWN
         ], this.handleEvents);
-
-        if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(11)) {
-          this.handler.unlisten(el, [
-            goog.events.EventType.POINTERDOWN,
-            goog.events.EventType.POINTERMOVE,
-            goog.events.EventType.POINTERUP,
-            goog.events.EventType.POINTERCANCEL
-          ], this.handleEvents);
-        }
       }
     }
 
@@ -423,7 +405,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     var ts = goog.now();
 
     if (e.type == goog.events.EventType.TOUCHSTART ||
-        e.type == goog.events.EventType.POINTERDOWN ||
         e.type == goog.events.EventType.MOUSEDOWN) {
 
       // Reset velocity detectors
@@ -472,9 +453,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         // Start listening on the document for move events as mouse
         // events are not bound to their original target.
         this.enableDocumentMouseHandling(true);
-      } else if (e.type == goog.events.EventType.POINTERDOWN) {
-        goog.log.error(this.logger_, 'Unsupported - POINTERDOWN');
-        //TODO: handle the MS events.
       }
       // Reset all points
       this.currentPoint_.copy(this.startPoint_);
@@ -485,8 +463,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
     // MOVE
     } else if (e.type == goog.events.EventType.TOUCHMOVE ||
-        e.type == goog.events.EventType.MOUSEMOVE ||
-        e.type == goog.events.EventType.POINTERMOVE) {
+        e.type == goog.events.EventType.MOUSEMOVE) {
 
       if (this.isLocked()) {
         if (e.type == goog.events.EventType.MOUSEMOVE) {
@@ -530,9 +507,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
                 'Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
           }
-        } else if (e.type == goog.events.EventType.POINTERMOVE) {
-          goog.log.error(this.logger_, 'Unsupported - POINTERMOVE');
-          // TODO: handle pointer events
         }
         this.longPressDelay_.stop();
 
@@ -540,8 +514,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       }
     // RELEASE
     } else if (e.type == goog.events.EventType.TOUCHEND ||
-        e.type == goog.events.EventType.MOUSEUP ||
-        e.type == goog.events.EventType.POINTERUP) {
+        e.type == goog.events.EventType.MOUSEUP) {
 
       if (this.isLocked()) {
         e.preventDefault();
@@ -557,9 +530,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         } else if (e.type == goog.events.EventType.MOUSEUP) {
           this.currentPoint_.timestamp = ts;
           this.enableDocumentMouseHandling(false);
-        } else if (e.type == goog.events.EventType.POINTERUP) {
-          goog.log.error(this.logger_, 'Unsupported - POINTERUP');
-          // TODO: handle pointer events for IE
         }
 
         this.raf_.stop();
@@ -600,8 +570,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         this.unlock(this.currentElement_);
       }
     // CANCEL
-    } else if (e.type == goog.events.EventType.TOUCHCANCEL ||
-        e.type == goog.events.EventType.POINTERCANCEL) {
+    } else if (e.type == goog.events.EventType.TOUCHCANCEL) {
       goog.log.warning(this.logger_, 'TODO: handle cancel events');
       // TODO: handle cancel events
     }
