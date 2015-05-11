@@ -46,6 +46,11 @@ icon.resolveRenderer = function(iconName) {
     return icon.CastReady.getInstance();
   }
 
+  //Branch for Reload
+  if (iconName == pstj.material.icon.Name.RELOAD) {
+    return icon.Reload.getInstance();
+  }
+
   return null;
 };
 
@@ -126,6 +131,25 @@ icon.CastReady = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.CastReady);
 
 
+/** Renderer for Reload */
+icon.Reload = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.Reload(m);
+  }
+});
+goog.addSingletonGetter(icon.Reload);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -142,6 +166,7 @@ icon.Name = {
   WARNING: 'warning',
   CAST_READY: 'cast-ready',
   CAST_ACTIVE: 'cast-active',
+  RELOAD: 'reload',
   NONEXISTING: 'nonexisting'
 };
 

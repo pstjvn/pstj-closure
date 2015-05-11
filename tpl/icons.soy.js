@@ -65,3 +65,17 @@ pstj.material.icons.CastReady = function(opt_data, opt_ignored) {
 if (goog.DEBUG) {
   pstj.material.icons.CastReady.soyTemplateName = 'pstj.material.icons.CastReady';
 }
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.Reload = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M17.6,6.4C16.2,4.9,14.2,4,12,4c-4.4,0-8,3.6-8,8s3.6,8,8,8c3.7,0,6.8-2.6,7.7-6h-2.1c-0.8,2.3-3,4-5.6,4c-3.3,0-6-2.7-6-6s2.7-6,6-6c1.7,0,3.1,0.7,4.2,1.8L13,11h7V4L17.6,6.4z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.Reload.soyTemplateName = 'pstj.material.icons.Reload';
+}
