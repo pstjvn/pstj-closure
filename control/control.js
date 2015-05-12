@@ -7,22 +7,22 @@ goog.scope(function() {
 
 
 /**
-* Defines the base class for controllers. The controller abstraction is aimed
-* to to provide externalized control over the UI components and encomapses
-* any business logic that stains from the default UI element behavior.
-*
-* The control instances are expected to communicate via a pub-sub system (as
-* opposite from components/UI controls which communicate via the event system).
-*
-* In an applications tructure the control instance could be responsible for
-* only one UI instance, for no UI instance or for a group (usually nested) UI
-* instances. A control instance is also expected to stop all UI events that are
-* to be expected from its UI 'children' and propagate business logic to other
-* controls if the instance itself is not ready / capable to handle it.
-*
-* No child/parent connection should be used between the control instances and
-* all control instances should filter the bus signals by the emitter.
-*/
+ * Defines the base class for controllers. The controller abstraction is aimed
+ * to to provide externalized control over the UI components and encomapses
+ * any business logic that stains from the default UI element behavior.
+ *
+ * The control instances are expected to communicate via a pub-sub system (as
+ * opposite from components/UI controls which communicate via the event system).
+ *
+ * In an applications tructure the control instance could be responsible for
+ * only one UI instance, for no UI instance or for a group (usually nested) UI
+ * instances. A control instance is also expected to stop all UI events that are
+ * to be expected from its UI 'children' and propagate business logic to other
+ * controls if the instance itself is not ready / capable to handle it.
+ *
+ * No child/parent connection should be used between the control instances and
+ * all control instances should filter the bus signals by the emitter.
+ */
 pstj.control.Control = goog.defineClass(null, {
   /**
    * @param {Object=} opt_scope The default scope to execute the listeners in.
@@ -77,6 +77,19 @@ pstj.control.Control = goog.defineClass(null, {
    */
   getHandler: function() {
     return this.handler_;
+  },
+
+  /**
+   * Sets the scope of the controller.
+   *
+   * This allows for global/static controllers to be bound later in the
+   * application life to a certain context but still execute control
+   * functions before that (i.e. with singleton pattern).
+   *
+   * @param {!Object} scope The new scope to use.
+   */
+  setScope: function(scope) {
+    this.scope_ = scope;
   },
 
   statics: {
