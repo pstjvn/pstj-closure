@@ -3,6 +3,7 @@ goog.provide('pstj.material.InputBaseRenderer');
 
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
+goog.require('goog.labs.userAgent.platform');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -89,7 +90,8 @@ pstj.material.InputBase = goog.defineClass(E, {
      */
     this.checkValueDelayed_ = new goog.async.Delay(
         this.valueCheckWorkaround_, 200, this);
-
+    this.iosDelay_ = new goog.async.AnimationDelay(this.propagateChange_,
+        this.getDomHelper().getWindow(), this);
     // Register auto-dispose of the delay binding.
     this.registerDisposable(this.checkValueDelayed_);
 
@@ -345,8 +347,12 @@ pstj.material.InputBase = goog.defineClass(E, {
     var handled = goog.base(this, 'handleKeyEventInternal', e);
     if (!handled) {
       // delay this work until stack empties so the input will have the
-      // correct value.
-      goog.async.nextTick(this.propagateChange_, this);
+      // correct value. iOS is slower somehow so we need larger delay.
+      if (goog.labs.userAgent.platform.isIos) {
+        this.iosDelay_.start();
+      } else {
+        goog.async.nextTick(this.propagateChange_, this);
+      }
     }
     return handled;
   },
