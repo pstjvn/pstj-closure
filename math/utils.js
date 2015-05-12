@@ -162,6 +162,19 @@ _.diagonal = function(rect) {
   return Math.sqrt(rect.width * rect.width + rect.height * rect.height);
 };
 
+
+/**
+ * Given a value in the rist range calculates the corresponsing value in the
+ * second range so that it is in the same relative offset.
+ * @param {number} min1
+ * @param {number} max1
+ * @param {number} min2
+ * @param {number} max2
+ * @param {number} value
+ * @return {number}
+ */
+_.crossRule = function(min1, max1, min2, max2, value) {
+  return ((Math.abs(value) / (max1 - min1)) * (max2 - min2)) + min2;
+};
+
 });  // goog.scope
-
-
