@@ -12,7 +12,8 @@
 
 goog.provide('pstj.storage.Storage');
 
-goog.require('goog.json.NativeJsonProcessor');
+goog.require('goog.json');
+goog.require('goog.log');
 goog.require('goog.storage.Storage');
 goog.require('goog.storage.mechanism.mechanismfactory');
 
@@ -26,15 +27,17 @@ goog.require('goog.storage.mechanism.mechanismfactory');
  */
 pstj.storage.Storage = function() {
   /**
-   * @type {!goog.storage.mechanism.Mechanism}
+   * @final
+   * @type {goog.storage.mechanism.IterableMechanism}
    * @private
    */
   this.mechanism_ = pstj.storage.Storage.getStorageBackend();
   /**
-   * @type {goog.json.Processor}
-   * @protected
+   * @final
+   * @private
+   * @type {goog.debug.Logger}
    */
-  this.serializer = new goog.json.NativeJsonProcessor();
+  this.logger_ = goog.log.getLogger('pstj.storage.Storage');
 };
 goog.addSingletonGetter(pstj.storage.Storage);
 
@@ -44,11 +47,10 @@ goog.addSingletonGetter(pstj.storage.Storage);
  * implementation is limited to localStorage. Future iplementation should use a
  * wrapper for ls/idb.
  *
- * @return {!goog.storage.mechanism.Mechanism}
+ * @return {goog.storage.mechanism.IterableMechanism}
  */
 pstj.storage.Storage.getStorageBackend = function() {
-  return /** @type {!goog.storage.mechanism.Mechanism} */ (
-      goog.storage.mechanism.mechanismfactory.create());
+  return goog.storage.mechanism.mechanismfactory.create();
 };
 
 
@@ -64,24 +66,28 @@ var _ = pstj.storage.Storage.prototype;
  * @return {*} Deserialized value or undefined if not found.
  */
 _.get = function(key) {
-  var json;
-  try {
-    json = this.mechanism_.get(key);
-  } catch (e) {
-    // If, for any reason, the value returned by a mechanism's get method is not
-    // a string, an exception is thrown.  In this case, we must fail gracefully
-    // instead of propagating the exception to clients.  See b/8095488 for
-    // details.
-    return undefined;
-  }
-  if (goog.isNull(json)) {
-    return undefined;
-  }
-  /** @preserveTry */
-  try {
-    return this.serializer.parse(json);
-  } catch (e) {
-    throw goog.storage.ErrorCode.INVALID_VALUE;
+  if (!goog.isNull(this.mechanism_)) {
+    var json;
+    try {
+      json = this.mechanism_.get(key);
+    } catch (e) {
+      // If, for any reason, the value returned by a mechanism's get method is
+      // not a string, an exception is thrown.  In this case, we must fail
+      // gracefully instead of propagating the exception to clients.
+      // See b/8095488 for details.
+      return undefined;
+    }
+    if (goog.isNull(json)) {
+      return undefined;
+    }
+    /** @preserveTry */
+    try {
+      return goog.json.parse(json);
+    } catch (e) {
+      throw goog.storage.ErrorCode.INVALID_VALUE;
+    }
+  } else {
+    this.warn_();
   }
 };
 
@@ -93,11 +99,15 @@ _.get = function(key) {
  * @param {*} value The value to serialize to a string and save.
  */
 _.set = function(key, value) {
-  if (!goog.isDef(value)) {
-    this.remove(key);
-    return;
+  if (!goog.isNull(this.mechanism_)) {
+    if (!goog.isDef(value)) {
+      this.remove(key);
+      return;
+    }
+    this.mechanism_.set(key, goog.json.serialize(value));
+  } else {
+    this.warn_();
   }
-  this.mechanism_.set(key, this.serializer.stringify(value));
 };
 
 
@@ -107,7 +117,20 @@ _.set = function(key, value) {
  * @param {string} key The key to remove.
  */
 _.remove = function(key) {
-  this.mechanism_.remove(key);
+  if (!goog.isNull(this.mechanism_)) {
+    this.mechanism_.remove(key);
+  } else {
+    this.warn_();
+  }
+};
+
+
+/**
+ * Issue a warning when debugging.
+ * @private
+ */
+_.warn_ = function() {
+  goog.log.error(this.logger_, 'Storage mechanism could not be derived');
 };
 
 });  // goog.scope
