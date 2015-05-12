@@ -1,6 +1,7 @@
 goog.provide('pstj.material.InputBase');
 goog.provide('pstj.material.InputBaseRenderer');
 
+goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
 goog.require('goog.labs.userAgent.platform');
