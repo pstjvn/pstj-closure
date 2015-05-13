@@ -5,8 +5,6 @@
 // Inlcude support for closure library.
 require('../../../library/closure/goog/bootstrap/nodejs.js');
 
-goog.provide('pstj.bin');
-
 goog.require('goog.array');
 goog.require('goog.dom.classlist');
 goog.require('goog.Promise');

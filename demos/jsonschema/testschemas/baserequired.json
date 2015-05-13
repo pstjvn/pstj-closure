@@ -1,6 +1,6 @@
 {
   "$schema": "",
-  "title": "Base",
+  "title": "BaseReq",
   "description": "Basic test",
   "type": "object",
   "properties": {

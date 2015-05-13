@@ -6,8 +6,6 @@
 require('../../../library/closure/goog/bootstrap/nodejs.js');
 require(__dirname + '/../deps.js');
 
-goog.provide('pstj.bin');
-
 goog.require('goog.Promise');
 goog.require('goog.array');
 goog.require('goog.string');

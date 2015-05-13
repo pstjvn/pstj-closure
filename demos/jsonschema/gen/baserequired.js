@@ -1,113 +1,113 @@
 
 // This code is auto generate, please do not edit.
 
-goog.provide('pstj.ds.dto.Base');
+goog.provide('pstj.gen.dto.BaseReq');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('pstj.ds.DtoBase');
-goog.require('pstj.ds.dto.ForExtend');
+goog.require('pstj.gen.dto.ForExtend');
 
 
 goog.scope(function() {
 var a = goog.asserts;
 
 
-/** 
+/**
  * Basic test
  * @extends {pstj.ds.DtoBase}
  */
-pstj.ds.dto.Base = goog.defineClass(pstj.ds.DtoBase, {
+pstj.gen.dto.BaseReq = goog.defineClass(pstj.ds.DtoBase, {
   constructor: function() {
     pstj.ds.DtoBase.call(this);
-    /** 
+    /**
      * Number
      * @type {!number}
      */
     this.prop1 = 0;
-    /** 
+    /**
      * Number to string
      * @type {!string}
      */
     this.prop2 = '';
-    /** 
+    /**
      * Number to Date
      * @type {!Date}
      */
     this.prop3 = new Date();
-    /** 
+    /**
      * Number (alternate name)
      * @type {!number}
      */
     this.custom4 = 0;
-    /** 
+    /**
      * Number to boolean
      * @type {!boolean}
      */
     this.prop5 = false;
-    /** 
+    /**
      * String
      * @type {!string}
      */
     this.prop6 = '';
-    /** 
+    /**
      * String to number
      * @type {!number}
      */
     this.prop7 = 0;
-    /** 
+    /**
      * String to Date
      * @type {!Date}
      */
     this.prop8 = new Date();
-    /** 
+    /**
      * String to boolean
      * @type {!boolean}
      */
     this.prop9 = false;
-    /** 
+    /**
      * String (alternate name)
      * @type {!string}
      */
     this.custom10 = '';
-    /** 
+    /**
      * Boolean
      * @type {!boolean}
      */
     this.prop11 = false;
-    /** 
+    /**
      * Boolean (alternate name)
      * @type {!boolean}
      */
     this.custom12 = false;
-    /** 
+    /**
      * Array with template number
      * @type {!Array<number>}
      */
     this.prop13 = [];
-    /** 
+    /**
      * Array with template string
      * @type {!Array<string>}
      */
     this.prop14 = [];
-    /** 
+    /**
      * Array with template boolean
      * @type {!Array<boolean>}
      */
     this.prop15 = [];
-    /** 
+    /**
      * Array with template of Named Type
-     * @type {!Array<pstj.ds.dto.ForExtend>}
+     * @type {!Array<pstj.gen.dto.ForExtend>}
      */
     this.prop16 = [];
-    /** 
+    /**
      * Object with template named type
-     * @type {!pstj.ds.dto.ForExtend}
+     * @type {!pstj.gen.dto.ForExtend}
      */
-    this.prop17 = new pstj.ds.dto.ForExtend();
+    this.prop17 = new pstj.gen.dto.ForExtend();
   },
 
-  /** @override */
+  /**@override */
   fromJSON: function(map) {
     this.prop1 = a.assertNumber(map['prop1']);
     this.prop2 = a.assertNumber(map['prop2']).toString();
@@ -135,7 +135,7 @@ pstj.ds.dto.Base = goog.defineClass(pstj.ds.DtoBase, {
     }, this);
     goog.array.clear(this.prop16);
     goog.array.forEach(a.assertArray(map['prop16']), function(item) {
-      var i = new pstj.ds.dto.ForExtend();
+      var i = new pstj.gen.dto.ForExtend();
       i.fromJSON(a.assertObject(item));
       this.prop16.push(item);
     }, this);
@@ -143,7 +143,7 @@ pstj.ds.dto.Base = goog.defineClass(pstj.ds.DtoBase, {
     goog.base(this, 'fromJSON', map);
   },
 
-  /** @override */
+  /**@override */
   toJSON: function() {
     return {
       'prop1': this.prop1,

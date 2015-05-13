@@ -1,43 +1,44 @@
 
 // This code is auto generate, please do not edit.
 
-goog.provide('pstj.ds.dto.BaseExt');
+goog.provide('pstj.gen.dto.BaseExt');
 
 goog.require('goog.asserts');
 goog.require('goog.object');
-goog.require('pstj.ds.dto.Base');
+goog.require('pstj.gen.dto.Base');
 
 
 goog.scope(function() {
 var a = goog.asserts;
 
 
-/** 
+/**
  * Extends the base object
- * @extends {pstj.ds.dto.Base}
+ * @extends {pstj.gen.dto.Base}
  */
-pstj.ds.dto.BaseExt = goog.defineClass(pstj.ds.dto.Base, {
+pstj.gen.dto.BaseExt = goog.defineClass(pstj.gen.dto.Base, {
   constructor: function() {
-    pstj.ds.dto.Base.call(this);
-    /** 
+    pstj.gen.dto.Base.call(this);
+    /**
      * Additional string property
      * @type {string}
      */
     this.prop100 = null;
   },
 
-  /** @override */
+  /**@override */
   fromJSON: function(map) {
     this.prop100 = map['prop100'] || '';
     goog.base(this, 'fromJSON', map);
   },
 
-  /** @override */
+  /**@override */
   toJSON: function() {
     var exports = {
       'prop100': this.prop100
     };
-    return goog.object.extend(exports, goog.base(this, 'toJSON'));
+    return goog.object.extend(exports,
+        a.assertObject(goog.base(this, 'toJSON')));
   }
 });
 });  // goog.scope
