@@ -251,7 +251,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /** @inheritDoc */
   setContent: function(cont) {
     if (this.getLabel()) {
-      this.getLabel().setContent(cont);
+      goog.base(this, 'setContent', cont);
     }
     this.setContentInternal(cont);
   },
@@ -402,6 +402,11 @@ pstj.material.ButtonRenderer = goog.defineClass(ER, {
     return pstj.material.ButtonRenderer.CSS_CLASS;
   },
 
+  /** @inheritDoc */
+  getContentElement: function(el) {
+    return goog.dom.getElementByClass(
+        goog.getCssName(this.getCssClass(), 'label'), el);
+  },
 
   /**
    * Retrieves the index of a specific child if one is supported.
