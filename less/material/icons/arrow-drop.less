@@ -1,0 +1,30 @@
+@import "../icon";
+
+.material-icon {
+    // Transformation for the ARROW-DROP icons.
+  &[type="from-none-to-arrow-drop-down"] {
+    &:extend(.icon-rotate);
+  }
+  &[type="from-arrow-drop-down-to-none"] {
+    .transform(rotate(180deg));
+    .transition(all @general-icon-mutation-duration linear);
+  }
+  &[type="from-none-to-arrow-drop-up"] {
+    &:extend(.icon-rotate);
+  }
+  &[type="from-arrow-drop-up-to-none"] {
+    .transform(rotate(180deg));
+    .transition(all @general-icon-mutation-duration linear);
+  }
+
+}
+
+.icon-rotate {
+  display: block;
+  .transform-origin(50% 50%);
+  .animation(icon-scaleup @general-icon-mutation-duration linear);
+  @-webkit-keyframes icon-scaleup {
+    0% { -webkit-transform: rotate(-180deg) scale(1); }
+    100% { -webkit-transform: rotate(0deg) scale(1); }
+  }
+}
