@@ -135,7 +135,7 @@ _.createClasses = function(config, template) {
 };
 
 _.getEnum = function(name) {
-  return name.toUpperCase().replace('-', '_');
+  return name.toUpperCase().replace(/-/g, '_');
 };
 
 
