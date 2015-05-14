@@ -79,3 +79,87 @@ pstj.material.icons.Reload = function(opt_data, opt_ignored) {
 if (goog.DEBUG) {
   pstj.material.icons.Reload.soyTemplateName = 'pstj.material.icons.Reload';
 }
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.ArrowDropUp = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M7 14l5-5 5 5z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.ArrowDropUp.soyTemplateName = 'pstj.material.icons.ArrowDropUp';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.ArrowDropDown = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M7 10l5 5 5-5z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.ArrowDropDown.soyTemplateName = 'pstj.material.icons.ArrowDropDown';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.ExitToApp = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.ExitToApp.soyTemplateName = 'pstj.material.icons.ExitToApp';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.TrendingDown = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M16 18l2.29-2.29-4.88-4.88-4 4L2 7.41 3.41 6l6 6 4-4 6.3 6.29L22 12v6z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.TrendingDown.soyTemplateName = 'pstj.material.icons.TrendingDown';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.TrendingNeutral = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M22 12l-4-4v3H3v2h15v3z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.TrendingNeutral.soyTemplateName = 'pstj.material.icons.TrendingNeutral';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.TrendingUp = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="25px" height="25px"><g><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.TrendingUp.soyTemplateName = 'pstj.material.icons.TrendingUp';
+}

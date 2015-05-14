@@ -51,6 +51,36 @@ icon.resolveRenderer = function(iconName) {
     return icon.Reload.getInstance();
   }
 
+  //Branch for ArrowDropUp
+  if (iconName == pstj.material.icon.Name.ARROW_DROP_UP) {
+    return icon.ArrowDropUp.getInstance();
+  }
+
+  //Branch for ArrowDropDown
+  if (iconName == pstj.material.icon.Name.ARROW_DROP_DOWN) {
+    return icon.ArrowDropDown.getInstance();
+  }
+
+  //Branch for ExitToApp
+  if (iconName == pstj.material.icon.Name.EXIT_TO_APP) {
+    return icon.ExitToApp.getInstance();
+  }
+
+  //Branch for TrendingDown
+  if (iconName == pstj.material.icon.Name.TRENDING_DOWN) {
+    return icon.TrendingDown.getInstance();
+  }
+
+  //Branch for TrendingNeutral
+  if (iconName == pstj.material.icon.Name.TRENDING_NEUTRAL) {
+    return icon.TrendingNeutral.getInstance();
+  }
+
+  //Branch for TrendingUp
+  if (iconName == pstj.material.icon.Name.TRENDING_UP) {
+    return icon.TrendingUp.getInstance();
+  }
+
   return null;
 };
 
@@ -150,6 +180,120 @@ icon.Reload = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.Reload);
 
 
+/** Renderer for ArrowDropUp */
+icon.ArrowDropUp = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.ArrowDropUp(m);
+  }
+});
+goog.addSingletonGetter(icon.ArrowDropUp);
+
+
+/** Renderer for ArrowDropDown */
+icon.ArrowDropDown = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.ArrowDropDown(m);
+  }
+});
+goog.addSingletonGetter(icon.ArrowDropDown);
+
+
+/** Renderer for ExitToApp */
+icon.ExitToApp = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.ExitToApp(m);
+  }
+});
+goog.addSingletonGetter(icon.ExitToApp);
+
+
+/** Renderer for TrendingDown */
+icon.TrendingDown = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.TrendingDown(m);
+  }
+});
+goog.addSingletonGetter(icon.TrendingDown);
+
+
+/** Renderer for TrendingNeutral */
+icon.TrendingNeutral = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.TrendingNeutral(m);
+  }
+});
+goog.addSingletonGetter(icon.TrendingNeutral);
+
+
+/** Renderer for TrendingUp */
+icon.TrendingUp = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.TrendingUp(m);
+  }
+});
+goog.addSingletonGetter(icon.TrendingUp);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -167,6 +311,12 @@ icon.Name = {
   CAST_READY: 'cast-ready',
   CAST_ACTIVE: 'cast-active',
   RELOAD: 'reload',
+  ARROW_DROP_UP: 'arrow-drop-up',
+  ARROW_DROP_DOWN: 'arrow-drop-down',
+  EXIT_TO_APP: 'exit-to-app',
+  TRENDING_DOWN: 'trending-down',
+  TRENDING_NEUTRAL: 'trending-neutral',
+  TRENDING_UP: 'trending-up',
   NONEXISTING: 'nonexisting'
 };
 
