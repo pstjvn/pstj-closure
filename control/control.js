@@ -66,9 +66,18 @@ pstj.control.Control = goog.defineClass(null, {
    * Listen for updates on a selected topic.
    * @param {string} topic The topic name to listen on.
    * @param {Function} handler The method handler.
+   * @return {number} The key by which we can unsubscribe.
    */
   listen: function(topic, handler) {
-    pstj.control.Control.getBus().subscribe(topic, handler, this.scope_);
+    return pstj.control.Control.getBus().subscribe(topic, handler, this.scope_);
+  },
+
+  /**
+   * Cancels a subscription.
+   * @param {number} key The key returned by a 'listen' call.
+   */
+  cancel: function(key) {
+    pstj.control.Control.getBus().unsubscribeByKey(key);
   },
 
   /**
