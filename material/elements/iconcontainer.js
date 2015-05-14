@@ -57,6 +57,12 @@ pstj.material.IconContainer = goog.defineClass(E, {
      * @protected
      */
     this.type = icon.Name.NONE;
+    /**
+     * The type of icon we want to show currently.
+     * @type {?icon.Name}
+     * @private
+     */
+    this.tmpType_ = null;
     this.setSupportedState(goog.ui.Component.State.EMPTY, true);
   },
 
@@ -108,6 +114,10 @@ pstj.material.IconContainer = goog.defineClass(E, {
    */
   setIcon: function(iconName) {
     if (COMPILED || pstj.material.IconContainer.XMLLoaded) {
+      if (!goog.isNull(this.tmpType_)) {
+        iconName = this.tmpType_;
+        this.tmpType_ = null;
+      }
       if (this.type != iconName) {
         if (goog.isNull(this.icon)) {
           this.setEmpty(false);
@@ -133,6 +143,10 @@ pstj.material.IconContainer = goog.defineClass(E, {
     } else {
       // alternative path for handling icons in source mode.
       pstj.material.IconContainer.registerPending(this, iconName);
+    }
+
+    if (goog.isNull(this.getElement())) {
+      this.tmpType_ = iconName;
     }
   },
 
