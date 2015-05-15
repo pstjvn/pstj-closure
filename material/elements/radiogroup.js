@@ -44,6 +44,7 @@ pstj.material.RadioGroup = function(opt_content, opt_renderer, opt_domHelper) {
    */
   this.selectedChild_ = null;
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
+  this.setAllowTextSelection(false);
 };
 goog.inherits(pstj.material.RadioGroup, pstj.material.Element);
 

@@ -37,6 +37,8 @@ pstj.material.RadioButton = function(opt_content, opt_renderer, opt_domHelper) {
   /** @type {string} */
   this.value = '';
 
+  this.setAllowTextSelection(false);
+
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
