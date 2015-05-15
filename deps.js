@@ -13,7 +13,7 @@ goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['go
 goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.PubSub'], false);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object', 'pstj.debug'], false);
 goog.addDependency('../../../apps/pstj/ds/dto/swipetile.js', ['pstj.ds.dto.Swipetile', 'pstj.ds.dto.SwipetileList'], ['goog.asserts', 'pstj.ds.DtoBase'], false);
-goog.addDependency('../../../apps/pstj/ds/dtobase.js', ['pstj.ds.DtoBase'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget'], false);
+goog.addDependency('../../../apps/pstj/ds/dtobase.js', ['pstj.ds.DtoBase', 'pstj.ds.DtoBase.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget'], false);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], [], false);
 goog.addDependency('../../../apps/pstj/ds/ilistitem.js', ['pstj.ds.IListItem', 'pstj.ds.RecordID', 'pstj.ds.RecordValue'], [], false);
 goog.addDependency('../../../apps/pstj/ds/imagelist.js', ['pstj.ds.Image', 'pstj.ds.ImageList', 'pstj.ds.ImageList.EventType'], ['goog.async.Delay', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.net.ImageLoader', 'goog.string', 'pstj.ds.List', 'pstj.ds.ListItem'], false);

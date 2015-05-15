@@ -1,4 +1,5 @@
 goog.provide('pstj.ds.DtoBase');
+goog.provide('pstj.ds.DtoBase.EventType');
 
 goog.require('goog.array');
 goog.require('goog.async.Delay');
