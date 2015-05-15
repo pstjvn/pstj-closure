@@ -14,8 +14,9 @@ goog.require('pstj.ds.jsonschema.parser');
 // node requires
 var fs = require('fs');
 
+var _ = {};
+
 goog.scope(function() {
-var _ = pstj.bin;
 var array = goog.array;
 var object = goog.object;
 var string = goog.string;
@@ -119,4 +120,4 @@ pstj.ds.jsonschema.parser.load = function(paths) {
   return goog.Promise.all(promises);
 };
 
-pstj.bin.invoke(process.argv[2], process.argv[3], process.argv[4]);
+_.invoke(process.argv[2], process.argv[3], process.argv[4]);
