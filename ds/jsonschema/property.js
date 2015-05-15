@@ -232,7 +232,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
         if (this.isReferencedType()) {
           buffer.addLine('var i = new ' + this.templatetype_ + '();');
           buffer.addLine('i.fromJSON(a.assertObject(item));');
-          buffer.addLine(jsname + '.push(item);');
+          buffer.addLine(jsname + '.push(i);');
         } else {
           // here we need to assert the item type
           buffer.addLine(jsname + '.push(' +
