@@ -3,6 +3,7 @@
 
 /**
  * @fileoverview Templates in namespace pstj.templates.
+ * @public
  */
 
 goog.provide('pstj.templates');
@@ -13,7 +14,7 @@ goog.require('goog.asserts');
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -27,7 +28,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -41,15 +42,15 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
 pstj.templates.pager = function(opt_data, opt_ignored) {
   var output = '<div class="' + goog.getCssName('pstj-pager-wrapper') + '"><div class="' + goog.getCssName('pstj-pager-items') + '">';
-  var itemLimit474 = opt_data.itemsCount;
-  for (var item474 = 0; item474 < itemLimit474; item474++) {
+  var itemLimit488 = opt_data.itemsCount;
+  for (var item488 = 0; item488 < itemLimit488; item488++) {
     output += pstj.templates.page(null);
   }
   output += '</div><div class="' + goog.getCssName('pstj-pager-page-indicator') + '">Page <span class="' + goog.getCssName('pstj-pager-page') + '"></span> of <span class="' + goog.getCssName('pstj-pager-pages') + '"></span></div></div>';
@@ -61,7 +62,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -75,7 +76,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -89,7 +90,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -103,7 +104,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -117,7 +118,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -131,7 +132,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -145,7 +146,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -159,7 +160,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -173,7 +174,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -187,7 +188,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -223,7 +224,7 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    items: !Array.<?>
+ *    items: !Array<?>
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -232,11 +233,11 @@ if (goog.DEBUG) {
 pstj.templates.Swiper = function(opt_data, opt_ignored) {
   var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<unknown>.");
   var output = '<div is class="' + goog.getCssName('pstj-swiper') + ' ' + goog.getCssName('core-swipe') + '" use-pointer>';
-  var itemList643 = items;
-  var itemListLen643 = itemList643.length;
-  for (var itemIndex643 = 0; itemIndex643 < itemListLen643; itemIndex643++) {
-    var itemData643 = itemList643[itemIndex643];
-    output += pstj.templates.Swipetile(itemData643);
+  var itemList658 = items;
+  var itemListLen658 = itemList658.length;
+  for (var itemIndex658 = 0; itemIndex658 < itemListLen658; itemIndex658++) {
+    var itemData658 = itemList658[itemIndex658];
+    output += pstj.templates.Swipetile(itemData658);
   }
   output += '</div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);

@@ -19,6 +19,7 @@ goog.addDependency('../../../apps/pstj/demos/material/radiobutton.js', ['pstj.de
 goog.addDependency('../../../apps/pstj/demos/material/radiogroup.js', ['pstj.demos.radiogroup'], ['goog.ui.decorate', 'pstj.material.RadioGroup'], false);
 goog.addDependency('../../../apps/pstj/demos/material/ripple.js', ['pstj.demos.ripple'], ['goog.ui.decorate', 'pstj.material.Element', 'pstj.material.EventMap', 'pstj.material.Ripple'], false);
 goog.addDependency('../../../apps/pstj/demos/material/shadow.js', ['pstj.demos.shadow'], ['pstj.material.Element', 'pstj.material.Shadow'], false);
+goog.addDependency('../../../apps/pstj/demos/material/toast.js', ['pstj.demos.toast'], ['pstj.material.Toast'], false);
 goog.addDependency('../../../apps/pstj/demos/material/togglebutton.js', ['pstj.demos.togglebutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.ToggleButton'], false);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigation.js', ['pstj.demos.navigation'], ['goog.dom', 'goog.ui.tree.TreeControl', 'pstj.demos.navigationdata'], false);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigationdata.js', ['pstj.demos.navigationdata'], [], false);

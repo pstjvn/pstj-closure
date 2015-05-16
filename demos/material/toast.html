@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Material demos - Toast </title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet/less" type="text/css" href="../../less/material/toast.less">
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        /* @alternative */
+        -moz-box-sizing: border-box;
+        /* @alternative */
+        box-sizing: border-box;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .rendertarget {
+        width: 100%;
+        height: 100%;
+      }
+      .container {
+        width: 200px;
+        height: 100px;
+        position: relative;
+        display: inline-block;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
+    </script>
+    <script src="../less.min.js"></script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script src="../../demodeps.js"></script>
+  </head>
+  <body>
+    <!-- <div class="container">
+      <div is class="material-icon-container material-icon-container-empty" type="arrow-drop-up"></div>
+    </div> -->
+    <div class="rendertarget"></div>
+    <script>goog.require('pstj.demos.toast');</script>
+  </body>
+</html>

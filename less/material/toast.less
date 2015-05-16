@@ -1,0 +1,57 @@
+@import "../translation";
+@import "colors/grey";
+@import "button";
+@import "layout";
+@import "typography";
+
+.material-toast {
+  display: inline-block;
+  background-color: @grey900;
+  min-height: 48px;
+  min-width: 288px;
+  padding: 16px 24px 12px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  border-radius: 2px;
+  bottom: 12px;
+  left: 12px;
+  .body1(@grey100);
+  cursor: default;
+  opacity: 0;
+  position: absolute;
+  .translation(0, 100%);
+
+  & .material-button {
+    padding: 0;
+  }
+
+  & .material-button-label {
+    .button(white);
+  }
+
+  &-container {
+    &:extend(.horizontal);
+    &:extend(.center);
+  }
+
+  &-text {
+    &:extend(.flex);
+  }
+
+  &-narrow {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-width: 0;
+    border-radius: 0;
+  }
+
+  &-open {
+    opacity: 1;
+    .translation(0, 0);
+  }
+
+  &-transition {
+    transition: -webkit-transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+    transition: transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+  }
+}

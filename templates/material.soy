@@ -385,3 +385,18 @@
     </div>
   </div>
 {/template}
+
+/** Template for the toast element. */
+{template .Toast}
+  {@param text: string}
+  {@param label: string}
+  <div is class="{css material-toast}" use-pointer>
+    <div class="{css material-toast-container}">
+      <div class="{css material-toast-text}">{$text}</div>
+      {call .Button}
+        {param icon: 'none' /}
+        {param content: $label /}
+      {/call}
+    </div>
+  </div>
+{/template}
