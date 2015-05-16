@@ -51,7 +51,9 @@
   }
 
   &-transition {
-    transition: -webkit-transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+
+    -webkit-transition: -webkit-transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+    /* @alternative */
     transition: transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
   }
 }

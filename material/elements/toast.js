@@ -50,6 +50,7 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
     this.setSupportedState(goog.ui.Component.State.OPENED, true);
     this.setSupportedState(goog.ui.Component.State.NARROW, true);
     this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
+    this.setDispatchTransitionEvents(goog.ui.Component.State.OPENED, true);
     this.setAutoEventsInternal(
         pstj.material.EventMap.EventFlag.PRESS |
         pstj.material.EventMap.EventFlag.MOVE |
@@ -63,8 +64,6 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
     goog.base(this, 'enterDocument');
     this.getHandler().listen(this.mediaquery_,
         pstj.material.EventType.MEDIA_CHANGE, this.onMediaChange);
-    this.getHandler().listen(this, goog.ui.Component.EventType.ACTION,
-        this.handleAction_);
   },
 
   /**
@@ -95,15 +94,6 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
     if (this.getLevel() != level) {
       this.level_ = level;
     }
-  },
-
-  /**
-   * Handle the action button.
-   * @param {goog.events.Event} e The ACTION event.
-   * @private
-   */
-  handleAction_: function(e) {
-    console.log('Action event arrived');
   },
 
   /**
@@ -167,7 +157,7 @@ pstj.material.ToastRenderer = goog.defineClass(pstj.material.ElementRenderer, {
   /** @override */
   generateTemplateData: function(toast) {
     return {
-      text: toast.getContent(),
+      text: toast.getContent() || '',
       label: toast.actionLabel_
     };
   },
@@ -186,7 +176,7 @@ pstj.material.ToastRenderer = goog.defineClass(pstj.material.ElementRenderer, {
     goog.array.forEach(toast.getExtraClassNames(), function(cn) {
       toast.removeClassName(cn);
     });
-    switch (toast.getValue()) {
+    switch (toast.getLevel()) {
       case 1:
         toast.addClassName(goog.getCssName(this.getCssClass(), 'l1'));
         break;
