@@ -178,7 +178,9 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     // wait for layout and then wait for next animation frame to
     // enable transitioning.
     (new goog.async.AnimationDelay(function() {
-      this.setTransitioning(true);
+      (new goog.async.AnimationDelay(function() {
+        this.setTransitioning(true);
+      }, this.getDomHelper().getWindow(), this)).start();
     }, this.getDomHelper().getWindow(), this)).start();
     // Call this because we are often rendererd with delay and the left
     // property is not set correctly
