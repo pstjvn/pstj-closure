@@ -137,9 +137,6 @@ _.setEnabled = function(enable) {
  * @protected
  */
 _.onCheckHandler = function(e) {
-  // Stop the check/uncheck events, instead we use CHANGE from here on.
-  e.stopPropagation();
-
   // Update values if checking
   if (e.type == goog.ui.Component.EventType.CHECK) {
     var old = this.selectedChild_;
