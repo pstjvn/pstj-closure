@@ -1,5 +1,7 @@
 goog.provide('pstj.control.Control');
 
+goog.require('goog.Disposable');
+goog.require('goog.array');
 goog.require('goog.events.EventHandler');
 goog.require('goog.pubsub.PubSub');
 
@@ -22,15 +24,18 @@ goog.scope(function() {
  *
  * No child/parent connection should be used between the control instances and
  * all control instances should filter the bus signals by the emitter.
+ *
+ * @extends {goog.Disposable}
  */
-pstj.control.Control = goog.defineClass(null, {
+pstj.control.Control = goog.defineClass(goog.Disposable, {
   /**
    * @param {Object=} opt_scope The default scope to execute the listeners in.
    */
   constructor: function(opt_scope) {
+    goog.Disposable.call(this);
     /**
      * The scope to use when handling topics.
-     * @type {!Object}
+     * @type {?Object}
      */
     this.scope_ = opt_scope || this;
     /**
@@ -44,6 +49,13 @@ pstj.control.Control = goog.defineClass(null, {
      * @private
      */
     this.handler_ = new goog.events.EventHandler(this);
+    /**
+     * List of keys for bus scubsriptions we have.
+     * @type {Array<number>}
+     * @private
+     */
+    this.busListeners_ = [];
+    this.registerDisposable(this.handler_);
   },
 
   /**
@@ -69,7 +81,10 @@ pstj.control.Control = goog.defineClass(null, {
    * @return {number} The key by which we can unsubscribe.
    */
   listen: function(topic, handler) {
-    return pstj.control.Control.getBus().subscribe(topic, handler, this.scope_);
+    var key = pstj.control.Control.getBus().subscribe(
+        topic, handler, this.scope_);
+    this.busListeners_.push(key);
+    return key;
   },
 
   /**
@@ -77,7 +92,9 @@ pstj.control.Control = goog.defineClass(null, {
    * @param {number} key The key returned by a 'listen' call.
    */
   cancel: function(key) {
-    pstj.control.Control.getBus().unsubscribeByKey(key);
+    if (goog.array.remove(this.busListeners_, key)) {
+      pstj.control.Control.getBus().unsubscribeByKey(key);
+    }
   },
 
   /**
@@ -99,6 +116,18 @@ pstj.control.Control = goog.defineClass(null, {
    */
   setScope: function(scope) {
     this.scope_ = scope;
+  },
+
+  /** @inheritDoc */
+  disposeInternal: function() {
+    goog.base(this, 'disposeInternal');
+    goog.array.forEach(this.busListeners_, function(key) {
+      pstj.control.Control.getBus().unsubscribeByKey(key);
+    });
+    goog.array.clear(this.busListeners_);
+    this.busListeners_ = null;
+    this.handler_ = null;
+    this.scope_ = null;
   },
 
   statics: {
