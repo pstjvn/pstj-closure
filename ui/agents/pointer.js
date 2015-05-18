@@ -6,6 +6,7 @@ goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
+goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventType');
@@ -517,7 +518,10 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         e.type == goog.events.EventType.MOUSEUP) {
 
       if (this.isLocked()) {
-        e.preventDefault();
+        if (this.sourceElement_.tagName.toUpperCase() !=
+            goog.dom.TagName.INPUT) {
+          e.preventDefault();
+        }
         if (e.type == goog.events.EventType.TOUCHEND) {
           if (this.getTouchesCount(e) == 0) {
             this.currentPoint_.timestamp = ts;
