@@ -3,7 +3,6 @@
 
 /**
  * @fileoverview Templates in namespace pstj.material.template.
- * @public
  */
 
 goog.provide('pstj.material.template');
@@ -52,7 +51,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -66,7 +65,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -80,7 +79,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -94,7 +93,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -108,7 +107,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -137,13 +136,13 @@ pstj.material.template.Ripple = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
   goog.asserts.assert(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), "expected param 'content' of type null|string|undefined.");
   var content = /** @type {null|string|undefined} */ (opt_data.content);
-  goog.asserts.assert(opt_data.circle == null || goog.isBoolean(opt_data.circle) || opt_data.circle === 1 || opt_data.circle === 0, "expected param 'circle' of type boolean|null|undefined.");
+  goog.asserts.assert(opt_data.circle == null || goog.isBoolean(opt_data.circle), "expected param 'circle' of type boolean|null|undefined.");
   var circle = /** @type {boolean|null|undefined} */ (opt_data.circle);
-  goog.asserts.assert(opt_data.recenter == null || goog.isBoolean(opt_data.recenter) || opt_data.recenter === 1 || opt_data.recenter === 0, "expected param 'recenter' of type boolean|null|undefined.");
+  goog.asserts.assert(opt_data.recenter == null || goog.isBoolean(opt_data.recenter), "expected param 'recenter' of type boolean|null|undefined.");
   var recenter = /** @type {boolean|null|undefined} */ (opt_data.recenter);
   goog.asserts.assert(opt_data.opacity == null || goog.isNumber(opt_data.opacity), "expected param 'opacity' of type null|number|undefined.");
   var opacity = /** @type {null|number|undefined} */ (opt_data.opacity);
-  goog.asserts.assert(opt_data.usepointer == null || goog.isBoolean(opt_data.usepointer) || opt_data.usepointer === 1 || opt_data.usepointer === 0, "expected param 'usepointer' of type boolean|null|undefined.");
+  goog.asserts.assert(opt_data.usepointer == null || goog.isBoolean(opt_data.usepointer), "expected param 'usepointer' of type boolean|null|undefined.");
   var usepointer = /** @type {boolean|null|undefined} */ (opt_data.usepointer);
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('ripple') + ((circle) ? ' ' + goog.getCssName('ripple-circle') : '') + '"' + ((recenter) ? ' recenter' : '') + ((opacity) ? ' opacity="' + soy.$$escapeHtmlAttribute(opacity) + '"' : '') + ((usepointer) ? ' use-pointer' : '') + '><div class="' + goog.getCssName('ripple-bg') + '"></div><div class="' + goog.getCssName('ripple-waves') + '"></div><div class="' + goog.getCssName('ripple-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
@@ -153,7 +152,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -167,7 +166,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -181,7 +180,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -195,7 +194,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -253,7 +252,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -267,7 +266,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -281,7 +280,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {Object.<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -318,7 +317,8 @@ if (goog.DEBUG) {
  *    icon: string,
  *    content: string,
  *    ink: (boolean|null|undefined),
- *    recenter: (boolean|null|undefined)
+ *    recenter: (boolean|null|undefined),
+ *    action: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -329,11 +329,13 @@ pstj.material.template.Button = function(opt_data, opt_ignored) {
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   goog.asserts.assert(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), "expected param 'content' of type string|goog.soy.data.SanitizedContent.");
   var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
-  goog.asserts.assert(opt_data.ink == null || goog.isBoolean(opt_data.ink) || opt_data.ink === 1 || opt_data.ink === 0, "expected param 'ink' of type boolean|null|undefined.");
+  goog.asserts.assert(opt_data.ink == null || goog.isBoolean(opt_data.ink), "expected param 'ink' of type boolean|null|undefined.");
   var ink = /** @type {boolean|null|undefined} */ (opt_data.ink);
-  goog.asserts.assert(opt_data.recenter == null || goog.isBoolean(opt_data.recenter) || opt_data.recenter === 1 || opt_data.recenter === 0, "expected param 'recenter' of type boolean|null|undefined.");
+  goog.asserts.assert(opt_data.recenter == null || goog.isBoolean(opt_data.recenter), "expected param 'recenter' of type boolean|null|undefined.");
   var recenter = /** @type {boolean|null|undefined} */ (opt_data.recenter);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}) + '</div>');
+  goog.asserts.assert(opt_data.action == null || (opt_data.action instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.action), "expected param 'action' of type null|string|undefined.");
+  var action = /** @type {null|string|undefined} */ (opt_data.action);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Button.soyTemplateName = 'pstj.material.template.Button';
@@ -482,7 +484,7 @@ pstj.material.template.Input = function(opt_data, opt_ignored) {
   var label = /** @type {null|string|undefined} */ (opt_data.label);
   goog.asserts.assert(opt_data.error == null || (opt_data.error instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.error), "expected param 'error' of type null|string|undefined.");
   var error = /** @type {null|string|undefined} */ (opt_data.error);
-  goog.asserts.assert(opt_data.required == null || goog.isBoolean(opt_data.required) || opt_data.required === 1 || opt_data.required === 0, "expected param 'required' of type boolean|null|undefined.");
+  goog.asserts.assert(opt_data.required == null || goog.isBoolean(opt_data.required), "expected param 'required' of type boolean|null|undefined.");
   var required = /** @type {boolean|null|undefined} */ (opt_data.required);
   goog.asserts.assert(opt_data.pattern == null || (opt_data.pattern instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.pattern), "expected param 'pattern' of type null|string|undefined.");
   var pattern = /** @type {null|string|undefined} */ (opt_data.pattern);

@@ -239,7 +239,8 @@
   {@param content: string}
   {@param? ink: bool}
   {@param? recenter: bool}
-  <div is class="{css material-button}" {if $ink}ink{/if} use-pointer icon="{$icon}">
+  {@param? action: string}
+  <div is class="{css material-button}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}

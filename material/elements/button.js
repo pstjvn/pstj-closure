@@ -84,6 +84,15 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
      * @private
      */
     this.useInk_ = false;
+    /**
+     * A named action model - a string that could be matched in the app logic.
+     * This is useful if you have mutliple buttons in the same container and you
+     * need to use event delegation. Instead of counting the buttons you can
+     * assign them 'an action' name and use it to recognize the button later on.
+     * @type {!string}
+     * @private
+     */
+    this.action_ = '';
 
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.RAISED, true);
@@ -123,6 +132,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
       this.setUseInk(true);
     }
     this.useIconAnimationDelay = es.hasAttribute('delay');
+    this.action_ = el.getAttribute('action') || '';
   },
 
   createDom: function() {
@@ -335,6 +345,14 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /** @override */
   getKeyEventTarget: function() {
     return this.getElement();
+  },
+
+  /**
+   * Retrieves the named user action.
+   * @return {!string}
+   */
+  getAction: function() {
+    return this.action_;
   },
 
 
