@@ -199,7 +199,7 @@ _.addMaterialChildren = function() {
         }
       }, this);
       // At the end if we still do not have selected child select the first one
-      if (this.getChildCount() > 0) {
+      if (goog.isNull(this.selectedChild_) && this.getChildCount() > 0) {
         var c = goog.asserts.assertInstanceof(this.getChildAt(0),
             pstj.material.RadioButton);
         this.value = c.value;
