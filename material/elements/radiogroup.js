@@ -137,6 +137,9 @@ _.setEnabled = function(enable) {
  * @protected
  */
 _.onCheckHandler = function(e) {
+  if (!goog.isNull(e)) {
+    e.stopPropagation();
+  }
   // Update values if checking
   if (e.type == goog.ui.Component.EventType.CHECK) {
     var old = this.selectedChild_;
@@ -226,6 +229,17 @@ _.addMaterialChildren = function() {
       }
     }, this);
   }
+};
+
+
+/**
+ * Getter for the currently selected index.
+ * @return {!number}
+ */
+_.getSelectedIndex = function() {
+  if (!goog.isNull(this.selectedChild_)) {
+    return this.indexOfChild(this.selectedChild_);
+  } else return -1;
 };
 
 
