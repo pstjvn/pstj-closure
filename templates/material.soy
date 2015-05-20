@@ -277,7 +277,7 @@
 /** Implements the FAB button */
 {template .Fab}
   {@param icon: string}
-  <div is class="{css material-fab}">
+  <div is class="{css material-fab}" icon="{$icon}">
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}

@@ -5,6 +5,9 @@ goog.require('goog.object');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Button');
 goog.require('pstj.material.ButtonRenderer');
+goog.require('pstj.material.IconContainer');
+goog.require('pstj.material.Ripple');
+goog.require('pstj.material.Shadow');
 goog.require('pstj.material.template');
 
 goog.scope(function() {
@@ -31,20 +34,6 @@ pstj.material.Fab = function(opt_content, opt_renderer, opt_domHelper) {
   this.setRaised(true);
 };
 goog.inherits(pstj.material.Fab, pstj.material.Button);
-
-
-/**
- * Creates a new instance from a config. In the case of FAB we assume the
- * config to be a model.
- * @param {MaterialConfig} conf
- */
-pstj.material.Fab.fromJSON = function(conf) {
-  var i = new pstj.material.Fab();
-  if (conf.icon) {
-    i.setIcon(conf.icon);
-  }
-  return i;
-};
 
 
 
@@ -82,7 +71,7 @@ pstj.material.FabRenderer = goog.defineClass(BR, {
      * @type {string}
      * @final
      */
-    CSS_CLASS: goog.getCssName('material-raf')
+    CSS_CLASS: goog.getCssName('material-fab')
   }
 });
 goog.addSingletonGetter(pstj.material.FabRenderer);
