@@ -98,7 +98,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
         State.EMPTY, goog.getCssName(baseClass, 'empty'),
         State.INVISIBLE, goog.getCssName(baseClass, 'invisible'),
         State.RAISED, goog.getCssName(baseClass, 'raised'),
-        State.OVERLAY, goog.getCssName(baseClass, 'overlayed'));
+        State.OVERLAY, goog.getCssName(baseClass, 'overlayed'),
+        State.TACTILE, goog.getCssName(baseClass, 'tactile'));
   },
 
 
@@ -813,11 +814,37 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   },
 
 
+  /**
+   * Updates the tactile state.
+   * @param {boolean} enable
+   */
+  setTactile: function(enable) {
+    this.setState(State.TACTILE, enable);
+  },
+
+
+  /**
+   * Checks if the element is tactile.
+   * @return {boolean}
+   */
+  isTactile: function() {
+    return this.hasState(State.TACTILE);
+  },
+
+
+  /**
+   * Check if the element has the invisible state set on.
+   * @return {boolean}
+   */
   isInvisibible: function() {
     return this.hasState(State.INVISIBLE);
   },
 
 
+  /**
+   * Enables/disables the invisible state on the element.
+   * @param {boolean} enable
+   */
   setInvisible: function(enable) {
     this.setState(State.INVISIBLE, enable);
   },

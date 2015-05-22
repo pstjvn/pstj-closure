@@ -240,7 +240,8 @@
   {@param? ink: bool}
   {@param? recenter: bool}
   {@param? action: string}
-  <div is class="{css material-button}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
+  {@param? tactile: bool}
+  <div is class="{css material-button}{if $tactile} {css material-button-tactile}{/if}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}
@@ -258,7 +259,8 @@
 /** Provides the template for the simple icon button */
 {template .IconButton}
   {@param icon: string}
-  <div is class="{css material-icon-button}" use-pointer icon="{$icon}">
+  {@param? tactile: bool}
+  <div is class="{css material-icon-button}{if $tactile} {css material-button-tactile}{/if}" use-pointer icon="{$icon}">
     {call .IconContainer}
       {param type: $icon /}
     {/call}
@@ -277,7 +279,8 @@
 /** Implements the FAB button */
 {template .Fab}
   {@param icon: string}
-  <div is class="{css material-fab}" icon="{$icon}">
+  {@param? tactile: bool}
+  <div is class="{css material-fab}{if $tactile} {css material-button-tactile}{/if}" icon="{$icon}">
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}

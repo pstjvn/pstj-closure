@@ -318,7 +318,8 @@ if (goog.DEBUG) {
  *    content: string,
  *    ink: (boolean|null|undefined),
  *    recenter: (boolean|null|undefined),
- *    action: (null|string|undefined)
+ *    action: (null|string|undefined),
+ *    tactile: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -335,7 +336,9 @@ pstj.material.template.Button = function(opt_data, opt_ignored) {
   var recenter = /** @type {boolean|null|undefined} */ (opt_data.recenter);
   goog.asserts.assert(opt_data.action == null || (opt_data.action instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.action), "expected param 'action' of type null|string|undefined.");
   var action = /** @type {null|string|undefined} */ (opt_data.action);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}) + '</div>');
+  goog.asserts.assert(opt_data.tactile == null || goog.isBoolean(opt_data.tactile), "expected param 'tactile' of type boolean|null|undefined.");
+  var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Button.soyTemplateName = 'pstj.material.template.Button';
@@ -344,7 +347,8 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    icon: string
+ *    icon: string,
+ *    tactile: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -353,7 +357,9 @@ if (goog.DEBUG) {
 pstj.material.template.IconButton = function(opt_data, opt_ignored) {
   goog.asserts.assert(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), "expected param 'icon' of type string|goog.soy.data.SanitizedContent.");
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-icon-button') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.IconContainer({type: icon}) + '</div>');
+  goog.asserts.assert(opt_data.tactile == null || goog.isBoolean(opt_data.tactile), "expected param 'tactile' of type boolean|null|undefined.");
+  var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-icon-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.IconContainer({type: icon}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.IconButton.soyTemplateName = 'pstj.material.template.IconButton';
@@ -380,7 +386,8 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    icon: string
+ *    icon: string,
+ *    tactile: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -389,7 +396,9 @@ if (goog.DEBUG) {
 pstj.material.template.Fab = function(opt_data, opt_ignored) {
   goog.asserts.assert(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), "expected param 'icon' of type string|goog.soy.data.SanitizedContent.");
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.Ripple({recenter: true}) + '</div>');
+  goog.asserts.assert(opt_data.tactile == null || goog.isBoolean(opt_data.tactile), "expected param 'tactile' of type boolean|null|undefined.");
+  var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '">' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.Ripple({recenter: true}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Fab.soyTemplateName = 'pstj.material.template.Fab';

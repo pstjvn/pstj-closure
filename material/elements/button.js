@@ -1,8 +1,10 @@
 goog.provide('pstj.material.Button');
 goog.provide('pstj.material.ButtonRenderer');
 
+goog.require('goog.async.Delay');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.Event');
 goog.require('goog.object');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -93,12 +95,32 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
      * @private
      */
     this.action_ = '';
+    /**
+     * Reference to a delayed event we can use to recreate a tactile triggered
+     * action.
+     * @type {goog.events.Event}
+     * @private
+     */
+    this.delayedEvent_ = null;
+    /**
+     * A delay to be used for tactile triggers.
+     *
+     * Tactile triggers are the ones that trigger the default actions
+     * after a certain delay to assure better UI/UX experience.
+     *
+     * @type {goog.async.Delay}
+     * @private
+     */
+    this.tactileDelay_ = new goog.async.Delay(this.triggerTactileAction,
+        200, this);
+    this.registerDisposable(this.tactileDelay_);
 
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.RAISED, true);
     this.setSupportedState(goog.ui.Component.State.ACTIVE, true);
     this.setSupportedState(goog.ui.Component.State.FOCUSED, true);
     this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
+    this.setSupportedState(goog.ui.Component.State.TACTILE, true);
     // Enable automatic entering of ACTIVE state (when pressed)
     this.setAutoStates(goog.ui.Component.State.ACTIVE, true);
     this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
@@ -135,6 +157,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.action_ = el.getAttribute('action') || '';
   },
 
+  /** @override */
   createDom: function() {
     goog.base(this, 'createDom');
     this.setIcon(this.icon);
@@ -165,6 +188,13 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
    */
   setUseInk: function(enable) {
     this.useInk_ = enable;
+  },
+
+
+  /** @inheritDoc */
+  disposeInternal: function() {
+    goog.base(this, 'disposeInternal');
+    this.delayedEvent_ = null;
   },
 
 
@@ -255,6 +285,45 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     }
     this.handleMouseUp(null);
     this.adjustDepth_();
+  },
+
+  /** @inheritDoc */
+  performActionInternal: function(e) {
+    if (this.isTactile()) {
+      if (this.isAutoState(goog.ui.Component.State.CHECKED)) {
+        this.setChecked(!this.isChecked());
+      }
+      if (this.isAutoState(goog.ui.Component.State.SELECTED)) {
+        this.setSelected(true);
+      }
+      if (this.isAutoState(goog.ui.Component.State.OPENED)) {
+        this.setOpen(!this.isOpen());
+      }
+      var actionEvent = new goog.events.Event(
+          goog.ui.Component.EventType.ACTION,
+          this);
+      if (e) {
+        actionEvent.altKey = e.altKey;
+        actionEvent.ctrlKey = e.ctrlKey;
+        actionEvent.metaKey = e.metaKey;
+        actionEvent.shiftKey = e.shiftKey;
+        actionEvent.platformModifierKey = e.platformModifierKey;
+      }
+      this.delayedEvent_ = actionEvent;
+      this.tactileDelay_.start();
+      return true;
+    } else {
+      return goog.base(this, 'performActionInternal', e);
+    }
+  },
+
+  /**
+   * Triggers the default mouse up action after the tactile delay.
+   * @protected
+   */
+  triggerTactileAction: function() {
+    this.dispatchEvent(this.delayedEvent_);
+    this.delayedEvent_ = null;
   },
 
 
