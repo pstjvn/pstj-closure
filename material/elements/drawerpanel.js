@@ -39,6 +39,7 @@ goog.require('goog.dom.classlist');
 goog.require('goog.style');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
+goog.require('pstj.agent.Pointer');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
@@ -279,6 +280,10 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
       if (this.selectedSection_ == pstj.material.DrawerPanel.Section.MAIN) {
         if (e.getPoint().x < this.swipeThreshold_) {
           this.setDragging(true);
+          if (pstj.agent.Pointer.getInstance().getOriginalType() !=
+              pstj.agent.Pointer.Type.MOUSE) {
+            this.getMainPanel().setOverlay(true);
+          }
         }
       } else {
         // If the drawer is selected (thus visible) swiping on the scrim can
