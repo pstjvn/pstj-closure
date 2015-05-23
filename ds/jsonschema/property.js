@@ -157,11 +157,13 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    */
   getJSTypeDefaultValue: function() {
     if (this.jstype == 'number') {
-      if (this.required) return '0';
-      else return 'null';
+      return '0';
+      // if (this.required) return '0';
+      // else return 'null';
     } else if (this.jstype == 'string') {
-      if (this.required) return '\'\'';
-      else return 'null';
+      return '\'\'';
+      // if (this.required) return '\'\'';
+      // else return 'null';
     } else if (this.jstype == 'boolean') {
       return 'false';
     } else if (this.jstype == 'Date') {
@@ -246,7 +248,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
           buffer.addLine('}');
         }
       } else {
-        throw new Error('Unknown FOMRMAP convertion: ' +
+        throw new Error('Unknown FROMMAP convertion: ' +
             this.jstype + ', ' + this.type);
       }
     }
@@ -280,12 +282,21 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
     if (this.required) {
       return this.wrapPrimitiveWithAssert_(this.jstype, map);
     } else {
-      switch (this.jstype) {
-        case 'number' : return map + ' || 0';
-        case 'string' : return map + ' || \'\'';
-        case 'boolean' : return map + ' || false';
-        default: throw new Error('Unknown jstype, call only for primitives');
-      }
+      return this.wrapPrimitiveWithAssert_(this.jstype,
+          this.wrapOptionalPrimitiveFromMap());
+    }
+  },
+
+  wrapOptionalPrimitiveFromMap: function() {
+    var map = this.getMapExtractionBit_();
+    switch (this.jstype) {
+      case 'number':
+        return '(goog.isNumber(' + map + ') ?\n        ' + map + ' : 0)';
+      case 'string':
+        return '(goog.isString(' + map + ') ?\n        ' + map + ' : \'\')';
+      case 'boolean':
+        return '(goog.isBoolean(' + map + ') ?\n        ' + map + ' : false)';
+      default: throw new Error('Unknown jstype, call only for primitives');
     }
   },
 
