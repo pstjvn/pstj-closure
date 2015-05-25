@@ -50,10 +50,17 @@ pstj.material.Input = goog.defineClass(IB, {
      * The calculation for the transformation is expensive and because inputs
      * rarely change it is safe to use a cached variant. The cache is calculated
      * the first time it is used.
-     * @type {string}
+     * @type {?string}
      * @private
      */
-    this.transformationCache_ = '';
+    this.transformationCache_ = null;
+    /**
+     * Flag used to fix issues with transformations being not applied when
+     * the UI component is display none by its parent.
+     * @type {boolean}
+     * @private
+     */
+    this.justGotTranformation_ = false;
 
     // Enable additional states used by the material design.
     this.setSupportedState(state.INVISIBLE, true);
@@ -97,21 +104,21 @@ pstj.material.Input = goog.defineClass(IB, {
   /**
    * Calculates the cached transforms to apply to the
    * label.
-   * @return {string}
+   * @return {?string}
    */
   getCachedTrasnform: function() {
-    if (!this.transformationCache_) {
-
+    if (goog.isNull(this.transformationCache_)) {
       var toRect = goog.style.getBounds(
           this.getNamedElement(pstj.material.Input.Name.FLOATED_LABEL_TEXT));
-
-      var fromRect = goog.style.getBounds(
-          this.getNamedElement(pstj.material.Input.Name.BODY_LABEL_TEXT));
-
-      var sy = toRect.height / fromRect.height;
-      this.transformationCache_ =
-          'scale3d(' + (toRect.width / fromRect.width) + ',' + sy + ',1) ' +
-          'translate3d(0,' + (toRect.top - fromRect.top) / sy + 'px,0)';
+      if (toRect.height != 0) {
+        this.justGotTranformation_ = true;
+        var fromRect = goog.style.getBounds(
+            this.getNamedElement(pstj.material.Input.Name.BODY_LABEL_TEXT));
+        var sy = toRect.height / fromRect.height;
+        this.transformationCache_ =
+            'scale3d(' + (toRect.width / fromRect.width) + ',' + sy + ',1) ' +
+            'translate3d(0,' + (toRect.top - fromRect.top) / sy + 'px,0)';
+      }
     }
     return this.transformationCache_;
   },
@@ -143,11 +150,16 @@ pstj.material.Input = goog.defineClass(IB, {
     }
     goog.base(this, 'setState', state, enable, opt_calledFrom);
     if (c) {
-      this.getRenderer().enableFloatinglabel(this, !enable);
-      this.getHandler().listenOnce(this.getNamedElement(
-          pstj.material.Input.Name.BODY_LABEL_TEXT),
-          goog.events.EventType.TRANSITIONEND,
-          this.handleTransitionEnd);
+      var tc = this.getCachedTrasnform();
+      this.getRenderer().enableFloatinglabel(this, !enable, tc);
+      if (!goog.isNull(tc)) {
+        this.getHandler().listenOnce(this.getNamedElement(
+            pstj.material.Input.Name.BODY_LABEL_TEXT),
+            goog.events.EventType.TRANSITIONEND,
+            this.handleTransitionEnd);
+      } else {
+        this.getRenderer().handleTransitionEnd(this);
+      }
     }
   },
 
@@ -213,19 +225,33 @@ pstj.material.InputRenderer = goog.defineClass(IBR, {
    * Switches between the regular and floated labels.
    * @param {pstj.material.Input} instance The input instance.
    * @param {boolean} enable If true the floating label is enabled.
+   * @param {?string} transformation The transformation to apply.
    */
-  enableFloatinglabel: function(instance, enable) {
+  enableFloatinglabel: function(instance, enable, transformation) {
     goog.asserts.assertInstanceof(instance, pstj.material.Input);
+    var el = instance.getNamedElement(pstj.material.Input.Name.BODY_LABEL_TEXT);
+
+    if (!enable && instance.justGotTranformation_ &&
+        goog.asserts.assertString(transformation)) {
+      // reflect the previous state
+      pstj.lab.style.css.setTranslationText(el, transformation);
+      /** @suppress {uselessCode} */ (el.offsetWidth);
+    }
+
+    if (instance.justGotTranformation_) instance.justGotTranformation_ = false;
 
     instance.setTransitioning(true);
-    var el = instance.getNamedElement(pstj.material.Input.Name.BODY_LABEL_TEXT);
     goog.style.setStyle(el, 'visibility', 'visible');
     if (enable) {
-      pstj.lab.style.css.setTranslationText(el, instance.getCachedTrasnform());
+      if (!goog.isNull(transformation)) {
+        pstj.lab.style.css.setTranslationText(el, transformation);
+      }
     } else {
       goog.style.setStyle(instance.getNamedElement(
           pstj.material.Input.Name.FLOATED_LABEL), 'visibility', 'hidden');
-      pstj.lab.style.css.setTranslationText(el, '');
+      if (!goog.isNull(transformation)) {
+        pstj.lab.style.css.setTranslationText(el, '');
+      }
     }
   },
 
