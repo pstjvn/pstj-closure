@@ -442,6 +442,13 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
     if (this.type == this.jstype) {
       return sjsname;
     } else {
+      if (this.jstype == 'boolean') {
+        if (this.type == 'number') {
+          return '(' + sjsname + ' ? 1 : 0)';
+        } else if (this.type == 'string') {
+          return sjsname + '.toString()';
+        }
+      }
       if (this.type == 'string') return sjsname + '.toString()';
       if (this.type == 'number') return 'parseFloat(' + sjsname + ')';
       if (this.type == 'object' || this.type == 'array') {
