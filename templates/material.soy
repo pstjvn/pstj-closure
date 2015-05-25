@@ -187,7 +187,7 @@
  */
 {template .ToggleButton}
   {@param? name: string}
-  <div is class="{css material-toggle-button}" role="button" name="{$name}">
+  <div is class="{css material-toggle-button}" role="button" name="{$name}" use-pointer>
     <div class="{css material-toggle-button-container}">
       <div class="{css material-toggle-button-bar}"></div>
       {call .RadioButton}

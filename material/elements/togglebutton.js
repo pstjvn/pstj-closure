@@ -56,6 +56,7 @@ pstj.material.ToggleButton = function(
 
   this.setSupportedState(goog.ui.Component.State.CHECKED, true);
   this.setSupportedState(goog.ui.Component.State.DISABLED, true);
+  this.setDispatchTransitionEvents(goog.ui.Component.State.CHECKED, true);
   this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
   this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.TAP);
   this.setUsePointerAgent(true);

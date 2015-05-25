@@ -244,7 +244,7 @@ pstj.material.template.ToggleButton = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
   goog.asserts.assert(opt_data.name == null || (opt_data.name instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.name), "expected param 'name' of type null|string|undefined.");
   var name = /** @type {null|string|undefined} */ (opt_data.name);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toggle-button') + '" role="button" name="' + soy.$$escapeHtmlAttribute(name) + '"><div class="' + goog.getCssName('material-toggle-button-container') + '"><div class="' + goog.getCssName('material-toggle-button-bar') + '"></div>' + pstj.material.template.RadioButton({label: ''}) + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toggle-button') + '" role="button" name="' + soy.$$escapeHtmlAttribute(name) + '" use-pointer><div class="' + goog.getCssName('material-toggle-button-container') + '"><div class="' + goog.getCssName('material-toggle-button-bar') + '"></div>' + pstj.material.template.RadioButton({label: ''}) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.ToggleButton.soyTemplateName = 'pstj.material.template.ToggleButton';
