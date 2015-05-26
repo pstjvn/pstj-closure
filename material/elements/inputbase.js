@@ -8,6 +8,7 @@ goog.require('goog.labs.userAgent.platform');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
+goog.require('goog.userAgent');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
@@ -330,6 +331,10 @@ pstj.material.InputBase = goog.defineClass(E, {
     this.getHandler()
         .listen(this, goog.ui.Component.EventType.CHANGE,
             this.handleChangeEvent);
+    if (!goog.userAgent.MOBILE && this.type == 'number') {
+      this.getHandler().listen(this.inputElement, goog.events.EventType.CHANGE,
+          this.propagateChange_);
+    }
   },
 
   /** @override */
@@ -365,6 +370,15 @@ pstj.material.InputBase = goog.defineClass(E, {
   getRenderer: function() {
     return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
         pstj.material.InputBaseRenderer);
+  },
+
+  /**
+   * Disable the input as well.
+   * @override
+   */
+  setEnabled: function(enable) {
+    goog.base(this, 'setEnabled', enable);
+    this.inputElement.disabled = (enable ? false : true);
   },
 
   /**
