@@ -87,7 +87,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
           this.templatetype_ = itemtype;
         }
         // The final jstype.
-        this.jstype = 'Array<' + this.templatetype_ + '>';
+        this.jstype = 'Array<!' + this.templatetype_ + '>';
       }
     }
     this.description = description;
