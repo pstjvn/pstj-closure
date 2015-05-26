@@ -105,7 +105,7 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
    * Adds a single line comment to the output.
    */
   addSingleLineComment: function(comment) {
-    this.addLine(this.commentStart + comment + this.commentEnd);
+    this.addLine(this.commentStart + ' ' + comment + this.commentEnd);
   },
 
   /**
