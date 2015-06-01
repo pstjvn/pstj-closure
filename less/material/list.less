@@ -1,0 +1,13 @@
+@import 'common';
+
+.material-list {
+  &:extend(.core-fill-position);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &-scroll-target > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

@@ -529,3 +529,17 @@ pstj.material.template.Toast = function(opt_data, opt_ignored) {
 if (goog.DEBUG) {
   pstj.material.template.Toast.soyTemplateName = 'pstj.material.template.Toast';
 }
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.template.List = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-list') + '"><div class="' + goog.getCssName('material-list-scroll-target') + '"></div></div>');
+};
+if (goog.DEBUG) {
+  pstj.material.template.List.soyTemplateName = 'pstj.material.template.List';
+}
