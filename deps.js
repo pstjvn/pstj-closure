@@ -37,6 +37,7 @@ goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.Li
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.ds.IListItem', 'pstj.object'], false);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable'], false);
 goog.addDependency('../../../apps/pstj/ds/poolcache.js', ['pstj.ds.PoolCache'], ['pstj.ds.Cache'], false);
+goog.addDependency('../../../apps/pstj/ds/sortable.js', ['pstj.ds.Sortable'], ['goog.array', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.DtoBase.EventType'], false);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure', 'pstj.ds.IClock'], false);
 goog.addDependency('../../../apps/pstj/error/errorhandler.js', ['pstj.error', 'pstj.error.ErrorHandler'], ['goog.pubsub.PubSub', 'pstj.control.Base'], false);
 goog.addDependency('../../../apps/pstj/fx/abstractanimation.js', ['pstj.fx.animation'], ['goog.async.AnimationDelay', 'goog.events', 'goog.events.EventType', 'goog.fx.easing', 'goog.math.Coordinate', 'goog.style', 'pstj.lab.style.css', 'pstj.math.utils'], false);
