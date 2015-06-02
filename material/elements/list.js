@@ -1,4 +1,5 @@
 goog.provide('pstj.material.List');
+goog.provide('pstj.material.ListRenderer');
 
 goog.require('goog.dom');
 goog.require('goog.dom.animationFrame');
@@ -28,7 +29,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
      * @type {goog.debug.Logger}
      * @private
      */
-    this.logger_ = new goog.log.getLogger('pstj.material.List');
+    this.logger_ = goog.log.getLogger('pstj.material.List');
     /**
      * The call to use to create a new list item.
      * @type {?function(): goog.ui.Control}
@@ -54,11 +55,11 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
      */
     this.height_ = 0;
     /**
-     * The measure/mutate passes.
-     * @type {function(...?)}
+     * The measure / mutate passes.
+     * @type {?function(...?)}
      * @private
      */
-    this.raf_ = goog.dom.animationFrame.createTask({
+    this.onScroll_ = goog.dom.animationFrame.createTask({
       measure: this.measurePass_,
       mutate: this.mutatePass_
     }, this);
@@ -69,13 +70,13 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
      */
     this.goingDown_ = true;
     /**
-     * The index of the phisically visible item.
+     * The index of the physically visible item.
      * @type {number}
      * @private
      */
     this.phisicalStart_ = 0;
     /**
-     * The index of the last item drawn phisically.
+     * The index of the last item drawn physically.
      * @type {number}
      * @private
      */
@@ -189,8 +190,10 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
   /**
    * Returns the correct child index when transformations of children are
    * applied on irregular steps.
+   *
    * @param {number} i The index to get.
-   * @return {number} The actual child index in the DOM tree.
+   * @return {goog.ui.Component} The actual child in the DOM tree with matching
+   *    the index.
    * @protected
    */
   getChildAtVirtual: function(i) {
@@ -206,7 +209,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
    * @param {goog.events.Event} e The scroll event.
    */
   handleScroll: function(e) {
-    this.raf_();
+    this.onScroll_();
   },
 
   /** @override */
@@ -219,13 +222,14 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
     }
 
     goog.base(this, 'setModel', model);
-    this.modelLength_ = this.getModelCount();
-
-    if (this.isInDocument()) {
-      if (!goog.isNull(model)) {
+    if (!goog.isNull(this.getModel())) {
+      this.modelLength_ = this.getModelCount();
+      if (this.isInDocument()) {
         this.addModelListeneres();
         this.initialize();
       }
+    } else {
+      this.modelLength_ = 0;
     }
   },
 
@@ -239,22 +243,45 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
       this.getRenderer().setScrollHeight(
           this.getElement(), this.scrollTargetHeight_);
 
-      // how much els can we show at a time.
-      var count = Math.ceil(this.height_ / this.itemHeight_) + 1;
-      this.phisicalEnd_ = count - 1;
-
-      // Init elements.
-      for (var i = 0; i < count; i++) {
-        var child = this.createListElement_();
-        this.addChild(child, true);
-        this.setModelForItem_(child, i);
-        this.applyPosition(child, i);
-      }
+      this.initElements_();
     }
   },
 
   /**
-   * Method specifically designed to be overriten.
+   * Method to create / trim elements needed for the list.
+   *
+   * // TODO: Make this smarter so it will work with resize and without
+   * // offsetting the list to the top.
+   *
+   * @private
+   */
+  initElements_: function() {
+    var count = Math.ceil(this.height_ / this.itemHeight_) + 1;
+    if (this.hasChildren()) {
+      if (count == this.getChildCount()) return;
+      goog.array.forEach(this.removeChildren(), function(child) {
+        goog.dispose(child);
+      });
+    }
+
+    if (count > this.modelLength_) count = this.modelLength_;
+
+    // Init elements.
+    for (var i = 0; i < count; i++) {
+      var child = this.createListElement_();
+      this.addChild(child, true);
+      this.setModelForItem_(child, i);
+      this.applyPosition(child, i);
+    }
+    this.phisicalStart_ = 0;
+    this.phisicalEnd_ = count - 1;
+    this.virtualOffset_ = 0;
+    // Scroll to the top.
+    this.getElement().scrollTop = 0;
+  },
+
+  /**
+   * Method specifically designed to be overridden.
    *
    * Returns the current length of the model. If you utilize custom model
    * objects override this method to make it return the length of items in
@@ -267,6 +294,16 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
     var model = this.getModel();
     if (goog.isNull(model)) return 0;
     return model.length;
+  },
+
+  /**
+   * Force the model lenght update.
+   *
+   * This is useful for subclasses that use events to monitor for model
+   * changes and need to recalculate when model changes.
+   */
+  updateModelLength: function() {
+    this.modelLength_ = this.getModelCount();
   },
 
   /**
@@ -292,7 +329,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
   },
 
   /**
-   * Sets the model on the specificed item using the index to extract a
+   * Sets the model on the specified item using the index to extract a
    * specific model item.
    *
    * Override this method if your model's item is expected to be
@@ -307,7 +344,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
   },
 
   /**
-   * Applies the phisical opsition of a virtual element.
+   * Applies the physical position of a virtual element.
    * @param {goog.ui.Component} child
    * @param {number} position The index to position the child on.
    * @protected
@@ -318,8 +355,26 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
   },
 
   /**
+   * Allows for imperatively setting the item height.
+   * @param {!number} height
+   */
+  setItemHeight: function(height) {
+    this.itemHeight_ = height;
+  },
+
+  /**
+   * Allows for imperatively setting the height of the container. This is
+   * mostly due to the flexing of the views.
+   * @param {!number} height
+   */
+  setHeight: function(height) {
+    this.height_ = height;
+  },
+
+  /**
    * Attempts to measure the height of a single item in the view.
    * @protected
+   * @suppress {uselessCode}
    */
   measureItemHeight: function() {
     if (this.itemHeight_ == 0) {
@@ -356,7 +411,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
   disposeInternal: function() {
     goog.base(this, 'disposeInternal');
     this.createListElement_ = null;
-    this.raf_ = null;
+    this.onScroll_ = null;
     this.overboardItem_ = null;
   },
 
@@ -388,7 +443,7 @@ pstj.material.ListRenderer = goog.defineClass(pstj.material.ElementRenderer, {
 
   /**
    * Updates the height of the scroll target element.
-   * @param {Element} el The root dom element.
+   * @param {Element} el The root DOM element.
    * @param {!number} height
    */
   setScrollHeight: function(el, height) {
@@ -406,8 +461,8 @@ pstj.material.ListRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    * @return {Element} The target element.
    */
   getScrollTarget: function(el) {
-    return goog.dom.getElementByClass(goog.getCssName(this.getCssClass(),
-        'scroll-target'));
+    return goog.dom.getElementByClass(goog.getCssName(
+        this.getStructuralCssClass(), 'scroll-target'));
   },
 
   statics: {
