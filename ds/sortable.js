@@ -65,6 +65,9 @@ pstj.ds.Sortable = goog.defineClass(goog.events.EventTarget, {
 
     goog.events.listen(this.dataSource, pstj.ds.DtoBase.EventType.CHANGE,
         this.handleSourceDataChange, false, this);
+    // Initialize the reflective list in case the source data
+    // already has items.
+    this.handleSourceDataChange(null);
   },
 
   /**
