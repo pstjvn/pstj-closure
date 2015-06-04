@@ -1,7 +1,6 @@
 goog.provide('pstj.material.Button');
 goog.provide('pstj.material.ButtonRenderer');
 
-goog.require('goog.async.Delay');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.events.Event');
@@ -102,18 +101,6 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
      * @private
      */
     this.delayedEvent_ = null;
-    /**
-     * A delay to be used for tactile triggers.
-     *
-     * Tactile triggers are the ones that trigger the default actions
-     * after a certain delay to assure better UI/UX experience.
-     *
-     * @type {goog.async.Delay}
-     * @private
-     */
-    this.tactileDelay_ = new goog.async.Delay(this.triggerTactileAction,
-        200, this);
-    this.registerDisposable(this.tactileDelay_);
 
     this.setSupportedState(goog.ui.Component.State.DISABLED, true);
     this.setSupportedState(goog.ui.Component.State.RAISED, true);
@@ -204,10 +191,21 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     if (this.getRipple()) {
       this.getHandler().listen(this.getRipple(),
           pstj.material.EventType.RIPPLE_END,
-          this.setIconAfterDelay);
+          this.onRippleEnd);
     }
   },
 
+  /**
+   * Handles the ripple end effect.
+   * @param {goog.events.Event} e The RIPPLE_END event.
+   * @protected
+   */
+  onRippleEnd: function(e) {
+    if (this.isTactile() && !goog.isNull(this.delayedEvent_)) {
+      this.triggerTactileAction();
+      this.setIconAfterDelay(e);
+    }
+  },
 
   /**
    * Method used solely to delay the icon setter.
@@ -310,7 +308,6 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
         actionEvent.platformModifierKey = e.platformModifierKey;
       }
       this.delayedEvent_ = actionEvent;
-      this.tactileDelay_.start();
       return true;
     } else {
       return goog.base(this, 'performActionInternal', e);
