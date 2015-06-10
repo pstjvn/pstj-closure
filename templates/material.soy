@@ -225,7 +225,7 @@
 {template .ButtonContent}
   {@param? content: string}
   <div is class="{css core-element} {css relative}">
-    <div class="{css material-button-label}">{$content}</div>
+    <div class="{css material-button-label}">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 
@@ -260,7 +260,8 @@
 {template .IconButton}
   {@param icon: string}
   {@param? tactile: bool}
-  <div is class="{css material-icon-button}{if $tactile} {css material-button-tactile}{/if}" use-pointer icon="{$icon}">
+  {@param? action: string}
+  <div is class="{css material-icon-button}{if $tactile} {css material-button-tactile}{/if}" use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
     {call .IconContainer}
       {param type: $icon /}
     {/call}
@@ -280,7 +281,7 @@
 {template .Fab}
   {@param icon: string}
   {@param? tactile: bool}
-  <div is class="{css material-fab}{if $tactile} {css material-button-tactile}{/if}" icon="{$icon}">
+  <div is class="{css material-fab}{if $tactile} {css material-button-tactile}{/if}" icon="{$icon}" use-pointer>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}
