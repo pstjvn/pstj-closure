@@ -163,3 +163,17 @@ pstj.material.icons.TrendingUp = function(opt_data, opt_ignored) {
 if (goog.DEBUG) {
   pstj.material.icons.TrendingUp.soyTemplateName = 'pstj.material.icons.TrendingUp';
 }
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.CheckStatic = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"><g><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.CheckStatic.soyTemplateName = 'pstj.material.icons.CheckStatic';
+}

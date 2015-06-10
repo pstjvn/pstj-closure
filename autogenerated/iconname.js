@@ -81,6 +81,11 @@ icon.resolveRenderer = function(iconName) {
     return icon.TrendingUp.getInstance();
   }
 
+  //Branch for CheckStatic
+  if (iconName == pstj.material.icon.Name.CHECK_STATIC) {
+    return icon.CheckStatic.getInstance();
+  }
+
   return null;
 };
 
@@ -294,6 +299,25 @@ icon.TrendingUp = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.TrendingUp);
 
 
+/** Renderer for CheckStatic */
+icon.CheckStatic = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.CheckStatic(m);
+  }
+});
+goog.addSingletonGetter(icon.CheckStatic);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -317,6 +341,7 @@ icon.Name = {
   TRENDING_DOWN: 'trending-down',
   TRENDING_NEUTRAL: 'trending-neutral',
   TRENDING_UP: 'trending-up',
+  CHECK_STATIC: 'check-static',
   NONEXISTING: 'nonexisting'
 };
 
