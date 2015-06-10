@@ -152,6 +152,19 @@ pstj.material.HeaderPanel.prototype.setType = function(type) {
 };
 
 
+/** @override */
+pstj.material.HeaderPanel.prototype.addMaterialChildren = function() {
+  goog.base(this, 'addMaterialChildren');
+  if (this.getElement().hasAttribute('waterfall')) {
+    this.setType('waterfall');
+  } else if (this.getElement().hasAttribute('standard')) {
+    this.setType('standard');
+  } else if (this.getElement().hasAttribute('tall')) {
+    this.setType('tall');
+  }
+};
+
+
 /**
  * Combination of modes in each of them we need the shadow.
  * @type {number}
