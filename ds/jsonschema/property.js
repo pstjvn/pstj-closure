@@ -74,6 +74,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
         // jstype needs to be resolved
         this.jstype = this.resolveNamedType(value['$_reference']);
         this.isNamedType_ = true;
+        this.templatetype_ = this.jstype;
       } else if (type == 'array') {
         // the list must be resolved to its template type.
         var itemtype = value['items']['type'];
