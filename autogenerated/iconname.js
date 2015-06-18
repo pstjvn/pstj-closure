@@ -86,6 +86,21 @@ icon.resolveRenderer = function(iconName) {
     return icon.CheckStatic.getInstance();
   }
 
+  //Branch for PlusStatic
+  if (iconName == pstj.material.icon.Name.PLUS_STATIC) {
+    return icon.PlusStatic.getInstance();
+  }
+
+  //Branch for ArrowLeftStatic
+  if (iconName == pstj.material.icon.Name.ARROW_LEFT_STATIC) {
+    return icon.ArrowLeftStatic.getInstance();
+  }
+
+  //Branch for ArrowRightStatic
+  if (iconName == pstj.material.icon.Name.ARROW_RIGHT_STATIC) {
+    return icon.ArrowRightStatic.getInstance();
+  }
+
   return null;
 };
 
@@ -318,6 +333,63 @@ icon.CheckStatic = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.CheckStatic);
 
 
+/** Renderer for PlusStatic */
+icon.PlusStatic = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.PlusStatic(m);
+  }
+});
+goog.addSingletonGetter(icon.PlusStatic);
+
+
+/** Renderer for ArrowLeftStatic */
+icon.ArrowLeftStatic = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.ArrowLeftStatic(m);
+  }
+});
+goog.addSingletonGetter(icon.ArrowLeftStatic);
+
+
+/** Renderer for ArrowRightStatic */
+icon.ArrowRightStatic = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.ArrowRightStatic(m);
+  }
+});
+goog.addSingletonGetter(icon.ArrowRightStatic);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -342,6 +414,9 @@ icon.Name = {
   TRENDING_NEUTRAL: 'trending-neutral',
   TRENDING_UP: 'trending-up',
   CHECK_STATIC: 'check-static',
+  PLUS_STATIC: 'plus-static',
+  ARROW_LEFT_STATIC: 'arrow-left-static',
+  ARROW_RIGHT_STATIC: 'arrow-right-static',
   NONEXISTING: 'nonexisting'
 };
 

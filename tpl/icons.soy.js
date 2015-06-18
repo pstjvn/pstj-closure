@@ -177,3 +177,45 @@ pstj.material.icons.CheckStatic = function(opt_data, opt_ignored) {
 if (goog.DEBUG) {
   pstj.material.icons.CheckStatic.soyTemplateName = 'pstj.material.icons.CheckStatic';
 }
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.PlusStatic = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"><g><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.PlusStatic.soyTemplateName = 'pstj.material.icons.PlusStatic';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.ArrowLeftStatic = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"><g><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.ArrowLeftStatic.soyTemplateName = 'pstj.material.icons.ArrowLeftStatic';
+}
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.ArrowRightStatic = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"><g><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.ArrowRightStatic.soyTemplateName = 'pstj.material.icons.ArrowRightStatic';
+}
