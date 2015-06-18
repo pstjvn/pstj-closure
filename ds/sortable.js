@@ -70,6 +70,13 @@ pstj.ds.Sortable = goog.defineClass(goog.events.EventTarget, {
     this.handleSourceDataChange(null);
   },
 
+  /** @inheritDoc */
+  disposeInternal: function() {
+    goog.base(this, 'disposeInternal');
+    goog.events.listen(this.dataSource, pstj.ds.DtoBase.EventType.CHANGE,
+        this.handleSourceDataChange, false, this);
+  },
+
   /**
    * Getter for the current sorting order.
    * @return {boolean}

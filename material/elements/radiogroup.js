@@ -161,6 +161,15 @@ _.onCheckHandler = function(e) {
 };
 
 
+/**
+ * Make the API for getting form element values the same.
+ * @return {string}
+ */
+_.getValue = function() {
+  return this.value;
+};
+
+
 /** @inheritDoc */
 _.addMaterialChildren = function() {
   goog.base(this, 'addMaterialChildren');
