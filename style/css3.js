@@ -276,8 +276,8 @@ pstj.lab.style.css.setTranslation = function(el, x, y, opt_unit,
 
   if (pstj.lab.style.css.canUseTransform) {
     el.style[pstj.lab.style.css.transformPrefix] = pstj.lab.style.css
-      .getTranslationAsValue(x, y, opt_unit) + (goog.isString(opt_appendage) ?
-        opt_appendage : '');
+        .getTranslationAsValue(x, y, opt_unit) + (goog.isString(opt_appendage) ?
+            opt_appendage : '');
   } else {
     el.style.top = y + opt_unit;
     el.style.left = x + opt_unit;

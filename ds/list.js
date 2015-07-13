@@ -59,7 +59,7 @@ pstj.ds.List = function(opt_nodes) {
   this.filteredOutIndexes_ = [];
   /**
    * The filter function.
-   * @type {function(pstj.ds.ListItem): boolean|null}
+   * @type {?function(pstj.ds.ListItem): boolean}
    * @private
    */
   this.filterFn_ = null;

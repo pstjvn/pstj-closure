@@ -100,6 +100,7 @@ _.decorateDom = function(root) {
  * Create a particular element
  * @param {MaterialUIItem} item
  * @private
+ * @return {string}
  */
 _.create_ = function(item) {
   console.log('Creating: ' + item.type);

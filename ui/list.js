@@ -232,10 +232,10 @@ pstj.ui.List.prototype.enterDocument = function() {
   }
   this.getHandler().listen(
       this, goog.ui.Component.EventType.HIGHLIGHT, this.handleItemHighlight)
-  .listen(this,
-      [pstj.ui.Touchable.EventType.MOVE,
-        pstj.ui.Touchable.EventType.PRESS],
-      this.handleMoveByChild);
+      .listen(this,
+          [pstj.ui.Touchable.EventType.MOVE,
+            pstj.ui.Touchable.EventType.PRESS],
+          this.handleMoveByChild);
 };
 
 

@@ -45,7 +45,7 @@ pstj.ng.Template.RE = /^([^\(]*)\((.*)\)$/;
 
 /**
  * The list of elements that has model attached to them declaratively.
- * @type {{length: number}|null}
+ * @type {?{length: number}}
  * @private
  */
 pstj.ng.Template.prototype.templateElements_;

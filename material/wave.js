@@ -234,6 +234,7 @@ pstj.material.Wave.prototype.setOpacityDecayVelocity = function(velocity) {
 /**
  * Method is called on every RAF until the wave is considered active i.e. has
  * more frames to render.
+ * @return {boolean}
  */
 pstj.material.Wave.prototype.nextFrame = function() {
   if (this.pressTimestamp_ > 0) {

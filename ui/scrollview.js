@@ -324,7 +324,7 @@ _.handleViewportResize = function(e) {
  */
 _.getMaximumCoverableHeight = function() {
   return goog.dom.ViewportSizeMonitor
-    .getInstanceForWindow(window).getSize().getLongest();
+      .getInstanceForWindow(window).getSize().getLongest();
 };
 
 

@@ -77,7 +77,7 @@ _.handleSingleLoad = function(namespaceprefix, path, jsonstring) {
  * @return {string}
  */
 _.getTypeForReference = function(ref) {
-
+  return '';
 };
 
 

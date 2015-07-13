@@ -47,7 +47,7 @@ pstj.graphics.Smooth = function(callback, opt_handler) {
   /**
    * The bound handler of the update trigger. This function will be called on
    * each frame until it returns false.
-   * @type {function(number): boolean|null}
+   * @type {?function(number): boolean}
    * @private
    */
   this.callback_ = goog.isDefAndNotNull(opt_handler) ?

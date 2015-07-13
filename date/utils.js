@@ -63,13 +63,13 @@ pstj.date.utils.renderTime = function(time, opt_format) {
   }
   var result = opt_format.replace('mm', goog.string.padNumber(time.getMonth() +
       1, 2))
-  .replace('Month', pstj.date.utils.months_[time.getMonth()])
-  .replace('Mon', pstj.date.utils.months_[time.getMonth()].substring(0, 3))
-  .replace('dd', goog.string.padNumber(time.getDate(), 2))
-  .replace('yyyy', time.getFullYear().toString())
-  .replace('yy', time.getFullYear().toString().substr(2))
-  .replace('hh', goog.string.padNumber(time.getHours(), 2))
-  .replace('xx', goog.string.padNumber(time.getMinutes(), 2));
+      .replace('Month', pstj.date.utils.months_[time.getMonth()])
+      .replace('Mon', pstj.date.utils.months_[time.getMonth()].substring(0, 3))
+      .replace('dd', goog.string.padNumber(time.getDate(), 2))
+      .replace('yyyy', time.getFullYear().toString())
+      .replace('yy', time.getFullYear().toString().substr(2))
+      .replace('hh', goog.string.padNumber(time.getHours(), 2))
+      .replace('xx', goog.string.padNumber(time.getMinutes(), 2));
 
   return result;
 };

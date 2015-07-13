@@ -42,20 +42,6 @@ pstj.material.Checkbox = function(opt_content, opt_renderer, opt_domHelper) {
 goog.inherits(pstj.material.Checkbox, pstj.material.Element);
 
 
-/**
- * Creates a new instance from a JSON config.
- * @param {MaterialConfig} json
- */
-pstj.material.Checkbox.fromJSON = function(json) {
-  var i = new pstj.material.Checkbox();
-  pstj.material.Element.fromJSON(json, i);
-  if (json && json.checked) {
-    i.setChecked(true);
-  }
-  return i;
-};
-
-
 
 /**
  * Implements the renderer for the element.

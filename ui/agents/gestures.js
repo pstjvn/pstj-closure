@@ -378,7 +378,7 @@ _.getMoveDifferenceY = function() {
  * @return {number}
  */
 _.getZoomDistance = function() {
-
+  return 0;
 };
 
 
