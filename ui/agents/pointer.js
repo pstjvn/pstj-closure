@@ -1,6 +1,7 @@
 goog.provide('pstj.agent.Pointer');
 goog.provide('pstj.agent.Pointer.EventType');
 goog.provide('pstj.agent.PointerEvent');
+goog.provide('pstj.agent.Swipe');
 
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');

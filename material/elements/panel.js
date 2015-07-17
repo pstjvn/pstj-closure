@@ -15,12 +15,14 @@
  */
 
 goog.provide('pstj.material.Panel');
+goog.provide('pstj.material.PanelRenderer');
 
 goog.require('goog.ui.Component.State');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.Shadow');
 goog.require('pstj.material.State');
+
 
 goog.scope(function() {
 var E = pstj.material.Element;

@@ -6,6 +6,7 @@
  */
 
 goog.provide('pstj.widget.Swiper');
+goog.provide('pstj.widget.SwiperRenderer');
 
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');

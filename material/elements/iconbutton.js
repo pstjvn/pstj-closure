@@ -1,4 +1,5 @@
 goog.provide('pstj.material.IconButton');
+goog.provide('pstj.material.IconButtonRenderer');
 
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Button');

@@ -6,6 +6,7 @@
  */
 
 goog.provide('pstj.widget.Swipetile');
+goog.provide('pstj.widget.SwipetileRenderer');
 
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');

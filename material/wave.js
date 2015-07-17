@@ -23,6 +23,7 @@
  */
 
 goog.provide('pstj.material.Wave');
+goog.provide('pstj.material.WavePool');
 
 goog.require('goog.Disposable');
 goog.require('goog.array');

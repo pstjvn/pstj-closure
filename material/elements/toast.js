@@ -1,4 +1,5 @@
 goog.provide('pstj.material.Toast');
+goog.provide('pstj.material.ToastRenderer');
 
 goog.require('goog.array');
 goog.require('goog.ui.Component.EventType');
