@@ -108,6 +108,16 @@ _.onTransitionEnd = function(e) {
 };
 
 
+/**
+ * @override
+ * @return {pstj.material.CheckboxRenderer}
+ */
+_.getRenderer = function() {
+  return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
+      pstj.material.CheckboxRenderer);
+};
+
+
 /** @inheritDoc */
 r.getCssClass = function() {
   return pstj.material.CheckboxRenderer.CSS_CLASS;

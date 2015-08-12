@@ -421,6 +421,15 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
    */
   setCreateListItem: function(fn) {
     this.createListElement_ = fn;
+  },
+
+  /**
+   * @override
+   * @return {pstj.material.ListRenderer}
+   */
+  getRenderer: function() {
+    return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
+        pstj.material.ListRenderer);
   }
 });
 

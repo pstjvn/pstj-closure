@@ -134,8 +134,8 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
    * @return {Panel}
    */
   getMainPanel: function() {
-    return goog.asserts.assertInstanceof(this.getChildAt(
-        pstj.material.DrawerPanel.Section.MAIN), Panel);
+    return /** @type {!Panel} */(goog.asserts.assertInstanceof(this.getChildAt(
+        pstj.material.DrawerPanel.Section.MAIN), Panel));
   },
 
   /** @override */

@@ -87,7 +87,7 @@ pstj.ds.Cache.prototype.has = function(key) {
  * exists null is returned.
  *
  * @param {!string} key The key to lookup.
- * @return {T}
+ * @return {?T}
  */
 pstj.ds.Cache.prototype.get = function(key) {
   if (this.has(key)) {

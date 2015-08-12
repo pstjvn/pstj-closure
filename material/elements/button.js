@@ -1,8 +1,10 @@
 goog.provide('pstj.material.Button');
 goog.provide('pstj.material.ButtonRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.BrowserEvent');
 goog.require('goog.events.Event');
 goog.require('goog.object');
 goog.require('goog.ui.Component.State');
@@ -300,7 +302,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
       var actionEvent = new goog.events.Event(
           goog.ui.Component.EventType.ACTION,
           this);
-      if (e) {
+      if (e && goog.asserts.assertInstanceof(e, goog.events.BrowserEvent)) {
         actionEvent.altKey = e.altKey;
         actionEvent.ctrlKey = e.ctrlKey;
         actionEvent.metaKey = e.metaKey;

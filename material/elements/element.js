@@ -990,6 +990,17 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   },
 
 
+  /**
+   * @override
+   * @return {pstj.material.ElementRenderer}
+   */
+  getRenderer: function() {
+    return /** @type {pstj.material.ElementRenderer} */(
+        goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
+            pstj.material.ElementRenderer));
+  },
+
+
   statics: {
     /**
      * Map of events that if we have one of them we should attach the instance
