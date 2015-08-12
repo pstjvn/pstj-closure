@@ -100,7 +100,7 @@ pstj.object.deepEquals = function(actual, expected, opt_comparer) {
 
 
 /**
- * Encodes a JSON object as URL encoded paload for sending over the wire for
+ * Encodes a JSON object as URL encoded payload for sending over the wire for
  *   PHP implementation as of 158ltd.
  * @param {Object} data The object to encode.
  * @return {string} The encoded object as string.
