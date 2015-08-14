@@ -1,0 +1,119 @@
+{
+  "kind": "discovery#restDescription",
+  "etag": "b2898c590b4f8750018a02f6fc0e3f165f5508c3",
+  "discoveryVersion": "v1",
+  "id": "loto:v1",
+  "name": "loto",
+  "version": "v1",
+  "revision": "0",
+  "title": "All test title",
+  "description": "Provides the latest winning numbers for the LOGO game. The game itself is a fictional one and this API is used to construct the cloasue discovery document.",
+  "protocol": "rest",
+  "baseUrl": "http://localhost:8080/loto/v1/",
+  "basePath": "/loto/v1/",
+  "rootUrl": "http://localhost:8080/",
+  "servicePath": "loto/v1/",
+  "parameters": {},
+  "schemas": {
+    "AllInOne": {
+      "id": "AllInOne",
+      "type": "object",
+      "properties": {
+        "aninteger": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adouble": {
+          "type": "number",
+          "format": "double"
+        },
+        "abool": {
+          "type": "boolean"
+        },
+        "astring": {
+          "type": "string"
+        },
+        "anobject": {
+          "$ref": "Helper"
+        },
+        "adatetime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "listint": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "listdouble": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "listbool": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          }
+        },
+        "liststring": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "listobject": {
+          "type": "array",
+          "items": {
+            "$ref": "Helper"
+          }
+        },
+        "listdatetime": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "Helper": {
+      "id": "Helper",
+      "type": "object",
+      "properties": {
+        "aninteger": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adouble": {
+          "type": "number",
+          "format": "double"
+        },
+        "abool": {
+          "type": "boolean"
+        },
+        "astring": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "methods": {
+    "testall": {
+      "id": "LotoApi.testall",
+      "path": "all",
+      "httpMethod": "GET",
+      "description": "Method description",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "AllInOne"
+      }
+    }
+  },
+  "resources": {}
+}

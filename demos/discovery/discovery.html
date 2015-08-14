@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Discovery document processing demo</title>
+    <meta content="width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <style>
+      .container {
+        width: 800px;
+        height: 600px;
+        position: relative;
+      }
+    </style>
+    <script>
+      var less = {env:"development",poll:1000};
+      var CLOSURE_UNCOMPILED_DEFINES = {
+        'goog.ui.Component.ALLOW_DETACHED_DECORATION':true,
+        'goog.Promise.LONG_STACK_TRACES': true
+      };
+    </script>
+    <!-- Require all deps -->
+    <script src="../../../../library/closure/goog/base.js"></script>
+    <script src="../../../../templates/deps.js"></script>
+    <script src="../../deps.js"></script>
+    <script src="../../demodeps.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <pre id="result"></pre>
+    </div>
+    <script>goog.require('pstj.demos.sourcegen.discovery');</script>
+  </body>
+</html>

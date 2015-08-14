@@ -18,6 +18,7 @@ ng \
 object \
 options \
 resource \
+sourcegen \
 storage \
 style \
 themes \
