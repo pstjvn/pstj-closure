@@ -213,7 +213,7 @@ pstj.sourcegen.JSBuffer = goog.defineClass(null, {
         newMag = mag;
       }
     } else {
-      return arr.splice(0, length).join('');
+      return arr.join('');
     }
 
     var rest = arr.splice(0, newMag);
