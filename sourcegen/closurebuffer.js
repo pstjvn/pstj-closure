@@ -294,6 +294,8 @@ pstj.sourcegen.ClosureBuffer = goog.defineClass(JSBuffer, {
   getShortName_: function(longname) {
     var result = this.re_.exec(longname);
     if (!goog.isNull(result) && result.length == 2) {
+      // Add exception /heiristics for assers to make lines shorter.
+      if (longname == 'goog.asserts') return 'a';
       return result[1];
     }
     return longname;

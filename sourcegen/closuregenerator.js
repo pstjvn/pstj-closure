@@ -329,6 +329,9 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
         this.buffer.getScopedNamespace(this.assertionNamespace) :
         this.assertionNamespace;
 
+    var arr = (this.inscope_) ?
+        this.buffer.getScopedNamespace('goog.array') :
+        'goog.array';
     goog.array.forEach(klass.properties, function(prop) {
       var line = 'this.' + prop.name;
 
@@ -338,7 +341,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
         line += '.fromJSON(' +
             asserts + '.assert(' + 'map[\'' + prop.name + '\']))';
       } else if (prop.type == 'array') {
-        this.buffer.writeln('goog.array.clear(this.' + prop.name + ');');
+        this.buffer.writeln(arr + '.clear(this.' + prop.name + ');');
         // Wrap in conditional if the prop is not required it might be missing.
         if (!prop.required) {
           this.buffer.writeln('if (goog.isArray(map[\'' + prop.name +
@@ -346,7 +349,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
           this.buffer.indent();
         }
 
-        this.buffer.writeln('goog.array.forEach(' + asserts + '.assertArray' +
+        this.buffer.writeln(arr + '.forEach(' + asserts + '.assertArray' +
             '(map[\'' + prop.name + '\']),');
         this.buffer.writeln('    function(item) {');
         this.buffer.indent();
