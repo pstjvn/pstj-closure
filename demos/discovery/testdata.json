@@ -1,6 +1,6 @@
 {
   "kind": "discovery#restDescription",
-  "etag": "b2898c590b4f8750018a02f6fc0e3f165f5508c3",
+  "etag": "f052cc5d5a06e97580331297e447dd713493ffbe",
   "discoveryVersion": "v1",
   "id": "loto:v1",
   "name": "loto",
@@ -15,6 +15,85 @@
   "servicePath": "loto/v1/",
   "parameters": {},
   "schemas": {
+    "UserRegistration": {
+      "id": "UserRegistration",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "id": "User",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The UUID of the user."
+        },
+        "username": {
+          "type": "string",
+          "description": "The username used for login."
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "If the user registration process has been completed yet."
+        },
+        "born": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "data": {
+          "$ref": "Helper",
+          "description": "The additional user details.",
+          "required": true
+        }
+      }
+    },
+    "Helper": {
+      "id": "Helper",
+      "type": "object",
+      "properties": {
+        "aninteger": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adouble": {
+          "type": "number",
+          "format": "double"
+        },
+        "abool": {
+          "type": "boolean"
+        },
+        "astring": {
+          "type": "string"
+        }
+      }
+    },
+    "UserAuthentication": {
+      "id": "UserAuthentication",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The user name to be used for login attempt.",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "description": "The passsword to be used for login attempt.",
+          "required": true
+        }
+      }
+    },
+    "ListOfUser": {
+      "id": "ListOfUser",
+      "type": "array",
+      "items": {
+        "$ref": "User"
+      }
+    },
     "AllInOne": {
       "id": "AllInOne",
       "type": "object",
@@ -81,24 +160,42 @@
         }
       }
     },
-    "Helper": {
-      "id": "Helper",
-      "type": "object",
-      "properties": {
-        "aninteger": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "adouble": {
-          "type": "number",
-          "format": "double"
-        },
-        "abool": {
-          "type": "boolean"
-        },
-        "astring": {
-          "type": "string"
-        }
+    "ListOfDateTime": {
+      "id": "ListOfDateTime",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "ListOfString": {
+      "id": "ListOfString",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ListOfint": {
+      "id": "ListOfint",
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int32"
+      }
+    },
+    "ListOfdouble": {
+      "id": "ListOfdouble",
+      "type": "array",
+      "items": {
+        "type": "number",
+        "format": "double"
+      }
+    },
+    "ListOfAllInOne": {
+      "id": "ListOfAllInOne",
+      "type": "array",
+      "items": {
+        "$ref": "AllInOne"
       }
     }
   },
@@ -113,7 +210,153 @@
       "response": {
         "$ref": "AllInOne"
       }
+    },
+    "noParameters": {
+      "id": "LotoApi.noParameters",
+      "path": "noparams",
+      "httpMethod": "GET",
+      "description": "REST with no params",
+      "parameters": {},
+      "parameterOrder": []
+    },
+    "oneParameter": {
+      "id": "LotoApi.oneParameter",
+      "path": "oneparam/{paramname}",
+      "httpMethod": "GET",
+      "description": "REST with one param",
+      "parameters": {
+        "paramname": {
+          "type": "string",
+          "description": "Path parameter: 'paramname'.",
+          "required": true,
+          "location": "path"
+        }
+      },
+      "parameterOrder": [
+        "paramname"
+      ]
+    },
+    "oneParamMiddle": {
+      "id": "LotoApi.oneParamMiddle",
+      "path": "oneparam/{paramname}/middle",
+      "httpMethod": "GET",
+      "description": "REST with one param in the middle",
+      "parameters": {
+        "paramname": {
+          "type": "string",
+          "description": "Path parameter: 'paramname'.",
+          "required": true,
+          "location": "path"
+        }
+      },
+      "parameterOrder": [
+        "paramname"
+      ]
+    },
+    "oneParameterPost": {
+      "id": "LotoApi.oneParameterPost",
+      "path": "oneparampost",
+      "httpMethod": "POST",
+      "description": "REST path wiwth post parameter",
+      "parameters": {},
+      "parameterOrder": [],
+      "request": {
+        "$ref": "UserAuthentication"
+      }
+    },
+    "getDatetime": {
+      "id": "LotoApi.getDatetime",
+      "path": "returndatetimelist",
+      "httpMethod": "GET",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "ListOfDateTime"
+      }
+    },
+    "getStringList": {
+      "id": "LotoApi.getStringList",
+      "path": "returnstringlist",
+      "httpMethod": "GET",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "ListOfString"
+      }
+    },
+    "getIntList": {
+      "id": "LotoApi.getIntList",
+      "path": "returnintlist",
+      "httpMethod": "GET",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "ListOfint"
+      }
+    },
+    "getDoubleList": {
+      "id": "LotoApi.getDoubleList",
+      "path": "returndoublelist",
+      "httpMethod": "GET",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "ListOfdouble"
+      }
+    },
+    "getAll": {
+      "id": "LotoApi.getAll",
+      "path": "returnall",
+      "httpMethod": "GET",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "ListOfAllInOne"
+      }
     }
   },
-  "resources": {}
+  "resources": {
+    "user": {
+      "methods": {
+        "register": {
+          "id": "LotoApi.users.register",
+          "path": "user/register",
+          "httpMethod": "POST",
+          "parameters": {},
+          "parameterOrder": [],
+          "request": {
+            "$ref": "UserRegistration"
+          },
+          "response": {
+            "$ref": "User"
+          }
+        },
+        "authenticate": {
+          "id": "LotoApi.users.authenticate",
+          "path": "user/authenticate",
+          "httpMethod": "POST",
+          "parameters": {},
+          "parameterOrder": [],
+          "request": {
+            "$ref": "UserAuthentication"
+          },
+          "response": {
+            "$ref": "User"
+          }
+        },
+        "getUsers": {
+          "id": "LotoApi.users.getUsers",
+          "path": "users",
+          "httpMethod": "GET",
+          "description": "Retrieve all users",
+          "parameters": {},
+          "parameterOrder": [],
+          "response": {
+            "$ref": "ListOfUser"
+          }
+        }
+      },
+      "resources": {}
+    }
+  }
 }

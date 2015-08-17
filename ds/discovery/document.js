@@ -6,6 +6,7 @@ goog.provide('pstj.ds.discovery.Document');
 
 goog.require('goog.json');
 goog.require('pstj.ds.discovery.Class');
+goog.require('pstj.ds.discovery.List');
 
 
 /** Implements parsing the document */
@@ -37,6 +38,7 @@ pstj.ds.discovery.Document = goog.defineClass(null, {
      * @type {Object<string, Object>}
      */
     this.classes = {};
+    this.lists = {};
     this.processSchemas();
   },
 
@@ -51,7 +53,7 @@ pstj.ds.discovery.Document = goog.defineClass(null, {
       if (value['type'] == 'object') {
         this.classes[key] = new pstj.ds.discovery.Class(value);
       } else if (value['type'] == 'array') {
-        // this.schemas[key] = new pstj.ds.discovery.Array.fromMap(value));
+        this.lists[key] = new pstj.ds.discovery.List(key, value);
       } else {
         throw new Error('Unsupported schema type: ' + value['type']);
       }

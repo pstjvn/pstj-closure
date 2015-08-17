@@ -13,9 +13,10 @@ goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['go
 goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.PubSub'], false);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object', 'pstj.debug'], false);
 goog.addDependency('../../../apps/pstj/ds/discovery/class.js', ['pstj.ds.discovery.Class'], ['goog.array', 'pstj.ds.discovery.Property'], false);
-goog.addDependency('../../../apps/pstj/ds/discovery/document.js', ['pstj.ds.discovery.Document'], ['goog.json', 'pstj.ds.discovery.Class'], false);
+goog.addDependency('../../../apps/pstj/ds/discovery/document.js', ['pstj.ds.discovery.Document'], ['goog.json', 'pstj.ds.discovery.Class', 'pstj.ds.discovery.List'], false);
+goog.addDependency('../../../apps/pstj/ds/discovery/list.js', ['pstj.ds.discovery.List'], [], false);
+goog.addDependency('../../../apps/pstj/ds/discovery/method.js', ['pstj.ds.discovery.Method'], [], false);
 goog.addDependency('../../../apps/pstj/ds/discovery/property.js', ['pstj.ds.discovery.Property'], [], false);
-goog.addDependency('../../../apps/pstj/ds/discovery/test.js', ['asnb'], [], false);
 goog.addDependency('../../../apps/pstj/ds/dto/swipetile.js', ['pstj.ds.dto.Swipetile', 'pstj.ds.dto.SwipetileList'], ['goog.asserts', 'pstj.ds.DtoBase'], false);
 goog.addDependency('../../../apps/pstj/ds/dtobase.js', ['pstj.ds.DtoBase', 'pstj.ds.DtoBase.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget'], false);
 goog.addDependency('../../../apps/pstj/ds/iclock.js', ['pstj.ds.IClock'], [], false);

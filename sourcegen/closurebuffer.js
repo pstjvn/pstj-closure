@@ -252,6 +252,18 @@ pstj.sourcegen.ClosureBuffer = goog.defineClass(JSBuffer, {
   },
 
   /**
+   * Getter for a scoped namespace. Will scope the name only if the buffer
+   * is currently in scope.
+   * @param  {string} ns The namespace.
+   * @return {string}    The scoped namespace or the same namespace if not in
+   * a scoped block.
+   */
+  getScopedNamespaceIfInScope: function(ns) {
+    if (this.inscope) return this.getScopedNamespace(ns);
+    else return ns;
+  },
+
+  /**
    * Registers the namespaces from a list to the enerator in order to
    * allow scoped block efficassy.
    * @param  {Array<string>} list The list of namespaces.

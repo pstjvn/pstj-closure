@@ -11,6 +11,8 @@ goog.require('pstj.sourcegen.ClosureBuffer');
  * The generator takes a list of DTO definitions and outputs a comprehensive
  * closure style source file that contains the classes that represent the
  * DTO objects with assertions and types.
+ *
+ * TODO: Add support for rpc method generation.
  */
 pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
   /**
@@ -103,12 +105,96 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
 
     if (this.useScoping) this.scope();
     this.generateDtoClasses();
+    this.generateDtoLists();
 
     // this.lines(2);
     // this.generateRpcClass();
 
     if (this.useScoping) this.unscope();
     return this.buffer.toString();
+  },
+
+  /**
+   * Generates the DTO lists processing.
+   */
+  generateDtoLists: function() {
+    goog.object.forEach(this.doc.lists, function(val, key) {
+      this.generateDtoList(val);
+    }, this);
+  },
+
+  /**
+   * Generates a single list processing method.
+   * @param  {pstj.ds.discovery.List} item The list item to use as blueprint.
+   */
+  generateDtoList: function(item) {
+    var a = this.buffer.getScopedNamespaceIfInScope(this.assertionNamespace);
+    var arr = this.buffer.getScopedNamespaceIfInScope('goog.array');
+    var type = (item.isReferenceType() ?
+        this.getGenerativeDTONamespace(item.getClosureType()) :
+        item.getClosureType());
+    this.lines(2);
+    this.buffer.startComment();
+    this.buffer.writeln(item.name + ': fromJSON implementation.');
+    this.buffer.writeln('');
+    this.buffer.writeln('@param {?} list The server-sent list.');
+    this.buffer.writeln('@return {!Array<!' + type + '>}');
+    this.buffer.endComment();
+
+    this.buffer.writeln(this.getGenerativeDTONamespace(item.name) +
+        'fromJSON = function(list) {');
+    this.buffer.indent();
+    this.buffer.writeln(a + '.assertArray(list);');
+    // If we need to cenvert the types we need this.
+    if (item.isReferenceType() || item.getClosureType() == 'Date') {
+      this.buffer.writeln('var result = ' + arr + '.map(function(item) {');
+      this.buffer.indent();
+      this.buffer.writeln(a + this.getAssertForType((type == 'Date') ?
+          item.type : 'object') + '(item);');
+      this.buffer.writeln('var i = new ' + type + '();');
+      this.buffer.writeln('i.fromJSON(item);');
+      this.buffer.writeln('return i;');
+      this.buffer.unindent();
+      this.buffer.writeln('});');
+      this.buffer.writeln('return /** @type {!Array<!' + type +
+          '>} */(result);');
+    } else {
+      // If we are not in debug mode and the array type does not need
+      // to be converted we can return the JSON generated list. However
+      // if we are in debug mode we need to assert all items before
+      // passing execution flow further.
+      this.buffer.writeln('if (goog.DEBUG) {');
+      this.buffer.indent();
+      this.buffer.writeln(arr + '.forEach(list, function(item, i) {');
+      this.buffer.indent();
+      this.buffer.writeln(a + this.getAssertForType(item.type) +
+          '(item, \'Item\' + i + \' is not a ' + item.getClosureType() +
+          '\');');
+      this.buffer.unindent();
+      this.buffer.writeln('});');
+      this.buffer.unindent();
+      this.buffer.writeln('}');
+      this.buffer.writeln('return /** @type {!Array<!' + item.getClosureType() +
+          '>} */(list);');
+    }
+    this.buffer.unindent();
+    this.buffer.writeln('};');
+    // Lists do not need to convert back as their serialization takes care of
+    // the 'toJSON' of complex items.
+    this.lines(2);
+    this.buffer.startComment();
+    this.buffer.writeln(item.name + ': toJSON helper.');
+    this.buffer.writeln('');
+    this.buffer.writeln('@param {!Array<!' + type +
+        '>} list Local checked list.');
+    this.buffer.writeln('@return {!Array<!' + type + '>}');
+    this.buffer.endComment();
+    this.buffer.writeln(this.getGenerativeDTONamespace(item.name) +
+        'toJSON = function(list) {');
+    this.buffer.indent();
+    this.buffer.writeln('return list;');
+    this.buffer.unindent();
+    this.buffer.writeln('};');
   },
 
   /**
@@ -271,7 +357,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
 
   /**
    * Getter for the items type.
-   * @param  {pstj.ds.discovery.Property} prop
+   * @param  {string} type
    * @return {string}
    */
   getAssertForType: function(type) {
