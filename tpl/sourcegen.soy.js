@@ -25,7 +25,7 @@ goog.require('goog.asserts');
 pstj.sourcegen.template.IntegerHelper = function(opt_data, opt_ignored) {
   soy.asserts.assertType(goog.isString(opt_data.namespace) || (opt_data.namespace instanceof goog.soy.data.SanitizedContent), 'namespace', opt_data.namespace, 'string|goog.soy.data.SanitizedContent');
   var namespace = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.namespace);
-  return soydata.markUnsanitizedText('/**\n * Helper method for chekcing if the value is really an integer.\n *\n * @param {number} val\n * @return {number}\n */\n' + ('' + namespace) + ' = function(val) {\n  if (parseInt(val, 10) != val) {\n    throw new Error(\'The value is not an integer: \' + val);\n  }\n  return val;\n}');
+  return soydata.markUnsanitizedText('/**\n * Helper method for chekcing if the value is really an integer.\n *\n * @param {number} val\n * @return {number}\n */\n' + ('' + namespace) + ' = function(val) {\n  if (goog.DEBUG) {\n    if (parseInt(val, 10) != val) {\n      throw new Error(\'The value is not an integer: \' + val);\n    }\n  }\n  return val;\n}');
 };
 if (goog.DEBUG) {
   pstj.sourcegen.template.IntegerHelper.soyTemplateName = 'pstj.sourcegen.template.IntegerHelper';
@@ -43,7 +43,7 @@ if (goog.DEBUG) {
 pstj.sourcegen.template.MinMaxHelper = function(opt_data, opt_ignored) {
   soy.asserts.assertType(goog.isString(opt_data.namespace) || (opt_data.namespace instanceof goog.soy.data.SanitizedContent), 'namespace', opt_data.namespace, 'string|goog.soy.data.SanitizedContent');
   var namespace = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.namespace);
-  return soydata.markUnsanitizedText('/**\n * Helper function for managing min/max values of ints.\n *\n * @param {number} val\n * @param {?number} min\n * @param {?number} max\n * @return {number}\n */\n' + ('' + namespace) + ' = function(val, min, max) {\n  if ((min != null && val < min) || (max != null && val > max)) {\n    throw new Error(\n        \'Value out of range: \' + val + \', \' + min + \', \' + max);\n  }\n  return val;\n};\n');
+  return soydata.markUnsanitizedText('/**\n * Helper function for managing min/max values of ints.\n *\n * @param {number} val\n * @param {?number} min\n * @param {?number} max\n * @return {number}\n */\n' + ('' + namespace) + ' = function(val, min, max) {\n  if (goog.DEBUG) {\n    if ((min != null && val < min) || (max != null && val > max)) {\n      throw new Error(\n          \'Value out of range: \' + val + \', \' + min + \', \' + max);\n    }\n  }\n  return val;\n};\n');
 };
 if (goog.DEBUG) {
   pstj.sourcegen.template.MinMaxHelper.soyTemplateName = 'pstj.sourcegen.template.MinMaxHelper';

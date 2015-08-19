@@ -416,15 +416,25 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
    * @param {pstj.ds.discovery.Class} klass
    */
   generateToJsonBody: function(klass) {
+    var arr = this.buffer.getScopedNamespaceIfInScope(this.arrayNamespace);
     this.buffer.writeln('return {');
     this.buffer.indent();
     goog.array.forEach(klass.properties, function(prop, i, a) {
-      if (prop.type == 'array' && prop.items.type == 'integer') {
-        this.buffer.writeln('\'' + prop.name + '\': ' +
-            this.buffer.getScopedNamespaceIfInScope(this.arrayNamespace) +
-            '.map(function(item) {');
-        this.buffer.writeln('  return parseInt(item, 10);');
-        this.buffer.writeln('})' + ((i == a.length - 1) ? '' : ','));
+      var line = '';
+      if (prop.type == 'array') {
+        if (!prop.required) {
+          line += '\'' + prop.name + '\': ' +
+              arr + '.isEmpty(this.' + prop.name + ') ? null :\n    ' +
+              ((prop.items.type == 'integer') ?
+                  arr + '.map(' + prop.name +
+                      'function(item) {\n' +
+                      '      return parseInt(item, 10);\n    })' :
+                  'this.' + prop.name) + ((i == a.length - 1) ? '' : ',');
+          this.buffer.writeln(line);
+        } else {
+          this.buffer.writeln(prop.getToJSONAssignment() +
+              ((i == a.length - 1) ? '' : ','));
+        }
       } else {
         this.buffer.writeln(prop.getToJSONAssignment() +
             ((i == a.length - 1) ? '' : ','));

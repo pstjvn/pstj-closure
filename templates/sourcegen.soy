@@ -12,8 +12,10 @@
  */
 {/literal}
 {$namespace}{literal} = function(val) {
-  if (parseInt(val, 10) != val) {
-    throw new Error('The value is not an integer: ' + val);
+  if (goog.DEBUG) {
+    if (parseInt(val, 10) != val) {
+      throw new Error('The value is not an integer: ' + val);
+    }
   }
   return val;
 }{/literal}
@@ -33,9 +35,11 @@
  */
 {/literal}
 {$namespace}{literal} = function(val, min, max) {
-  if ((min != null && val < min) || (max != null && val > max)) {
-    throw new Error(
-        'Value out of range: ' + val + ', ' + min + ', ' + max);
+  if (goog.DEBUG) {
+    if ((min != null && val < min) || (max != null && val > max)) {
+      throw new Error(
+          'Value out of range: ' + val + ', ' + min + ', ' + max);
+    }
   }
   return val;
 };
