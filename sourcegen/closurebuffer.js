@@ -10,6 +10,7 @@ goog.require('goog.array');
 goog.require('goog.object');
 goog.require('pstj.sourcegen.JSBuffer');
 
+
 goog.scope(function() {
 var JSBuffer = pstj.sourcegen.JSBuffer;
 
@@ -198,14 +199,15 @@ pstj.sourcegen.ClosureBuffer = goog.defineClass(JSBuffer, {
   /**
    * Starts a new class definition.
    * @param  {string} namespace   The namespace for the new class.
-   * @param  {string=} opt_extendClass The namespace the class is extending.
+   * @param  {?string=} opt_extendClass The namespace the class is extending.
    */
   startClassDefinitionSection: function(namespace, opt_extendClass) {
     // By deault extend null object;
     if (!goog.isDef(opt_extendClass)) opt_extendClass = 'null';
 
     if (this.inscope) {
-      opt_extendClass = this.getScopedNamespace(opt_extendClass);
+      opt_extendClass = this.getScopedNamespace(goog.asserts.assertString(
+          opt_extendClass));
     }
 
     var line = namespace + ' = goog.defineClass(' + opt_extendClass + ', {';

@@ -30,22 +30,22 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
      * The type of the property.
      *
      * It could be a primitive type or a reference type.
-     * @type {string}
+     * @type {?string}
      */
     this.type = null;
     /**
      * The referenced type if any.
-     * @type {string}
+     * @type {?string}
      */
     this.ref = null;
     /**
      * The description of the field or an empty string if one is not provided.
-     * @type {string}
+     * @type {?string}
      */
     this.description = null;
     /**
      * If the property is required. By default properties are not required.
-     * @type {boolean}
+     * @type {!boolean}
      */
     this.required = false;
     /**
@@ -56,38 +56,37 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
     /**
      * Format of the value. For more details see
      * https://developers.google.com/discovery/v1/type-format
-     * @type {string}
+     * @type {?string}
      */
     this.format = null;
     /**
      * Additional pattern matching requirement for the values this property
      * can take.
-     * @type {string}
+     * @type {?string}
      */
     this.pattern = null;
     /**
      * The minimum value the property can accept. Note that the value is
      * designated as string and for numerical values you should convert it
      * to match against it.
-     * @type {string}
+     * @type {?string}
      */
     this.minimum = null;
     /**
      * The maximum value the property can take. For details {@see minimum}
-     * @type {string}
+     * @type {?string}
      */
     this.maximum = null;
     /**
      * If true the value could be repeadet.
-     * @type {boolean}
+     * @type {!boolean}
      */
     this.repeated = false;
     /**
-     * Used for parameters that are part of the query string / paths of the
-     * rest object.
-     * @type {string}
+     * The default value for the item.
+     * @type {?}
      */
-    this.location = null;
+    this.defaultValue = null;
     /**
      * The type of items, if the type is array.
      * @type {?pstj.ds.discovery.Property}
@@ -139,6 +138,10 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
       this.maximum = json['maximum'];
     }
 
+    if (goog.isDef(json['default'])) {
+      this.defaultValue = json['default'];
+    }
+
     if (goog.isDef(json['items'])) {
       this.items = new pstj.ds.discovery.Property('', json['items']);
     }
@@ -158,7 +161,7 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
 
   /**
    * Provides the right hand assignment for toJSON method.
-   * @return {string}
+   * @return {!string}
    */
   getToJSONRighthandAssignment: function() {
     if (this.isReferenceType()) {
@@ -173,6 +176,8 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
       return 'this.' + this.name;
     } else if (this.type == 'array') {
       return 'this.' + this.name;
+    } else {
+      throw new Error('Cannot determine assigment');
     }
   },
 
@@ -239,23 +244,27 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
    * Generates a default value for property.
    * @param  {string} namespace Optional namespace to use when creating
    * referenced instances.
-   * @return {string}
+   * @return {!string}
    */
   getClosureDefaultValue: function(namespace) {
     if (this.isReferenceType()) {
       return 'new ' + namespace + this.ref + '()';
     } else if (this.type == 'number') {
-      return '0.0';
+      return this.defaultValue ? this.defaultValue : '0.0';
     } else if (this.type == 'integer') {
-      return '0';
+      return this.defaultValue ? this.defaultValue : '0';
     } else if (this.type == 'boolean') {
-      return 'false';
+      return this.defaultValue ? this.defaultValue : 'false';
     } else if (this.type == 'array') {
       return '[]';
     } else if (this.type == 'string') {
       if (this.format == 'date' || this.format == 'date-time') {
         return 'new Date()';
-      } else return '\'\'';
+      } else {
+        return this.defaultValue ? ('\'' + this.defaultValue + '\'') : '\'\'';
+      }
+    } else {
+      throw new Error('Cannot determine default value');
     }
   },
 
@@ -267,6 +276,15 @@ pstj.ds.discovery.Property = goog.defineClass(null, {
    */
   isReferenceType: function() {
     return (!goog.isNull(this.ref));
+  },
+
+  /**
+   * Determines if min/max values ned to be checked.
+   * @return {boolean}
+   */
+  needsRangeCheck: function() {
+    return (this.type == 'integer' &&
+        (this.minimum != null || this.maximum != null));
   }
 
 });

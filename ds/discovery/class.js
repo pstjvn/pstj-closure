@@ -29,18 +29,17 @@ pstj.ds.discovery.Class = goog.defineClass(null, {
      * extending a class and instead favors composition. This property
      * has been added to support specific use case where the developer
      * wants to manually add an extend clause.
-     * @type {string}
-     * @protected
+     * @type {?string}
      */
-    this.extends = null;
+    this.extendsClass = null;
     /**
      * The description for a class instance (Schema key).
-     * @type {string}
+     * @type {?string}
      */
     this.description = null;
     /**
      * List of properties defined in the class instance.
-     * @type {!Aray<!pstj.ds.discovery.Property>}
+     * @type {!Array<!pstj.ds.discovery.Property>}
      */
     this.properties = [];
 

@@ -7,6 +7,7 @@ goog.provide('pstj.ds.discovery.Document');
 goog.require('goog.json');
 goog.require('pstj.ds.discovery.Class');
 goog.require('pstj.ds.discovery.List');
+goog.require('pstj.ds.discovery.Method');
 
 
 /** Implements parsing the document */
@@ -29,16 +30,26 @@ pstj.ds.discovery.Document = goog.defineClass(null, {
     /** @type {string} */
     this.host = this.map['rootUrl'];
     /** @type {string} */
-    this.base = this.map['servicePath'];
+    this.base = this.map['basePath'];
     /** @type {string} */
     this.description = this.map['description'];
     /**
      * Map of all schema structures described in the document.
      *
-     * @type {Object<string, Object>}
+     * @type {!Object<string, pstj.ds.discovery.Class>}
      */
     this.classes = {};
+    /**
+     * Map of all lists used as DTOs.
+     * @type {!Object<string, pstj.ds.discovery.List>}
+     */
     this.lists = {};
+    /**
+     * List of all methods.
+     * @type {!Array<pstj.ds.discovery.Method>}
+     */
+    this.methods = [];
+
     this.processSchemas();
   },
 
@@ -57,6 +68,12 @@ pstj.ds.discovery.Document = goog.defineClass(null, {
       } else {
         throw new Error('Unsupported schema type: ' + value['type']);
       }
+    }, this);
+
+    var methods = /** @type {!Object<string, !Object>} */(
+        this.map['methods']);
+    goog.object.forEach(methods, function(value, key) {
+      this.methods.push(new pstj.ds.discovery.Method(key, value));
     }, this);
   }
 });

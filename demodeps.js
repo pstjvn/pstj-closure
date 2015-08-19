@@ -32,3 +32,4 @@ goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.material.icons'
 goog.addDependency('../../../apps/pstj/tpl/material.soy.js', ['pstj.material.template'], ['goog.asserts', 'soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['goog.asserts', 'soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/select.soy.js', ['pstj.select'], ['soy', 'soydata'], false);
+goog.addDependency('../../../apps/pstj/tpl/sourcegen.soy.js', ['pstj.sourcegen.template'], ['goog.asserts', 'soy', 'soydata'], false);

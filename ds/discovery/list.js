@@ -18,7 +18,7 @@ pstj.ds.discovery.List = goog.defineClass(null, {
     /**
      * The list type. It could be one of the native types or a reference
      * type.
-     * @type {string}
+     * @type {?string}
      */
     this.type = null;
     /**
@@ -29,7 +29,7 @@ pstj.ds.discovery.List = goog.defineClass(null, {
     this.isreference_ = false;
     /**
      * The format that is used to transmit the data.
-     * @type {string}
+     * @type {?string}
      */
     this.format = null;
 
@@ -69,7 +69,7 @@ pstj.ds.discovery.List = goog.defineClass(null, {
    */
   getClosureType: function() {
     if (this.isReferenceType()) {
-      return this.type;
+      return goog.asserts.assertString(this.type);
     }
 
     switch (this.type) {
@@ -83,6 +83,7 @@ pstj.ds.discovery.List = goog.defineClass(null, {
         }
         break;
       case 'number': return 'number';
+      default: return '';
     }
   }
 });

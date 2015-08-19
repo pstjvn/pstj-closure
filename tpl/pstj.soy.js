@@ -3,17 +3,19 @@
 
 /**
  * @fileoverview Templates in namespace pstj.templates.
+ * @public
  */
 
 goog.provide('pstj.templates');
 
 goog.require('soy');
 goog.require('soydata');
+/** @suppress {extraRequire} */
 goog.require('goog.asserts');
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -27,7 +29,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -41,7 +43,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -61,7 +63,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -75,7 +77,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -89,7 +91,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -103,7 +105,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -117,7 +119,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -131,7 +133,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -145,7 +147,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -159,7 +161,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -173,7 +175,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -187,7 +189,7 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object.<string, *>=} opt_data
+ * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
@@ -210,9 +212,9 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.templates.Swipetile = function(opt_data, opt_ignored) {
-  goog.asserts.assert(goog.isString(opt_data.src) || (opt_data.src instanceof goog.soy.data.SanitizedContent), "expected param 'src' of type string|goog.soy.data.SanitizedContent.");
+  soy.asserts.assertType(goog.isString(opt_data.src) || (opt_data.src instanceof goog.soy.data.SanitizedContent), 'src', opt_data.src, 'string|goog.soy.data.SanitizedContent');
   var src = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.src);
-  goog.asserts.assert(opt_data.text == null || (opt_data.text instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.text), "expected param 'text' of type null|string|undefined.");
+  soy.asserts.assertType(opt_data.text == null || (opt_data.text instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.text), 'text', opt_data.text, 'null|string|undefined');
   var text = /** @type {null|string|undefined} */ (opt_data.text);
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('pstj-swipetile') + '"><div class="' + goog.getCssName('pstj-swipetile-image') + '" style="background-image: url(' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(src)) + ')">' + ((text) ? '<div class="' + goog.getCssName('pstj-swipetile-text-container') + '"><div class="' + goog.getCssName('pstj-swipetile-text') + '">' + soy.$$escapeHtml(text) + '</div></div>' : '') + '</div></div>');
 };
@@ -223,20 +225,20 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    items: !Array.<?>
+ *    items: !Array<(?)>
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
 pstj.templates.Swiper = function(opt_data, opt_ignored) {
-  var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<unknown>.");
+  var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<?>.");
   var output = '<div is class="' + goog.getCssName('pstj-swiper') + ' ' + goog.getCssName('core-swipe') + '" use-pointer>';
-  var itemList715 = items;
-  var itemListLen715 = itemList715.length;
-  for (var itemIndex715 = 0; itemIndex715 < itemListLen715; itemIndex715++) {
-    var itemData715 = itemList715[itemIndex715];
-    output += pstj.templates.Swipetile(itemData715);
+  var itemList716 = items;
+  var itemListLen716 = itemList716.length;
+  for (var itemIndex716 = 0; itemIndex716 < itemListLen716; itemIndex716++) {
+    var itemData716 = itemList716[itemIndex716];
+    output += pstj.templates.Swipetile(itemData716);
   }
   output += '</div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);

@@ -7,6 +7,7 @@
 
 goog.provide('pstj.sourcegen.JSBuffer');
 
+goog.require('goog.array');
 goog.require('goog.string');
 
 
@@ -164,7 +165,13 @@ pstj.sourcegen.JSBuffer = goog.defineClass(null, {
    */
   writeln: function(opt_txt) {
     if (goog.isDef(opt_txt)) {
-      this.write(opt_txt + this.newline);
+      if (opt_txt.indexOf('\n') != -1) {
+        goog.array.forEach(opt_txt.split('\n'), function(part) {
+          this.writeln(part);
+        }, this);
+      } else {
+        this.write(opt_txt + this.newline);
+      }
     } else {
       this.buffer.push(this.newline);
     }
@@ -181,7 +188,7 @@ pstj.sourcegen.JSBuffer = goog.defineClass(null, {
    * If the line is too long only the part that fits inside the limit will
    * be written and the remaining will be returned.
    * @private
-   * @param {string} line The line to write.
+   * @param {string} str The line to write.
    * @param {!function(!string): void} callback
    * @return {string} The remaining part of the string, if the whole string was
    * written an empty string will be returned.
@@ -222,7 +229,7 @@ pstj.sourcegen.JSBuffer = goog.defineClass(null, {
       callback(rest);
     }
     if (arr[0].match(/\s/)) {
-      arr[0] = undefined;
+      goog.array.removeAt(arr, 0);
     }
     return arr.join('');
   },

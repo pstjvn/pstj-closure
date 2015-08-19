@@ -3,6 +3,7 @@ goog.provide('pstj.sourcegen.ClosureGenerator');
 goog.require('goog.array');
 goog.require('goog.object');
 goog.require('pstj.sourcegen.ClosureBuffer');
+goog.require('pstj.sourcegen.template');
 
 
 /**
@@ -52,6 +53,31 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
      */
     this.rpcNamespace = this.ownNamespace + '.rpc';
     /**
+     * The query data namespaces.
+     * @type {string}
+     */
+    this.queryDataNamespace = 'goog.Uri.QueryData';
+    /**
+     * The uri namespace.
+     * @type {string}
+     */
+    this.uriNamespace = 'goog.Uri';
+    /**
+     * The json namespace.
+     * @type {string}
+     */
+    this.jsonNamespace = 'goog.json';
+    /**
+     * The array namespace.
+     * @type {string}
+     */
+    this.arrayNamespace = 'goog.array';
+    /**
+     * The base url variable name to use.
+     * @type {string}
+     */
+    this.rpcBaseUrlName = 'baseUrl_';
+    /**
      * The default ns to extend for DTO classes.
      * @type {string}
      * @protected
@@ -75,7 +101,10 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     this.requiredNamespaces = [
       this.assertionNamespace,
       this.xhrNamespace,
-      'goog.array'];
+      this.uriNamespace,
+      this.queryDataNamespace,
+      this.jsonNamespace,
+      this.arrayNamespace];
     /**
      * If we are in scope. This is used to manage the local vs global
      * namespaces.
@@ -95,7 +124,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
    * Actually generate the file.
    */
   generate: function() {
-    this.buffer.addEditWarning();
+    this.generateFromTemplate(pstj.sourcegen.template.Warning(null));
     this.lines(1);
     this.buffer.addFileoverview(this.doc.description);
     this.lines(1);
@@ -104,14 +133,42 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     this.generateRequireSection();
 
     if (this.useScoping) this.scope();
+    this.generateHelperMinMax();
+    this.generateHelperIsInteger();
     this.generateDtoClasses();
     this.generateDtoLists();
-
-    // this.lines(2);
-    // this.generateRpcClass();
+    this.generateRpcMethods();
 
     if (this.useScoping) this.unscope();
     return this.buffer.toString();
+  },
+
+  /**
+   * Generates a helper function for min and max values for integers.
+   */
+  generateHelperMinMax: function() {
+    this.lines(2);
+    this.generateFromTemplate(pstj.sourcegen.template.MinMaxHelper({
+      namespace: this.getGenerativeDTONamespace('helperMinMax_')
+    }));
+  },
+
+  /**
+   * Generates content from a template string.
+   * @param  {goog.soy.data.SanitizedContent} unsafe_content
+   */
+  generateFromTemplate: function(unsafe_content) {
+    goog.array.forEach(unsafe_content.getContent().split('\n'), function(l) {
+      this.buffer.writeln(l);
+    }, this);
+  },
+
+  /** Generates code that checks if a value is an integer. */
+  generateHelperIsInteger: function() {
+    this.lines(2);
+    this.generateFromTemplate(pstj.sourcegen.template.IntegerHelper({
+      namespace: this.getGenerativeDTONamespace('helperInt_')
+    }));
   },
 
   /**
@@ -129,10 +186,10 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
    */
   generateDtoList: function(item) {
     var a = this.buffer.getScopedNamespaceIfInScope(this.assertionNamespace);
-    var arr = this.buffer.getScopedNamespaceIfInScope('goog.array');
-    var type = (item.isReferenceType() ?
+    var arr = this.buffer.getScopedNamespaceIfInScope(this.arrayNamespace);
+    var type = goog.asserts.assertString((item.isReferenceType() ?
         this.getGenerativeDTONamespace(item.getClosureType()) :
-        item.getClosureType());
+        item.getClosureType()));
     this.lines(2);
     this.buffer.startComment();
     this.buffer.writeln(item.name + ': fromJSON implementation.');
@@ -150,7 +207,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
       this.buffer.writeln('var result = ' + arr + '.map(function(item) {');
       this.buffer.indent();
       this.buffer.writeln(a + this.getAssertForType((type == 'Date') ?
-          item.type : 'object') + '(item);');
+          goog.asserts.assertString(item.type) : 'object') + '(item);');
       this.buffer.writeln('var i = new ' + type + '();');
       this.buffer.writeln('i.fromJSON(item);');
       this.buffer.writeln('return i;');
@@ -221,7 +278,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     // for the compiler to locate them.At this stage the namespaces
     // should be fully qualified.
     goog.array.forEach(goog.object.getKeys(this.doc.classes), function(cn) {
-      ns.push(this.getFullyQualifiedDtoNamespace(cn));
+      ns.push(this.getGenerativeDTONamespace(cn));
     }, this);
 
     ns.sort();
@@ -258,7 +315,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
    * flag so we can manage namespaces more efficiently.
    */
   unscope: function() {
-    this.inscope_;
+    this.inscope_ = false;
     this.buffer.endScopedSection();
   },
 
@@ -278,35 +335,24 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
   },
 
   /**
-   * Given a local DTO name returns a fully qualified namespace for it.
-   * @param  {string} localname
-   * @return {string}
-   */
-  getFullyQualifiedDtoNamespace: function(localname) {
-    return this.dtoNamespace + '.' + localname;
-  },
-
-  /**
-   * [function description]
-   * @param  {[type]} localname [description]
-   * @return {[type]}
-   */
-  getScopedDtoNamespace: function(localname) {
-    return 'dto.' + localname;
-  },
-
-  /**
    * Given a short namespace (as taken from localized document) returns
    * a fully qualified namespace for DTO classes.
-   * @param  {string} localname
+   * @param  {string} ns
    * @return {string}
    */
-  getGenerativeDTONamespace: function(localname) {
-    if (this.inscope_) {
-      return this.getScopedDtoNamespace(localname);
-    } else {
-      return this.ownNamespace + '.dto.' + localname;
-    }
+  getGenerativeDTONamespace: function(ns) {
+    return this.buffer.getScopedNamespaceIfInScope(this.dtoNamespace) +
+        '.' + ns;
+  },
+
+  /**
+   * Retrieves the local namespaced method name for rpc call.
+   * @param  {string} ns
+   * @return {string}
+   */
+  getGenerativeRPCNamespace: function(ns) {
+    return this.buffer.getScopedNamespaceIfInScope(this.rpcNamespace) +
+        '.' + ns;
   },
 
   /**
@@ -314,17 +360,41 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
    * @param  {pstj.ds.discovery.Class} klass
    */
   generateDTOClass: function(klass) {
-    this.generateClassJSDoc(klass);
+    // The comment block
+    this.buffer.startComment();
+    if (klass.description) {
+      this.buffer.writeln(klass.description);
+    }
+    if (klass.extendsClass) {
+      this.buffer.addExtendsJSDoc(klass.extendsClass);
+    } else if (this.defaultDtoExtend) {
+      this.buffer.addExtendsJSDoc(this.defaultDtoExtend);
+    }
+    this.buffer.endComment();
 
+    // The class definition
     this.buffer.startClassDefinitionSection(
         this.getGenerativeDTONamespace(klass.name),
-        (goog.isString(klass.extends) ? klass.extends : (
+        (goog.isString(klass.extendsClass) ? klass.extendsClass : (
         (this.defaultDtoExtend ? this.defaultDtoExtend : null))));
 
     // Define the constructor.
     this.buffer.startConstructorSection();
     goog.array.forEach(klass.properties, function(prop) {
-      this.generatePropertyJSDoc(prop);
+      var comment = [];
+      if (prop.description) {
+        comment.push(prop.description);
+      }
+      var jstype = prop.getClosureType(this.getGenerativeDTONamespace(''));
+      comment.push('@type {' + jstype + '}');
+      if (comment.length == 1) {
+        this.buffer.singleLineComment(comment[0]);
+      } else {
+        this.buffer.startComment();
+        goog.array.forEach(comment,
+            goog.bind(this.buffer.writeln, this.buffer));
+        this.buffer.endComment();
+      }
       this.generatePropertyDefinition(prop);
     }, this);
     this.buffer.endConstructorSection();
@@ -348,8 +418,17 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
   generateToJsonBody: function(klass) {
     this.buffer.writeln('return {');
     this.buffer.indent();
-    goog.array.forEach(klass.properties, function(prop) {
-      this.buffer.writeln(prop.getToJSONAssignment() + ';');
+    goog.array.forEach(klass.properties, function(prop, i, a) {
+      if (prop.type == 'array' && prop.items.type == 'integer') {
+        this.buffer.writeln('\'' + prop.name + '\': ' +
+            this.buffer.getScopedNamespaceIfInScope(this.arrayNamespace) +
+            '.map(function(item) {');
+        this.buffer.writeln('  return parseInt(item, 10);');
+        this.buffer.writeln('})' + ((i == a.length - 1) ? '' : ','));
+      } else {
+        this.buffer.writeln(prop.getToJSONAssignment() +
+            ((i == a.length - 1) ? '' : ','));
+      }
     }, this);
     this.buffer.unindent();
     this.buffer.writeln('};');
@@ -357,8 +436,8 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
 
   /**
    * Getter for the items type.
-   * @param  {string} type
-   * @return {string}
+   * @param  {?string} type
+   * @return {?string}
    */
   getAssertForType: function(type) {
     switch (type) {
@@ -420,7 +499,9 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
         'goog.array';
     goog.array.forEach(klass.properties, function(prop) {
       var line = 'this.' + prop.name;
-
+      var before = (!prop.required ?
+          'if (goog.isDef(map[\'' + prop.name + '\']) {' : '');
+      var after = '}';
       // If prop is a reference type we need to make sure that the
       // value is an object (assert) and pass it to the toJSON.
       if (prop.isReferenceType()) {
@@ -453,7 +534,18 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
       } else {
         line += ' = ';
         switch (prop.type) {
+          // TODO: add checks for min/max value
           case 'integer':
+            if (prop.needsRangeCheck()) {
+              line += this.getGenerativeDTONamespace('helperMinMax_') +
+                  '(\n    ';
+            }
+            line += (this.getGenerativeDTONamespace('helperInt_') +
+                '(' + asserts + '.isNumber(map[\'' + prop.name + '\']))');
+            if (prop.needsRangeCheck()) {
+              line += ', ' + prop.minimum + ', ' + prop.maximum + ')';
+            }
+            break;
           case 'number':
             line += asserts + '.isNumber(map[\'' + prop.name + '\'])';
             break;
@@ -471,29 +563,15 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
         }
       }
       line += ';';
-      this.buffer.writeln(line);
+      if (before != '') {
+        this.buffer.writeln(before);
+        this.buffer.writeln('  ' + line);
+        this.buffer.writeln(after);
+      } else {
+        this.buffer.writeln(line);
+      }
     }, this);
     this.buffer.writeln('goog.base(this, \'fromJSON\', map);');
-  },
-
-  /**
-   * Generates the documentation for a property.
-   * @param  {pstj.ds.discovery.Property} prop
-   */
-  generatePropertyJSDoc: function(prop) {
-    var comment = [];
-    if (prop.description) {
-      comment.push(prop.description);
-    }
-    var jstype = prop.getClosureType(this.getGenerativeDTONamespace(''));
-    comment.push('@type {' + jstype + '}');
-    if (comment.length == 1) {
-      this.buffer.singleLineComment(comment[0]);
-    } else {
-      this.buffer.startComment();
-      goog.array.forEach(comment, goog.bind(this.buffer.writeln, this.buffer));
-      this.buffer.endComment();
-    }
   },
 
   /**
@@ -509,33 +587,118 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
   },
 
   /**
-   * Generates the JSdoc comment for a DTO class.
-   * @param  {pstj.ds.discovery.Class} klass
-   */
-  generateClassJSDoc: function(klass) {
-    this.buffer.startComment();
-    if (klass.description) this.buffer.writeln(klass.description);
-    if (goog.isString(klass.extends)) {
-      this.buffer.addExtendsJSDoc(klass.extends);
-    } else if (this.defaultDtoExtend) {
-      this.buffer.addExtendsJSDoc(this.defaultDtoExtend);
-    }
-    this.buffer.endComment();
-  },
-
-
-  /**
    * Prints empty lines in the buffer.
    * @param  {number} num Number of empty lines ot add.
    */
   lines: function(num) {
     while (num > 0) {
-      this.buffer.writeln();
+      this.buffer.writeln('');
       num--;
     }
   },
 
-  generateRpcClass: function() {
-    this.buffer.writeln('// RPC method definitions');
+  /**
+   * Starts the generation for all rpc methods.
+   */
+  generateRpcMethods: function() {
+    var baseurl = this.getGenerativeRPCNamespace(this.rpcBaseUrlName);
+    var qd = this.buffer.getScopedNamespaceIfInScope(this.queryDataNamespace);
+    var uri = this.buffer.getScopedNamespaceIfInScope(this.uriNamespace);
+    this.lines(2);
+    this.generateFromTemplate(pstj.sourcegen.template.RpcBaseUrl({
+      namespace: this.buffer.getScopedNamespaceIfInScope(this.rpcNamespace),
+      base: this.doc.base
+    }));
+    goog.array.forEach(this.doc.methods, function(def) {
+      this.lines(2);
+      // Comments
+      this.buffer.startComment();
+      if (def.description) {
+        this.buffer.writeln(def.description);
+        this.lines(1);
+      }
+      if (def.request) {
+        this.buffer.writeln('@param {!' +
+            this.getGenerativeDTONamespace(def.request) + '} payload');
+      }
+      goog.array.forEach(def.parameters, function(param) {
+        this.buffer.writeln('@param {' + param.type +
+            (!param.required ? '=' : '') + '} ' +
+            (param.required ? '' : 'opt_') + param.name + ' ' +
+            (param.description ? param.description : ''));
+      }, this);
+      this.buffer.writeln('@return {!goog.Promise<' +
+          (def.response ? ('!' + this.getGenerativeDTONamespace(def.response)) :
+              'string') + '>}');
+      this.buffer.endComment();
+      // Body
+      if (def.parameters.length > 0 || def.request) {
+        this.buffer.writeln(this.getGenerativeRPCNamespace(def.name) +
+            ' = function(');
+        this.buffer.indent();
+        this.buffer.indent();
+        var fn = '';
+        var params = '';
+        if (def.request) {
+          params += 'payload';
+        }
+        goog.array.forEach(def.parameters, function(param) {
+          params = params + (params.length > 0 ? ', ' : '') +
+              ((param.required ? '' : 'opt_') + param.name);
+        });
+        fn += params + ') {';
+        this.buffer.writeln(fn);
+      } else {
+        this.buffer.writeln(this.getGenerativeRPCNamespace(def.name) +
+            ' = function() {');
+      }
+      this.buffer.indent();
+      this.buffer.writeln('var u_ = ' + def.path + ';');
+      this.buffer.writeln('var q_ = new ' + qd + '();');
+      goog.array.forEach(def.parameters, function(param) {
+        // should be already ordered.
+        if (param.required && param.location == 'path') {
+          this.buffer.writeln('u_ = u_.replace(\'{' + param.name +
+              '}\', ' + param.name + '.toString());');
+        } else if (!param.required && param.location == 'query') {
+          this.buffer.writeln('if (goog.isDef(opt_' + param.name + ') {');
+          this.buffer.indent();
+          this.buffer.writeln('q_.set(' + param.name + ', opt_' +
+              param.name + ');');
+          this.buffer.unindent();
+          this.buffer.writeln('}');
+        }
+      }, this);
+      this.buffer.writeln('var url = new ' + uri + '(' + baseurl + ' + u_);');
+      this.buffer.writeln('if (!q_.isEmpty()) {');
+      this.buffer.writeln('  url.setQueryData(q_);');
+      this.buffer.writeln('}');
+      var _l = 'return ';
+      _l += (this.buffer.getScopedNamespaceIfInScope(this.xhrNamespace));
+      _l += '.' + def.method + (def.response ? 'Json' : '') +
+          '(url.toString()' + (def.request ?
+                ', ' +
+                this.buffer.getScopedNamespaceIfInScope(this.jsonNamespace) +
+                    '.serialize(payload)' : '') + ')' +
+                    (def.response ? '' : ';');
+      this.buffer.writeln(_l);
+      if (def.response) {
+        this.buffer.writeln('    .then(function(map) {');
+        this.buffer.writeln('      ' +
+            this.buffer.getScopedNamespace(this.assertionNamespace) +
+            '.assertObject(map);');
+        this.buffer.writeln('      var i = new ' +
+            this.getGenerativeDTONamespace(def.response) + '();');
+        this.buffer.writeln('      i.fromJSON(map);');
+        this.buffer.writeln('      return i;');
+        this.buffer.writeln('    });');
+      }
+      this.buffer.unindent();
+      if (def.parameters.length > 0 || def.request) {
+        this.buffer.unindent();
+        this.buffer.unindent();
+      }
+      this.buffer.writeln('};');
+    }, this);
   }
 });
