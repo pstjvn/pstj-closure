@@ -406,6 +406,13 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
 
     // Define the constructor.
     this.buffer.startConstructorSection();
+    if (klass.extendsClass) {
+      this.buffer.writeln(this.getGenerativeDTONamespace(klass.extendsClass) +
+          '.call(this);');
+    } else if (this.defaultDtoExtend) {
+      this.buffer.writeln(this.buffer.getScopedNamespaceIfInScope(
+          this.defaultDtoExtend) + '.call(this);');
+    }
     goog.array.forEach(klass.properties, function(prop) {
       var comment = [];
       if (prop.description) {
