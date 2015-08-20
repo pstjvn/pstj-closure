@@ -1,1 +1,241 @@
-{"kind":"discovery#restDescription","etag":"fd9d0f19deda0a49c7d827d26e357298cc1a49e2","discoveryVersion":"v1","id":"loto:v1","name":"loto","version":"v1","revision":"0","title":"Example title","description":"Provides test discovery API and document.","protocol":"rest","baseUrl":"http://localhost:8080/loto/v1/","basePath":"/loto/v1/","rootUrl":"http://localhost:8080/","servicePath":"loto/v1/","parameters":{},"schemas":{"AllInOne":{"id":"AllInOne","type":"object","properties":{"aninteger":{"type":"integer","format":"int32"},"adouble":{"type":"number","format":"double"},"abool":{"type":"boolean"},"astring":{"type":"string"},"anobject":{"$ref":"Helper"},"adatetime":{"type":"string","format":"date-time"},"listint":{"type":"array","items":{"type":"integer","format":"int32"}},"listdouble":{"type":"array","items":{"type":"number","format":"double"}},"listbool":{"type":"array","items":{"type":"boolean"}},"liststring":{"type":"array","items":{"type":"string"}},"listobject":{"type":"array","items":{"$ref":"Helper"}},"listdatetime":{"type":"array","items":{"type":"string","format":"date-time"}},"rlistint":{"type":"array","required":true,"items":{"type":"integer","format":"int32"}},"rlistdouble":{"type":"array","required":true,"items":{"type":"number","format":"double"}},"rlistbool":{"type":"array","required":true,"items":{"type":"boolean"}},"rliststring":{"type":"array","required":true,"items":{"type":"string"}},"rlistobject":{"type":"array","required":true,"items":{"$ref":"Helper"}},"rlistdatetime":{"type":"array","required":true,"items":{"type":"string","format":"date-time"}}}},"Helper":{"id":"Helper","type":"object","properties":{"aninteger":{"type":"integer","description":"An integer","default":"1","required":true,"format":"int32","minimum":"1","maximum":"10"},"adouble":{"type":"number","description":"A double precision number","default":"1.0","required":true,"format":"double"},"abool":{"type":"boolean","description":"A boolean value","default":"false","required":true},"astring":{"type":"string","description":"A string value","default":"","required":true}}}},"methods":{"test1":{"id":"LotoApi.testall","path":"all","httpMethod":"GET","description":"A get request that returns complex object","parameters":{},"parameterOrder":[],"response":{"$ref":"AllInOne"}}},"resources":{}}
+{
+  "kind": "discovery#restDescription",
+  "etag": "1663b1bf3466d0c7444ffa8efb6e806f14b9cd94",
+  "discoveryVersion": "v1",
+  "id": "loto:v1",
+  "name": "loto",
+  "version": "v1",
+  "revision": "0",
+  "title": "Example title",
+  "description": "Provides test discovery API and document.",
+  "protocol": "rest",
+  "baseUrl": "http://localhost:8080/loto/v1/",
+  "basePath": "/loto/v1/",
+  "rootUrl": "http://localhost:8080/",
+  "servicePath": "loto/v1/",
+  "parameters": {},
+  "schemas": {
+    "Credentials": {
+      "id": "Credentials",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The usernama to attempt authentication with.",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "description": "The password to attempt authentication with.",
+          "required": true
+        }
+      }
+    },
+    "Authentication": {
+      "id": "Authentication",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The UUID in the system.",
+          "required": true
+        },
+        "username": {
+          "type": "string",
+          "description": "The username.",
+          "required": true
+        },
+        "token": {
+          "type": "string",
+          "description": "The auth token the user must append in the header on each request.",
+          "required": true
+        },
+        "type": {
+          "type": "integer",
+          "description": "The user type",
+          "required": true,
+          "format": "int32"
+        }
+      }
+    },
+    "AllInOne": {
+      "id": "AllInOne",
+      "type": "object",
+      "properties": {
+        "aninteger": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adouble": {
+          "type": "number",
+          "format": "double"
+        },
+        "abool": {
+          "type": "boolean"
+        },
+        "astring": {
+          "type": "string"
+        },
+        "anobject": {
+          "$ref": "Helper"
+        },
+        "adatetime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "listint": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "listdouble": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "listbool": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          }
+        },
+        "liststring": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "listobject": {
+          "type": "array",
+          "items": {
+            "$ref": "Helper"
+          }
+        },
+        "listdatetime": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "rlistint": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "rlistdouble": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "rlistbool": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "type": "boolean"
+          }
+        },
+        "rliststring": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "rlistobject": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "$ref": "Helper"
+          }
+        },
+        "rlistdatetime": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "Helper": {
+      "id": "Helper",
+      "type": "object",
+      "properties": {
+        "aninteger": {
+          "type": "integer",
+          "description": "An integer",
+          "default": "1",
+          "required": true,
+          "format": "int32",
+          "minimum": "1",
+          "maximum": "10"
+        },
+        "adouble": {
+          "type": "number",
+          "description": "A double precision number",
+          "default": "1.0",
+          "required": true,
+          "format": "double"
+        },
+        "abool": {
+          "type": "boolean",
+          "description": "A boolean value",
+          "default": "false",
+          "required": true
+        },
+        "astring": {
+          "type": "string",
+          "description": "A string value",
+          "default": "",
+          "required": true
+        }
+      }
+    }
+  },
+  "methods": {
+    "test1": {
+      "id": "LotoApi.testall",
+      "path": "all",
+      "httpMethod": "GET",
+      "description": "A get request that returns complex object",
+      "parameters": {},
+      "parameterOrder": [],
+      "response": {
+        "$ref": "AllInOne"
+      }
+    }
+  },
+  "resources": {
+    "user": {
+      "methods": {
+        "authenticateUser": {
+          "id": "LotoApi.user.attemptUserAuth",
+          "path": "user/auth",
+          "httpMethod": "POST",
+          "description": "Attempts user authentication base don provided credentials.",
+          "parameters": {},
+          "parameterOrder": [],
+          "request": {
+            "$ref": "Credentials"
+          },
+          "response": {
+            "$ref": "Authentication"
+          }
+        }
+      },
+      "resources": {}
+    }
+  }
+}
