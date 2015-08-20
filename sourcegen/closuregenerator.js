@@ -459,8 +459,8 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
           line += '\'' + prop.name + '\': ' +
               arr + '.isEmpty(this.' + prop.name + ') ? null :\n    ' +
               ((prop.items.type == 'integer') ?
-                  arr + '.map(' + prop.name +
-                      'function(item) {\n' +
+                  arr + '.map(this.' + prop.name +
+                      ', function(item) {\n' +
                       '      return parseInt(item, 10);\n    })' :
                   'this.' + prop.name) + ((i == a.length - 1) ? '' : ',');
           this.buffer.writeln(line);
@@ -522,7 +522,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
           (prop.items.format == 'date' || prop.items.format == 'date-time'));
       this.buffer.writeln('    this.' + prop.name + '.push(' +
           (isDate ? 'new Date(' : '') +
-          asserts + this.getAssertForType(prop.items.type) + '(item))' +
+          asserts + this.getAssertForType(prop.items.type) + '(item)' +
           (isDate ? ')' : '') +
           ');');
     }
@@ -543,13 +543,13 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     goog.array.forEach(klass.properties, function(prop) {
       var line = 'this.' + prop.name;
       var before = (!prop.required ?
-          'if (goog.isDef(map[\'' + prop.name + '\']) {' : '');
+          'if (goog.isDef(map[\'' + prop.name + '\'])) {' : '');
       var after = '}';
       // If prop is a reference type we need to make sure that the
       // value is an object (assert) and pass it to the toJSON.
       if (prop.isReferenceType()) {
         line += '.fromJSON(' +
-            asserts + '.assert(' + 'map[\'' + prop.name + '\']))';
+            asserts + '.assertObject(' + 'map[\'' + prop.name + '\']))';
       } else if (prop.type == 'array') {
         this.buffer.writeln(arr + '.clear(this.' + prop.name + ');');
         // Wrap in conditional if the prop is not required it might be missing.
@@ -584,23 +584,23 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
                   '(\n    ';
             }
             line += (this.getGenerativeDTONamespace('helperInt_') +
-                '(' + asserts + '.isNumber(map[\'' + prop.name + '\']))');
+                '(' + asserts + '.assertNumber(map[\'' + prop.name + '\']))');
             if (prop.needsRangeCheck()) {
               line += ', ' + prop.minimum + ', ' + prop.maximum + ')';
             }
             break;
           case 'number':
-            line += asserts + '.isNumber(map[\'' + prop.name + '\'])';
+            line += asserts + '.assertNumber(map[\'' + prop.name + '\'])';
             break;
           case 'boolean':
-            line += asserts + '.isBoolean(map[\'' + prop.name + '\'])';
+            line += asserts + '.assertBoolean(map[\'' + prop.name + '\'])';
             break;
           case 'string':
             if (prop.format == 'date' || prop.format == 'date-time') {
-              line += 'new Date(' + asserts + '.isString(map[\'' + prop.name +
-                  '\']))';
+              line += 'new Date(' + asserts + '.assertString(map[\'' +
+                  prop.name + '\']))';
             } else {
-              line += asserts + '.isString(map[\'' + prop.name + '\'])';
+              line += asserts + '.assertString(map[\'' + prop.name + '\'])';
             }
             break;
         }
@@ -699,7 +699,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
             ' = function() {');
       }
       this.buffer.indent();
-      this.buffer.writeln('var u_ = ' + def.path + ';');
+      this.buffer.writeln('var u_ = \'' + def.path + '\';');
       this.buffer.writeln('var q_ = new ' + qd + '();');
       goog.array.forEach(def.parameters, function(param) {
         // should be already ordered.
