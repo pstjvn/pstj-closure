@@ -133,7 +133,9 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     this.generateRequireSection();
 
     if (this.useScoping) this.scope();
+    this.lines(2);
     this.generateHelperMinMax();
+    this.lines(2);
     this.generateHelperIsInteger();
     this.generateDtoClasses();
     this.generateDtoLists();
@@ -147,7 +149,6 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
    * Generates a helper function for min and max values for integers.
    */
   generateHelperMinMax: function() {
-    this.lines(2);
     this.generateFromTemplate(pstj.sourcegen.template.MinMaxHelper({
       namespace: this.getGenerativeDTONamespace('helperMinMax_')
     }));
@@ -165,7 +166,6 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
 
   /** Generates code that checks if a value is an integer. */
   generateHelperIsInteger: function() {
-    this.lines(2);
     this.generateFromTemplate(pstj.sourcegen.template.IntegerHelper({
       namespace: this.getGenerativeDTONamespace('helperInt_')
     }));
