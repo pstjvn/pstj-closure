@@ -145,11 +145,18 @@ pstj.sourcegen.JSBuffer = goog.defineClass(null, {
    */
   write: function(txt) {
     var line = this.getIndent_();
-    if (this.inComment) line += this.cMiddle_;
+    if (this.inComment) {
+      if (txt.length == 1) {
+        line += ' *';
+      } else {
+        line += this.cMiddle_;
+      }
+    }
     line += txt;
 
-    if (this.fits(line)) this.buffer.push(line);
-    else {
+    if (this.fits(line)) {
+      this.buffer.push(line);
+    } else {
       var remaining = this.partialWrite_(line, goog.bind(function(str) {
         this.buffer.push(str + '\n');
       }, this));
