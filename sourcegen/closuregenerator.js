@@ -255,6 +255,15 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
   },
 
   /**
+   * Generates a resource namespace based on a local name.
+   * @param  {string} resourcename
+   * @return {string}
+   */
+  getResourceNamespace: function(resourcename) {
+    return this.rpcNamespace + '.resources.' + resourcename;
+  },
+
+  /**
    * Adds all required namespaces as 'goog.require' clauses.
    */
   generateRequireSection: function() {
@@ -269,6 +278,15 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
   },
 
   /**
+   * Helper method that puts a full namespace in the correct scope.
+   * @param  {string} name The fully qualified namespace.
+   * @return {string} The localized namespace.
+   */
+  getScopedNamespace: function(name) {
+    return this.buffer.getScopedNamespaceIfInScope(name);
+  },
+
+  /**
    * Adds all provides namespaces as 'goog.provide' symbols.
    */
   generateProvideSection: function() {
@@ -279,6 +297,11 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     // should be fully qualified.
     goog.array.forEach(goog.object.getKeys(this.doc.classes), function(cn) {
       ns.push(this.getGenerativeDTONamespace(cn));
+    }, this);
+
+    // Add the namespaces impliitly defined by grouping methods in resources.
+    goog.array.forEach(this.doc.resourceNamespaces, function(rns) {
+      ns.push(this.getResourceNamespace(rns));
     }, this);
 
     ns.sort();
@@ -328,6 +351,9 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
     if (this.defaultDtoExtend) {
       goog.array.insert(result, this.defaultDtoExtend);
     }
+    goog.array.forEach(this.doc.resourceNamespaces, function(ns) {
+      goog.array.insert(result, this.getResourceNamespace(ns));
+    }, this);
     result.push(this.rpcNamespace);
     result.push(this.dtoNamespace);
     result.sort();
@@ -643,8 +669,11 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
       this.buffer.endComment();
       // Body
       if (def.parameters.length > 0 || def.request) {
-        this.buffer.writeln(this.getGenerativeRPCNamespace(def.name) +
-            ' = function(');
+        this.buffer.writeln((def.namespace ?
+            (this.getScopedNamespace(this.getResourceNamespace(def.namespace)) +
+                '.' + def.name) :
+                this.getGenerativeRPCNamespace(def.name)) +
+                ' = function(');
         this.buffer.indent();
         this.buffer.indent();
         var fn = '';

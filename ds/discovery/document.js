@@ -49,6 +49,11 @@ pstj.ds.discovery.Document = goog.defineClass(null, {
      * @type {!Array<pstj.ds.discovery.Method>}
      */
     this.methods = [];
+    /**
+     * List of resource defined namespaces.
+     * @type {!Array<!string>}
+     */
+    this.resourceNamespaces = [];
 
     this.processSchemas();
   },
@@ -74,6 +79,27 @@ pstj.ds.discovery.Document = goog.defineClass(null, {
         this.map['methods']);
     goog.object.forEach(methods, function(value, key) {
       this.methods.push(new pstj.ds.discovery.Method(key, value));
+    }, this);
+
+    if (goog.isDef(this.map['resources'])) {
+      this.processResources(this.map['resources']);
+    }
+  },
+
+  processResources: function(resources) {
+    goog.object.forEach(resources, function(value, key) {
+      if (goog.isDef(value['methods'])) {
+        this.processMethods(value['methods'], key);
+      }
+    }, this);
+  },
+
+  processMethods: function(methods, namespace) {
+    this.resourceNamespaces.push(namespace);
+    goog.object.forEach(methods, function(methodschema, name) {
+      var method = new pstj.ds.discovery.Method(name, methodschema);
+      method.namespace = namespace;
+      this.methods.push(method);
     }, this);
   }
 });
