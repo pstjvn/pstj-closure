@@ -1,9 +1,11 @@
 {
-  "name": "MaterialCodeGenerators",
-  "description": "Collection of utilities that generate code for the compiler",
+  "name": "CodeGeneraotr",
+  "description": "Collection of utilities that generate JS code",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "jsdom": "*"
+    "jsdom": "*",
+    "args": "*",
+    "request": "*"
   }
 }
