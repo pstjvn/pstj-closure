@@ -281,7 +281,8 @@
 {template .Fab}
   {@param icon: string}
   {@param? tactile: bool}
-  <div is class="{css material-fab}{if $tactile} {css material-button-tactile}{/if}" icon="{$icon}" use-pointer>
+  {@param? action: string}
+  <div is class="{css material-fab}{if $tactile} {css material-button-tactile}{/if}" icon="{$icon}" use-pointer {if $action}action="{$action}"{/if}>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}

@@ -392,7 +392,8 @@ if (goog.DEBUG) {
 /**
  * @param {{
  *    icon: string,
- *    tactile: (boolean|null|undefined)
+ *    tactile: (boolean|null|undefined),
+ *    action: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @return {!soydata.SanitizedHtml}
@@ -403,7 +404,9 @@ pstj.material.template.Fab = function(opt_data, opt_ignored) {
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   soy.asserts.assertType(opt_data.tactile == null || goog.isBoolean(opt_data.tactile) || opt_data.tactile === 1 || opt_data.tactile === 0, 'tactile', opt_data.tactile, 'boolean|null|undefined');
   var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" use-pointer>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.Ripple({recenter: true}) + '</div>');
+  soy.asserts.assertType(opt_data.action == null || (opt_data.action instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.action), 'action', opt_data.action, 'null|string|undefined');
+  var action = /** @type {null|string|undefined} */ (opt_data.action);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" use-pointer ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.Ripple({recenter: true}) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Fab.soyTemplateName = 'pstj.material.template.Fab';
