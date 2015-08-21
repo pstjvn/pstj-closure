@@ -220,3 +220,17 @@ pstj.material.icons.ArrowRightStatic = function(opt_data, opt_ignored) {
 if (goog.DEBUG) {
   pstj.material.icons.ArrowRightStatic.soyTemplateName = 'pstj.material.icons.ArrowRightStatic';
 }
+
+
+/**
+ * @param {Object<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.material.icons.Download = function(opt_data, opt_ignored) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 24 24" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"><g><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></g></svg>');
+};
+if (goog.DEBUG) {
+  pstj.material.icons.Download.soyTemplateName = 'pstj.material.icons.Download';
+}

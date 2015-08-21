@@ -101,6 +101,11 @@ icon.resolveRenderer = function(iconName) {
     return icon.ArrowRightStatic.getInstance();
   }
 
+  //Branch for Download
+  if (iconName == pstj.material.icon.Name.DOWNLOAD) {
+    return icon.Download.getInstance();
+  }
+
   return null;
 };
 
@@ -390,6 +395,25 @@ icon.ArrowRightStatic = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.ArrowRightStatic);
 
 
+/** Renderer for Download */
+icon.Download = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.Download(m);
+  }
+});
+goog.addSingletonGetter(icon.Download);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -417,6 +441,7 @@ icon.Name = {
   PLUS_STATIC: 'plus-static',
   ARROW_LEFT_STATIC: 'arrow-left-static',
   ARROW_RIGHT_STATIC: 'arrow-right-static',
+  DOWNLOAD: 'download',
   NONEXISTING: 'nonexisting'
 };
 
