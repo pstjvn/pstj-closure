@@ -69,7 +69,6 @@ pstj.fx.animation.Wave = goog.defineClass(null, {
     this.cache[0] = 0 + this.clickPoint.x - this.radius;
     this.cache[1] = 0 + this.clickPoint.y - this.radius;
     goog.style.setStyle(this.rippleElement, 'border-radius', '50%');
-    this.update(this.startValue);
     this.raf.start();
   },
 
@@ -84,13 +83,12 @@ pstj.fx.animation.Wave = goog.defineClass(null, {
       var scale = goog.fx.easing.easeIn(this.endValue - (
           ts - this.startTime) / this.duration);
     }
-    if (scale >= 1) {
-      console.log('Ended');
+    if (this.reveal && scale >= 1) {
       pstj.lab.style.css.clearTranslation(this.rippleElement);
       pstj.lab.style.css.clearTranslation(this.innerElement);
       goog.style.setStyle(this.rippleElement, 'border-radius', 0);
       this.raf.stop();
-    } else if (scale <= 0) {
+    } else if (!this.reveal && scale <= 0) {
       this.raf.stop();
       this.update(0);
     } else {
