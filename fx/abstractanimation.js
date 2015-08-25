@@ -33,8 +33,10 @@ pstj.fx.animation.Wave = goog.defineClass(null, {
     this.startValue = 0;
     this.endValue = 1;
     this.duration = 800;
-    this.rippleElement = this.element.querySelector('.ripple');
-    this.innerElement = this.element.querySelector('.inner');
+    this.rippleElement = this.element.querySelector('.' +
+        goog.getCssName('ripple'));
+    this.innerElement = this.element.querySelector('.' +
+        goog.getCssName('inner'));
     this.rect = goog.style.getBounds(this.element);
     this.clickPoint = new goog.math.Coordinate();
     this.radius = 0;
