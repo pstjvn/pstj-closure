@@ -9,10 +9,10 @@ goog.require('pstj.material.Button');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventType');
-goog.require('pstj.material.MediaQuery');
 goog.require('pstj.material.State');
 goog.require('pstj.material.icon');
 goog.require('pstj.material.template');
+goog.require('pstj.ui.MediaQuery');
 
 
 /** @extends {pstj.material.Element} */
@@ -28,10 +28,10 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
     /**
-     * @type {pstj.material.MediaQuery}
+     * @type {pstj.ui.MediaQuery}
      * @private
      */
-    this.mediaquery_ = new pstj.material.MediaQuery('max-width: 640px');
+    this.mediaquery_ = new pstj.ui.MediaQuery('max-width: 640px');
     /**
      * The label to show.
      * @type {string}
@@ -64,7 +64,7 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
   enterDocument: function() {
     goog.base(this, 'enterDocument');
     this.getHandler().listen(this.mediaquery_,
-        pstj.material.EventType.MEDIA_CHANGE, this.onMediaChange);
+        pstj.ui.MediaQuery.EventType.MEDIA_CHANGE, this.onMediaChange);
   },
 
   /**

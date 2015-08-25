@@ -26,6 +26,7 @@ goog.addDependency('../../../apps/pstj/demos/material/togglebutton.js', ['pstj.d
 goog.addDependency('../../../apps/pstj/demos/navigation/navigation.js', ['pstj.demos.navigation'], ['goog.dom', 'goog.ui.tree.TreeControl', 'pstj.demos.navigationdata'], false);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigationdata.js', ['pstj.demos.navigationdata'], [], false);
 goog.addDependency('../../../apps/pstj/demos/tableview/tableview.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView'], false);
+goog.addDependency('../../../apps/pstj/demos/ui/mediaquery.js', ['pstj.demos.ui.mediaquery'], ['goog.dom', 'goog.events', 'pstj.ui.MediaQuery'], false);
 goog.addDependency('../../../apps/pstj/demos/widgets/swiper.js', ['pstj.demos.widget.swiper'], ['pstj.ds.dto.SwipetileList', 'pstj.widget.Swiper'], false);
 goog.addDependency('../../../apps/pstj/demos/widgets/swipetile.js', ['pstj.demos.widget.swipetile'], ['pstj.widget.Swipetile'], false);
 goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.material.icons'], ['soy', 'soydata'], false);

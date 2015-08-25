@@ -45,9 +45,9 @@ goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.EventType');
-goog.require('pstj.material.MediaQuery');
 goog.require('pstj.material.Panel');
 goog.require('pstj.material.State');
+goog.require('pstj.ui.MediaQuery');
 
 goog.scope(function() {
 var css = pstj.lab.style.css;
@@ -55,7 +55,7 @@ var E = pstj.material.Element;
 var ER = pstj.material.ElementRenderer;
 var EventMap = pstj.material.EventMap;
 var EventType = pstj.material.EventType;
-var MediaQuery = pstj.material.MediaQuery;
+var MediaQuery = pstj.ui.MediaQuery;
 var Panel = pstj.material.Panel;
 var State = goog.ui.Component.State;
 
@@ -98,7 +98,7 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
      */
     this.dragging_ = false;
     /**
-     * @type {pstj.material.MediaQuery}
+     * @type {!MediaQuery}
      * @private
      */
     this.mediaquery_ = new MediaQuery('max-width: 640px');
@@ -157,7 +157,7 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
   setResponsiveWidth: function(width) {
     // dispose of the old instance
     this.getHandler().unlisten(this.mediaquery_,
-        pstj.material.EventType.MEDIA_CHANGE,
+        MediaQuery.EventType.MEDIA_CHANGE,
         this.onMediaChange);
     this.mediaquery_.dispose();
 
@@ -165,7 +165,7 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
     this.mediaquery_ = new MediaQuery('max-width: ' + width + 'px');
     if (this.isInDocument()) {
       this.getHandler().listen(this.mediaquery_,
-          pstj.material.EventType.MEDIA_CHANGE,
+          MediaQuery.EventType.MEDIA_CHANGE,
           this.onMediaChange);
     }
   },
@@ -174,7 +174,7 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
   enterDocument: function() {
     goog.base(this, 'enterDocument');
     this.getHandler().listen(this.mediaquery_,
-        pstj.material.EventType.MEDIA_CHANGE,
+        MediaQuery.EventType.MEDIA_CHANGE,
         this.onMediaChange);
     // wait for layout and then wait for next animation frame to
     // enable transitioning.
