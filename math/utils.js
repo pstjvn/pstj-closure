@@ -188,7 +188,7 @@ _.crossRule = function(min1, max1, min2, max2, value) {
  * @return {number}
  */
 _.roundToTwo(num) {
-    return +(Math.round(num + 'e+2')  + 'e-2');
+  return +(Math.round(num + 'e+2')  + 'e-2');
 };
 
 });  // goog.scope
