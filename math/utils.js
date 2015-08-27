@@ -177,4 +177,18 @@ _.crossRule = function(min1, max1, min2, max2, value) {
   return ((Math.abs(value) / (max1 - min1)) * (max2 - min2)) + min2;
 };
 
+
+/**
+ * Currency related rounding.
+ *
+ * See
+ * https://groups.google.com/forum/#!topic/closure-library-discuss/DpI-eEXBU_0
+ *
+ * @param {number}
+ * @return {number}
+ */
+_.roundToTwo(num) {
+    return +(Math.round(num + "e+2")  + "e-2");
+};
+
 });  // goog.scope
