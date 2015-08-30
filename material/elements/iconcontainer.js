@@ -139,6 +139,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
           }
         }
         this.type = iconName;
+        this.getRenderer().setType(this);
       }
     } else {
       // alternative path for handling icons in source mode.
@@ -193,6 +194,14 @@ pstj.material.IconContainer = goog.defineClass(E, {
     }
   },
 
+  /**
+   * @override
+   * @return {!pstj.material.IconContainerRenderer}
+   */
+  getRenderer: function() {
+    return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
+        pstj.material.IconContainerRenderer);
+  },
 
   statics: {
     /**
@@ -329,12 +338,18 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
     goog.base(this);
   },
 
-
   /** @inheritDoc */
   getTemplate: function(model) {
     return pstj.material.template.IconContainer(model);
   },
 
+  /**
+   * Reflects the type of the icon back in the HTML.
+   * @param {pstj.material.IconContainer} control
+   */
+  setType: function(control) {
+    control.getElement().setAttribute('type', control.getIcon());
+  },
 
   /** @inheritDoc */
   generateTemplateData: function(control) {
