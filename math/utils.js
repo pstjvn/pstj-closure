@@ -184,11 +184,11 @@ _.crossRule = function(min1, max1, min2, max2, value) {
  * See
  * https://groups.google.com/forum/#!topic/closure-library-discuss/DpI-eEXBU_0
  *
- * @param {number}
+ * @param {number} num
  * @return {number}
  */
-_.roundToTwo(num) {
-  return +(Math.round(num + 'e+2')  + 'e-2');
+_.roundToTwo = function(num) {
+  return +(Math.round(num + 'e+2') + 'e-2');
 };
 
 });  // goog.scope
