@@ -30,7 +30,7 @@ goog.addSingletonGetter(pstj.ui.PopOverLayerTemplate);
 
 /** @inheritDoc */
 pstj.ui.PopOverLayerTemplate.prototype.getTemplate = function(model) {
-  return pstj.templates.popover({});
+  return pstj.templates.popover({}).getContent();
 };
 
 

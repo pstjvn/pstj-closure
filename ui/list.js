@@ -2,6 +2,7 @@ goog.provide('pstj.ui.List');
 goog.provide('pstj.ui.ListTemplate');
 
 goog.require('pstj.ds.List');
+goog.require('pstj.ds.ListItem');
 goog.require('pstj.templates');
 goog.require('pstj.ui.Async');
 goog.require('pstj.ui.ListItem');
@@ -23,7 +24,7 @@ goog.addSingletonGetter(pstj.ui.ListTemplate);
 
 /** @inheritDoc */
 pstj.ui.ListTemplate.prototype.getTemplate = function(model) {
-  return pstj.templates.list({});
+  return pstj.templates.list({}).toString();
 };
 
 

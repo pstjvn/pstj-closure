@@ -61,7 +61,7 @@ goog.addSingletonGetter(pstj.widget.ControlGroupTemplate);
 
 /** @inheritDoc */
 pstj.widget.ControlGroupTemplate.prototype.getTemplate = function(model) {
-  return pstj.templates.controlgroup({});
+  return pstj.templates.controlgroup({}).getContent();
 };
 
 

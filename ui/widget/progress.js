@@ -33,7 +33,7 @@ goog.addSingletonGetter(pstj.widget.ProgressTemplate);
 
 /** @inheritDoc */
 pstj.widget.ProgressTemplate.prototype.getTemplate = function(model) {
-  return pstj.templates.progress(model);
+  return pstj.templates.progress(model).getContent();
 };
 
 

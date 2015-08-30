@@ -25,7 +25,7 @@ goog.addSingletonGetter(pstj.ui.ListItemTemplate);
 
 /** @inheritDoc */
 pstj.ui.ListItemTemplate.prototype.getTemplate = function(model) {
-  return pstj.templates.listitem(model);
+  return pstj.templates.listitem(model).getContent();
 };
 
 

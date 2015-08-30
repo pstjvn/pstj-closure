@@ -24,7 +24,7 @@ goog.addSingletonGetter(pstj.widget.SelectTemplate);
 
 /** @inheritDoc */
 pstj.widget.SelectTemplate.prototype.getTemplate = function(model) {
-  return pstj.templates.select({});
+  return pstj.templates.select({}).getContent();
 };
 
 

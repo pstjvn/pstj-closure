@@ -122,7 +122,7 @@ goog.addDependency('../../../apps/pstj/ui/deprecated/coupledinput.js', ['pstj.ui
 goog.addDependency('../../../apps/pstj/ui/deprecated/sizeable.js', ['pstj.ui.Sizeable', 'pstj.ui.Sizeable.EventType'], ['goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events.EventHandler', 'goog.ui.Component'], false);
 goog.addDependency('../../../apps/pstj/ui/elementids.js', ['pstj.ui.IdGenerator'], [], false);
 goog.addDependency('../../../apps/pstj/ui/image.js', ['pstj.ui.Image'], ['goog.asserts', 'goog.dom.classlist', 'goog.events.EventType', 'goog.ui.Component'], false);
-goog.addDependency('../../../apps/pstj/ui/list.js', ['pstj.ui.List', 'pstj.ui.ListTemplate'], ['pstj.ds.List', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.ListItem', 'pstj.ui.Template'], false);
+goog.addDependency('../../../apps/pstj/ui/list.js', ['pstj.ui.List', 'pstj.ui.ListTemplate'], ['pstj.ds.List', 'pstj.ds.ListItem', 'pstj.templates', 'pstj.ui.Async', 'pstj.ui.ListItem', 'pstj.ui.Template'], false);
 goog.addDependency('../../../apps/pstj/ui/listitem.js', ['pstj.ui.ListItem', 'pstj.ui.ListItemTemplate'], ['goog.asserts', 'goog.dom.classlist', 'pstj.configure', 'pstj.ds.ListItem', 'pstj.templates', 'pstj.ui.Template', 'pstj.ui.Touchable'], false);
 goog.addDependency('../../../apps/pstj/ui/locale/strings.js', ['pstj.ui.Strings'], [], false);
 goog.addDependency('../../../apps/pstj/ui/mediaquery.js', ['pstj.ui.MediaQuery'], ['goog.async.nextTick', 'goog.dom', 'goog.events.EventTarget', 'goog.string'], false);

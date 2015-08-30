@@ -155,6 +155,16 @@ pstj.ui.TouchSheet = function(opt_template) {
    * @private
    */
   this.bounds_ = [];
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.needsSizeApplication_ = false;
+  /**
+   * @private
+   * @type {?goog.math.Coordinate}
+   */
+  this.clientOffset_ = null;
 
   this.subscribeToTouchablePubSub();
 };

@@ -15,7 +15,6 @@ goog.require('pstj.ui.TouchAgent');
  * @constructor
  * @param {goog.ui.ButtonRenderer=} opt_renderer Optional renderer to use.
  * @extends {goog.ui.CustomButton}
- * @deprecated Use the new pointer agent when you need touch/mouse abstraction.
  */
 pstj.ui.Button = function(opt_renderer) {
   goog.base(this, '', opt_renderer ||
