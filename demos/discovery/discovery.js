@@ -9,6 +9,7 @@ goog.require('pstj.sourcegen.ClosureGenerator');
 /** @final {string} */
 var testdataurl = 'testdata.json';
 
+
 /**
  * Actual demo.
  * @param  {!Object} schema

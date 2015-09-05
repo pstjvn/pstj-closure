@@ -21,7 +21,7 @@ private_dep_file_deps = $(template_build_dir)/*.soy.js demos/*/*.js
 all: $(lintfile) $(private_deps_file) $(public_deps_file)
 	@echo '>>> pstj library all done'
 
-$(lintfile): $(public_dep_file_deps) $(private_dep_file_deps)
+$(lintfile): $(public_dep_file_deps) demos/*/*.js
 	$(lint_cmd) $?
 	touch $@
 

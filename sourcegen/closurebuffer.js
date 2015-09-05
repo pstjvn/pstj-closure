@@ -96,7 +96,7 @@ pstj.sourcegen.ClosureBuffer = goog.defineClass(JSBuffer, {
 
   /**
    * Adds an extends JSDoc clause.
-   * @param  {string} namespace The namespace to extend
+   * @param  {string} namespace The namespace to extend.
    */
   addExtendsJSDoc: function(namespace) {
     var ex = this.getExtendsJSDoc(namespace);
