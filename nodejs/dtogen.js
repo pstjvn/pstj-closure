@@ -15,6 +15,7 @@ goog.require('pstj.ds.jsonschema.parser');
 var fs = require('fs');
 
 var _ = {};
+goog.global['EXPOSE_PROPS'] = false;
 
 goog.scope(function() {
 var array = goog.array;
@@ -36,11 +37,14 @@ _.paths = null;
  * @param {string} namespace The namespace to use.
  * @param {string} path to read from.
  * @param {string} path to write to.
+ * @param {string=} exposeprops
  */
-_.invoke = function(namespace, inpath, outpath) {
+_.invoke = function(namespace, inpath, outpath, exposeprops) {
   // console.log('Namespace: ' + namespace);
   // console.log('Where to read from: ' + inpath);
   // console.log('Where to write files: ' + outpath);
+
+  if (goog.isDef(exposeprops)) goog.global['EXPOSE_PROPS'] = true;
 
   // not really used here...
   parser.setGlobalNamespacePrefix(namespace);
@@ -120,4 +124,4 @@ pstj.ds.jsonschema.parser.load = function(paths) {
   return goog.Promise.all(promises);
 };
 
-_.invoke(process.argv[2], process.argv[3], process.argv[4]);
+_.invoke(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
