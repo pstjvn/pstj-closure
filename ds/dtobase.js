@@ -51,11 +51,11 @@ pstj.ds.DtoBase = goog.defineClass(goog.events.EventTarget, {
      * @type {!goog.async.Delay}
      */
     updateDelay_: (new goog.async.Delay(function() {
-      if (!goog.array.isEmpty(pstj.ds.DtoBase.updateQueue_)) {
+      while (!goog.array.isEmpty(pstj.ds.DtoBase.updateQueue_)) {
         goog.array.forEach(pstj.ds.DtoBase.updateQueue_, function(item) {
           item.dispatchEvent(pstj.ds.DtoBase.EventType.CHANGE);
+          goog.array.remove(pstj.ds.DtoBase.updateQueue_, item);
         });
-        goog.array.clear(pstj.ds.DtoBase.updateQueue_);
       }
     }, 200)),
 
