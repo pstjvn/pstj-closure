@@ -8,6 +8,13 @@ goog.require('pstj.date.utils');
 
 
 /**
+ * @typedef {number|string|boolean|Object|Array}
+ * @private
+ */
+pstj.ng.filters.data_;
+
+
+/**
  * The time zone offset of the client in milliseconds (used to calculate
  * the time offset filter).
  * @type {number}
@@ -29,7 +36,7 @@ pstj.ng.filters.timeOffsetDefaultFormat_ = 'hh:mm';
 
 /**
  * Parses value into time value.
- * @param {number|string|boolean} data The time to use.
+ * @param {pstj.ng.filters.data_} data The time to use.
  * @private
  * @return {number}
  */
@@ -58,7 +65,7 @@ pstj.ng.filters.makeDateTime_ = function(data) {
  * Filter a time offset and presents it as absolute time value. The
  *   calculated time is offset by minutes and time zone differences are
  *   removed.
- * @param {number|string|boolean} data The time to use.
+ * @param {pstj.ng.filters.data_} data The time to use.
  * @param {string} format The formatting to apply. The format is 1:1 with
  *   the goog.date formatting options.
  * @return {string} The result of the offset.
@@ -80,7 +87,7 @@ pstj.ng.filters.timeoffset = function(data, format) {
 
 /**
  * Formatting for regular date-time objects.
- * @param {number|string|boolean} data The time to use.
+ * @param {pstj.ng.filters.data_} data The time to use.
  * @param {string} format The formatting to apply. The format is 1:1 with
  *   the goog.date formatting options.
  * @return {string} The result of the offset.
@@ -93,7 +100,7 @@ pstj.ng.filters.datetime = function(data, format) {
 
 /**
  * Puts the firmatting in fron if the data directly and returns the result.
- * @param {number|string|boolean} data The data value to work with.
+ * @param {pstj.ng.filters.data_} data The data value to work with.
  * @param {string} format The string to append to the data.
  * @return {string} The composite value of the two.
  */
@@ -104,7 +111,7 @@ pstj.ng.filters.prepend = function(data, format) {
 
 /**
  * Appends the formatting to the data directly and returns the result.
- * @param {number|string|boolean} data The data value to work with.
+ * @param {pstj.ng.filters.data_} data The data value to work with.
  * @param {string} format The string to append to the data.
  * @return {string} The composite value of the two.
  */
@@ -144,15 +151,16 @@ pstj.ng.filters.getFilterByName = function(fname) {
 /**
  * Apply an existing filter on the data provided, using optional formatting.
  * @param {string} fname The filter name to use.
- * @param {number|string|boolean} data The data to work on.
+ * @param {pstj.ng.filters.data_} data The data to work on.
  * @param {string=} opt_format The formatting data if any to pass to the
  * formatting function.
  * @return {string} The result of the filter.
  */
 pstj.ng.filters.apply = function(fname, data, opt_format) {
   if (pstj.ng.filters.hasFilter(fname)) {
-    var f = /** @type {function((number|string|boolean),string=): string} */ (
-        pstj.ng.filters.getFilterByName(fname));
+    var f = (
+        /** @type {function(pstj.ng.filters.data_ ,string=): string} */ (
+            pstj.ng.filters.getFilterByName(fname)));
     return f(data, opt_format);
   }
   throw new Error('There is no filter registered with this name:' + fname);
@@ -162,7 +170,7 @@ pstj.ng.filters.apply = function(fname, data, opt_format) {
 /**
  * Makes a price out of a value. Values are always assumed to be in cents
  *   and are calculated based on that assumption.
- * @param {number|string|boolean} data The data to parse as price.
+ * @param {pstj.ng.filters.data_} data The data to parse as price.
  * @param {string} format The formating information.
  * @return {string} The formatted price.
  */
@@ -180,7 +188,7 @@ pstj.ng.filters.makePrice = function(data, format) {
 
 /**
  * Separates the thousands with a comma (standard money practice).
- * @param {number|string|boolean} data The data to parse.
+ * @param {pstj.ng.filters.data_} data The data to parse.
  * @return {string}
  */
 pstj.ng.filters.money = function(data) {

@@ -13,6 +13,7 @@ goog.provide('pstj.material.ElementRenderer');
 
 goog.require('goog.array');
 goog.require('goog.async.AnimationDelay');
+goog.require('goog.async.nextTick');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.events.EventType');
@@ -26,7 +27,9 @@ goog.require('goog.ui.registry');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.agent.Scroll');
+goog.require('pstj.ds.DtoBase');
 goog.require('pstj.ds.ListItem');
+goog.require('pstj.ds.ngmodel');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
@@ -292,6 +295,14 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     return element.querySelectorAll(selector);
   },
 
+  /**
+   * Queries the components root node for ng-model bindings.
+   * @param {Element} element
+   * @return {!NodeList}
+   */
+  getTemplateElements: function(element) {
+    return this.querySelectorAll(element, '[data-ng-model]');
+  },
 
   /**
    * By default we do not want to provide key target so that the handler will
@@ -447,6 +458,23 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
      * @private
      */
     this.usePointerAgent_ = false;
+    /**
+     * If we should use the 'ng-model' bindings to update views.
+     * By default we ignore the template completely and manually handle the
+     * updates in conjunction with the new template generator based on
+     * incremental dom. However some older code uses ng-* properties and we
+     * want to be able to use that as well.
+     *
+     * @type {boolean}
+     * @private
+     */
+    this.useNgTemplate_ = false;
+    /**
+     * NodeList of template elements if any.
+     * @type {?NodeList}
+     * @private
+     */
+    this.templateElements_ = null;
 
     // by default we disable all event handling (mouse and keyboard).
     this.setHandleMouseEvents(false);
@@ -473,6 +501,13 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     }
   },
 
+  /**
+   * If we should use the older ng-* syntaxis to update the DOM.
+   * @param {boolean} enable
+   */
+  setUseNGTemplateSyntax: function(enable) {
+    this.useNgTemplate_ = enable;
+  },
 
   /**
    * Configures if the component should be attached to the Scoll UI agent.
@@ -571,6 +606,11 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       this.addChild(ctor);
       ctor.decorate(candidate);
     }, this);
+
+    if (this.useNgTemplate_) {
+      this.templateElements_ = this.getRenderer()
+          .getTemplateElements(this.getElement());
+    }
   },
 
 
@@ -603,6 +643,51 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.enableAutoEvents();
   },
 
+  /** @override */
+  setModel: function(model) {
+    if (this.useNgTemplate_) {
+      if (goog.isDefAndNotNull(this.getModel())) {
+        this.getHandler().unlisten(
+            goog.asserts.assertInstanceof(this.getModel(),
+                goog.events.EventTarget),
+            pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
+      }
+    }
+    goog.base(this, 'setModel', model);
+    if (this.useNgTemplate_) {
+      if (goog.isDefAndNotNull(this.getModel())) {
+        this.getHandler().listen(
+            goog.asserts.assertInstanceof(this.getModel(),
+                goog.events.EventTarget),
+            pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
+
+      }
+      this.handleModelChange(null);
+    }
+  },
+
+  /**
+   * Handles the chages detected on the model, assuming it is DtoBase instance.
+   *
+   * @param {goog.events.Event} e
+   * @protected
+   */
+  handleModelChange: function(e) {
+    if (this.isInDocument()) {
+      goog.async.nextTick(this.handleModelChange_, this);
+    }
+  },
+
+  /**
+   * Handles the model chages asynchrnously.
+   * @private
+   */
+  handleModelChange_: function() {
+    if (!goog.isNull(this.templateElements_)) {
+      pstj.ds.ngmodel.apply(this.templateElements_,
+          /** @type {Object} */(this.getModel()));
+    }
+  },
 
   /**
    * Enables/disables handling of auto assigned events. Note that those are
