@@ -84,7 +84,8 @@ ngmodel.applyFilteredModel_ = function(element, value) {
 ngmodel.resolveValue_ = function(model, modelName) {
   // first make out the model itself.
   var parts = goog.string.splitLimit(modelName, '|', 1);
-  var value = ngmodel.getNestedProperty_(model, parts[0].split('.'));
+  var value = ngmodel.getNestedProperty_(model,
+      goog.string.trim(parts[0]).split('.'));
   if (goog.isNull(value)) return null;
   if (parts[1]) {
     value = ngmodel.applyFilterOnData_(value, parts[1]);
@@ -108,6 +109,7 @@ ngmodel.applyFilterOnData_ = function(data, filterstr) {
   // For each filter in the filter value apply the filter on the result from
   // the previous filter and return the result afterwards.
   goog.array.forEach(filters, function(item) {
+    item = goog.string.trim(item);
     var fname = '';
     var fvalue = '';
     // We expect the filters that accept arguments to be written as
