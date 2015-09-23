@@ -149,6 +149,22 @@ pstj.ng.filters.getFilterByName = function(fname) {
 
 
 /**
+ * Makes the digit at least that many symbols long, prepending zeroes where
+ * needed.
+ * @param {pstj.ng.filters.data_} data
+ * @param {string} length The length as read from the filter parameter.
+ * @return {string}
+ */
+pstj.ng.filters.padNumber = function(data, length) {
+  var number = parseInt(data, 10);
+  if (isNaN(number)) return data.toString();
+  var len = parseInt(length, 10);
+  if (isNaN(len)) len = 1;
+  return goog.string.padNumber(number, len, 0);
+};
+
+
+/**
  * Apply an existing filter on the data provided, using optional formatting.
  * @param {string} fname The filter name to use.
  * @param {pstj.ng.filters.data_} data The data to work on.
@@ -207,6 +223,7 @@ pstj.ng.filters.registry_ = {
   'append': pstj.ng.filters.append,
   'prepend': pstj.ng.filters.prepend,
   'price': pstj.ng.filters.makePrice,
-  'money': pstj.ng.filters.money
+  'money': pstj.ng.filters.money,
+  'pad': pstj.ng.filters.padNumber
 };
 
