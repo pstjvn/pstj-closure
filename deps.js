@@ -42,7 +42,7 @@ goog.addDependency('../../../apps/pstj/ds/jstype/type.js', ['pstj.ds.jstype.Type
 goog.addDependency('../../../apps/pstj/ds/list.js', ['pstj.ds.List', 'pstj.ds.List.Event', 'pstj.ds.List.EventType'], ['goog.array', 'goog.async.Delay', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.ListItem'], false);
 goog.addDependency('../../../apps/pstj/ds/listitem.js', ['pstj.ds.ListItem', 'pstj.ds.ListItem.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 'goog.string', 'pstj.ds.IListItem', 'pstj.object'], false);
 goog.addDependency('../../../apps/pstj/ds/maprotation.js', ['pstj.ds.MapRotator'], ['goog.Disposable'], false);
-goog.addDependency('../../../apps/pstj/ds/ngmodel.js', ['pstj.ds.ngmodel'], ['goog.array', 'goog.dom.TagName', 'goog.dom.dataset', 'goog.string', 'pstj.ng.filters'], false);
+goog.addDependency('../../../apps/pstj/ds/ngmodel.js', ['pstj.ds.ngmodel'], ['goog.array', 'goog.dom.TagName', 'goog.dom.dataset', 'goog.functions', 'goog.log', 'goog.string', 'goog.structs.Pool', 'goog.style', 'pstj.ng.filters'], false);
 goog.addDependency('../../../apps/pstj/ds/poolcache.js', ['pstj.ds.PoolCache'], ['pstj.ds.Cache'], false);
 goog.addDependency('../../../apps/pstj/ds/sortable.js', ['pstj.ds.Sortable'], ['goog.array', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.DtoBase.EventType'], false);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure', 'pstj.ds.IClock'], false);
