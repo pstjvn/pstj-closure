@@ -296,15 +296,6 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   },
 
   /**
-   * Queries the components root node for ng-model bindings.
-   * @param {Element} element
-   * @return {!NodeList}
-   */
-  getTemplateElements: function(element) {
-    return this.querySelectorAll(element, '[data-ng-model]');
-  },
-
-  /**
    * By default we do not want to provide key target so that the handler will
    * NOT listen for keyboard events. This is done to allow the complex material
    * element to have the focusable state but to not really create multiple
@@ -469,12 +460,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
      * @private
      */
     this.useNgTemplate_ = false;
-    /**
-     * NodeList of template elements if any.
-     * @type {?NodeList}
-     * @private
-     */
-    this.templateElements_ = null;
 
     // by default we disable all event handling (mouse and keyboard).
     this.setHandleMouseEvents(false);
@@ -507,6 +492,13 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   setUseNGTemplateSyntax: function(enable) {
     this.useNgTemplate_ = enable;
+    if (this.isInDocument()) {
+      if (enable) {
+        pstj.ds.ngmodel.bindElement(this.getElement());
+      } else {
+        pstj.ds.ngmodel.unbindElement(this.getElement());
+      }
+    }
   },
 
   /**
@@ -606,11 +598,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
       this.addChild(ctor);
       ctor.decorate(candidate);
     }, this);
-
-    if (this.useNgTemplate_) {
-      this.templateElements_ = this.getRenderer()
-          .getTemplateElements(this.getElement());
-    }
   },
 
 
@@ -641,6 +628,9 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.updatePointerAgentAttachement_();
     this.updateScrollAgentAttachement_();
     this.enableAutoEvents();
+    // Triggers re-rendering by default. If templates are not enabled
+    // this will do nothing.
+    this.handleModelChange(null);
   },
 
   /** @override */
@@ -673,7 +663,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @protected
    */
   handleModelChange: function(e) {
-    if (this.isInDocument()) {
+    if (this.useNgTemplate_ && this.isInDocument()) {
       goog.async.nextTick(this.handleModelChange_, this);
     }
   },
@@ -683,8 +673,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @private
    */
   handleModelChange_: function() {
-    if (!goog.isNull(this.templateElements_)) {
-      pstj.ds.ngmodel.apply(this.templateElements_,
+    if (this.isInDocument()) {
+      pstj.ds.ngmodel.updateElement(this.getElement(),
           /** @type {Object} */(this.getModel()));
     }
   },
