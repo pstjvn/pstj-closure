@@ -54,7 +54,7 @@ pstj.graphics.Smooth = function(callback, opt_handler) {
       goog.bind(callback, opt_handler) : callback;
   /**
    * The delayed handler of updates.
-   * @type { goog.async.AnimationDelay}
+   * @type {goog.async.AnimationDelay}
    * @private
    */
   this.raf_ = new goog.async.AnimationDelay(this.onRaf_, undefined, this);
