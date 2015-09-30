@@ -202,14 +202,14 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Creates a DOM tree from an html string assuring its type.
-   * @param {string|soydata.SanitizedHtml} htmlstring The HTML to parse
+   * @param {soydata.SanitizedHtml} htmlstring The HTML to parse
    *    into DOM tree.
    * @return {!Element}
    * @protected
    */
   createRootElement: function(htmlstring) {
     return /** @type {!Element} */(goog.dom.htmlToDocumentFragment(
-        /** @type {string} */ (htmlstring)));
+        htmlstring.getContent()));
   },
 
 
@@ -494,9 +494,9 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.useNgTemplate_ = enable;
     if (this.isInDocument()) {
       if (enable) {
-        pstj.ds.ngmodel.bindElement(this.getElement());
+        pstj.ds.ngmodel.bindElement(this.getElementStrict());
       } else {
-        pstj.ds.ngmodel.unbindElement(this.getElement());
+        pstj.ds.ngmodel.unbindElement(this.getElementStrict());
       }
     }
   },
