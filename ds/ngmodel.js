@@ -22,6 +22,7 @@ goog.require('goog.dom.TagName');
 goog.require('goog.dom.dataset');
 goog.require('goog.functions');
 goog.require('goog.log');
+goog.require('goog.object');
 goog.require('goog.string');
 goog.require('goog.structs.Pool');
 goog.require('goog.style');
@@ -116,8 +117,8 @@ ngmodel.Cache_ = goog.defineClass(null, {
    */
   update_: function(model) {
     for (var i = 0; i < this.length_; i++) {
-      var rawvalue = ngmodel.getNestedProperty_(
-          model, this.modelNames_[i]).toString();
+      var barevalue = ngmodel.getNestedProperty_(model, this.modelNames_[i]);
+      var rawvalue = barevalue.toString();
       if (!goog.isNull(this.filters_[i])) {
         rawvalue = this.filters_[i](rawvalue);
       }
@@ -129,7 +130,7 @@ ngmodel.Cache_ = goog.defineClass(null, {
             break;
           case ngmodel.CACHE_TYPE.SHOW:
             goog.style.setElementShown(goog.asserts.assertElement(
-                this.nodes_[i]), !!rawvalue);
+                this.nodes_[i]), !!barevalue);
             break;
           case ngmodel.CACHE_TYPE.HTML:
             this.nodes_[i].innerHTML = rawvalue.toString();
@@ -218,34 +219,54 @@ ngmodel.CACHE_TYPE = {
 
 /**
  * Cache of elemen IDs to cache instances.
- * @type {Object<number, ngmodel.Cache_>}
+ * @type {Object<string, ngmodel.Cache_>}
  * @private
  */
 ngmodel.cache_ = {};
 
 
 /**
+ * Un-bind the element from UI bindings.
+ *
+ * @param {!Node} node
+ */
+ngmodel.unbindElement = function(node) {
+  var id = goog.getUid(node).toString();
+  if (goog.object.containsKey(ngmodel.cache_, id)) {
+    ngmodel.pool_.releaseObject(goog.object.get(ngmodel.cache_, id));
+    goog.object.set(ngmodel.cache_, id, null);
+  } else {
+    goog.log.warning(ngmodel.logger_, 'Element was never bound');
+  }
+};
+
+
+/**
  * Binds the element in the NG implementation.
  *
  * Note that this means that the developer still needs to call
- * '#apply' with the model when the model is being updated.
+ * '#updateElement' with the model when the model is being updated.
  *
  * @param {!Node} node The root node to bind.
- * @return {number}
+ * @return {string}
  */
 ngmodel.bindElement = function(node) {
-  var id = goog.getUid(node);
+  var id = goog.getUid(node).toString();
   if (goog.object.containsKey(ngmodel.cache_, id)) {
     goog.log.error(ngmodel.logger_, 'Element already bound in NG!');
     return id;
   }
   var cache = ngmodel.pool_.getObject();
-  ngmodel.cache_[id] = cache;
-  var nodes = node.querySelectorAll('[data-ng-model]');
+  goog.object.set(ngmodel.cache_, id, cache);
+  var nodes = node.querySelectorAll('[data-ng-model],[data-ng-show]');
   var items = -1;
   goog.array.forEach(nodes, function(el, index) {
     var modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
         'ng-model'));
+    if (!goog.isDefAndNotNull(modelValue)) {
+      modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
+          'ng-show'));
+    }
     // If the property has a value only then process further.
     if (goog.isString(modelValue)) {
       // Split the model name from the firlters (if any).
@@ -396,8 +417,9 @@ ngmodel.NULL_VALUE_ = '&nbsp;';
 ngmodel.updateElement = function(el, model) {
   if (goog.hasUid(goog.asserts.assertObject(el)) &&
       goog.object.containsKey(ngmodel.cache_, goog.getUid(
-          goog.asserts.assertObject(el)))) {
-    ngmodel.applyFromCache_(ngmodel.cache_[goog.getUid(el)], model);
+          goog.asserts.assertObject(el)).toString())) {
+    ngmodel.applyFromCache_(goog.object.get(
+        ngmodel.cache_, goog.getUid(el).toString()), model);
   } else {
     goog.log.error(ngmodel.logger_, 'Attempt to ng-update element that is not' +
         ' bound.');
