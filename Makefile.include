@@ -50,7 +50,7 @@ build_js_compiler_option = \
 lint_cmd = gjslint \
 --jslint_error=all \
 --strict \
---custom_jsdoc_tags=package \
+--custom_jsdoc_tags=package,nocollapse \
 --disable 0225 \
 --max_line_length 80
 
