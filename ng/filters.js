@@ -8,7 +8,7 @@ goog.require('pstj.date.utils');
 
 
 /**
- * @typedef {number|string|boolean|Object|Array}
+ * @typedef {!number|!string|!boolean|!Object|!Array}
  * @private
  */
 pstj.ng.filters.data_;

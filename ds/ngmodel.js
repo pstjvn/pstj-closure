@@ -199,7 +199,7 @@ ngmodel.Pool_ = goog.defineClass(goog.structs.Pool, {
 
 /**
  * Instance to use as pool for ng-cache objects.
- * @type {!ngmodel.Pool_<pstj.cd.ngmode.Cache_>}
+ * @type {!ngmodel.Pool_}
  * @private
  */
 ngmodel.pool_ = new ngmodel.Pool_();
@@ -338,13 +338,13 @@ ngmodel.bindElement = function(node) {
 ngmodel.resolveInitialValue_ = function(el, applyType) {
   switch (applyType) {
     case ngmodel.CACHE_TYPE.IMAGE:
-      return el.src;
+      return goog.asserts.assertInstanceof(el, HTMLImageElement).src;
     case ngmodel.CACHE_TYPE.SHOW:
       return 'true';
     case ngmodel.CACHE_TYPE.TEXT:
       return goog.dom.getTextContent(el);
     case ngmodel.CACHE_TYPE.HTML:
-      return el.innerHTML;
+      return goog.asserts.assertElement(el).innerHTML;
     default:
       goog.log.warning(ngmodel.logger_, 'Cannot determine initial value.');
       return '';
@@ -507,7 +507,7 @@ ngmodel.resolveValue_ = function(model, modelName) {
  * Given a value applies any existing filters on it.
  *
  * @private
- * @param {number|string|boolean|Object|Array} data
+ * @param {!number|!string|!boolean|!Object|!Array} data
  * @param {string} filterstr
  * @return {string}
  */
