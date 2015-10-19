@@ -1,5 +1,6 @@
 goog.provide('pstj.demos.navigationdata');
 
+
 /**
  * The menu definitions.
  * @type {Array<Object<string, (string|Array<Object<string, string>>)>>}
@@ -18,3 +19,4 @@ pstj.demos.navigationdata = [
   ]},
   {name: 'TableView', url: '../tableview/index.html'}
 ];
+

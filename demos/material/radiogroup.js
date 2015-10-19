@@ -3,11 +3,12 @@ goog.provide('pstj.demos.radiogroup');
 goog.require('goog.ui.decorate');
 goog.require('pstj.material.RadioGroup');
 
+
 (function() {
-  var _1 = goog.ui.decorate(document.getElementById('dec1'));
-  var _3 = goog.ui.decorate(document.getElementById('dec3'));
-  var _2 = goog.ui.decorate(document.getElementById('dec2'));
-  var _3 = goog.ui.decorate(document.getElementById('dec4'));
+  goog.ui.decorate(document.getElementById('dec1'));
+  goog.ui.decorate(document.getElementById('dec3'));
+  goog.ui.decorate(document.getElementById('dec2'));
+  goog.ui.decorate(document.getElementById('dec4'));
 
   var a = new pstj.material.RadioGroup();
   a.values = '1,2,3,0';

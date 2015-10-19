@@ -2,8 +2,8 @@ goog.provide('pstj.demos.ripple');
 
 goog.require('goog.ui.decorate');
 goog.require('pstj.material.Element');
-goog.require('pstj.material.Ripple');
 goog.require('pstj.material.EventMap');
+goog.require('pstj.material.Ripple');
 
 (function() {
   var ripple = new pstj.material.Ripple('Rendered');

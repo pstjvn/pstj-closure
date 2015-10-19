@@ -1,11 +1,13 @@
 goog.provide('pstj.demos.list');
 
-goog.require('pstj.material.List');
 goog.require('pstj.material.Item');
+goog.require('pstj.material.List');
 
 
+/**
+ * Implements our demo.
+ */
 pstj.demos.list = function() {
-
   var model = new Array(1000);
   for (var i = 0; i < 1000; i++) {
     model[i] = i.toString();
@@ -21,3 +23,4 @@ pstj.demos.list = function() {
 
 // Auto-exec
 pstj.demos.list();
+

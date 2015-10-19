@@ -5,7 +5,8 @@ goog.require('pstj.material.Toast');
 var contents = [
   'Hellow world',
   'Very long and ugly line of text that is really now what we want',
-  'Very long and ugly line of text that is really now what we want at all' ];
+  'Very long and ugly line of text that is really now what we want at all'
+];
 var labels = [
   'close',
   'regular',
