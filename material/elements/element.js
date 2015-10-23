@@ -13,7 +13,6 @@ goog.provide('pstj.material.ElementRenderer');
 
 goog.require('goog.array');
 goog.require('goog.async.AnimationDelay');
-goog.require('goog.async.nextTick');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.events.EventType');
@@ -254,8 +253,12 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @param {Element} el
    */
   setupAgents: function(control, el) {
-    control.setUsePointerAgent(el.hasAttribute('use-pointer'));
-    control.setUseScrollAgent(el.hasAttribute('use-scroll'));
+    if (el.hasAttribute('use-pointer')) {
+      control.setUsePointerAgent(true);
+    }
+    if (el.hasAttribute('use-scroll')) {
+      control.setUseScrollAgent(true);
+    }
   },
 
 
@@ -513,6 +516,13 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   },
 
 
+  /** @override */
+  exitDocument: function() {
+    goog.base(this, 'exitDocument');
+    pstj.ds.ngmodel.unbindElement(this.getElementStrict());
+  },
+
+
   /**
    * Returns true if the element instance is configured to be attache-able
    * to the scroll agent.
@@ -628,6 +638,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     this.updatePointerAgentAttachement_();
     this.updateScrollAgentAttachement_();
     this.enableAutoEvents();
+    this.setUseNGTemplateSyntax(this.useNgTemplate_);
     // Triggers re-rendering by default. If templates are not enabled
     // this will do nothing.
     this.handleModelChange(null);
@@ -664,7 +675,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   handleModelChange: function(e) {
     if (this.useNgTemplate_ && this.isInDocument()) {
-      goog.async.nextTick(this.handleModelChange_, this);
+      this.handleModelChange_();
     }
   },
 
@@ -1093,21 +1104,6 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   }
 
 });
-
-
-/**
- * Creates a pre-configured element from JSON config file.
- * @param {MaterialConfig} json
- * @param {pstj.material.Element} i
- * @return {pstj.material.Element}
- */
-pstj.material.Element.fromJSON = function(json, i) {
-  if (goog.isNull(i)) {
-    i = new pstj.material.Element(json.content || undefined);
-  }
-  pstj.material.Element.setupAdditionalClasses(i, json);
-  return i;
-};
 
 
 /**
