@@ -138,6 +138,12 @@ ngmodel.Cache_ = goog.defineClass(null, {
           case ngmodel.CACHE_TYPE.TEXT:
             goog.dom.setTextContent(this.nodes_[i], rawvalue.toString());
             break;
+          case ngmodel.CACHE_TYPE.FILL:
+            this.nodes_[i].setAttribute('fill', rawvalue.toString());
+            break;
+          case ngmodel.CACHE_TYPE.STOP_COLOR:
+            this.nodes_[i].setAttribute('stop-color', rawvalue.toString());
+            break;
           default:
             goog.log.error(ngmodel.logger_, 'Attempting to use unknown ' +
                 'application type: ' + this.applyTypes_[i]);
@@ -213,7 +219,9 @@ ngmodel.CACHE_TYPE = {
   IMAGE: 0,
   SHOW: 1,
   TEXT: 2,
-  HTML: 3
+  HTML: 3,
+  FILL: 4,
+  STOP_COLOR: 5
 };
 
 
@@ -345,6 +353,10 @@ ngmodel.resolveInitialValue_ = function(el, applyType) {
       return goog.dom.getTextContent(el);
     case ngmodel.CACHE_TYPE.HTML:
       return goog.asserts.assertElement(el).innerHTML;
+    case ngmodel.CACHE_TYPE.FILL:
+      return goog.asserts.assertElement(el).getAttribute('fill');
+    case ngmodel.CACHE_TYPE.STOP_COLOR:
+      return goog.asserts.assertElement(el).getAttribute('color-stop');
     default:
       goog.log.warning(ngmodel.logger_, 'Cannot determine initial value.');
       return '';
@@ -360,17 +372,35 @@ ngmodel.resolveInitialValue_ = function(el, applyType) {
  * @private
  */
 ngmodel.resolveCacheType_ = function(el) {
+  // Show/hide the whole element.
   if (goog.dom.dataset.has(goog.asserts.assertElement(el),
       goog.string.toCamelCase('ng-show'))) {
     return ngmodel.CACHE_TYPE.SHOW;
-  } else if (el.tagName.toUpperCase() == goog.dom.TagName.IMG) {
-    return ngmodel.CACHE_TYPE.IMAGE;
-  } else if (goog.dom.dataset.has(goog.asserts.assertElement(el),
-      goog.string.toCamelCase('ng-html'))) {
-    return ngmodel.CACHE_TYPE.HTML;
   } else {
-    return ngmodel.CACHE_TYPE.TEXT;
+    // If its marked to be an HTML container always use that
+    if (goog.dom.dataset.has(goog.asserts.assertElement(el),
+        goog.string.toCamelCase('ng-html'))) {
+      return ngmodel.CACHE_TYPE.HTML;
+    } else {
+      // Try to determine behavior from element type / tag.
+      var tagname = el.tagName.toUpperCase();
+      // TODO: use prop instead!
+      if (tagname == 'STOP') {
+        return ngmodel.CACHE_TYPE.STOP_COLOR;
+      } else if (tagname == goog.dom.TagName.IMG) {
+        return ngmodel.CACHE_TYPE.IMAGE;
+      } else if (goog.dom.dataset.has(goog.asserts.assertElement(el),
+          goog.string.toCamelCase('ng-prop'))) {
+        // If we do not know the specific tag name see if we want to use
+        // a specific property
+        var prop = goog.dom.dataset.get(goog.asserts.assertElement(el),
+            goog.string.toCamelCase('ng-prop'));
+        if (prop == 'fill') return ngmodel.CACHE_TYPE.FILL;
+      }
+    }
   }
+  // If everuting else fails set the model as text content of the node.
+  return ngmodel.CACHE_TYPE.TEXT;
 };
 
 
