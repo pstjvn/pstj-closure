@@ -40,6 +40,23 @@ _.distanceOfSegment = function(a, b) {
 
 
 /**
+ * Calculates the distance between two points.
+ *
+ * This variant expects separate x/y values for each point. If you already have
+ * the points as array or object use the corresponding methods.
+ *
+ * @param {number} x1 The X value of the first point.
+ * @param {number} y1 The Y value of the first point.
+ * @param {number} x2 The X value of the second point.
+ * @param {number} y2 The Y value of the second point.
+ * @return {number} The distance between the two points.
+ */
+_.distanceOfSegenmentByXYValues = function(x1, y1, x2, y2) {
+  return Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
+};
+
+
+/**
  * Calculates the middle of a segment and returns a new point representing it.
  * @param {Array.<number>} a The x ([0]) and y ([1]) of the first point of the
  *   segment.
