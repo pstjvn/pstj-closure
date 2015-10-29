@@ -168,6 +168,18 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      */
     this.isDocumentBound_ = false;
     /**
+     * Special internal flag. If press event attempts to prevent the default
+     * behavior it is considered a signal that the consuming component wants to
+     * handle the move events as well and thus scrolling should be stopped
+     * until the current interaction is completed. We set the to true to
+     * preemptively stop the move touch events as we cannot do it in the
+     * component due to the asynchronous nature of the move implementation in
+     * this agent.
+     * @type {boolean}
+     * @private
+     */
+    this.externalMoveHandling_ = false;
+    /**
      * @type {goog.log.Logger}
      * @private
      */
@@ -460,8 +472,13 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       this.currentPoint_.copy(this.startPoint_);
       this.lastPoint_.copy(this.startPoint_);
       this.longPressDelay_.start();
-      // Finally notify listeners.
-      this.createEvent(pstj.agent.Pointer.EventType.PRESS);
+      // Finally notify listeners. If any listener prevents the default of the
+      // event or returns fails we need to also prevent the default behavior
+      // which is scroll on touch devices.
+      if (!this.createEvent(pstj.agent.Pointer.EventType.PRESS)) {
+        e.preventDefault();
+        this.externalMoveHandling_ = true;
+      }
 
     // MOVE
     } else if (e.type == goog.events.EventType.TOUCHMOVE ||
@@ -489,6 +506,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           this.currentPoint_.update(x, y, ts);
         } else if (e.type == goog.events.EventType.TOUCHMOVE) {
           if (this.getTouchesCount(e) == 1) {
+            if (this.externalMoveHandling_) e.preventDefault();
             var touch = this.getTouchByIndex(this.getTouchEvent(e));
 
             var x = touch.pageX;
@@ -519,6 +537,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         e.type == goog.events.EventType.MOUSEUP) {
 
       if (this.isLocked()) {
+        this.externalMoveHandling_ = false;
         if (this.sourceElement_.tagName.toUpperCase() !=
             goog.dom.TagName.INPUT) {
           e.preventDefault();
@@ -576,6 +595,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       }
     // CANCEL
     } else if (e.type == goog.events.EventType.TOUCHCANCEL) {
+      this.externalMoveHandling_ = false;
       goog.log.warning(this.logger_, 'TODO: handle cancel events');
       // TODO: handle cancel events
     }
@@ -697,9 +717,10 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * Fires a new PointerEvent for the current agent setup.
    * @param {pstj.agent.Pointer.EventType} type The type of the event to create.
    * @protected
+   * @return {boolean}
    */
   createEvent: function(type) {
-    this.getTargetComponent().dispatchEvent(
+    return this.getTargetComponent().dispatchEvent(
         new pstj.agent.PointerEvent(type, this.getTargetComponent()));
   },
 
