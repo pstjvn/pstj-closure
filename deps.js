@@ -87,7 +87,8 @@ goog.addDependency('../../../apps/pstj/material/wave.js', ['pstj.material.Wave',
 goog.addDependency('../../../apps/pstj/math/number-generators.js', ['pstj.math.CyclicNumberGenerator', 'pstj.math.LinearNumberGenerator'], [], false);
 goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['goog.array', 'goog.math.Coordinate'], false);
 goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events'], false);
-goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.date.utils'], false);
+goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.databinding.ngFilter', 'pstj.date.utils'], false);
+goog.addDependency('../../../apps/pstj/ng/ifilter.js', ['pstj.databinding.ngFilter'], [], false);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable'], false);
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object'], false);
 goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.async.nextTick', 'goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.string', 'goog.uri.utils', 'pstj.configure', 'pstj.storage.Storage'], false);

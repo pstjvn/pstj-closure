@@ -1,9 +1,13 @@
 /**
  * @fileoverview Provides default filters for the NG like filtering in the html.
  * Simulates filtering of the data and works with strings and numbers.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
  */
 
 goog.provide('pstj.ng.filters');
+
+goog.require('pstj.databinding.ngFilter');
 goog.require('pstj.date.utils');
 
 
@@ -209,6 +213,22 @@ pstj.ng.filters.makePrice = function(data, format) {
  */
 pstj.ng.filters.money = function(data) {
   return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+
+/**
+ * Registers an anonymous filter in the binding system with a name that can be
+ * used in the HTML.
+ *
+ * @param {pstj.databinding.ngFilter} filter
+ * @param {string} htmlname The name under which the filter will be used in the
+ * HTML document(s).
+ */
+pstj.ng.filters.register = function(filter, htmlname) {
+  if (goog.object.containsKey(pstj.ng.filters.registry_, htmlname)) {
+    throw new Error('Filter with name: ' + htmlname + ' already exists');
+  }
+  goog.object.set(pstj.ng.filters.registry_, htmlname, filter);
 };
 
 
