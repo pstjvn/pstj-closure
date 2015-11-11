@@ -7,7 +7,6 @@ soy_compiler_options = \
 --shouldProvideRequireSoyNamespaces \
 --shouldGenerateJsdoc \
 --codeStyle concat \
---cssHandlingScheme goog \
 --outputPathFormat \
 '$(template_build_dir)/{INPUT_FILE_NAME_NO_EXT}.soy.js'
 
