@@ -19,10 +19,11 @@ goog.require('goog.asserts');
  *    content: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.CoreElement = function(opt_data, opt_ignored) {
+pstj.material.template.CoreElement = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
   soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
   var content = /** @type {null|string|undefined} */ (opt_data.content);
@@ -38,10 +39,11 @@ if (goog.DEBUG) {
  *    content: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Item = function(opt_data, opt_ignored) {
+pstj.material.template.Item = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
   soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
   var content = /** @type {null|string|undefined} */ (opt_data.content);
@@ -55,11 +57,12 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Panel = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-panel') + '">' + pstj.material.template.Shadow(null) + '<div class="' + goog.getCssName('material-panel-content-holder') + '"></div><div is class="' + goog.getCssName('core-element') + ' ' + goog.getCssName('material-panel-overlay') + '"></div></div>');
+pstj.material.template.Panel = function(opt_data, opt_ignored, opt_ijData) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-panel') + '">' + pstj.material.template.Shadow(null, null, opt_ijData) + '<div class="' + goog.getCssName('material-panel-content-holder') + '"></div><div is class="' + goog.getCssName('core-element') + ' ' + goog.getCssName('material-panel-overlay') + '"></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Panel.soyTemplateName = 'pstj.material.template.Panel';
@@ -69,11 +72,12 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.DrawerPanel = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-drawer-panel') + '" use-pointer>' + pstj.material.template.Panel(null) + '<div class="' + goog.getCssName('material-drawer-panel-sidebar') + '">' + pstj.material.template.Panel(null) + '</div></div>');
+pstj.material.template.DrawerPanel = function(opt_data, opt_ignored, opt_ijData) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-drawer-panel') + '" use-pointer>' + pstj.material.template.Panel(null, null, opt_ijData) + '<div class="' + goog.getCssName('material-drawer-panel-sidebar') + '">' + pstj.material.template.Panel(null, null, opt_ijData) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.DrawerPanel.soyTemplateName = 'pstj.material.template.DrawerPanel';
@@ -83,10 +87,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.HeaderPanelMain = function(opt_data, opt_ignored) {
+pstj.material.template.HeaderPanelMain = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel-main') + '" use-scroll><div class="' + goog.getCssName('material-header-panel-main-container') + '"><div class="' + goog.getCssName('material-header-panel-main-content') + '"></div></div><div class="' + goog.getCssName('material-drop-shadow') + '"></div></div>');
 };
 if (goog.DEBUG) {
@@ -97,10 +102,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.HeaderPanelHeader = function(opt_data, opt_ignored) {
+pstj.material.template.HeaderPanelHeader = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel-header') + '"></div>');
 };
 if (goog.DEBUG) {
@@ -111,11 +117,12 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.HeaderPanel = function(opt_data, opt_ignored) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel') + '"><div class="' + goog.getCssName('material-header-panel-outer-container') + '">' + pstj.material.template.HeaderPanelHeader(null) + pstj.material.template.HeaderPanelMain(null) + '</div></div>');
+pstj.material.template.HeaderPanel = function(opt_data, opt_ignored, opt_ijData) {
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-header-panel') + '"><div class="' + goog.getCssName('material-header-panel-outer-container') + '">' + pstj.material.template.HeaderPanelHeader(null, null, opt_ijData) + pstj.material.template.HeaderPanelMain(null, null, opt_ijData) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.HeaderPanel.soyTemplateName = 'pstj.material.template.HeaderPanel';
@@ -131,10 +138,11 @@ if (goog.DEBUG) {
  *    usepointer: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Ripple = function(opt_data, opt_ignored) {
+pstj.material.template.Ripple = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
   soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
   var content = /** @type {null|string|undefined} */ (opt_data.content);
@@ -156,10 +164,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.FloatingLabel = function(opt_data, opt_ignored) {
+pstj.material.template.FloatingLabel = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('floating-label') + '"><span class="' + goog.getCssName('floating-label-text') + '">' + soy.$$escapeHtml(opt_data.label) + '</span></div>');
 };
 if (goog.DEBUG) {
@@ -170,10 +179,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.InputUnderline = function(opt_data, opt_ignored) {
+pstj.material.template.InputUnderline = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-input-underline') + '"><div class="' + goog.getCssName('material-input-underline-unfocused') + '"></div><div class="' + goog.getCssName('material-input-underline-focused') + '"></div></div>');
 };
 if (goog.DEBUG) {
@@ -184,10 +194,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.InputError = function(opt_data, opt_ignored) {
+pstj.material.template.InputError = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-input-error') + '"><div class="' + goog.getCssName('material-input-error-text') + '" role="alert">' + soy.$$escapeHtml(opt_data.error) + '</div><div is class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('material-input-error-icon') + '" icon="warning" size="20"></div></div>');
 };
 if (goog.DEBUG) {
@@ -198,10 +209,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.InputElement = function(opt_data, opt_ignored) {
+pstj.material.template.InputElement = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input-body') + '"><div class="' + goog.getCssName('material-input-body-label') + '"><span class="' + goog.getCssName('material-input-body-label-text') + '">' + soy.$$escapeHtml(opt_data.label) + '</span></div><div is class="' + goog.getCssName('core-element') + ' ' + goog.getCssName('material-input-body-cursor') + '"></div><div class="' + goog.getCssName('material-input-body-container') + '"><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="' + soy.$$escapeHtmlAttribute(opt_data.type) + '" value="' + soy.$$escapeHtmlAttribute(opt_data.value) + '" name="' + soy.$$escapeHtmlAttribute(opt_data.name) + '"></div></div>');
 };
 if (goog.DEBUG) {
@@ -216,10 +228,11 @@ if (goog.DEBUG) {
  *    value: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.RadioButton = function(opt_data, opt_ignored) {
+pstj.material.template.RadioButton = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
   soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
   var content = /** @type {null|string|undefined} */ (opt_data.content);
@@ -227,7 +240,7 @@ pstj.material.template.RadioButton = function(opt_data, opt_ignored) {
   var name = /** @type {null|string|undefined} */ (opt_data.name);
   soy.asserts.assertType(opt_data.value == null || (opt_data.value instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.value), 'value', opt_data.value, 'null|string|undefined');
   var value = /** @type {null|string|undefined} */ (opt_data.value);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-radio-button') + '" use-pointer role="radio" tabindex="0" name="' + soy.$$escapeHtmlAttribute(name) + '" value="' + soy.$$escapeHtmlAttribute(value) + '"><div class="' + goog.getCssName('material-radio-button-container') + '"><div class="' + goog.getCssName('material-radio-button-off') + '"></div><div class="' + goog.getCssName('material-radio-button-on') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true, usepointer: false}) + '</div><div class="' + goog.getCssName('material-radio-button-content') + '" aria-hidden="true">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-radio-button') + '" use-pointer role="radio" tabindex="0" name="' + soy.$$escapeHtmlAttribute(name) + '" value="' + soy.$$escapeHtmlAttribute(value) + '"><div class="' + goog.getCssName('material-radio-button-container') + '"><div class="' + goog.getCssName('material-radio-button-off') + '"></div><div class="' + goog.getCssName('material-radio-button-on') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true, usepointer: false}, null, opt_ijData) + '</div><div class="' + goog.getCssName('material-radio-button-content') + '" aria-hidden="true">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.RadioButton.soyTemplateName = 'pstj.material.template.RadioButton';
@@ -239,14 +252,15 @@ if (goog.DEBUG) {
  *    name: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.ToggleButton = function(opt_data, opt_ignored) {
+pstj.material.template.ToggleButton = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
   soy.asserts.assertType(opt_data.name == null || (opt_data.name instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.name), 'name', opt_data.name, 'null|string|undefined');
   var name = /** @type {null|string|undefined} */ (opt_data.name);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toggle-button') + '" role="button" name="' + soy.$$escapeHtmlAttribute(name) + '" use-pointer><div class="' + goog.getCssName('material-toggle-button-container') + '"><div class="' + goog.getCssName('material-toggle-button-bar') + '"></div>' + pstj.material.template.RadioButton({label: ''}) + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toggle-button') + '" role="button" name="' + soy.$$escapeHtmlAttribute(name) + '" use-pointer><div class="' + goog.getCssName('material-toggle-button-container') + '"><div class="' + goog.getCssName('material-toggle-button-bar') + '"></div>' + pstj.material.template.RadioButton({label: ''}, null, opt_ijData) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.ToggleButton.soyTemplateName = 'pstj.material.template.ToggleButton';
@@ -256,10 +270,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.RadioGroup = function(opt_data, opt_ignored) {
+pstj.material.template.RadioGroup = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-radio-group') + '"></div>');
 };
 if (goog.DEBUG) {
@@ -270,10 +285,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Progressbar = function(opt_data, opt_ignored) {
+pstj.material.template.Progressbar = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('material-progress-bar') + '"><div class="' + goog.getCssName('material-progress-bar-inner') + '"></div></div>');
 };
 if (goog.DEBUG) {
@@ -284,10 +300,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Shadow = function(opt_data, opt_ignored) {
+pstj.material.template.Shadow = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-shadow') + ' ' + goog.getCssName('material-shadow-0') + '"><div class="' + goog.getCssName('material-shadow-bottom') + '"></div><div class="' + goog.getCssName('material-shadow-top') + '"></div></div>');
 };
 if (goog.DEBUG) {
@@ -300,10 +317,11 @@ if (goog.DEBUG) {
  *    content: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.ButtonContent = function(opt_data, opt_ignored) {
+pstj.material.template.ButtonContent = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
   soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
   var content = /** @type {null|string|undefined} */ (opt_data.content);
@@ -324,10 +342,11 @@ if (goog.DEBUG) {
  *    tactile: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Button = function(opt_data, opt_ignored) {
+pstj.material.template.Button = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), 'icon', opt_data.icon, 'string|goog.soy.data.SanitizedContent');
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   soy.asserts.assertType(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), 'content', opt_data.content, 'string|goog.soy.data.SanitizedContent');
@@ -340,7 +359,7 @@ pstj.material.template.Button = function(opt_data, opt_ignored) {
   var action = /** @type {null|string|undefined} */ (opt_data.action);
   soy.asserts.assertType(opt_data.tactile == null || goog.isBoolean(opt_data.tactile) || opt_data.tactile === 1 || opt_data.tactile === 0, 'tactile', opt_data.tactile, 'boolean|null|undefined');
   var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.ButtonContent(opt_data) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}) + '</div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null, null, opt_ijData) + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + pstj.material.template.ButtonContent(opt_data, null, opt_ijData) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}, null, opt_ijData) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Button.soyTemplateName = 'pstj.material.template.Button';
@@ -354,17 +373,18 @@ if (goog.DEBUG) {
  *    action: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.IconButton = function(opt_data, opt_ignored) {
+pstj.material.template.IconButton = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), 'icon', opt_data.icon, 'string|goog.soy.data.SanitizedContent');
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   soy.asserts.assertType(opt_data.tactile == null || goog.isBoolean(opt_data.tactile) || opt_data.tactile === 1 || opt_data.tactile === 0, 'tactile', opt_data.tactile, 'boolean|null|undefined');
   var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
   soy.asserts.assertType(opt_data.action == null || (opt_data.action instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.action), 'action', opt_data.action, 'null|string|undefined');
   var action = /** @type {null|string|undefined} */ (opt_data.action);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-icon-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.IconContainer({type: icon}) + '</div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-icon-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.IconButton.soyTemplateName = 'pstj.material.template.IconButton';
@@ -376,10 +396,11 @@ if (goog.DEBUG) {
  *    type: string
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.IconContainer = function(opt_data, opt_ignored) {
+pstj.material.template.IconContainer = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.type) || (opt_data.type instanceof goog.soy.data.SanitizedContent), 'type', opt_data.type, 'string|goog.soy.data.SanitizedContent');
   var type = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.type);
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-icon-container') + ' ' + goog.getCssName('material-icon-container-empty') + '" type="' + soy.$$escapeHtmlAttribute(type) + '"></div>');
@@ -396,17 +417,18 @@ if (goog.DEBUG) {
  *    action: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Fab = function(opt_data, opt_ignored) {
+pstj.material.template.Fab = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), 'icon', opt_data.icon, 'string|goog.soy.data.SanitizedContent');
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   soy.asserts.assertType(opt_data.tactile == null || goog.isBoolean(opt_data.tactile) || opt_data.tactile === 1 || opt_data.tactile === 0, 'tactile', opt_data.tactile, 'boolean|null|undefined');
   var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
   soy.asserts.assertType(opt_data.action == null || (opt_data.action instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.action), 'action', opt_data.action, 'null|string|undefined');
   var action = /** @type {null|string|undefined} */ (opt_data.action);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" use-pointer ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null) + pstj.material.template.IconContainer({type: icon}) + pstj.material.template.Ripple({recenter: true}) + '</div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" use-pointer ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null, null, opt_ijData) + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + pstj.material.template.Ripple({recenter: true}, null, opt_ijData) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Fab.soyTemplateName = 'pstj.material.template.Fab';
@@ -418,13 +440,14 @@ if (goog.DEBUG) {
  *    content: string
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Checkbox = function(opt_data, opt_ignored) {
+pstj.material.template.Checkbox = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.content) || (opt_data.content instanceof goog.soy.data.SanitizedContent), 'content', opt_data.content, 'string|goog.soy.data.SanitizedContent');
   var content = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.content);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-checkbox') + '" role="checkbox" use-pointer><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-checkbox') + '" role="checkbox" use-pointer><div class="' + goog.getCssName('material-checkbox-container') + '"><div class="' + goog.getCssName('material-checkbox-icon') + '"></div>' + pstj.material.template.Ripple({circle: true, recenter: true}, null, opt_ijData) + '</div><div class="' + goog.getCssName('material-checkbox-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Checkbox.soyTemplateName = 'pstj.material.template.Checkbox';
@@ -437,15 +460,16 @@ if (goog.DEBUG) {
  *    content: (null|string|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.MenuItem = function(opt_data, opt_ignored) {
+pstj.material.template.MenuItem = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.icon) || (opt_data.icon instanceof goog.soy.data.SanitizedContent), 'icon', opt_data.icon, 'string|goog.soy.data.SanitizedContent');
   var icon = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.icon);
   soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
   var content = /** @type {null|string|undefined} */ (opt_data.content);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-menu-item') + ' ' + goog.getCssName('core-tap') + '" use-pointer>' + pstj.material.template.IconContainer({type: icon}) + '<div class="' + goog.getCssName('material-menu-item-content') + '">' + pstj.material.template.Item(opt_data) + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-menu-item') + ' ' + goog.getCssName('core-tap') + '" use-pointer>' + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + '<div class="' + goog.getCssName('material-menu-item-content') + '">' + pstj.material.template.Item(opt_data, null, opt_ijData) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.MenuItem.soyTemplateName = 'pstj.material.template.MenuItem';
@@ -461,10 +485,11 @@ if (goog.DEBUG) {
  *    value: string
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.InputBase = function(opt_data, opt_ignored) {
+pstj.material.template.InputBase = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(opt_data.label == null || (opt_data.label instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.label), 'label', opt_data.label, 'null|string|undefined');
   var label = /** @type {null|string|undefined} */ (opt_data.label);
   soy.asserts.assertType(opt_data.error == null || (opt_data.error instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.error), 'error', opt_data.error, 'null|string|undefined');
@@ -493,10 +518,11 @@ if (goog.DEBUG) {
  *    value: string
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Input = function(opt_data, opt_ignored) {
+pstj.material.template.Input = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(opt_data.label == null || (opt_data.label instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.label), 'label', opt_data.label, 'null|string|undefined');
   var label = /** @type {null|string|undefined} */ (opt_data.label);
   soy.asserts.assertType(opt_data.error == null || (opt_data.error instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.error), 'error', opt_data.error, 'null|string|undefined');
@@ -511,7 +537,7 @@ pstj.material.template.Input = function(opt_data, opt_ignored) {
   var type = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.type);
   soy.asserts.assertType(goog.isString(opt_data.value) || (opt_data.value instanceof goog.soy.data.SanitizedContent), 'value', opt_data.value, 'string|goog.soy.data.SanitizedContent');
   var value = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.value);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input') + '" use-pointer' + ((required) ? ' required' : '') + ' ' + ((pattern) ? ' pattern="' + soy.$$escapeHtmlAttribute(pattern) + '"' : '') + '><div class="' + goog.getCssName('material-input-floated-label') + '" aria-hidden="true"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-floated-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><div class="' + goog.getCssName('material-input-body') + '"><div class="' + goog.getCssName('material-input-body-label') + '"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-body-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="' + soy.$$escapeHtmlAttribute(value) + '" type="' + soy.$$escapeHtmlAttribute(type) + '" name="' + soy.$$escapeHtmlAttribute(name) + '" /></div><div class="' + goog.getCssName('material-input-underline') + '"><div class="' + goog.getCssName('material-input-not-focused-underline') + '"></div><div class="' + goog.getCssName('material-input-focused-underline') + '"></div></div><div class="' + goog.getCssName('material-input-footer') + '"><div class="' + goog.getCssName('material-input-footer-error') + '"><div class="' + goog.getCssName('material-input-footer-error-text') + '" role="alert">' + soy.$$escapeHtml(error) + '</div>' + pstj.material.template.IconContainer({type: 'warning'}) + '</div></div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-input') + '" use-pointer' + ((required) ? ' required' : '') + ' ' + ((pattern) ? ' pattern="' + soy.$$escapeHtmlAttribute(pattern) + '"' : '') + '><div class="' + goog.getCssName('material-input-floated-label') + '" aria-hidden="true"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-floated-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><div class="' + goog.getCssName('material-input-body') + '"><div class="' + goog.getCssName('material-input-body-label') + '"><!-- needed for floating label animation measurement --><span class="' + goog.getCssName('material-input-body-label-text') + '">' + soy.$$escapeHtml(label) + '</span></div><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="' + soy.$$escapeHtmlAttribute(value) + '" type="' + soy.$$escapeHtmlAttribute(type) + '" name="' + soy.$$escapeHtmlAttribute(name) + '" /></div><div class="' + goog.getCssName('material-input-underline') + '"><div class="' + goog.getCssName('material-input-not-focused-underline') + '"></div><div class="' + goog.getCssName('material-input-focused-underline') + '"></div></div><div class="' + goog.getCssName('material-input-footer') + '"><div class="' + goog.getCssName('material-input-footer-error') + '"><div class="' + goog.getCssName('material-input-footer-error-text') + '" role="alert">' + soy.$$escapeHtml(error) + '</div>' + pstj.material.template.IconContainer({type: 'warning'}, null, opt_ijData) + '</div></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Input.soyTemplateName = 'pstj.material.template.Input';
@@ -524,15 +550,16 @@ if (goog.DEBUG) {
  *    label: string
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.Toast = function(opt_data, opt_ignored) {
+pstj.material.template.Toast = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.text) || (opt_data.text instanceof goog.soy.data.SanitizedContent), 'text', opt_data.text, 'string|goog.soy.data.SanitizedContent');
   var text = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.text);
   soy.asserts.assertType(goog.isString(opt_data.label) || (opt_data.label instanceof goog.soy.data.SanitizedContent), 'label', opt_data.label, 'string|goog.soy.data.SanitizedContent');
   var label = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.label);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toast') + '" use-pointer><div class="' + goog.getCssName('material-toast-container') + '"><div class="' + goog.getCssName('material-toast-text') + '">' + soy.$$escapeHtml(text) + '</div>' + pstj.material.template.Button({icon: 'none', content: label}) + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toast') + '" use-pointer><div class="' + goog.getCssName('material-toast-container') + '"><div class="' + goog.getCssName('material-toast-text') + '">' + soy.$$escapeHtml(text) + '</div>' + pstj.material.template.Button({icon: 'none', content: label}, null, opt_ijData) + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Toast.soyTemplateName = 'pstj.material.template.Toast';
@@ -542,10 +569,11 @@ if (goog.DEBUG) {
 /**
  * @param {Object<string, *>=} opt_data
  * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
-pstj.material.template.List = function(opt_data, opt_ignored) {
+pstj.material.template.List = function(opt_data, opt_ignored, opt_ijData) {
   return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-list') + '"><div class="' + goog.getCssName('material-list-scroll-target') + '"></div></div>');
 };
 if (goog.DEBUG) {

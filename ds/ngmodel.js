@@ -144,6 +144,10 @@ ngmodel.Cache_ = goog.defineClass(null, {
           case ngmodel.CACHE_TYPE.STOP_COLOR:
             this.nodes_[i].setAttribute('stop-color', rawvalue.toString());
             break;
+          case ngmodel.CACHE_TYPE.HIDE:
+            goog.style.setElementShown(goog.asserts.assertElement(
+                this.nodes_[i]), !barevalue);
+            break;
           default:
             goog.log.error(ngmodel.logger_, 'Attempting to use unknown ' +
                 'application type: ' + this.applyTypes_[i]);
@@ -221,7 +225,8 @@ ngmodel.CACHE_TYPE = {
   TEXT: 2,
   HTML: 3,
   FILL: 4,
-  STOP_COLOR: 5
+  STOP_COLOR: 5,
+  HIDE: 6
 };
 
 
@@ -244,7 +249,8 @@ ngmodel.unbindElement = function(node) {
     ngmodel.pool_.releaseObject(goog.object.get(ngmodel.cache_, id));
     goog.object.set(ngmodel.cache_, id, null);
   } else {
-    goog.log.warning(ngmodel.logger_, 'Element was never bound');
+    goog.log.warning(ngmodel.logger_, 'Element was never bound, but attempted' +
+        ' to unbind it');
   }
 };
 
@@ -266,7 +272,8 @@ ngmodel.bindElement = function(node) {
   }
   var cache = ngmodel.pool_.getObject();
   goog.object.set(ngmodel.cache_, id, cache);
-  var nodes = node.querySelectorAll('[data-ng-model],[data-ng-show]');
+  var nodes = node.querySelectorAll(
+      '[data-ng-model],[data-ng-show],[data-ng-hide]');
   var items = -1;
   goog.array.forEach(nodes, function(el, index) {
     var modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
@@ -274,6 +281,10 @@ ngmodel.bindElement = function(node) {
     if (!goog.isDefAndNotNull(modelValue)) {
       modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
           'ng-show'));
+    }
+    if (!goog.isDefAndNotNull(modelValue)) {
+      modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
+          'ng-hide'));
     }
     // If the property has a value only then process further.
     if (goog.isString(modelValue)) {
@@ -349,6 +360,8 @@ ngmodel.resolveInitialValue_ = function(el, applyType) {
       return goog.asserts.assertInstanceof(el, HTMLImageElement).src;
     case ngmodel.CACHE_TYPE.SHOW:
       return 'true';
+    case ngmodel.CACHE_TYPE.HIDE:
+      return 'false';
     case ngmodel.CACHE_TYPE.TEXT:
       return goog.dom.getTextContent(el);
     case ngmodel.CACHE_TYPE.HTML:
@@ -376,6 +389,9 @@ ngmodel.resolveCacheType_ = function(el) {
   if (goog.dom.dataset.has(goog.asserts.assertElement(el),
       goog.string.toCamelCase('ng-show'))) {
     return ngmodel.CACHE_TYPE.SHOW;
+  } else if (goog.dom.dataset.has(goog.asserts.assertElement(el),
+      goog.string.toCamelCase('ng-hide'))) {
+    return ngmodel.CACHE_TYPE.HIDE;
   } else {
     // If its marked to be an HTML container always use that
     if (goog.dom.dataset.has(goog.asserts.assertElement(el),

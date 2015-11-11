@@ -1,0 +1,84 @@
+// Provides styling for app page(s)
+
+@import "../material/layout";
+@import "../translation";
+
+.app-pages {
+  display: block;
+  min-height: 100%;
+  &:extend(.fit);
+
+  & > .app-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    -webkit-transition: -webkit-transform 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms;
+    /* @alternate */
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms;
+  }
+
+  &&-transition > .app-page {
+    display: block;
+  }
+
+  & > .app-page-selected {
+    display: block;
+  }
+}
+
+/// Defines the animations for the pages...
+.app-page.animation-top-down {
+  .translation(0, -100%);
+  opacity: 0;
+
+  &.app-page-selected {
+    .translation();
+    opacity: 1;
+  }
+}
+
+.app-page.animation-down-top {
+  .translation(0, 100%);
+  opacity: 0;
+
+  &.app-page-selected {
+    .translation();
+    opacity: 1;
+  }
+}
+
+.app-page.animation-left-right {
+  .translation(-100%, 0);
+  &.app-page-selected {
+    .translation();
+  }
+}
+
+.app-page.animation-right-left {
+  .translation(100%, 0);
+  &.app-page-selected {
+    .translation();
+  }
+}
+
+.app-pages-transition.animation-slide-from-right > .app-page.app-page-selected ~ .app-page:not(.app-page-slelected) {
+  -webkit-transform: translateX(100%);
+  /* @alternate */
+  transform: translateX(100%);
+}
+
+.app-pages-transition.animation-slide-from-right > .app-page:not(.app-page-selected) {
+  -webkit-transform: translateX(100%);
+  /* @alternate */
+ transform: translateX(-100%);
+}
+
+.app-pages-transition.animation-slide-from-right > .app-page.app-page-selected {
+  -webkit-transform: translateX(100%);
+  /* @alternate */
+  transform: translateX(0);
+}
+

@@ -4,29 +4,45 @@
 @import "layout";
 
 @menu-color: black;
+@menu-disbaled-color: fade(@menu-color, 25);
 
 .material-menu-item {
   min-height: 40px;
   cursor: default;
   .menu(@menu-color);
+
   &:extend(.horizontal);
   &:extend(.center);
 
+  // Position the content, it should take up all the space.
+  &-content {
+    &:extend(.flex);
+  }
+
+  // The text of the menu.
   & > &-content > .core-item {
     &:extend(.horizontal);
     &:extend(.center);
   }
 
+  // The icon on the left of the menu item.
   & .material-icon-container {
     width: 30px;
     height: 30px;
 
+    // If there is no icon just hide the container.
     &-empty {
       display: none;
     }
   }
 
-  &-content {
-    &:extend(.flex);
+  // Disabld style for text.
+  &-disabled > &-content > .core-item {
+    color: @menu-disbaled-color;
+  }
+
+  // Selected style for text.
+  &-selected > &-content > .core-item {
+    font-weight: @typography-weight-bold;
   }
 }
