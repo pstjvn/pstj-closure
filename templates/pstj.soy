@@ -216,3 +216,10 @@
 {template .AppPages}
   <div is class="{css app-pages}"></div>
 {/template}
+
+/** Template for an error message widget. */
+{template .ErrorMsg}
+  {@param? delay: number}
+  {@param? auto: bool}
+  <div is class="{css app-error-message}" {if $auto==true}auto {/if}{if $delay}delay="{$delay}"{/if}></div>
+{/template}
