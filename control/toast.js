@@ -21,11 +21,6 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
   constructor: function() {
     pstj.control.Control.call(this);
     /**
-     * @type {goog.debug.Logger}
-     * @private
-     */
-    this.logger_ = goog.log.getLogger('pstj.control.Toast');
-    /**
      * The UI for the control.
      * @type {pstj.material.Toast}
      * @protected
@@ -99,7 +94,7 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
 
   /** @override */
   init: function() {
-    goog.log.info(this.logger_, 'Initializing toast controller');
+    goog.log.info(this.logger, 'Initializing toast controller');
     goog.base(this, 'init');
     this.getHandler().listen(this.ui, goog.ui.Component.EventType.CLOSE,
         function(e) {
@@ -140,13 +135,13 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
    * You can override this one if you change the UI implementation.
    *
    * @param {!string} message The message to display.
-   * @param {!string} action The action name to display.
+   * @param {!string} label The action name to display.
    * @protected
    */
   openUi: function(message, label) {
     this.ui.setLabel(label);
     this.ui.setContent(message);
-    this.ui.setOpen();
+    this.ui.setOpen(true);
     this.hideDelay_.start();
   },
 

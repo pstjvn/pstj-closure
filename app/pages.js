@@ -43,12 +43,6 @@ pstj.app.Pages = goog.defineClass(pstj.app.UiControl, {
      */
     this.selectedIndex = 0;
     /**
-     * We need a logger as the logic here is a bit complex...
-     * @private
-     * @type {goog.log.Logger}
-     */
-    this.logger_ = goog.log.getLogger('pstj.app.Pages');
-    /**
      * If we should use animation when switching between pages.
      *
      * When animation is used the developer should use CSS animations to set
@@ -82,6 +76,13 @@ pstj.app.Pages = goog.defineClass(pstj.app.UiControl, {
   },
 
   /**
+   * We need a logger as the logic here is a bit complex...
+   * @protected
+   * @type {goog.log.Logger}
+   */
+  logger: goog.log.getLogger('pstj.app.Pages'),
+
+  /**
    * Setter for the selected index.
    *
    * Note that is the index is out of bound the setter will be ignored and no
@@ -92,13 +93,13 @@ pstj.app.Pages = goog.defineClass(pstj.app.UiControl, {
    */
   setSelectedIndex: function(idx) {
     if (idx < 0 || idx > this.getChildCount() - 1) {
-      goog.log.error(this.logger_, 'Attempted to set an index that is out' +
+      goog.log.error(this.logger, 'Attempted to set an index that is out' +
           ' of bound: ' + idx);
     } else if (idx == this.selectedIndex) {
-      goog.log.info(this.logger_, 'Set index to the already selected one');
+      goog.log.info(this.logger, 'Set index to the already selected one');
     } else {
       if (goog.isNull(this.parentSize_)) {
-        goog.log.warning(this.logger_,
+        goog.log.warning(this.logger,
             'Cannot use animation, no parent size set');
       }
       this.nextIndexToApply_ = idx;

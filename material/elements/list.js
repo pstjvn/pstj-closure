@@ -25,12 +25,6 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     pstj.material.Element.call(this, opt_content, opt_renderer, opt_domHelper);
     /**
-     * @final
-     * @type {goog.debug.Logger}
-     * @private
-     */
-    this.logger_ = goog.log.getLogger('pstj.material.List');
-    /**
      * The call to use to create a new list item.
      * @type {?function(): goog.ui.Control}
      * @private
@@ -108,6 +102,12 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
      */
     this.overboardItem_ = null;
   },
+
+  /**
+   * @type {goog.debug.Logger}
+   * @protected
+   */
+  logger: goog.log.getLogger('pstj.material.List'),
 
   /** @override */
   enterDocument: function() {
@@ -387,7 +387,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
           this.removeChild(item);
           goog.dispose(item);
         } else {
-          goog.log.warning(this.logger_, 'Does not have element creation set');
+          goog.log.warning(this.logger, 'Does not have element creation set');
         }
       } else {
         throw new Error('Cannot measure items after first item added');

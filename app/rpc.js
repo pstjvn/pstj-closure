@@ -33,9 +33,9 @@ pstj.app.Rpc = goog.defineClass(null, {
    */
   configure: function(config) {
     if (goog.isNull(this.resource_)) {
-      goog.log.info(this.logger_, 'Configuring RPC');
+      goog.log.info(this.logger, 'Configuring RPC');
       if (goog.DEBUG) {
-        goog.log.info(this.logger_, goog.debug.expose(config));
+        goog.log.info(this.logger, goog.debug.expose(config));
       }
       pstj.resource.configure(config);
       this.resource_ = pstj.resource.getInstance();

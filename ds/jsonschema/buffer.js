@@ -14,11 +14,6 @@ goog.scope(function() {
 pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
   constructor: function() {
     /**
-     * @type {goog.log.Logger}
-     * @private
-     */
-    this.logger_ = goog.log.getLogger('pstj.ds.jsonschema.Buffer');
-    /**
      * The current indentation level.
      * @type {number}
      * @private
@@ -62,6 +57,12 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
      */
     this.commentMiddle = ' * ';
   },
+
+  /**
+   * @type {goog.log.Logger}
+   * @protected
+   */
+  this.logger = goog.log.getLogger('pstj.ds.jsonschema.Buffer'),
 
   /**
    * Increases the indentation by 1 level.
@@ -188,8 +189,8 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
    * Utility method to dump the current bufer to the debug window.
    */
   dump: function() {
-    goog.log.info(this.logger_, 'Dumping the current buffer');
-    goog.log.info(this.logger_, this.buffer_.join(''));
+    goog.log.info(this.logger, 'Dumping the current buffer');
+    goog.log.info(this.logger, this.buffer_.join(''));
   },
 
   /**

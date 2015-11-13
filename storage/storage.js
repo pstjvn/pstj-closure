@@ -32,12 +32,7 @@ pstj.storage.Storage = function() {
    * @private
    */
   this.mechanism_ = pstj.storage.Storage.getStorageBackend();
-  /**
-   * @final
-   * @private
-   * @type {goog.debug.Logger}
-   */
-  this.logger_ = goog.log.getLogger('pstj.storage.Storage');
+
 };
 goog.addSingletonGetter(pstj.storage.Storage);
 
@@ -57,6 +52,13 @@ pstj.storage.Storage.getStorageBackend = function() {
 goog.scope(function() {
 
 var _ = pstj.storage.Storage.prototype;
+
+
+/**
+ * @protected
+ * @type {goog.debug.Logger}
+ */
+_.logger = goog.log.getLogger('pstj.storage.Storage');
 
 
 /**
@@ -130,7 +132,7 @@ _.remove = function(key) {
  * @private
  */
 _.warn_ = function() {
-  goog.log.error(this.logger_, 'Storage mechanism could not be derived');
+  goog.log.error(this.logger, 'Storage mechanism could not be derived');
 };
 
 });  // goog.scope

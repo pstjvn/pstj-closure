@@ -179,14 +179,14 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * @private
      */
     this.externalMoveHandling_ = false;
-    /**
-     * @type {goog.log.Logger}
-     * @private
-     */
-    this.logger_ = goog.log.getLogger('pstj.agent.Pointer');
-
     this.setupListeners();
   },
+
+  /**
+   * @type {goog.log.Logger}
+   * @protected
+   */
+  logger = goog.log.getLogger('pstj.agent.Pointer'),
 
   /**
    * Getter for the swipe configuration instance.
@@ -523,7 +523,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
             this.currentPoint_.update(touch.pageX, touch.pageY, ts);
           } else {
-            goog.log.error(this.logger_,
+            goog.log.error(this.logger,
                 'Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
           }
@@ -596,7 +596,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     // CANCEL
     } else if (e.type == goog.events.EventType.TOUCHCANCEL) {
       this.externalMoveHandling_ = false;
-      goog.log.warning(this.logger_, 'TODO: handle cancel events');
+      goog.log.warning(this.logger, 'TODO: handle cancel events');
       // TODO: handle cancel events
     }
   },

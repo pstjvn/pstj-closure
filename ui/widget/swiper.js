@@ -62,11 +62,6 @@ pstj.widget.Swiper = goog.defineClass(E, {
      * @private
      */
     this.goToNextDelayed_ = new goog.async.Delay(this.goToNext, 5000, this);
-    /**
-     * @private
-     * @type {goog.log.Logger}
-     */
-    this.logger_ = goog.log.getLogger('pstj.widget.Swiper');
 
     // Configure needed options
     this.setSupportedState(state.TRANSITIONING, true);
@@ -76,6 +71,12 @@ pstj.widget.Swiper = goog.defineClass(E, {
     this.registerDisposable(this.goToNextDelayed_);
   },
 
+  /**
+   * @protected
+   * @type {goog.log.Logger}
+   */
+  logger: goog.log.getLogger('pstj.widget.Swiper'),
+
   /** @override */
   enterDocument: function() {
     goog.base(this, 'enterDocument');
@@ -84,12 +85,6 @@ pstj.widget.Swiper = goog.defineClass(E, {
     goog.async.nextTick(function() {
       this.setTransitioning(true);
     }, this);
-  },
-
-  /** @override */
-  disposeInternal: function() {
-    goog.base(this, 'disposeInternal');
-    this.logger_ = null;
   },
 
   /** @override */
@@ -171,7 +166,7 @@ pstj.widget.Swiper = goog.defineClass(E, {
    */
   selectIndex: function(index) {
     if (index < 0 || index >= this.getChildCount()) {
-      goog.log.error(this.logger_,
+      goog.log.error(this.logger,
           'Attempting to set selection index out of range');
     } else {
 
