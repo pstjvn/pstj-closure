@@ -291,3 +291,26 @@ pstj.templates.AppPages = function(opt_data, opt_ignored, opt_ijData) {
 if (goog.DEBUG) {
   pstj.templates.AppPages.soyTemplateName = 'pstj.templates.AppPages';
 }
+
+
+/**
+ * @param {{
+ *    delay: (null|number|undefined),
+ *    auto: (boolean|null|undefined)
+ * }} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.templates.ErrorMsg = function(opt_data, opt_ignored, opt_ijData) {
+  opt_data = opt_data || {};
+  soy.asserts.assertType(opt_data.delay == null || goog.isNumber(opt_data.delay), 'delay', opt_data.delay, 'null|number|undefined');
+  var delay = /** @type {null|number|undefined} */ (opt_data.delay);
+  soy.asserts.assertType(opt_data.auto == null || goog.isBoolean(opt_data.auto) || opt_data.auto === 1 || opt_data.auto === 0, 'auto', opt_data.auto, 'boolean|null|undefined');
+  var auto = /** @type {boolean|null|undefined} */ (opt_data.auto);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('app-error-message') + '" ' + ((auto == true) ? 'auto ' : '') + ((delay) ? 'delay="' + soy.$$escapeHtmlAttribute(delay) + '"' : '') + '></div>');
+};
+if (goog.DEBUG) {
+  pstj.templates.ErrorMsg.soyTemplateName = 'pstj.templates.ErrorMsg';
+}
