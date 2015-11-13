@@ -8,7 +8,7 @@
 goog.provide('pstj.app.Rpc');
 
 goog.require('pstj.control.Toast');
-goog.require('pstj.recourse');
+goog.require('pstj.resource');
 
 
 /**
@@ -18,14 +18,9 @@ pstj.app.Rpc = goog.defineClass(null, {
   constructor: function() {
     /**
      * @private
-     * @type {goog.debug.Logger}
-     */
-    this.logger_ = goog.log.getLogger('pstj.rpc');
-    /**
-     * @private
      * @type {pstj.resource.Resource}
      */
-    this.recourse = null;
+    this.resource_ = null;
   },
 
   /**
@@ -46,6 +41,20 @@ pstj.app.Rpc = goog.defineClass(null, {
   },
 
   /**
+   * @type {goog.debug.Logger}
+   * @protected
+   */
+  logger: goog.log.getLogger('pstj.rpc.Rpc'),
+
+  /**
+   * Getter for the underlying resource.
+   * @return {pstj.resource.Resource}
+   */
+  getResource: function() {
+    return this.resource_;
+  },
+
+  /**
    * Pre-registers the handlers for the default RPC calls.
    * You should not call this directly, but can override it if needed.
    * @protected
@@ -60,18 +69,6 @@ pstj.app.Rpc = goog.defineClass(null, {
    * @protected
    */
   defaultErrorHandler: function(packet) {
-    var error = this.getErrorStruct();
-    error.fromJSON(packet);
-    pstj.control.Toaster.getInstance().add(error.message);
-  },
-
-
-  /**
-   * Allows the author to implement error DTO creation to match the app.
-   * @protected
-   * @return {pstj.ds.dto.Error}
-   */
-  getErrorStruct: function() {
-    return new pstj.ds.dto.Error();
+    throw new Error('Not implemented');
   }
 });
