@@ -186,7 +186,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * @type {goog.log.Logger}
    * @protected
    */
-  logger = goog.log.getLogger('pstj.agent.Pointer'),
+  logger: goog.log.getLogger('pstj.agent.Pointer'),
 
   /**
    * Getter for the swipe configuration instance.
