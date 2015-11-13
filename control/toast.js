@@ -31,7 +31,7 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
      * @type {?function():void}
      * @private
      */
-    this.handler_ = null;
+    this.pressHandler_ = null;
     /**
      * The scope in which to execut the press handler.
      * @type {?Object}
@@ -79,16 +79,16 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
    * @param {Object=} opt_scope The scope to execute the handler in.
    */
   add: function(message, opt_action, opt_handler, opt_scope) {
-    goog.log.info(this.logger_, 'Adding new toast');
-    opt_action = goog.isString(opt_action) ? opt_action :
+    goog.log.info(this.logger, 'Adding new toast');
+    var actn = goog.isString(opt_action) ? opt_action :
         this.getDefaultButtonLabel();
-    opt_handler = opt_handler || null;
-    opt_scope = opt_scope || null;
-    if (this.free_()) {
-      this.show(message, opt_action, opt_handler, opt_scope);
+    var hdlr = opt_handler || null;
+    var scp = opt_scope || null;
+    if (this.free_) {
+      this.show(message, actn, hdlr, scp);
     } else {
-      goog.log.info(this.logger_, 'Toast is not free, add to queue');
-      this.enqueu_(message, opt_action, opt_handler, opt_scope);
+      goog.log.info(this.logger, 'Toast is not free, add to queue');
+      this.enqueu_(message, actn, hdlr, scp);
     }
   },
 
@@ -155,7 +155,7 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
    * @protected
    */
   show: function(message, action, handler, scope) {
-    this.handler_ = handler;
+    this.pressHandler_ = handler;
     this.scope_ = scope;
     this.free_ = false;
     this.openUi(message, action);
@@ -174,15 +174,21 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
   },
 
   /**
+   * @type {goog.debug.Logger}
+   * @protected
+   */
+  logger: goog.log.getLogger('pstj.control.Toast'),
+
+  /**
    * The user selected to call the action associated with the current toast.
    *
    * @private
    */
   callHandler_: function() {
-    if (goog.isFunction(this.handler_)) {
-      this.handler_.call(this.scope_);
+    if (goog.isFunction(this.pressHandler_)) {
+      this.pressHandler_.call(this.scope_);
     }
-    this.handler_ = null;
+    this.pressHandler_ = null;
     this.scope_ = null;
     this.closeUi();
   },
@@ -196,7 +202,7 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
    * @protected
    */
   enqueu_: function(message, action, handler, scope) {
-    this.q_.push(goog.bind(this.show, this, message, action, handler, scope);
+    this.q_.push(goog.bind(this.show, this, message, action, handler, scope));
   },
 
   /**
