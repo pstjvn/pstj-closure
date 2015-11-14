@@ -132,7 +132,14 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
       }
       buffer.endComment();
     } else {
-      buffer.addSingleLineComment(this.getCommentType());
+      if (goog.global['EXPOSE_PROPS']) {
+        buffer.startComment();
+        buffer.addLine('@export');
+        buffer.addLine(this.getCommentType());
+        buffer.endComment();
+      } else {
+        buffer.addSingleLineComment(this.getCommentType());
+      }
     }
     buffer.addLine(this.getJSTypeAssignment());
   },

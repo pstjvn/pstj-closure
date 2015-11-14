@@ -62,7 +62,7 @@ pstj.ds.jsonschema.Buffer = goog.defineClass(null, {
    * @type {goog.log.Logger}
    * @protected
    */
-  this.logger = goog.log.getLogger('pstj.ds.jsonschema.Buffer'),
+  logger: goog.log.getLogger('pstj.ds.jsonschema.Buffer'),
 
   /**
    * Increases the indentation by 1 level.
