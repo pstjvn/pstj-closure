@@ -11,6 +11,7 @@ control \
 date \
 debug \
 ds \
+element \
 error \
 fx \
 graphics \

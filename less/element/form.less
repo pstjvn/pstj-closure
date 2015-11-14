@@ -1,0 +1,13 @@
+// Provides simple link-like styleing to be used in forms.
+
+@import "../material/typography";
+
+// Provide global styling option
+@pstj-linklike-color: #00f;
+
+
+.pstj-linklike {
+  padding: 10px 0;
+  cursor: pointer;
+  .typography(@pstj-linklike-color, 87, 11px, @typography-weight-light);
+}

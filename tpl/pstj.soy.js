@@ -309,7 +309,7 @@ pstj.templates.ErrorMsg = function(opt_data, opt_ignored, opt_ijData) {
   var delay = /** @type {null|number|undefined} */ (opt_data.delay);
   soy.asserts.assertType(opt_data.auto == null || goog.isBoolean(opt_data.auto) || opt_data.auto === 1 || opt_data.auto === 0, 'auto', opt_data.auto, 'boolean|null|undefined');
   var auto = /** @type {boolean|null|undefined} */ (opt_data.auto);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('app-error-message') + '" ' + ((auto == true) ? 'auto ' : '') + ((delay) ? 'delay="' + soy.$$escapeHtmlAttribute(delay) + '"' : '') + '></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('error-msg') + '" ' + ((auto == true) ? 'auto ' : '') + ((delay) ? 'delay="' + soy.$$escapeHtmlAttribute(delay) + '"' : '') + '></div>');
 };
 if (goog.DEBUG) {
   pstj.templates.ErrorMsg.soyTemplateName = 'pstj.templates.ErrorMsg';

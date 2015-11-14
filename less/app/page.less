@@ -29,6 +29,14 @@
   }
 }
 
+// Useful to wrap content pages that should center their content.
+.app-page-wrapper {
+  min-height: 100%;
+  &:extend(.vertical);
+  &:extend(.center);
+  &:extend(.center-justified);
+}
+
 /// Defines the animations for the pages...
 .app-page.animation-top-down {
   .translation(0, -100%);

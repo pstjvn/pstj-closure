@@ -221,5 +221,5 @@
 {template .ErrorMsg}
   {@param? delay: number}
   {@param? auto: bool}
-  <div is class="{css app-error-message}" {if $auto==true}auto {/if}{if $delay}delay="{$delay}"{/if}></div>
+  <div is class="{css error-msg}" {if $auto==true}auto {/if}{if $delay}delay="{$delay}"{/if}></div>
 {/template}

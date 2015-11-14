@@ -4,6 +4,7 @@ goog.provide('pstj.material.InputBaseRenderer');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
+goog.require('goog.format.EmailAddress');
 goog.require('goog.labs.userAgent.platform');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');

@@ -1,17 +1,17 @@
 /**
- * @fileoverview Simple error messge widget. It supports automatic hiding after
+ * @fileoverview Simple error messge element. It supports automatic hiding after
  * a configurable delay.
  *
  * NOTE: the component is designed to be used in templates and thus it is
- * configured based on the DOM attrobutes it finds. The automatic hiding and the
+ * configured based on the DOM attributes it finds. The automatic hiding and the
  * delay with automatic hiding cannot be configured imperatively. If you need
  * this feel free to submit a pull request.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */
 
-goog.provide('pstj.app.ErrorMsg');
-goog.provide('pstj.app.ErrorMsgRenderer');
+goog.provide('pstj.element.ErrorMsg');
+goog.provide('pstj.element.ErrorMsgRenderer');
 
 goog.require('goog.async.Delay');
 goog.require('goog.ui.Component.State');
@@ -26,7 +26,7 @@ var ER = pstj.material.ElementRenderer;
 
 
 /** @extends {E} */
-pstj.app.ErrorMsg = goog.defineClass(E, {
+pstj.element.ErrorMsg = goog.defineClass(E, {
   /**
    * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
@@ -96,7 +96,7 @@ pstj.app.ErrorMsg = goog.defineClass(E, {
 
 
 /** @extends {ER} */
-pstj.app.ErrorMsgRenderer = goog.defineClass(ER, {
+pstj.element.ErrorMsgRenderer = goog.defineClass(ER, {
   constructor: function() {
     ER.call(this);
   },
@@ -113,7 +113,7 @@ pstj.app.ErrorMsgRenderer = goog.defineClass(ER, {
 
   /** @override */
   getCssClass: function() {
-    return pstj.app.ErrorMsgRenderer.CSS_CLASS;
+    return pstj.element.ErrorMsgRenderer.CSS_CLASS;
   },
 
   statics: {
@@ -121,19 +121,19 @@ pstj.app.ErrorMsgRenderer = goog.defineClass(ER, {
      * @type {string}
      * @final
      */
-    CSS_CLASS: goog.getCssName('app-error-message')
+    CSS_CLASS: goog.getCssName('error-msg')
   }
 });
 
 // Register for default renderer.
-goog.ui.registry.setDefaultRenderer(pstj.app.ErrorMsg,
-    pstj.app.ErrorMsgRenderer);
+goog.ui.registry.setDefaultRenderer(pstj.element.ErrorMsg,
+    pstj.element.ErrorMsgRenderer);
 
 
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
-    pstj.app.ErrorMsgRenderer.CSS_CLASS, function() {
-      return new pstj.app.ErrorMsg(null);
+    pstj.element.ErrorMsgRenderer.CSS_CLASS, function() {
+      return new pstj.element.ErrorMsg(null);
     });
 
 });  // goog.scope

@@ -65,7 +65,8 @@ pstj.app.Rpc = goog.defineClass(null, {
    * Provides default error handling. This is usedful if you have no special
    * threatment for a server side error or data error and you need to inform the
    * user.
-   * @param {Object<string, *>} packet
+   * @param {?Error} err
+   * @param {?Object<string, *>} packet
    * @protected
    */
   defaultErrorHandler: function(packet) {
