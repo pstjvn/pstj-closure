@@ -109,7 +109,7 @@ pstj.ui.MediaQuery = goog.defineClass(ETarget, {
   /**
    * Handle the query match changes from the media query list.
    * @protected
-   * @param {!MediaQueryList} mq The instance that triggers the event.
+   * @param {MediaQueryList} mq The instance that triggers the event.
    */
   onQueryUpdate: function(mq) {
     this.queryMatches = mq.matches;

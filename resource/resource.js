@@ -360,8 +360,8 @@ pstj.resource.Resource.prototype.post = function(data, callback) {
  */
 pstj.resource.Resource.prototype.sendRequest = function(url,
     callback, opt_method, opt_data, opt_cache_response) {
-  var bound = goog.bind(this.handleResponse, this, callback, opt_cache_response,
-      url);
+  var bound = goog.bind(this.handleResponse, this, callback,
+      !!opt_cache_response, url);
   // Branch depending on configuration.
   if (pstj.resource.crossDomain_) {
     (new goog.net.Jsonp(url)).send(goog.isObject(opt_data) ? opt_data : null,

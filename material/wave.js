@@ -735,7 +735,7 @@ pstj.material.Wave.onRaf = function(ts) {
 
 /**
  * List of active waves.
- * @type {Array.<pstj.material.Wave>}
+ * @type {Array<pstj.material.Wave>}
  * @private
  */
 pstj.material.Wave.waves_ = new Array(10);
@@ -746,7 +746,7 @@ pstj.material.Wave.waves_ = new Array(10);
  * @private
  * @param {pstj.material.Wave} wave
  * @param {number} index
- * @param {Array.<number, pstj.material.Wave>} arr
+ * @param {Array<pstj.material.Wave>} arr
  * @return {boolean}
  */
 pstj.material.Wave.animateWave_ = function(wave, index, arr) {
