@@ -15,8 +15,8 @@ goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], 
 goog.addDependency('../../../apps/pstj/control/control.js', ['pstj.control.Control'], ['goog.Disposable', 'goog.array', 'goog.events.EventHandler', 'goog.pubsub.TypedPubSub'], false);
 goog.addDependency('../../../apps/pstj/control/toast.js', ['pstj.control.Toast'], ['goog.array', 'goog.async.Delay', 'goog.log', 'pstj.control.Control', 'pstj.material.Toast'], false);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.i18n.DateTimeFormat.Format', 'goog.string'], false);
-goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.PubSub'], false);
-goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.object', 'pstj.debug'], false);
+goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.pubsub.TopicId', 'goog.pubsub.TypedPubSub'], false);
+goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.log', 'goog.object', 'pstj.debug'], false);
 goog.addDependency('../../../apps/pstj/ds/discovery/class.js', ['pstj.ds.discovery.Class'], ['goog.array', 'pstj.ds.discovery.Property'], false);
 goog.addDependency('../../../apps/pstj/ds/discovery/document.js', ['pstj.ds.discovery.Document'], ['goog.json', 'pstj.ds.discovery.Class', 'pstj.ds.discovery.List', 'pstj.ds.discovery.Method'], false);
 goog.addDependency('../../../apps/pstj/ds/discovery/list.js', ['pstj.ds.discovery.List'], [], false);
@@ -107,7 +107,7 @@ goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Stora
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.userAgent', 'goog.userAgent.product'], false);
 goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.dom', 'goog.userAgent', 'pstj.configure'], false);
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub'], false);
-goog.addDependency('../../../apps/pstj/ui/agents/agent.js', ['pstj.ui.Agent'], ['goog.array', 'goog.asserts', 'pstj.debug', 'pstj.ds.Cache'], false);
+goog.addDependency('../../../apps/pstj/ui/agents/agent.js', ['pstj.ui.Agent'], ['goog.array', 'goog.asserts', 'goog.log', 'pstj.debug', 'pstj.ds.Cache'], false);
 goog.addDependency('../../../apps/pstj/ui/agents/clock-agent.js', ['pstj.ui.ClockAgent'], ['pstj.ds.IClock', 'pstj.ds.TimeProvider', 'pstj.ui.Agent'], false);
 goog.addDependency('../../../apps/pstj/ui/agents/gestures.js', ['pstj.ui.gestureAgent', 'pstj.ui.gestureAgent.EventType'], ['goog.array', 'goog.asserts', 'goog.async.AnimationDelay', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventType', 'goog.ui.Control', 'pstj.ui.Agent', 'pstj.ui.TouchPool'], false);
 goog.addDependency('../../../apps/pstj/ui/agents/ng-agent.js', ['pstj.ui.ngAgent'], ['goog.async.nextTick', 'pstj.configure', 'pstj.ds.PoolCache', 'pstj.ng.filters', 'pstj.ui.Agent', 'pstj.ui.NGPool'], false);

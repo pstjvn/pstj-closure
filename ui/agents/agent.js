@@ -10,6 +10,7 @@ goog.provide('pstj.ui.Agent');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
+goog.require('goog.log');
 goog.require('pstj.debug');
 goog.require('pstj.ds.Cache');
 
@@ -63,10 +64,17 @@ pstj.ui.Agent = function(type) {
   this.type_ = type || null;
 
   if (goog.DEBUG) {
-    pstj.debug.bus.subscribe(pstj.debug.Topic.DUMP, this.dumpCache, this);
+    pstj.debug.bus.subscribe(pstj.debug.Topic, this.dumpCache, this);
   }
 };
 goog.addSingletonGetter(pstj.ui.Agent);
+
+
+/**
+ * @protected
+ * @type {goog.debug.Logger}
+ */
+pstj.ui.Agent.prototype.logger = goog.log.getLogger('pstj.ui.Agent');
 
 
 /**
@@ -76,7 +84,7 @@ goog.addSingletonGetter(pstj.ui.Agent);
  * @protected
  */
 pstj.ui.Agent.prototype.dumpCache = function() {
-  console.log('pstj.ui.Agent: ', this.components_.length);
+  goog.log.info(this.logger, this.components_.length.toString());
 };
 
 

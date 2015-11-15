@@ -10,6 +10,7 @@
 
 goog.provide('pstj.ds.Cache');
 
+goog.require('goog.log');
 goog.require('goog.object');
 goog.require('pstj.debug');
 
@@ -48,11 +49,21 @@ pstj.ds.Cache = function(opt_name) {
   this.count_ = 0;
 
   if (goog.DEBUG) {
-    pstj.debug.bus.subscribe(pstj.debug.Topic.DUMP, function() {
-      console.log('Cache name:' + this.name_ + ' -- ' + this.count_);
+    pstj.debug.bus.subscribe(pstj.debug.Topic, function() {
+      goog.log.info(this.logger, 'Cache name:' + this.name_ + ' -- ' +
+          this.count_);
     }, this);
   }
 };
+
+
+/**
+ * The logger for the caches.
+ *
+ * @type {goog.debug.Logger}
+ * @protected
+ */
+pstj.ds.Cache.prototype.logger = goog.log.getLogger('pstj.ds.Cache');
 
 
 /**
@@ -154,10 +165,11 @@ pstj.ds.Cache.count_ = 0;
  * @return {pstj.ds.Cache}
  */
 pstj.ds.Cache.create = function(opt_name) {
-  // TODO: refactor this to use logging infrastructure.
+  var cache = new pstj.ds.Cache(opt_name);
   if (goog.DEBUG) {
     pstj.ds.Cache.count_++;
-    console.log('Cache containers count:' + pstj.ds.Cache.count_);
+    goog.log.error(cache.logger, 'Cache containers count:' +
+        pstj.ds.Cache.count_);
   }
-  return new pstj.ds.Cache(opt_name);
+  return cache;
 };

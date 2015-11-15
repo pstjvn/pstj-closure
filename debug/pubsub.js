@@ -22,7 +22,8 @@
 
 goog.provide('pstj.debug');
 
-goog.require('goog.pubsub.PubSub');
+goog.require('goog.pubsub.TopicId');
+goog.require('goog.pubsub.TypedPubSub');
 
 
 
@@ -36,25 +37,24 @@ var _ = pstj.debug;
  * be able to react to messages used for dumping values and other debugging
  * and optimization techniques.
  *
- * @type {goog.pubsub.PubSub}
+ * @final
+ * @type {goog.pubsub.TypedPubSub}
  */
-_.bus = new goog.pubsub.PubSub();
+_.bus = new goog.pubsub.TypedPubSub();
 
 
 /**
  * Provides the channel topic for dumping the cache values.
- *
- * @enum {string}
+ * @final
+ * @type {!goog.pubsub.TopicId<undefined>}
  */
-_.Topic = {
-  DUMP: 'dump'
-};
+_.Topic = new goog.pubsub.TopicId(goog.events.getUniqueId('dump'));
 
 
 // Export the global method for cache dumping.
 if (goog.DEBUG) {
   goog.exportSymbol('_dumpCaches', function() {
-    _.bus.publish(_.Topic.DUMP);
+    _.bus.publish(_.Topic, undefined);
   });
 }
 
