@@ -3,7 +3,7 @@ goog.provide('pstj.control.Control');
 goog.require('goog.Disposable');
 goog.require('goog.array');
 goog.require('goog.events.EventHandler');
-goog.require('goog.pubsub.PubSub');
+goog.require('goog.pubsub.TypedPubSub');
 
 goog.scope(function() {
 
@@ -67,17 +67,21 @@ pstj.control.Control = goog.defineClass(goog.Disposable, {
 
   /**
    * Pushes a new publication to the global application bus.
-   * @param {string} topic The topic we would like to push.
-   * @param {*=} opt_data Data to send with the signal.
+   * @param {!goog.pubsub.TopicId<PAYLOAD>} topic The topic we would like to
+   *    push.
+   * @param {PAYLOAD} data Data to send with the signal.
+   * @template PAYLOAD
    */
-  push: function(topic, opt_data) {
-    pstj.control.Control.getBus().publish(topic, opt_data);
+  push: function(topic, data) {
+    pstj.control.Control.getBus().publish(topic, data);
   },
 
   /**
    * Listen for updates on a selected topic.
-   * @param {string} topic The topic name to listen on.
-   * @param {Function} handler The method handler.
+   * @param {!goog.pubsub.TopicId<PAYLOAD>} topic The topic name to listen on.
+   * @param {function(PAYLOAD): void} handler Function to be invoked when a
+   *     message is published to the given topic.
+   * @template PAYLOAD
    * @return {number} The key by which we can unsubscribe.
    */
   listen: function(topic, handler) {
@@ -133,15 +137,15 @@ pstj.control.Control = goog.defineClass(goog.Disposable, {
   statics: {
     /**
      * Provides the global application bus.
-     * @type {goog.pubsub.PubSub}
+     * @type {goog.pubsub.TypedPubSub}
      * @private
      * @final
      */
-    appBus_: (new goog.pubsub.PubSub()),
+    appBus_: (new goog.pubsub.TypedPubSub()),
 
     /**
      * Access to the instance for control bus.
-     * @return {goog.pubsub.PubSub}
+     * @return {goog.pubsub.TypedPubSub}
      */
     getBus: function() {
       return pstj.control.Control.appBus_;
