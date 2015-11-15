@@ -214,7 +214,21 @@
 
 /** Provides template for the shadow element. */
 {template .Shadow}
-  <div is class="{css material-shadow} {css material-shadow-0}">
+  {@param? depth: int}
+  <div is class="{css material-shadow}{sp}
+    {if $depth == 1}
+      {css material-shadow-1}
+    {elseif $depth == 2}
+      {css material-shadow-2}
+    {elseif $depth == 3}
+      {css material-shadow-3}
+    {elseif $depth == 4}
+      {css material-shadow-4}
+    {elseif $depth == 5}
+      {css material-shadow-5}
+    {else}
+      {css material-shadow-0}
+    {/if}">
     <div class="{css material-shadow-bottom}"></div>
     <div class="{css material-shadow-top}"></div>
   </div>

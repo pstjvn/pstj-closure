@@ -298,14 +298,19 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {Object<string, *>=} opt_data
+ * @param {{
+ *    depth: (null|number|undefined)
+ * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @param {Object<string, *>=} opt_ijData
  * @return {!soydata.SanitizedHtml}
  * @suppress {checkTypes}
  */
 pstj.material.template.Shadow = function(opt_data, opt_ignored, opt_ijData) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-shadow') + ' ' + goog.getCssName('material-shadow-0') + '"><div class="' + goog.getCssName('material-shadow-bottom') + '"></div><div class="' + goog.getCssName('material-shadow-top') + '"></div></div>');
+  opt_data = opt_data || {};
+  soy.asserts.assertType(opt_data.depth == null || goog.isNumber(opt_data.depth), 'depth', opt_data.depth, 'null|number|undefined');
+  var depth = /** @type {null|number|undefined} */ (opt_data.depth);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-shadow') + ' ' + ((depth == 1) ? goog.getCssName('material-shadow-1') : (depth == 2) ? goog.getCssName('material-shadow-2') : (depth == 3) ? goog.getCssName('material-shadow-3') : (depth == 4) ? goog.getCssName('material-shadow-4') : (depth == 5) ? goog.getCssName('material-shadow-5') : goog.getCssName('material-shadow-0')) + '"><div class="' + goog.getCssName('material-shadow-bottom') + '"></div><div class="' + goog.getCssName('material-shadow-top') + '"></div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Shadow.soyTemplateName = 'pstj.material.template.Shadow';
