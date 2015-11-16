@@ -27,26 +27,15 @@ goog.require('goog.storage.mechanism.mechanismfactory');
  */
 pstj.storage.Storage = function() {
   /**
-   * @final
    * @type {goog.storage.mechanism.IterableMechanism}
    * @private
    */
-  this.mechanism_ = pstj.storage.Storage.getStorageBackend();
-
+  this.mechanism_ = goog.storage.mechanism.mechanismfactory.create();
+  if (goog.isNull(this.mechanism_)) {
+    this.warn_();
+  }
 };
 goog.addSingletonGetter(pstj.storage.Storage);
-
-
-/**
- * Provides the storage mechanism to use when storing data. Current
- * implementation is limited to localStorage. Future iplementation should use a
- * wrapper for ls/idb.
- *
- * @return {goog.storage.mechanism.IterableMechanism}
- */
-pstj.storage.Storage.getStorageBackend = function() {
-  return goog.storage.mechanism.mechanismfactory.create();
-};
 
 
 goog.scope(function() {
@@ -132,7 +121,8 @@ _.remove = function(key) {
  * @private
  */
 _.warn_ = function() {
-  goog.log.error(this.logger, 'Storage mechanism could not be derived');
+  goog.log.error(this.logger,
+      'Storage mechanism unavailable, private browsing?');
 };
 
 });  // goog.scope
