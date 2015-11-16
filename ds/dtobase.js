@@ -37,6 +37,14 @@ pstj.ds.DtoBase = goog.defineClass(goog.events.EventTarget, {
 
   statics: {
     /**
+     * Allow developers to force update event on instances.
+     * @param {!pstj.ds.DtoBase} instance
+     */
+    updated: function(instance) {
+      instance.handleChange();
+    },
+
+    /**
      * The events that this class can produce.
      * @enum {string}
      */
