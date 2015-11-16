@@ -646,25 +646,21 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
   /** @override */
   setModel: function(model) {
-    if (this.useNgTemplate_) {
-      if (goog.isDefAndNotNull(this.getModel())) {
-        this.getHandler().unlisten(
-            goog.asserts.assertInstanceof(this.getModel(),
-                goog.events.EventTarget),
-            pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
-      }
+    if (goog.isDefAndNotNull(this.getModel())) {
+      this.getHandler().unlisten(
+          goog.asserts.assertInstanceof(this.getModel(),
+              goog.events.EventTarget),
+          pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
     }
     goog.base(this, 'setModel', model);
-    if (this.useNgTemplate_) {
-      if (goog.isDefAndNotNull(this.getModel())) {
-        this.getHandler().listen(
-            goog.asserts.assertInstanceof(this.getModel(),
-                goog.events.EventTarget),
-            pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
+    if (goog.isDefAndNotNull(this.getModel())) {
+      this.getHandler().listen(
+          goog.asserts.assertInstanceof(this.getModel(),
+              goog.events.EventTarget),
+          pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
 
-      }
-      this.handleModelChange(null);
     }
+    this.handleModelChange(null);
   },
 
   /**
