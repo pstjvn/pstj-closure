@@ -66,7 +66,7 @@ pstj.app.Rpc = goog.defineClass(null, {
    * threatment for a server side error or data error and you need to inform the
    * user.
    * @param {?Error} err
-   * @param {Object<string, *>} packet
+   * @param {Error} packet
    * @protected
    */
   defaultErrorHandler: function(err, packet) {
