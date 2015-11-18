@@ -106,6 +106,16 @@ icon.resolveRenderer = function(iconName) {
     return icon.Download.getInstance();
   }
 
+  //Branch for Google
+  if (iconName == pstj.material.icon.Name.GOOGLE) {
+    return icon.Google.getInstance();
+  }
+
+  //Branch for GooglePlus
+  if (iconName == pstj.material.icon.Name.GOOGLE_PLUS) {
+    return icon.GooglePlus.getInstance();
+  }
+
   return null;
 };
 
@@ -414,6 +424,44 @@ icon.Download = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.Download);
 
 
+/** Renderer for Google */
+icon.Google = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.Google(m);
+  }
+});
+goog.addSingletonGetter(icon.Google);
+
+
+/** Renderer for GooglePlus */
+icon.GooglePlus = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.GooglePlus(m);
+  }
+});
+goog.addSingletonGetter(icon.GooglePlus);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -442,6 +490,8 @@ icon.Name = {
   ARROW_LEFT_STATIC: 'arrow-left-static',
   ARROW_RIGHT_STATIC: 'arrow-right-static',
   DOWNLOAD: 'download',
+  GOOGLE: 'google',
+  GOOGLE_PLUS: 'google-plus',
   NONEXISTING: 'nonexisting'
 };
 
