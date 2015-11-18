@@ -1,6 +1,4 @@
-#!/usr/bin/node
-
-// How to run: nodejs/compiler.js  assets/icons.xml
+// How to run: node nodejs/compiler.js  assets/icons.xml
 
 // Inlcude support for closure library.
 require('../../../library/closure/goog/bootstrap/nodejs.js');

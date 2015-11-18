@@ -37,4 +37,4 @@ $(template_build_dir)/*.soy.js: $(template_source_dir)/*.soy
 	$(java) $(soy_compiler) $(soy_compiler_options) $(template_source_dir)/*.soy
 
 templates/icons.soy: templates/icons.xml
-	nodejs/compiler.js $?
+	node nodejs/compiler.js $?
