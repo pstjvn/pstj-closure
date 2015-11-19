@@ -8,9 +8,8 @@ goog.provide('pstj.app.Facebook');
 
 goog.require('goog.Promise');
 goog.require('goog.asserts');
-goog.require('goog.dom');
 goog.require('goog.log');
-goog.require('pstj.control.Control');
+goog.require('goog.net.jsloader');
 
 
 /**
@@ -26,53 +25,79 @@ goog.define('pstj.app.FacebookId', '');
 goog.define('pstj.app.FacebookSDKVersion', 'v2.5');
 
 
-/** @extends {pstj.control.Control} */
-pstj.app.Facebook = goog.defineClass(pstj.control.Control, {
+/** Facebook integration */
+pstj.app.Facebook = goog.defineClass(null, {
   constructor: function() {
-    pstj.control.Control.call(this);
     /**
-     * @type {goog.Promise<!Object<string, ?>>}
+     * @type {goog.Promise}
      * @private
      */
-    this.installPromise_ = null;
-    /** @private */
-    this.resolve_ = null;
-    /** @private */
-    this.reject_ = null;
+    this.loadPromise_ = null;
+    /**
+     * @type {goog.Promise<!pstj.ds.oauth.User>}
+     * @private
+     */
+    this.userPromise_ = null;
     this.init();
   },
 
   /**
    * Retrieve the readyness promise.
-   * @return {!goog.Promise<!Object<string, ?>>}
+   * @return {!goog.Promise}
    */
   getReadyPromise: function() {
-    return goog.asserts.assertInstanceof(this.installPromise_,
+    return goog.asserts.assertInstanceof(this.loadPromise_,
         goog.Promise);
   },
 
-  /** @override */
-  init: function() {
-    goog.base(this, 'init');
-    this.installPromise_ = new goog.Promise(function(resolve, reject) {
-      this.resolve_ = resolve;
-      this.reject_ = reject;
-    }, this);
-    // Clean up refs after the promise is ready.
-    this.installPromise_.thenAlways(function() {
-      this.resolve_ = null;
-      this.reject_ = null;
-    }, this);
-    goog.log.fine(this.logger, 'Installing FB SDK');
-    this.installSDK();
+  /**
+   * Retrieves the user from initial load.
+   * @return {!goog.Promise<!pstj.ds.oauth.User>}
+   */
+  getUserPromise: function() {
+    return goog.asserts.assertInstanceof(this.userPromise_,
+        goog.Promise);
   },
 
-  /** @private */
-  handleSDKLoaded_: function() {
-    goog.log.info(this.logger, 'FB SDK loaded, initializing it...');
-    goog.global['FB']['init'](this.getConfig());
-    goog.global['FB']['getLoginStatus'](goog.bind(this.handleLoginStatusInit_,
-        this));
+  /** @protected */
+  init: function() {
+    goog.log.info(this.logger, 'Initializing FB integration');
+    this.loadPromise_ = new goog.Promise(function(resolve, reject) {
+      this.userPromise_ = new goog.Promise(function(res, rej) {
+        goog.log.info(this.logger, 'Prepair callback when SDK loads.');
+        goog.global['fbAsyncInit'] = goog.bind(function() {
+          goog.log.info(this.logger, 'Finished FB JS SDK loading');
+          goog.global['FB']['init'](this.getConfig());
+          resolve(null);
+          goog.log.info(this.logger, 'Start check for user');
+          goog.global['FB']['getLoginStatus'](goog.bind(function(response) {
+            goog.log.info(this.logger, 'Received info for log-in state');
+            if (response['status'] != 'connected') {
+              goog.log.error(this.logger, 'No user logged in');
+              rej();
+            } else {
+              goog.log.info(this.logger, 'Start user info retrieval');
+              goog.global['FB']['api']('/me', goog.bind(function(response) {
+                goog.log.info(this.logger, 'Received user info initial load');
+                res(/** @type {!pstj.ds.oauth.User} */({
+                  id: response['id'],
+                  name: response['name'],
+                  provider: 'facebook'
+                }));
+              }, this));
+            }
+          }, this));
+        }, this);
+        goog.log.info(this.logger, 'Start loading JS SDK for Facebook');
+        goog.net.jsloader.load('https://connect.facebook.net/en_US/sdk.js', {
+          cleanupWhenDone: true
+        }).addErrback(function(e) {
+          goog.log.error(this.logger, 'Could not load the DB JS SDK');
+          reject(e);
+          rej();
+        });
+      }, this);
+    }, this);
   },
 
   /**
@@ -88,79 +113,60 @@ pstj.app.Facebook = goog.defineClass(pstj.control.Control, {
     };
   },
 
-  /** @protected */
-  installSDK: function() {
-    goog.global['fbAsyncInit'] = goog.bind(this.handleSDKLoaded_, this);
-    var scriptElement = goog.dom.createDom('script', {
-      'type': 'text/javascript',
-      'src': 'https://connect.facebook.net/en_US/sdk.js'
-    });
-    document.head.appendChild(scriptElement);
-  },
-
-  /**
-   * @private
-   * @param {!Object<string, ?>} response
-   */
-  handleLoginStatusInit_: function(response) {
-    goog.log.info(this.logger, 'Received initial FB status');
-    if (response['status'] != 'connected') {
-      this.reject_(null);
-    } else {
-      this.attemptUserInfo_();
-    }
-  },
-
-  /** @private */
-  attemptUserInfo_: function() {
-    goog.log.fine(this.logger, 'Call FB API /me');
-    goog.global['FB']['api']('/me', goog.bind(this.handleUserInfo_, this));
-  },
-
-  /**
-   * @private
-   * @param {!Object<string, ?>} response
-   */
-  handleUserInfo_: function(response) {
-    this.resolve_(/** @type {pstj.ds.oauth.User} */({
-      id: response['id'],
-      name: response['name'],
-      provider: 'facebook'
-    }));
-  },
-
   /**
    * Returns the original promise if it was resolved to an actual user,
    * else initialized new promise with login. Note that it can also be
    * rejected!
-   * @return {!goog.Promise<!Object<string, ?>>}
+   * @return {!goog.Promise<!pstj.ds.oauth.User>}
    */
   login: function() {
-    return this.getReadyPromise().thenCatch(this.initializeLogin_, this);
+    return this.userPromise_.thenCatch(this.initializeLogin_, this);
+  },
+
+  /**
+   * Log out the user.
+   * @return {!goog.Promise}
+   */
+  logout: function() {
+    return new goog.Promise(function(resolve, reject) {
+      this.userPromise_ = goog.Promise.reject();
+      resolve();
+      // Maybe we should NOT log out the user from FB entierly but just from
+      // our own app?
+      // goog.global['FB']['logout'](function() {
+      //   this.userPromise_ = goog.Promise.reject();
+      //   resolve();
+      // });
+    });
   },
 
   /**
    * The login failed, so we need to init the login procedure directly.
    * @private
-   * @return {!goog.Promise<!Object<string, ?>>}
+   * @return {!goog.Promise<!pstj.ds.oauth.User>}
    */
   initializeLogin_: function() {
-    this.installPromise_ = new goog.Promise(function(resolve, reject) {
+    goog.log.warning(this.logger, 'Attempting new login');
+    this.userPromise_ = new goog.Promise(function(resolve, reject) {
       goog.global['FB']['login'](function(response) {
+        goog.log.info(this.logger, 'Received response to login attempt');
         if (response['authResponse']) {
+          goog.log.info(this.logger, 'Attempt details info retrieval');
           goog.global['FB']['api']('/me', function(response) {
-            resolve(/** @type {pstj.ds.oauth.User} */({
+            goog.log.info(this.logger, 'Received user details');
+            resolve(/** @type {!pstj.ds.oauth.User} */({
               id: response['id'],
               name: response['name'],
               provider: 'facebook'
             }));
           });
         } else {
+          goog.log.error(this.logger, 'Could not log in, user gave up');
           reject(null);
         }
       });
     }, this);
-    return this.installPromise_;
+    return this.userPromise_;
   },
 
   /**

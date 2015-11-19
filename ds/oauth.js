@@ -13,9 +13,16 @@ goog.require('goog.pubsub.TopicId');
 
 /**
  * Topic to publish to when user has been authenticated with an oauth provider.
- * @type {!goog.pubsub.TopicId<?pstj.ds.oauth.User>}
+ * @type {!goog.pubsub.TopicId<!pstj.ds.oauth.User>}
  */
 pstj.ds.oauth.Topic = new goog.pubsub.TopicId(goog.events.getUniqueId('oauth'));
+
+
+/**
+ * Topic to publish to when user has logged out using oauth flow.
+ * @type {!goog.pubsub.TopicId<undefined>}
+ */
+pstj.ds.oauth.Logout = new goog.pubsub.TopicId(goog.events.getUniqueId('out'));
 
 
 /**
