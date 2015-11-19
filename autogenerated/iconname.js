@@ -116,6 +116,11 @@ icon.resolveRenderer = function(iconName) {
     return icon.GooglePlus.getInstance();
   }
 
+  //Branch for Facebook
+  if (iconName == pstj.material.icon.Name.FACEBOOK) {
+    return icon.Facebook.getInstance();
+  }
+
   return null;
 };
 
@@ -462,6 +467,25 @@ icon.GooglePlus = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.GooglePlus);
 
 
+/** Renderer for Facebook */
+icon.Facebook = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.Facebook(m);
+  }
+});
+goog.addSingletonGetter(icon.Facebook);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -492,6 +516,7 @@ icon.Name = {
   DOWNLOAD: 'download',
   GOOGLE: 'google',
   GOOGLE_PLUS: 'google-plus',
+  FACEBOOK: 'facebook',
   NONEXISTING: 'nonexisting'
 };
 
