@@ -122,7 +122,45 @@ pstj.app.Facebook = goog.defineClass(pstj.control.Control, {
    * @param {!Object<string, ?>} response
    */
   handleUserInfo_: function(response) {
-    this.resolve_(response);
+    this.resolve_(/** @type {pstj.ds.oauth.User} */({
+      id: response['id'],
+      name: response['name'],
+      provider: 'facebook'
+    }));
+  },
+
+  /**
+   * Returns the original promise if it was resolved to an actual user,
+   * else initialized new promise with login. Note that it can also be
+   * rejected!
+   * @return {!goog.Promise<!Object<string, ?>>}
+   */
+  login: function() {
+    return this.getReadyPromise().thenCatch(this.initializeLogin_, this);
+  },
+
+  /**
+   * The login failed, so we need to init the login procedure directly.
+   * @private
+   * @return {!goog.Promise<!Object<string, ?>>}
+   */
+  initializeLogin_: function() {
+    this.installPromise_ = new goog.Promise(function(resolve, reject) {
+      goog.global['FB']['login'](function(response) {
+        if (response['authResponse']) {
+          goog.global['FB']['api']('/me', function(response) {
+            resolve(/** @type {pstj.ds.oauth.User} */({
+              id: response['id'],
+              name: response['name'],
+              provider: 'facebook'
+            }));
+          });
+        } else {
+          reject(null);
+        }
+      });
+    }, this);
+    return this.installPromise_;
   },
 
   /**
