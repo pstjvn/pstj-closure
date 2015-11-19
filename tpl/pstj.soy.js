@@ -53,8 +53,8 @@ if (goog.DEBUG) {
  */
 pstj.templates.pager = function(opt_data, opt_ignored, opt_ijData) {
   var output = '<div class="' + goog.getCssName('pstj-pager-wrapper') + '"><div class="' + goog.getCssName('pstj-pager-items') + '">';
-  var itemLimit588 = opt_data.itemsCount;
-  for (var item588 = 0; item588 < itemLimit588; item588++) {
+  var itemLimit592 = opt_data.itemsCount;
+  for (var item592 = 0; item592 < itemLimit592; item592++) {
     output += pstj.templates.page(null, null, opt_ijData);
   }
   output += '</div><div class="' + goog.getCssName('pstj-pager-page-indicator') + '">Page <span class="' + goog.getCssName('pstj-pager-page') + '"></span> of <span class="' + goog.getCssName('pstj-pager-pages') + '"></span></div></div>';
@@ -249,11 +249,11 @@ if (goog.DEBUG) {
 pstj.templates.Swiper = function(opt_data, opt_ignored, opt_ijData) {
   var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<?>.");
   var output = '<div is class="' + goog.getCssName('pstj-swiper') + ' ' + goog.getCssName('core-swipe') + '" use-pointer>';
-  var itemList758 = items;
-  var itemListLen758 = itemList758.length;
-  for (var itemIndex758 = 0; itemIndex758 < itemListLen758; itemIndex758++) {
-    var itemData758 = itemList758[itemIndex758];
-    output += pstj.templates.Swipetile(itemData758, null, opt_ijData);
+  var itemList762 = items;
+  var itemListLen762 = itemList762.length;
+  for (var itemIndex762 = 0; itemIndex762 < itemListLen762; itemIndex762++) {
+    var itemData762 = itemList762[itemIndex762];
+    output += pstj.templates.Swipetile(itemData762, null, opt_ijData);
   }
   output += '</div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);

@@ -344,7 +344,8 @@ if (goog.DEBUG) {
  *    ink: (boolean|null|undefined),
  *    recenter: (boolean|null|undefined),
  *    action: (null|string|undefined),
- *    tactile: (boolean|null|undefined)
+ *    tactile: (boolean|null|undefined),
+ *    disabled: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @param {Object<string, *>=} opt_ijData
@@ -364,7 +365,9 @@ pstj.material.template.Button = function(opt_data, opt_ignored, opt_ijData) {
   var action = /** @type {null|string|undefined} */ (opt_data.action);
   soy.asserts.assertType(opt_data.tactile == null || goog.isBoolean(opt_data.tactile) || opt_data.tactile === 1 || opt_data.tactile === 0, 'tactile', opt_data.tactile, 'boolean|null|undefined');
   var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null, null, opt_ijData) + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + pstj.material.template.ButtonContent(opt_data, null, opt_ijData) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}, null, opt_ijData) + '</div>');
+  soy.asserts.assertType(opt_data.disabled == null || goog.isBoolean(opt_data.disabled) || opt_data.disabled === 1 || opt_data.disabled === 0, 'disabled', opt_data.disabled, 'boolean|null|undefined');
+  var disabled = /** @type {boolean|null|undefined} */ (opt_data.disabled);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-button') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + ((disabled) ? ' ' + goog.getCssName('material-button-disabled') : '') + '" ' + ((ink) ? 'ink' : '') + ' use-pointer icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null, null, opt_ijData) + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + pstj.material.template.ButtonContent(opt_data, null, opt_ijData) + pstj.material.template.Ripple({recenter: recenter, opacity: 0.3}, null, opt_ijData) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Button.soyTemplateName = 'pstj.material.template.Button';
