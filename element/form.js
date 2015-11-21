@@ -219,7 +219,7 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    */
   clearNativeFormElements: function(el) {
     if (!goog.isNull(el)) {
-      goog.array.forEach(el.querySelectorAll('select'), function(sel) {
+      goog.array.forEach(el.querySelectorAll('select'), function(s) {
         /** @type {HTMLSelectElement} */(s).value = (
             /** @type {HTMLOptionElement} */(s.options.item(0)).value);
       });
