@@ -139,10 +139,12 @@ ngmodel.Cache_ = goog.defineClass(null, {
             goog.dom.setTextContent(this.nodes_[i], rawvalue.toString());
             break;
           case ngmodel.CACHE_TYPE.FILL:
-            this.nodes_[i].setAttribute('fill', rawvalue.toString());
+            (/** @type {!Element} */(this.nodes_[i]))
+                .setAttribute('fill', rawvalue.toString());
             break;
           case ngmodel.CACHE_TYPE.STOP_COLOR:
-            this.nodes_[i].setAttribute('stop-color', rawvalue.toString());
+            (/** @type {!Element} */(this.nodes_[i]))
+                .setAttribute('stop-color', rawvalue.toString());
             break;
           case ngmodel.CACHE_TYPE.HIDE:
             goog.style.setElementShown(goog.asserts.assertElement(

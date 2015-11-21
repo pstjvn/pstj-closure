@@ -180,7 +180,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * the control element and submit it to the soy template function. If your
    * control contains complex data you should override this method.
    *
-   * @param {!goog.ui.Control} control The control that needs the template.
+   * @param {goog.ui.Control} control The control that needs the template.
    * @return {?Object<string, *>}
    * @protected
    */

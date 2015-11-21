@@ -89,7 +89,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
     var target = goog.asserts.assertInstanceof(e.target, I);
     if (target != this.icon) {
       e.preventDefault();
-      this.removeChild(target, true);
+      this.removeChild(/** @type {I} */(target), true);
     } else if (this.icon.type == icon.Name.NONE) {
       e.preventDefault();
       this.removeChild(this.icon, true);

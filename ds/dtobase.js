@@ -22,7 +22,10 @@ pstj.ds.DtoBase = goog.defineClass(goog.events.EventTarget, {
     pstj.ds.DtoBase.addToQueue_(this);
   },
 
-  /** @override */
+  /**
+   * @override
+   * @return {!Object}
+   */
   toJSON: function() {
     throw new Error('Serialization not implemented');
   },

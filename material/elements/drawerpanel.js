@@ -196,7 +196,7 @@ pstj.material.DrawerPanel = goog.defineClass(E, {
 
   /**
    * Handler for the media matching events.
-   * @param {?goog.events.Event} e The media event.
+   * @param {goog.events.Event} e The media event.
    * @protected
    */
   onMediaChange: function(e) {

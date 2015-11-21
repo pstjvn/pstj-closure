@@ -12,6 +12,7 @@ goog.provide('pstj.element.Form');
 goog.provide('pstj.element.FormRenderer');
 
 goog.require('goog.functions');
+goog.require('pstj.ds.DtoBase');
 goog.require('pstj.element.ErrorMsg');
 goog.require('pstj.material.Button');
 goog.require('pstj.material.Checkbox');
@@ -47,6 +48,14 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
   },
 
   /**
+   * We do not use the ngbind, instead we handle model changes directly.
+   * @override
+   */
+  handleModelChange: function(e) {
+    this.updateFormElements();
+  },
+
+  /**
    * This is an abstract method, you should override it and implement
    * the validity check of your own.
    * @return {boolean}
@@ -72,6 +81,51 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
         child.setValue('');
       }
     }, this);
+    this.getRenderer().clearNativeFormElements(this.getElement());
+  },
+
+  /**
+   * Implements updating of form elements based on a model. The model is
+   * assumed to be compatible with the form element names.
+   * @protected
+   */
+  updateFormElements: function() {
+    if (goog.isNull(this.getModel())) return;
+    var model = goog.asserts.assertInstanceof(this.getModel(),
+        pstj.ds.DtoBase).toJSON();
+    this.forEachChild(function(child) {
+      var name = child.name;
+      if (goog.isDefAndNotNull(model[name])) {
+        if (child instanceof pstj.material.InputBase) {
+          child.setValue(goog.asserts.assertString(model[name]));
+        } else if (child instanceof pstj.material.Checkbox) {
+          child.setChecked(!!model[name]);
+        }
+      }
+    });
+  },
+
+  /**
+   * Will try and map the form elements back to the data model.
+   * If there is a model set the changed values will be written on it and the
+   * CHNAGE event will fire on the model instance.
+   * @protected
+   */
+  updateModelFromElements: function() {
+    if (goog.isNull(this.getModel())) return;
+    var model = goog.asserts.assertInstanceof(this.getModel(),
+        pstj.ds.DtoBase).toJSON();
+    this.forEachChild(function(child) {
+      var name = child.name;
+      if (goog.isDefAndNotNull(model[name])) {
+        if (child instanceof pstj.material.InputBase) {
+          model[name] = child.getValue();
+        } else if (child instanceof pstj.material.Checkbox) {
+          model[name] = child.isChecked();
+        }
+      }
+    });
+    this.getModel().fromJSON(model);
   },
 
   /**
@@ -157,5 +211,18 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    */
   getSubmitButtonElement: function(ctrl) {
     throw new Error('Not implemented');
+  },
+
+  /**
+   * Clears the native HTML form elements.
+   * @param {Element} el The rot element to search in.
+   */
+  clearNativeFormElements: function(el) {
+    if (!goog.isNull(el)) {
+      goog.array.forEach(el.querySelectorAll('select'), function(sel) {
+        /** @type {HTMLSelectElement} */(s).value = (
+            /** @type {HTMLOptionElement} */(s.options.item(0)).value);
+      });
+    }
   }
 });

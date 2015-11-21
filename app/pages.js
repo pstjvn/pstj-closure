@@ -105,7 +105,9 @@ pstj.app.Pages = goog.defineClass(pstj.app.UiControl, {
       this.nextIndexToApply_ = idx;
       if (this.useAnimation_) {
         this.setTransitioning(true);
-        this.getChildAt(this.nextIndexToApply_).getElement().offsetWidth;
+        (/** @type {HTMLElement} */(
+            this.getChildAt(this.nextIndexToApply_).getElement())
+                .offsetWidth);
         this.getHandler().listenOnce(
             this.getChildAt(this.nextIndexToApply_).getElementStrict(),
             goog.events.EventType.TRANSITIONEND,
@@ -153,6 +155,15 @@ pstj.app.Pages = goog.defineClass(pstj.app.UiControl, {
     if (!this.getChildAt(this.selectedIndex).isSelected()) {
       this.getChildAt(this.selectedIndex).setSelected(true);
     }
+  },
+
+  /**
+   * @override
+   * @return {!pstj.app.Page}
+   */
+  getChildAt: function(index) {
+    return goog.asserts.assertInstanceof(goog.base(this, 'getChildAt',
+        index), pstj.app.Page);
   }
 });
 

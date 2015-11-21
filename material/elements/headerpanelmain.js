@@ -30,19 +30,6 @@ pstj.material.HeaderPanelMain = function(
 goog.inherits(pstj.material.HeaderPanelMain, pstj.material.Element);
 
 
-/**
- * Creates a new instance from a JSON config.
- * @param {MaterialConfig} json
- * @return {pstj.material.HeaderPanelMain}
- */
-pstj.material.HeaderPanelMain.fromJSON = function(json) {
-  var i = new pstj.material.HeaderPanelMain();
-  i.setUseScrollAgent(json.useScroll || false);
-  pstj.material.Element.fromJSON(json, i);
-  return i;
-};
-
-
 /** @inheritDoc */
 pstj.material.HeaderPanelMain.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
