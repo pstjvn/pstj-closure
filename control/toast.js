@@ -210,7 +210,7 @@ pstj.control.Toast = goog.defineClass(pstj.control.Control, {
    * @private
    */
   nextItem_: function() {
-    if (goog.array.isEmpty(this.q_)) {
+    if (!goog.array.isEmpty(this.q_)) {
       this.q_.shift()();
     } else {
       this.free_ = true;
