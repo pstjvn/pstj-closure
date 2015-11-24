@@ -12,6 +12,7 @@ goog.require('soy');
 goog.require('soydata');
 /** @suppress {extraRequire} */
 goog.require('goog.asserts');
+goog.require('pstj.material.template');
 
 
 /**
@@ -313,4 +314,74 @@ pstj.templates.ErrorMsg = function(opt_data, opt_ignored, opt_ijData) {
 };
 if (goog.DEBUG) {
   pstj.templates.ErrorMsg.soyTemplateName = 'pstj.templates.ErrorMsg';
+}
+
+
+/**
+ * @param {{
+ *    label: string
+ * }} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.templates.ListHeaderCell = function(opt_data, opt_ignored, opt_ijData) {
+  soy.asserts.assertType(goog.isString(opt_data.label) || (opt_data.label instanceof goog.soy.data.SanitizedContent), 'label', opt_data.label, 'string|goog.soy.data.SanitizedContent');
+  var label = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.label);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('list-header-cell') + '" use-pointer><div class="' + goog.getCssName('flex-1') + '">' + soy.$$escapeHtml(label) + '</div><div class="' + goog.getCssName('list-header-icon') + '">' + pstj.material.template.IconContainer({type: 'none'}, null, opt_ijData) + '</div></div>');
+};
+if (goog.DEBUG) {
+  pstj.templates.ListHeaderCell.soyTemplateName = 'pstj.templates.ListHeaderCell';
+}
+
+
+/**
+ * @param {{
+ *    cells: !Array<string>,
+ *    flexes: !Array<number>
+ * }} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @param {Object<string, *>=} opt_ijData
+ * @return {!soydata.SanitizedHtml}
+ * @suppress {checkTypes}
+ */
+pstj.templates.ListHeader = function(opt_data, opt_ignored, opt_ijData) {
+  var $$temp;
+  var cells = goog.asserts.assertArray(opt_data.cells, "expected parameter 'cells' of type list<string>.");
+  var flexes = goog.asserts.assertArray(opt_data.flexes, "expected parameter 'flexes' of type list<float|int>.");
+  var output = '<div is class="' + goog.getCssName('list-header') + ' ' + goog.getCssName('core-tap') + '"><div class="' + goog.getCssName('list-header-subhead') + '">';
+  var labelList828 = cells;
+  var labelListLen828 = labelList828.length;
+  for (var labelIndex828 = 0; labelIndex828 < labelListLen828; labelIndex828++) {
+    var labelData828 = labelList828[labelIndex828];
+    output += '<div class="' + goog.getCssName('list-header-item');
+    var local_index__soy809 = labelIndex828;
+    if (flexes[local_index__soy809]) {
+      var flex__soy812 = flexes[local_index__soy809];
+      switch (flex__soy812) {
+        case 1:
+          output += goog.getCssName('flex-1');
+          break;
+        case 2:
+          output += goog.getCssName('flex-2');
+          break;
+        case 3:
+          output += goog.getCssName('flex-3');
+          break;
+        case 4:
+          output += goog.getCssName('flex-4');
+          break;
+        case 5:
+          output += goog.getCssName('flex-5');
+          break;
+      }
+    }
+    output += '">' + pstj.templates.ListHeaderCell({label: labelData828}, null, opt_ijData) + '</div>';
+  }
+  output += '</div></div>';
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);
+};
+if (goog.DEBUG) {
+  pstj.templates.ListHeader.soyTemplateName = 'pstj.templates.ListHeader';
 }

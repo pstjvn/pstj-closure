@@ -1,0 +1,37 @@
+@import "../../../pstj/less/material/colors/teal";
+@import "../../../pstj/less/material/typography";
+@import "../../../pstj/less/material/icon";
+@import "../../../pstj/less/material/icons/arrow-drop";
+
+@list-header-background-color: @teal500;
+@list-header-color: white;
+
+.list-header {
+  background-color: @list-header-background-color;
+  padding-left: 5px;
+  height: 40px;
+
+  & > &-subhead {
+    &:extend(.horizontal);
+    &:extend(.center);
+
+    // Configure typography
+    .listheader(white);
+
+    & > .list-header-item {
+      .horizontal();
+      .center();
+
+      & > .list-header-cell {
+        height: 40px;
+        .horizontal();
+        .center();
+        .flex-1();
+      }
+    }
+  }
+}
+
+.list-header-icon > .material-icon-container > svg {
+  fill: @list-header-color;
+}

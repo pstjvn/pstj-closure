@@ -32,6 +32,6 @@ goog.addDependency('../../../apps/pstj/demos/widgets/swiper.js', ['pstj.demos.wi
 goog.addDependency('../../../apps/pstj/demos/widgets/swipetile.js', ['pstj.demos.widget.swipetile'], ['pstj.widget.Swipetile'], false);
 goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.material.icons'], ['soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/material.soy.js', ['pstj.material.template'], ['goog.asserts', 'soy', 'soydata'], false);
-goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['goog.asserts', 'soy', 'soydata'], false);
+goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['goog.asserts', 'pstj.material.template', 'soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/select.soy.js', ['pstj.select'], ['soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/sourcegen.soy.js', ['pstj.sourcegen.template'], ['goog.asserts', 'soy', 'soydata'], false);

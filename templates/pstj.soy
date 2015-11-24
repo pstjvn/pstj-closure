@@ -1,5 +1,7 @@
 {namespace pstj.templates}
 
+{alias pstj.material.template as material}
+
 /**
  * Template for the custom scroll area widget.
  * Content goes on custom-scroll-div so it should be returned by getContentElement
@@ -222,4 +224,51 @@
   {@param? delay: number}
   {@param? auto: bool}
   <div is class="{css error-msg}" {if $auto==true}auto {/if}{if $delay}delay="{$delay}"{/if}></div>
+{/template}
+
+/** Default template for the list header cell */
+{template .ListHeaderCell}
+  {@param label: string}
+  <div is class="{css list-header-cell}" use-pointer>
+    <div class="{css flex-1}">{$label}</div>
+    <div class="{css list-header-icon}">
+      {call material.IconContainer}
+        {param type: 'none' /}
+      {/call}
+    </div>
+  </div>
+{/template}
+
+
+/** Default template for the list header */
+{template .ListHeader}
+  {@param cells: list<string>}
+  {@param flexes: list<number>}
+  <div is class="{css list-header} {css core-tap}">
+    <div class="{css list-header-subhead}">
+      {foreach $label in $cells}
+        <div class="{css list-header-item}
+          {let $local_index: index($label) /}
+          {if $flexes[$local_index]}
+            {let $flex:$flexes[$local_index] /}
+            {switch $flex}
+              {case 1}
+                {css flex-1}
+              {case 2}
+                {css flex-2}
+              {case 3}
+                {css flex-3}
+              {case 4}
+                {css flex-4}
+              {case 5}
+                {css flex-5}
+            {/switch}
+          {/if}">
+          {call .ListHeaderCell}
+            {param label: $label /}
+          {/call}
+        </div>
+      {/foreach}
+    </div>
+  </div>
 {/template}
