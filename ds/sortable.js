@@ -86,7 +86,7 @@ pstj.ds.Sortable = goog.defineClass(goog.events.EventTarget, {
   },
 
   /**
-   * Getter forthe key index currently applied.
+   * Getter for the key index currently applied.
    * @return {!number}
    */
   getKey: function() {
