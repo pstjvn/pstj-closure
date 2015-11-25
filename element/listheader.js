@@ -56,7 +56,7 @@ pstj.element.ListHeader = goog.defineClass(pstj.material.Element, {
   /** @override */
   onTap: function(e) {
     goog.log.info(this.logger, 'Tap event detected from child');
-    e.stopPropagation(e);
+    e.stopPropagation();
     var idx = this.indexOfChild(/** @type {!goog.ui.Component} */(e.target));
     goog.log.info(this.logger, 'Index of child: ' + idx);
     if (idx != -1) {
