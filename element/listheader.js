@@ -89,14 +89,15 @@ pstj.element.ListHeader = goog.defineClass(pstj.material.Element, {
         this.getChildAt(this.index_).setSortingState(
             element.ListHeaderCell.SortState.NOT_SORTED);
       }
-      this.index_ = index;
-      if (this.index_ != -1) {
-        this.getChildAt(this.index_).setSortingState(
-            asc ?
-                element.ListHeaderCell.SortState.SORTED_ASCENDING :
-                element.ListHeaderCell.SortState.SORTED_DESCENDING);
-      }
     }
+    this.index_ = index;
+    if (this.index_ != -1) {
+      this.getChildAt(this.index_).setSortingState(
+          asc ?
+              element.ListHeaderCell.SortState.SORTED_ASCENDING :
+              element.ListHeaderCell.SortState.SORTED_DESCENDING);
+    }
+
   },
 
   /**
