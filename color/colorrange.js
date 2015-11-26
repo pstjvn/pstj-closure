@@ -12,7 +12,7 @@ goog.require('pstj.math.utils');
 
 
 /** Implements a simple color range */
-pstj.ds.ColorRange = goog.defineClass(null, {
+pstj.color.ColorRange = goog.defineClass(null, {
   constructor: function() {
     /**
      * @type {string}

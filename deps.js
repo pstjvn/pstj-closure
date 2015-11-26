@@ -65,6 +65,7 @@ goog.addDependency('../../../apps/pstj/fx/abstractanimation.js', ['pstj.fx.anima
 goog.addDependency('../../../apps/pstj/fx/dragdropgroup.js', ['pstj.fx.DragDropGroup'], ['goog.dom.classlist', 'goog.fx.DragDropGroup', 'pstj.fx.Dragger'], false);
 goog.addDependency('../../../apps/pstj/fx/dragger.js', ['pstj.fx.Dragger'], ['goog.async.AnimationDelay', 'goog.fx.Dragger', 'pstj.style.css'], false);
 goog.addDependency('../../../apps/pstj/graphics/canvas.js', ['pstj.graphics.Canvas'], ['goog.dom', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.style'], false);
+goog.addDependency('../../../apps/pstj/graphics/colorarc.js', ['pstj.graphics.ColorArc'], ['pstj.math.utils'], false);
 goog.addDependency('../../../apps/pstj/graphics/draw.js', ['pstj.graphics.Draw'], ['goog.Disposable'], false);
 goog.addDependency('../../../apps/pstj/graphics/smooth.js', ['pstj.graphics.Smooth'], ['goog.Disposable', 'goog.async.AnimationDelay'], false);
 goog.addDependency('../../../apps/pstj/graphics/timeline.js', ['pstj.graphics.Timeline'], ['goog.dom.classlist', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventType', 'goog.functions', 'pstj.configure', 'pstj.date.utils', 'pstj.graphics.Canvas', 'pstj.graphics.Draw', 'pstj.graphics.Smooth', 'pstj.ui.Templated'], false);
