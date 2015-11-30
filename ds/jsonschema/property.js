@@ -356,6 +356,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
             '\'\')';
         case 'boolean': return '(goog.isBoolean( ' + item + ') ? ' + item +
             ' : ' + 'false)';
+        case 'array': return 'a.assertArray(' + item + ')';
         default: return item;
       }
     } else return item;
