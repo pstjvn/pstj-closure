@@ -1,0 +1,21 @@
+// Definition for oauth icons
+
+@import "../icon";
+
+.material-icon {
+  &[type="from-none-to-facebook"] {
+    &:extend(.icon-scaleup);
+  }
+
+  &[type="from-facebook-to-none"] {
+    &:extend(.icon-fadeout);
+  }
+
+  &[type="from-none-to-google"] {
+    &:extend(.icon-scaleup);
+  }
+
+  &[type="from-google-to-none"] {
+    &:extend(.icon-fadeout);
+  }
+}

@@ -87,7 +87,29 @@ _.getPercentFromValue = function(value, of_value) {
  * @return {number} The calculated percentile of value.
  */
 _.getValueFromPercent = function(value, percent) {
-  return (value * percent) / 100;
+  return (Math.round(value * 10000) / 10000) * (percent / 100);
+};
+
+
+/**
+ * Calculates fraction of a value from a bigger value.
+ * @param {number} value The value to caclulate the faction for.
+ * @param {number} of_value The value to calculate fraction from.
+ * @return {number}
+ */
+_.getFractionFromValue = function(value, of_value) {
+  return value / of_value;
+};
+
+
+/**
+ * Calculates value from a large value and a fraction.
+ * @param {number} value The value to calculate value from based on a fraction.
+ * @param {number} fraction The fraction of the large number.
+ * @return {number}
+ */
+_.getValueFromFraction = function(value, fraction) {
+  return value * fraction;
 };
 
 
@@ -181,7 +203,7 @@ _.diagonal = function(rect) {
 
 
 /**
- * Given a value in the rist range calculates the corresponsing value in the
+ * Given a value in the first range calculates the corresponsing value in the
  * second range so that it is in the same relative offset.
  * @param {number} min1
  * @param {number} max1

@@ -67,7 +67,7 @@ pstj.app.Facebook = goog.defineClass(null, {
         goog.log.info(this.logger, 'Prepair callback when SDK loads.');
         goog.global['fbAsyncInit'] = goog.bind(function() {
           goog.log.info(this.logger, 'Finished FB JS SDK loading');
-          goog.global['FB']['init'](this.getConfig());
+          goog.global['FB']['init'](this.getConfig_());
           resolve(null);
           goog.log.info(this.logger, 'Start check for user');
           goog.global['FB']['getLoginStatus'](goog.bind(function(response) {
@@ -104,7 +104,7 @@ pstj.app.Facebook = goog.defineClass(null, {
    * @private
    * @return {!Object<string, ?>}
    */
-  getConfig: function() {
+  getConfig_: function() {
     return {
       'appId': pstj.app.FacebookId,
       'version': pstj.app.FacebookSDKVersion,
