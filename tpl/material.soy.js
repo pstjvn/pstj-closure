@@ -422,7 +422,9 @@ if (goog.DEBUG) {
  * @param {{
  *    icon: string,
  *    tactile: (boolean|null|undefined),
- *    action: (null|string|undefined)
+ *    action: (null|string|undefined),
+ *    raised: (boolean|null|undefined),
+ *    transition: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @param {Object<string, *>=} opt_ijData
@@ -436,7 +438,11 @@ pstj.material.template.Fab = function(opt_data, opt_ignored, opt_ijData) {
   var tactile = /** @type {boolean|null|undefined} */ (opt_data.tactile);
   soy.asserts.assertType(opt_data.action == null || (opt_data.action instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.action), 'action', opt_data.action, 'null|string|undefined');
   var action = /** @type {null|string|undefined} */ (opt_data.action);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" use-pointer ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null, null, opt_ijData) + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + pstj.material.template.Ripple({recenter: true}, null, opt_ijData) + '</div>');
+  soy.asserts.assertType(opt_data.raised == null || goog.isBoolean(opt_data.raised) || opt_data.raised === 1 || opt_data.raised === 0, 'raised', opt_data.raised, 'boolean|null|undefined');
+  var raised = /** @type {boolean|null|undefined} */ (opt_data.raised);
+  soy.asserts.assertType(opt_data.transition == null || goog.isBoolean(opt_data.transition) || opt_data.transition === 1 || opt_data.transition === 0, 'transition', opt_data.transition, 'boolean|null|undefined');
+  var transition = /** @type {boolean|null|undefined} */ (opt_data.transition);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-fab') + ((tactile) ? ' ' + goog.getCssName('material-button-tactile') : '') + ((raised) ? ' ' + goog.getCssName('material-fab-raised') : '') + ((transition) ? ' ' + goog.getCssName('material-raf-transition') : '') + '" icon="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(icon)) + '" use-pointer ink ' + ((action) ? 'action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(action)) + '"' : '') + '>' + pstj.material.template.Shadow(null, null, opt_ijData) + pstj.material.template.IconContainer({type: icon}, null, opt_ijData) + pstj.material.template.Ripple({recenter: true}, null, opt_ijData) + '</div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.Fab.soyTemplateName = 'pstj.material.template.Fab';

@@ -29,7 +29,7 @@ var BR = pstj.material.ButtonRenderer;
  */
 pstj.material.Fab = function(opt_content, opt_renderer, opt_domHelper) {
   goog.base(this, opt_content, opt_renderer, opt_domHelper);
-  this.activeDepth = 4;
+  this.activeDepth = 2;
   // by default the FAB is raised
   this.setRaised(true);
 };
