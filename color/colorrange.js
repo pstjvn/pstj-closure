@@ -86,21 +86,21 @@ pstj.color.ColorRange = goog.defineClass(null, {
   /**
    * Given a percentage returns the percentile representation of the color
    * range.
-   * @param {number} percent The percent to use.
+   * @param {number} fraction The fraction to use.
    * @return {string}
    */
-  getColorValue: function(percent) {
+  getColorValue: function(fraction) {
     for (var i = 0; i < 3; i++) {
       if (this.revert_[i] == 0) {
         this.lastCalculatedValue_[i] = this.startrgb_[i];
       } else if (this.revert_[i] == 1) {
         this.lastCalculatedValue_[i] = +(
-            pstj.math.utils.getValueFromPercent(this.distance_[i], percent) +
+            pstj.math.utils.getValueFromFraction(this.distance_[i], fraction) +
             this.startrgb_[i]).toFixed();
       } else if (this.revert_[i] == -1) {
         this.lastCalculatedValue_[i] = +(
             this.startrgb_[i] -
-            pstj.math.utils.getValueFromPercent(this.distance_[i], percent))
+            pstj.math.utils.getValueFromFraction(this.distance_[i], fraction))
                 .toFixed();
       }
     }

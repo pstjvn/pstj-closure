@@ -78,7 +78,7 @@ g.ColorArc = goog.defineClass(null, {
         rad = rad - cicumference;
       }
 
-      ctx.strokeStyle = cr.getColorValue(mu.getPercentFromValue(i,
+      ctx.strokeStyle = cr.getColorValue(mu.getFractionFromValue(i,
           degreesToDraw));
       ctx.lineWidth = 10;
       ctx.beginPath();
