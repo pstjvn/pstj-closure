@@ -205,6 +205,13 @@ ngmodel.Pool_ = goog.defineClass(goog.structs.Pool, {
     obj.nodes_ = null;
     obj.length_ = 0;
     return goog.base(this, 'releaseObject', obj);
+  },
+
+  /** @inheritDoc */
+  getObject: function() {
+    var o = goog.base(this, 'getObject');
+    o.nodes_ = [];
+    return o;
   }
 });
 
