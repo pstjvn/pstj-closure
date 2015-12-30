@@ -78,6 +78,14 @@ pstj.ds.Sortable = goog.defineClass(goog.events.EventTarget, {
   },
 
   /**
+   * Allows accees to the underlying data object.
+   * @return {!pstj.ds.DtoBase}
+   */
+  getDataSource: function() {
+    return this.dataSource;
+  },
+
+  /**
    * Getter for the current sorting order.
    * @return {boolean}
    */
