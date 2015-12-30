@@ -256,7 +256,11 @@
   {@param? action: string}
   {@param? tactile: bool}
   {@param? disabled: bool}
-  <div is class="{css material-button}{if $tactile} {css material-button-tactile}{/if}{if $disabled} {css material-button-disabled}{/if}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
+  {@param? raised: bool}
+  <div is class="{css material-button}
+      {if $tactile} {css material-button-tactile}{/if}
+      {if $disabled} {css material-button-disabled}{/if}
+      {if $raised} {css material-button-raised}{/if}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}

@@ -54,8 +54,8 @@ if (goog.DEBUG) {
  */
 pstj.templates.pager = function(opt_data, opt_ignored, opt_ijData) {
   var output = '<div class="' + goog.getCssName('pstj-pager-wrapper') + '"><div class="' + goog.getCssName('pstj-pager-items') + '">';
-  var itemLimit600 = opt_data.itemsCount;
-  for (var item600 = 0; item600 < itemLimit600; item600++) {
+  var itemLimit616 = opt_data.itemsCount;
+  for (var item616 = 0; item616 < itemLimit616; item616++) {
     output += pstj.templates.page(null, null, opt_ijData);
   }
   output += '</div><div class="' + goog.getCssName('pstj-pager-page-indicator') + '">Page <span class="' + goog.getCssName('pstj-pager-page') + '"></span> of <span class="' + goog.getCssName('pstj-pager-pages') + '"></span></div></div>';
@@ -250,11 +250,11 @@ if (goog.DEBUG) {
 pstj.templates.Swiper = function(opt_data, opt_ignored, opt_ijData) {
   var items = goog.asserts.assertArray(opt_data.items, "expected parameter 'items' of type list<?>.");
   var output = '<div is class="' + goog.getCssName('pstj-swiper') + ' ' + goog.getCssName('core-swipe') + '" use-pointer>';
-  var itemList770 = items;
-  var itemListLen770 = itemList770.length;
-  for (var itemIndex770 = 0; itemIndex770 < itemListLen770; itemIndex770++) {
-    var itemData770 = itemList770[itemIndex770];
-    output += pstj.templates.Swipetile(itemData770, null, opt_ijData);
+  var itemList786 = items;
+  var itemListLen786 = itemList786.length;
+  for (var itemIndex786 = 0; itemIndex786 < itemListLen786; itemIndex786++) {
+    var itemData786 = itemList786[itemIndex786];
+    output += pstj.templates.Swipetile(itemData786, null, opt_ijData);
   }
   output += '</div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);
@@ -351,15 +351,15 @@ pstj.templates.ListHeader = function(opt_data, opt_ignored, opt_ijData) {
   var cells = goog.asserts.assertArray(opt_data.cells, "expected parameter 'cells' of type list<string>.");
   var flexes = goog.asserts.assertArray(opt_data.flexes, "expected parameter 'flexes' of type list<float|int>.");
   var output = '<div is class="' + goog.getCssName('list-header') + ' ' + goog.getCssName('core-tap') + '"><div class="' + goog.getCssName('list-header-subhead') + '">';
-  var labelList836 = cells;
-  var labelListLen836 = labelList836.length;
-  for (var labelIndex836 = 0; labelIndex836 < labelListLen836; labelIndex836++) {
-    var labelData836 = labelList836[labelIndex836];
+  var labelList852 = cells;
+  var labelListLen852 = labelList852.length;
+  for (var labelIndex852 = 0; labelIndex852 < labelListLen852; labelIndex852++) {
+    var labelData852 = labelList852[labelIndex852];
     output += '<div class="' + goog.getCssName('list-header-item');
-    var local_index__soy817 = labelIndex836;
-    if (flexes[local_index__soy817]) {
-      var flex__soy820 = flexes[local_index__soy817];
-      switch (flex__soy820) {
+    var local_index__soy833 = labelIndex852;
+    if (flexes[local_index__soy833]) {
+      var flex__soy836 = flexes[local_index__soy833];
+      switch (flex__soy836) {
         case 1:
           output += goog.getCssName('flex-1');
           break;
@@ -377,7 +377,7 @@ pstj.templates.ListHeader = function(opt_data, opt_ignored, opt_ijData) {
           break;
       }
     }
-    output += '">' + pstj.templates.ListHeaderCell({label: labelData836}, null, opt_ijData) + '</div>';
+    output += '">' + pstj.templates.ListHeaderCell({label: labelData852}, null, opt_ijData) + '</div>';
   }
   output += '</div></div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);

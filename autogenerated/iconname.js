@@ -121,6 +121,16 @@ icon.resolveRenderer = function(iconName) {
     return icon.Facebook.getInstance();
   }
 
+  //Branch for Edit
+  if (iconName == pstj.material.icon.Name.EDIT) {
+    return icon.Edit.getInstance();
+  }
+
+  //Branch for Delete
+  if (iconName == pstj.material.icon.Name.DELETE) {
+    return icon.Delete.getInstance();
+  }
+
   return null;
 };
 
@@ -486,6 +496,44 @@ icon.Facebook = goog.defineClass(IR, {
 goog.addSingletonGetter(icon.Facebook);
 
 
+/** Renderer for Edit */
+icon.Edit = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.Edit(m);
+  }
+});
+goog.addSingletonGetter(icon.Edit);
+
+
+/** Renderer for Delete */
+icon.Delete = goog.defineClass(IR, {
+  /**
+   * @constructor
+   * @extends {IR}
+   */
+  constructor: function() {
+    goog.base(this);
+  },
+
+
+  /** @inheritDoc */
+  getTemplate: function(m) {
+    return pstj.material.icons.Delete(m);
+  }
+});
+goog.addSingletonGetter(icon.Delete);
+
+
 /**
  * Enumerates the names of the icons we know of.
  * @enum {string}
@@ -517,6 +565,8 @@ icon.Name = {
   GOOGLE: 'google',
   GOOGLE_PLUS: 'google-plus',
   FACEBOOK: 'facebook',
+  EDIT: 'edit',
+  DELETE: 'delete',
   NONEXISTING: 'nonexisting'
 };
 
