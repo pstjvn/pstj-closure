@@ -171,8 +171,16 @@ r.getTemplate = function(model) {
 r.generateTemplateData = function(control) {
   goog.asserts.assertInstanceof(control, pstj.material.ToggleButton);
   return {
-    name: control.name
+    name: control.name,
+    content: control.getContent()
   };
+};
+
+
+/** @override */
+r.getContentElement = function(element) {
+  return this.querySelector(element, goog.getCssName(
+      this.getCssClass(), 'content'));
 };
 
 

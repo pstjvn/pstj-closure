@@ -1,5 +1,6 @@
 // Provides the styling for the toggle button.
 
+@import "../reset";
 @import "radiobutton";
 
 
@@ -10,24 +11,33 @@
     outline: none;
   }
 
+
   &-container {
+    display: inline-block;
     position: relative;
     width: 64px;
-    height: 16px;
+    height: 20px;
+    margin: 0 5px 0 5px;
   }
 
   &-bar {
     position: absolute;
-    top: 8px;
+    opacity: 0.8;
+    top: 10px;
     left: 16px;
     height: 1px;
     width: 32px;
+    transition: background-color linear .08s;
     background-color: @material-radio-button-color;
     pointer-events: none;
   }
 
   &-checked &-bar {
     background-color: @material-radio-button-checked-color;
+  }
+
+  &-content {
+    display: inline-block;
   }
 
   // The radio button section

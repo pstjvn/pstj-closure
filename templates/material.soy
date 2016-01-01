@@ -186,13 +186,20 @@
  * Provides the template for the toggle button
  */
 {template .ToggleButton}
+  {@param? content: string}
   {@param? name: string}
-  <div is class="{css material-toggle-button}" role="button" name="{$name}" use-pointer>
+  {@param? disabled: bool}
+  <div is class="{css material-toggle-button}
+      {if $disabled} {css material-toggle-button-disabled}{/if}"
+      role="button" name="{$name}" use-pointer>
     <div class="{css material-toggle-button-container}">
       <div class="{css material-toggle-button-bar}"></div>
       {call .RadioButton}
         {param label: '' /}
       {/call}
+    </div>
+    <div class="{css material-toggle-button-content}">
+      {if $content}{$content}{/if}
     </div>
   </div>
 {/template}

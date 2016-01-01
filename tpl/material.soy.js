@@ -249,7 +249,9 @@ if (goog.DEBUG) {
 
 /**
  * @param {{
- *    name: (null|string|undefined)
+ *    content: (null|string|undefined),
+ *    name: (null|string|undefined),
+ *    disabled: (boolean|null|undefined)
  * }} opt_data
  * @param {(null|undefined)=} opt_ignored
  * @param {Object<string, *>=} opt_ijData
@@ -258,9 +260,13 @@ if (goog.DEBUG) {
  */
 pstj.material.template.ToggleButton = function(opt_data, opt_ignored, opt_ijData) {
   opt_data = opt_data || {};
+  soy.asserts.assertType(opt_data.content == null || (opt_data.content instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.content), 'content', opt_data.content, 'null|string|undefined');
+  var content = /** @type {null|string|undefined} */ (opt_data.content);
   soy.asserts.assertType(opt_data.name == null || (opt_data.name instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.name), 'name', opt_data.name, 'null|string|undefined');
   var name = /** @type {null|string|undefined} */ (opt_data.name);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toggle-button') + '" role="button" name="' + soy.$$escapeHtmlAttribute(name) + '" use-pointer><div class="' + goog.getCssName('material-toggle-button-container') + '"><div class="' + goog.getCssName('material-toggle-button-bar') + '"></div>' + pstj.material.template.RadioButton({label: ''}, null, opt_ijData) + '</div></div>');
+  soy.asserts.assertType(opt_data.disabled == null || goog.isBoolean(opt_data.disabled) || opt_data.disabled === 1 || opt_data.disabled === 0, 'disabled', opt_data.disabled, 'boolean|null|undefined');
+  var disabled = /** @type {boolean|null|undefined} */ (opt_data.disabled);
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('material-toggle-button') + ((disabled) ? ' ' + goog.getCssName('material-toggle-button-disabled') : '') + '" role="button" name="' + soy.$$escapeHtmlAttribute(name) + '" use-pointer><div class="' + goog.getCssName('material-toggle-button-container') + '"><div class="' + goog.getCssName('material-toggle-button-bar') + '"></div>' + pstj.material.template.RadioButton({label: ''}, null, opt_ijData) + '</div><div class="' + goog.getCssName('material-toggle-button-content') + '">' + ((content) ? soy.$$escapeHtml(content) : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.material.template.ToggleButton.soyTemplateName = 'pstj.material.template.ToggleButton';

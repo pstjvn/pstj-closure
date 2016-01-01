@@ -12,11 +12,12 @@ goog.require('pstj.material.ToggleButton');
         goog.ui.decorate(node);
       });
 
-  var t1 = new pstj.material.ToggleButton();
-  var t2 = new pstj.material.ToggleButton();
+  var t1 = new pstj.material.ToggleButton('Test 1');
+  var t2 = new pstj.material.ToggleButton('Test 2');
   var t3 = new pstj.material.ToggleButton();
   var t4 = new pstj.material.ToggleButton();
   var t5 = new pstj.material.ToggleButton();
+
 
   t2.setChecked(true);
   t3.setEnabled(false);
