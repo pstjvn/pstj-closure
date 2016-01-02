@@ -19,6 +19,7 @@ goog.require('pstj.material.Checkbox');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.InputBase');
+goog.require('pstj.material.ToggleButton');
 
 
 /** @extends {pstj.material.Element} */
@@ -100,6 +101,8 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
           child.setValue(goog.asserts.assertString(model[name]));
         } else if (child instanceof pstj.material.Checkbox) {
           child.setChecked(!!model[name]);
+        } else if (child instanceof pstj.material.ToggleButton) {
+          child.setChecked(!!model[name]);
         }
       }
     });
@@ -122,6 +125,8 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
           model[name] = child.getValue();
         } else if (child instanceof pstj.material.Checkbox) {
           model[name] = child.isChecked();
+        } else if (child instanceof pstj.material.ToggleButton) {
+          model[name] = child.isChecked() ? 1 : 0;
         }
       }
     });
