@@ -310,7 +310,7 @@ pstj.templates.ErrorMsg = function(opt_data, opt_ignored, opt_ijData) {
   var delay = /** @type {null|number|undefined} */ (opt_data.delay);
   soy.asserts.assertType(opt_data.auto == null || goog.isBoolean(opt_data.auto) || opt_data.auto === 1 || opt_data.auto === 0, 'auto', opt_data.auto, 'boolean|null|undefined');
   var auto = /** @type {boolean|null|undefined} */ (opt_data.auto);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('error-msg') + '" ' + ((auto == true) ? 'auto ' : '') + ((delay) ? 'delay="' + soy.$$escapeHtmlAttribute(delay) + '"' : '') + '></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('error-msg') + ' ' + goog.getCssName('error-msg-disabled') + '" ' + ((auto == true) ? 'auto ' : '') + ((delay) ? 'delay="' + soy.$$escapeHtmlAttribute(delay) + '"' : '') + '></div>');
 };
 if (goog.DEBUG) {
   pstj.templates.ErrorMsg.soyTemplateName = 'pstj.templates.ErrorMsg';
@@ -351,15 +351,15 @@ pstj.templates.ListHeader = function(opt_data, opt_ignored, opt_ijData) {
   var cells = goog.asserts.assertArray(opt_data.cells, "expected parameter 'cells' of type list<string>.");
   var flexes = goog.asserts.assertArray(opt_data.flexes, "expected parameter 'flexes' of type list<float|int>.");
   var output = '<div is class="' + goog.getCssName('list-header') + ' ' + goog.getCssName('core-tap') + '"><div class="' + goog.getCssName('list-header-subhead') + '">';
-  var labelList862 = cells;
-  var labelListLen862 = labelList862.length;
-  for (var labelIndex862 = 0; labelIndex862 < labelListLen862; labelIndex862++) {
-    var labelData862 = labelList862[labelIndex862];
+  var labelList864 = cells;
+  var labelListLen864 = labelList864.length;
+  for (var labelIndex864 = 0; labelIndex864 < labelListLen864; labelIndex864++) {
+    var labelData864 = labelList864[labelIndex864];
     output += '<div class="' + goog.getCssName('list-header-item');
-    var local_index__soy843 = labelIndex862;
-    if (flexes[local_index__soy843]) {
-      var flex__soy846 = flexes[local_index__soy843];
-      switch (flex__soy846) {
+    var local_index__soy845 = labelIndex864;
+    if (flexes[local_index__soy845]) {
+      var flex__soy848 = flexes[local_index__soy845];
+      switch (flex__soy848) {
         case 1:
           output += goog.getCssName('flex-1');
           break;
@@ -377,7 +377,7 @@ pstj.templates.ListHeader = function(opt_data, opt_ignored, opt_ijData) {
           break;
       }
     }
-    output += '">' + pstj.templates.ListHeaderCell({label: labelData862}, null, opt_ijData) + '</div>';
+    output += '">' + pstj.templates.ListHeaderCell({label: labelData864}, null, opt_ijData) + '</div>';
   }
   output += '</div></div>';
   return soydata.VERY_UNSAFE.ordainSanitizedHtml(output);
