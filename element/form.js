@@ -11,6 +11,7 @@
 goog.provide('pstj.element.Form');
 goog.provide('pstj.element.FormRenderer');
 
+goog.require('goog.array');
 goog.require('goog.functions');
 goog.require('pstj.ds.DtoBase');
 goog.require('pstj.element.ErrorMsg');
@@ -82,6 +83,9 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
         child.setValue('');
       }
     }, this);
+    goog.array.forEach(this.querySelectorAll('select'), function(sel) {
+      sel.value = sel.options.item(0).value;
+    });
     this.getRenderer().clearNativeFormElements(this.getElement());
   },
 
@@ -135,6 +139,12 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
         } else if (child instanceof pstj.material.ToggleButton) {
           model[name] = child.isChecked() ? 1 : 0;
         }
+      }
+    });
+    goog.array.forEach(this.querySelectorAll('select'), function(sel) {
+      var name = sel.name;
+      if (goog.isDefAndNotNull(model[name])) {
+        model[name] = sel.value;
       }
     });
     omodel.fromJSON(model);
