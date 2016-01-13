@@ -112,11 +112,18 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
    * Will try and map the form elements back to the data model.
    * If there is a model set the changed values will be written on it and the
    * CHNAGE event will fire on the model instance.
+   *
+   * @param {pstj.ds.DtoBase=} opt_model
    * @protected
    */
-  updateModelFromElements: function() {
-    if (goog.isNull(this.getModel())) return;
-    var model = goog.asserts.assertInstanceof(this.getModel(),
+  updateModelFromElements: function(opt_model) {
+    var omodel = null;
+    if (goog.isDefAndNotNull(opt_model)) omodel = opt_model;
+    else if (!goog.isNull(this.getModel())) omodel = this.getModel();
+
+    if (goog.isNull(omodel)) return;
+
+    var model = goog.asserts.assertInstanceof(omodel,
         pstj.ds.DtoBase).toJSON();
     this.forEachChild(function(child) {
       var name = child.name;
@@ -130,7 +137,7 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
         }
       }
     });
-    this.getModel().fromJSON(model);
+    omodel.fromJSON(model);
   },
 
   /**
