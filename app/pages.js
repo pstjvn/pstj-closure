@@ -14,6 +14,7 @@ goog.require('goog.ui.registry');
 goog.require('pstj.app.Page');
 goog.require('pstj.app.UiControl');
 goog.require('pstj.material.ElementRenderer');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.HeaderPanel');
 goog.require('pstj.templates');
 

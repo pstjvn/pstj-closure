@@ -13,12 +13,12 @@ goog.provide('pstj.ui.Upload');
 goog.provide('pstj.ui.Upload.Event');
 goog.provide('pstj.ui.UploadTemplate');
 
-goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.net.EventType');
 goog.require('goog.net.IframeIo');
 goog.require('pstj.templates');
+goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Templated');
 
 

@@ -8,6 +8,7 @@ goog.provide('pstj.ds.jsonschema.Class');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('pstj.ds.jsonschema.Buffer');
+goog.require('pstj.ds.jsonschema.Property');
 goog.require('pstj.ds.jsonschema.resolver');
 
 goog.scope(function() {

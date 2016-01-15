@@ -4,7 +4,6 @@
  */
 goog.provide('pstj.ds.discovery.Document');
 
-goog.require('goog.json');
 goog.require('pstj.ds.discovery.Class');
 goog.require('pstj.ds.discovery.List');
 goog.require('pstj.ds.discovery.Method');

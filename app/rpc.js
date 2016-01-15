@@ -7,7 +7,6 @@
 
 goog.provide('pstj.app.Rpc');
 
-goog.require('pstj.control.Toast');
 goog.require('pstj.resource');
 
 

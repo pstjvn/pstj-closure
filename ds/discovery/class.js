@@ -1,6 +1,6 @@
 goog.provide('pstj.ds.discovery.Class');
 
-goog.require('goog.array');
+goog.require('goog.object');
 goog.require('pstj.ds.discovery.Property');
 
 

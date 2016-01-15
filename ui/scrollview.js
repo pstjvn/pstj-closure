@@ -9,7 +9,7 @@ goog.provide('pstj.ui.ScrollView');
 
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom.ViewportSizeMonitor');
-goog.require('goog.events.EventType');
+// goog.require('goog.events.EventType');
 goog.require('goog.ui.Control');
 goog.require('pstj.ds.List');
 goog.require('pstj.lab.style.css');

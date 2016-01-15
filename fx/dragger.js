@@ -10,6 +10,7 @@
 goog.provide('pstj.fx.Dragger');
 
 goog.require('goog.async.AnimationDelay');
+goog.require('goog.fx.DragEvent');
 goog.require('goog.fx.Dragger');
 goog.require('pstj.style.css');
 

@@ -4,7 +4,6 @@ goog.require('goog.Promise');
 goog.require('goog.array');
 goog.require('goog.labs.net.xhr');
 goog.require('pstj.ds.jsonschema.Class');
-goog.require('pstj.ds.jsonschema.Property');
 goog.require('pstj.ds.jsonschema.resolver');
 
 goog.scope(function() {

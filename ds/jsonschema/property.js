@@ -334,6 +334,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    * Wrap with all neede checks the right hand assignemnt when updating
    * from server sent map.
    * @param {string} item String representation of the item to wrap.
+   * @return {string}
    * @private
    */
   wrapWithChecks_: function(item) {
@@ -364,6 +365,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
 
   /**
    * Wraps an item to be parsed as a number at runtime.
+   * @param {string} text
    * @return {string}
    * @private
    */
@@ -373,6 +375,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
 
   /**
    * Wraps an item to be parsed as a boolean at runtime.
+   * @param {string} text
    * @return {string}
    * @private
    */
@@ -382,6 +385,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
 
   /**
    * Wraps an item to be parsed as a string at runtime.
+   * @param {string} text
    * @return {string}
    * @private
    */
@@ -391,6 +395,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
 
   /**
    * Wraps an item to be parsed as a Date at runtime.
+   * @param {string} text
    * @return {string}
    * @private
    */

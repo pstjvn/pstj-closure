@@ -2,7 +2,6 @@ goog.provide('pstj.date.utils');
 
 goog.require('goog.array');
 goog.require('goog.i18n.DateTimeFormat');
-goog.require('goog.i18n.DateTimeFormat.Format');
 goog.require('goog.string');
 
 /**

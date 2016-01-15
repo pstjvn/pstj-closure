@@ -116,7 +116,7 @@ pstj.ds.jstype.Extractor = goog.defineClass(null, {
   /**
    * Adds a new property or method to the constructor class instance.
    * @param {Element} node The element to operate on.
-   * @param {pstj.ds.jstype.Constructor} ctor The class to add to.
+   * @param {pstj.ds.jstype.Constructor} ns The class to add to.
    * @protected
    */
   addPropertyOrMethod: function(node, ns) {
