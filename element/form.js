@@ -157,6 +157,14 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
   getRenderer: function() {
     return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
         pstj.element.FormRenderer);
+  },
+
+  /**
+   * Expose the form as a model.
+   * @param {?pstj.ds.DtoBase=} opt_model
+   */
+  updateModel: function(opt_model) {
+    this.updateModelFromElements(opt_model);
   }
 });
 
