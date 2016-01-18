@@ -40,7 +40,7 @@ pstj.material.IconRenderer = goog.defineClass(ER, {
    * representing state so that the css animation can be applied on it.
    *
    * @param {pstj.material.Icon} control
-   * @param {pstj.material.icon.Name} to
+   * @param {pstj.autogen.icons.names} to
    */
   setType: function(control, to) {
     var from = control.type;

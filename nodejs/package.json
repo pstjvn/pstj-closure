@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "jsdom": "~3.0.0",
+    "jsdom": "^7.2.2",
     "args": "*",
     "request": "*"
   }

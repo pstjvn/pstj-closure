@@ -12,6 +12,7 @@ goog.require('goog.string');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.lab.style.css');
+goog.require('pstj.autogen.iconrenderer.Warning');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.InputBase');

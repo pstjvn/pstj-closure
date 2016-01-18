@@ -9,7 +9,6 @@ goog.require('pstj.material.Button');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventType');
-goog.require('pstj.material.icon');
 goog.require('pstj.material.template');
 goog.require('pstj.ui.MediaQuery');
 

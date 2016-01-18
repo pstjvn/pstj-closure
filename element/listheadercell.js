@@ -17,16 +17,19 @@ goog.provide('pstj.element.ListHeaderCellRenderer');
 goog.require('goog.asserts');
 goog.require('goog.log');
 goog.require('goog.ui.registry');
+goog.require('pstj.autogen.iconrenderer.ArrowDropDown');
+goog.require('pstj.autogen.iconrenderer.ArrowDropUp');
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.IconContainer');
-goog.require('pstj.material.icon');
 goog.require('pstj.templates');
 
 
 goog.scope(function() {
 var element = pstj.element;
 var material = pstj.material;
+var inames = pstj.autogen.icons.names;
 
 
 /** @extends {material.Element} */
@@ -49,13 +52,13 @@ element.ListHeaderCell = goog.defineClass(material.Element, {
    * @param {element.ListHeaderCell.SortState} state
    */
   setSortingState: function(state) {
-    var icon = material.icon.Name.NONE;
+    var icon = inames.NONE;
     switch (state) {
       case element.ListHeaderCell.SortState.SORTED_ASCENDING:
-        icon = material.icon.Name.ARROW_DROP_DOWN;
+        icon = inames.ARROW_DROP_DOWN;
         break;
       case element.ListHeaderCell.SortState.SORTED_DESCENDING:
-        icon = material.icon.Name.ARROW_DROP_UP;
+        icon = inames.ARROW_DROP_UP;
         break;
     }
     goog.log.info(this.logger, 'switching to icon: ' + icon);
@@ -110,7 +113,7 @@ element.ListHeaderCellRenderer = goog.defineClass(material.ElementRenderer, {
   /**
    * Sets the icon to match the sort state directed from outside.
    * @param {element.ListHeaderCell} instance
-   * @param {material.icon.Name} icon
+   * @param {pstj.autogen.icons.names} icon
    */
   setIcon: function(instance, icon) {
     goog.asserts.assertInstanceof(instance.getChildAt(0),

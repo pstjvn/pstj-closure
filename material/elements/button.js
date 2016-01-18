@@ -16,7 +16,7 @@ goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.Ripple');
 goog.require('pstj.material.Shadow');
 goog.require('pstj.material.State');
-goog.require('pstj.material.icon');
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.template');
 
 goog.scope(function() {
@@ -65,10 +65,10 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.disabledDepth = 0;
     /**
      * The icon to display in the button.
-     * @type {pstj.material.icon.Name}
+     * @type {pstj.autogen.icons.names}
      * @protected
      */
-    this.icon = pstj.material.icon.Name.NONE;
+    this.icon = pstj.autogen.icons.names.NONE;
     /**
      * Flag, if we should suppress the icon animation until the
      * ripple fx is done.
@@ -131,7 +131,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     if (es.hasAttribute('icon')) {
       var icon = es.getAttribute('icon');
       if (icon) {
-        this.icon = /** @type {pstj.material.icon.Name} */ (icon);
+        this.icon = /** @type {pstj.autogen.icons.names} */ (icon);
       } else {
         if (this.getIcon()) {
           this.icon = this.getIcon().getIcon();
@@ -225,7 +225,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /**
    * Sets the icon to be used in the button, if icon is supported by the
    * renderer.
-   * @param {pstj.material.icon.Name} icon
+   * @param {pstj.autogen.icons.names} icon
    */
   setIcon: function(icon) {
     this.icon = icon;

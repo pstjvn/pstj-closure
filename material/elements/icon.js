@@ -2,9 +2,9 @@ goog.provide('pstj.material.Icon');
 goog.provide('pstj.material.Icon.EventType');
 
 goog.require('goog.events.EventType');
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.IconRenderer');
-goog.require('pstj.material.icon');
 
 
 /**
@@ -40,9 +40,9 @@ pstj.material.Icon = goog.defineClass(pstj.material.Element, {
     goog.base(this, opt_content, opt_renderer, opt_domHelper);
     /**
      * The name of the icon that should be currently displayed.
-     * @type {pstj.material.icon.Name}
+     * @type {pstj.autogen.icons.names}
      */
-    this.type = pstj.material.icon.Name.NONE;
+    this.type = pstj.autogen.icons.names.NONE;
   },
 
 
@@ -75,7 +75,7 @@ pstj.material.Icon = goog.defineClass(pstj.material.Element, {
    * icon type) are extracted into the icon container in order to support
    * the dev/compiled differences in icon creation.
    *
-   * @param {pstj.material.icon.Name} iconName
+   * @param {pstj.autogen.icons.names} iconName
    */
   setIcon: function(iconName) {
     this.getRenderer().setType(this, iconName);

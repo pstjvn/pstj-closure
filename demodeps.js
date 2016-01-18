@@ -30,7 +30,8 @@ goog.addDependency('../../../apps/pstj/demos/tableview/tableview.js', ['pstj.dem
 goog.addDependency('../../../apps/pstj/demos/ui/mediaquery.js', ['pstj.demos.ui.mediaquery'], ['goog.dom', 'goog.events', 'pstj.ui.MediaQuery'], false);
 goog.addDependency('../../../apps/pstj/demos/widgets/swiper.js', ['pstj.demos.widget.swiper'], ['pstj.ds.dto.SwipetileList', 'pstj.widget.Swiper'], false);
 goog.addDependency('../../../apps/pstj/demos/widgets/swipetile.js', ['pstj.demos.widget.swipetile'], ['pstj.widget.Swipetile'], false);
-goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.material.icons'], ['soy', 'soydata'], false);
+goog.addDependency('../../../apps/pstj/tpl/ds.soy.js', ['pstj.ds.template'], ['goog.asserts', 'soy', 'soydata'], false);
+goog.addDependency('../../../apps/pstj/tpl/icons.soy.js', ['pstj.autogen.template.icons'], ['soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/material.soy.js', ['pstj.material.template'], ['goog.asserts', 'soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/pstj.soy.js', ['pstj.templates'], ['goog.asserts', 'pstj.material.template', 'soy', 'soydata'], false);
 goog.addDependency('../../../apps/pstj/tpl/select.soy.js', ['pstj.select'], ['soy', 'soydata'], false);

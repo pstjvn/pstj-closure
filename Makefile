@@ -16,7 +16,8 @@ private_deps_cmdline = $(shell echo $(private_source_dirs) | sed 's+$(sed_tokeni
 public_dep_file_deps := $(shell for folder in $(public_source_dirs) ; do find $$folder -name '*.js' ; done)
 private_dep_file_deps = $(template_build_dir)/*.soy.js demos/*/*.js
 
-all: $(lintfile) $(private_deps_file) $(public_deps_file)
+# all: $(lintfile) $(private_deps_file) $(public_deps_file)
+all: $(private_deps_file) $(public_deps_file)
 	@echo '>>> pstj library all done'
 
 $(lintfile): $(public_dep_file_deps) demos/*/*.js
@@ -36,4 +37,4 @@ $(template_build_dir)/*.soy.js: $(template_source_dir)/*.soy
 	$(java) $(soy_compiler) $(soy_compiler_options) $(template_source_dir)/*.soy
 
 templates/icons.soy: templates/icons.xml
-	node nodejs/compiler.js $?
+	node nodejs/icongen.js $?

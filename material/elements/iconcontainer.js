@@ -13,7 +13,8 @@ goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.Icon');
 goog.require('pstj.material.Icon.EventType');
 goog.require('pstj.material.State');
-goog.require('pstj.material.icon');
+goog.require('pstj.material.icons.registry');
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.template');
 goog.require('soydata.SanitizedHtml');
 
@@ -21,7 +22,7 @@ goog.scope(function() {
 var E = pstj.material.Element;
 var ER = pstj.material.ElementRenderer;
 var I = pstj.material.Icon;
-var icon = pstj.material.icon;
+var iconnames = pstj.autogen.icons.names;
 // Set this to true to test behaviour as if the code was compiled:
 // this is - after you run the code generation step
 // var COMPILED = true;
@@ -53,13 +54,13 @@ pstj.material.IconContainer = goog.defineClass(E, {
     this.icon = null;
     /**
      * The type of icon we want to show currently.
-     * @type {icon.Name}
+     * @type {iconnames}
      * @protected
      */
-    this.type = icon.Name.NONE;
+    this.type = iconnames.NONE;
     /**
      * The type of icon we want to show currently.
-     * @type {?icon.Name}
+     * @type {?iconnames}
      * @private
      */
     this.tmpType_ = null;
@@ -90,7 +91,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
     if (target != this.icon) {
       e.preventDefault();
       this.removeChild(/** @type {I} */(target), true);
-    } else if (this.icon.type == icon.Name.NONE) {
+    } else if (this.icon.type == iconnames.NONE) {
       e.preventDefault();
       this.removeChild(this.icon, true);
       this.icon = null;
@@ -101,7 +102,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
   /**
    * Accessor method for the current icon / type applied to the container.
-   * @return {icon.Name}
+   * @return {pstj.autogen.icons.names}
    */
   getIcon: function() {
     return this.type;
@@ -110,7 +111,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
   /**
    * Sets the icon to use by its name.
-   * @param {icon.Name} iconName
+   * @param {pstj.autogen.icons.names} iconName
    */
   setIcon: function(iconName) {
     if (COMPILED || pstj.material.IconContainer.XMLLoaded) {
@@ -132,7 +133,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
             this.icon.setIcon(iconName);
           } else {
             // If mutation is not possible
-            this.icon.setIcon(icon.Name.NONE);
+            this.icon.setIcon(pstj.autogen.icons.names.NONE);
             this.icon = this.createIcon(iconName);
             this.addChild(this.icon, true);
             this.icon.setIcon(iconName);
@@ -154,13 +155,13 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
   /**
    * Create a custom icon instance matchin the desired type.
-   * @param {icon.Name} iconName
+   * @param {pstj.autogen.icons.names} iconName
    * @return {pstj.material.Icon}
    */
   createIcon: function(iconName) {
     if (COMPILED) {
       return new pstj.material.Icon(null,
-          icon.resolveRenderer(iconName),
+          pstj.material.icons.registry.getRenderer(iconName),
           this.getDomHelper());
     } else {
       // this path is taken in dev mode - the instances must be handled here.
@@ -176,20 +177,20 @@ pstj.material.IconContainer = goog.defineClass(E, {
     var type = this.getElement().getAttribute('type');
     if (!type) type = 'none';
     // set icon - will update the type and set the icon internally.
-    this.setIcon(/** @type {pstj.material.icon.Name} */(type));
+    this.setIcon(/** @type {pstj.autogen.icons.names} */(type));
   },
 
 
   /**
    * Easier way to get to a suitable renderer for an icon type.
-   * @param {pstj.material.icon.Name} iconName
+   * @param {pstj.autogen.icons.names} iconName
    * @return {pstj.material.IconRenderer}
    */
   getSuitableRenderer: function(iconName) {
     if (COMPILED) {
-      return icon.resolveRenderer(iconName);
+      return pstj.material.icons.registry.getRenderer(iconName);
     } else {
-      if (iconName == pstj.material.icon.Name.NONE) return null;
+      if (iconName == iconnames.NONE) return null;
       return pstj.material.IconContainer.getCustomRenderer(iconName);
     }
   },
@@ -231,7 +232,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
     /**
      * Retrieves a custom renderer instance matching the icon name.
-     * @param {pstj.material.icon.Name} icon
+     * @param {pstj.autogen.icons.names} icon
      * @return {pstj.material.IconRenderer}
      */
     getCustomRenderer: function(icon) {
@@ -401,7 +402,7 @@ if (!COMPILED) {
         // added (i.e. icon names that are matched by an SVG element)
         for (var i = 0; i < len; i = i + 2) {
           pstj.material.IconContainer.pending_[i].setIcon(
-              /** @type {pstj.material.icon.Name} */ (
+              /** @type {pstj.autogen.icons.names} */ (
                   pstj.material.IconContainer.pending_[i + 1]));
         }
         goog.array.clear(pstj.material.IconContainer.pending_);

@@ -34,7 +34,7 @@ pstj.material.MenuItem = goog.defineClass(pstj.material.Element, {
 
   /**
    * Updates the icon in the menu item.
-   * @param {pstj.material.icon.Name} icon The icon name.
+   * @param {pstj.autogen.icons.names} icon The icon name.
    */
   setIcon: function(icon) {
     goog.asserts.assertInstanceof(this.getChildAt(0),

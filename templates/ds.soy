@@ -1,0 +1,99 @@
+{namespace pstj.ds.template}
+
+
+/** Default template for custom, auto generated icon renderers. */
+{template .IconRenderer}
+  {@param className: string}
+  {@param iconName: string}
+  {@param icons: list<string>}
+{literal}
+// File auto-generated, please do not edit
+goog.provide('pstj.autogen.iconrenderer.{/literal}{$className}{literal}');
+
+goog.require('pstj.autogen.template.icons');
+goog.require('pstj.material.IconRenderer');
+goog.require('pstj.material.icons.registry');
+
+goog.scope(function() {
+var icons = pstj.autogen.iconrenderer;
+var IR = pstj.material.IconRenderer;
+var registry = pstj.material.icons.registry;
+
+
+/** Renderer for '{/literal}{$iconName}{literal}' icon */
+icons.{/literal}{$className}{literal} = goog.defineClass(IR, {
+  constructor: function() {
+    IR.call(this);
+  },
+
+  /** @inheritDoc */
+  getTemplate: function(model) {
+    return pstj.autogen.template.icons.{/literal}{$className}{literal}(model);
+  }
+});
+goog.addSingletonGetter(icons.{/literal}{$className}{literal});
+
+
+// Register the renderer for icon name
+{/literal}
+{foreach $iconname in $icons}
+registry.setRenderer('{$iconname}', icons.{$className}.getInstance());{\n}
+{/foreach}
+{literal}
+});  // goog.scope
+
+{/literal}
+{/template}
+
+
+/**
+ * Provides the template for a new soy template containing all the icon
+ * renderers.
+ */
+{template .IconTemplate autoescape="strict" kind="text"}
+  {@param templates: list<string>}
+  {@param names: list<string>}
+{literal}
+{namespace pstj.autogen.template.icons}
+{/literal}
+{foreach $t in $templates}
+{literal}
+
+
+/** Template for icon */
+{template .{/literal}{$names[index($t)]}{literal}}
+{/literal}
+{$t}
+{literal}
+{/te{/literal}{literal}mplate}
+{/literal}
+{/foreach}
+{/template}
+
+
+/** Provides the template for the file containing all known icon names. */
+{template .IconNames}
+  {@param names: list<string>}
+  {@param symbols: list<string>}
+{literal}
+// File auto-generated, please do not edit!
+goog.provide('pstj.autogen.icons.names');
+
+
+/**
+ * Provides the name of known icons.
+ *
+ * Note that those are automatically extracted from the source svg file(s).
+ *
+ * @enum {string}
+ */
+pstj.autogen.icons.names = {
+  NONE: 'none',
+{/literal}
+{foreach $name in $names}
+{sp}{sp}{$symbols[index($name)]}:{sp}'{$name}',{\n}
+{/foreach}
+{literal}  NONEXISTING: 'nonexisting'
+};
+{/literal}
+{/template}
