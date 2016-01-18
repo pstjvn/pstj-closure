@@ -30,7 +30,6 @@ registry.logger = goog.log.getLogger('pstj.material.icons.registry');
  * @return {?pstj.material.IconRenderer}
  */
 registry.getRenderer = function(iconName) {
-  console.log('Looking up renderer for ' + iconName);
   var renderer = null;
   if (pstj.material.icons.registry.PREFER_STATICS) {
     var name = iconName;
@@ -44,7 +43,7 @@ registry.getRenderer = function(iconName) {
     renderer = goog.object.get(registry.renderers_, iconName);
   }
   if (goog.isDefAndNotNull(renderer)) return renderer;
-  goog.log.error(registry.logger, 'Did not match renderer for icon: ' +
+  goog.log.error(registry.logger, 'Did not find renderer for icon: ' +
       iconName);
   return null;
 };
@@ -58,7 +57,6 @@ registry.getRenderer = function(iconName) {
  * @param {!pstj.material.IconRenderer} rendererInstance
  */
 registry.setRenderer = function(iconName, rendererInstance) {
-  console.log('Registers renderer for ' + iconName);
   goog.object.set(registry.renderers_, iconName, rendererInstance);
 };
 
