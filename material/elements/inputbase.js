@@ -13,7 +13,6 @@ goog.require('goog.userAgent');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
-goog.require('pstj.material.State');
 goog.require('pstj.material.template');
 
 goog.scope(function() {
@@ -91,10 +90,10 @@ pstj.material.InputBase = goog.defineClass(E, {
      * @type {!goog.async.Delay<!pstj.material.InputBase>}
      * @private
      */
-    this.checkValueDelayed_ = new goog.async.Delay(
-        this.valueCheckWorkaround_, 200, this);
-    this.iosDelay_ = new goog.async.AnimationDelay(this.propagateChange_,
-        this.getDomHelper().getWindow(), this);
+    this.checkValueDelayed_ =
+        new goog.async.Delay(this.valueCheckWorkaround_, 200, this);
+    this.iosDelay_ = new goog.async.AnimationDelay(
+        this.propagateChange_, this.getDomHelper().getWindow(), this);
     // Register auto-dispose of the delay binding.
     this.registerDisposable(this.checkValueDelayed_);
 
@@ -119,17 +118,13 @@ pstj.material.InputBase = goog.defineClass(E, {
    * Set the input to be a required one.
    * @param {boolean} required
    */
-  setIsRequired: function(required) {
-    this.required_ = required;
-  },
+  setIsRequired: function(required) { this.required_ = required; },
 
   /**
    * Gets if the input is configured as required one.
    * @return {boolean}
    */
-  getIsRequired: function() {
-    return this.required_;
-  },
+  getIsRequired: function() { return this.required_; },
 
   /**
    * Allows access to the cached value of the input.
@@ -141,9 +136,7 @@ pstj.material.InputBase = goog.defineClass(E, {
    *
    * @return {string}
    */
-  getCachedValue: function() {
-    return this.cachedValue_;
-  },
+  getCachedValue: function() { return this.cachedValue_; },
 
   /**
    * Allows for programatically setting a new value on the input.
@@ -160,9 +153,7 @@ pstj.material.InputBase = goog.defineClass(E, {
    * Allow for external access to the current intrinsic value of the input.
    * @return {string}
    */
-  getValue: function() {
-    return this.value;
-  },
+  getValue: function() { return this.value; },
 
   /**
    * Checks the current input value against the rules for the input validity.
@@ -322,20 +313,24 @@ pstj.material.InputBase = goog.defineClass(E, {
   /** @override */
   addMaterialChildren: function() {
     goog.base(this, 'addMaterialChildren');
-    this.inputElement = this.getRenderer().getInputElement(
-        this.getElementStrict());
+    this.inputElement =
+        this.getRenderer().getInputElement(this.getElementStrict());
   },
 
   /** @override */
   enterDocument: function() {
     goog.base(this, 'enterDocument');
-    this.getHandler()
-        .listen(this, goog.ui.Component.EventType.CHANGE,
-            this.handleChangeEvent);
+    this.getHandler().listen(this, goog.ui.Component.EventType.CHANGE,
+                             this.handleChangeEvent);
+    // On desktop the number type input does not trigger any input so we need
+    // to listen for change
     if (!goog.userAgent.MOBILE && this.type == 'number') {
       this.getHandler().listen(this.inputElement, goog.events.EventType.CHANGE,
-          this.propagateChange_);
+                               this.propagateChange_);
     }
+    // When pasting we do not receive input either
+    this.getHandler().listen(this.inputElement, goog.events.EventType.PASTE,
+                             function(e) { this.iosDelay_.start(); })
   },
 
   /** @override */
@@ -370,7 +365,7 @@ pstj.material.InputBase = goog.defineClass(E, {
    */
   getRenderer: function() {
     return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-        pstj.material.InputBaseRenderer);
+                                         pstj.material.InputBaseRenderer);
   },
 
   /**
@@ -389,9 +384,7 @@ pstj.material.InputBase = goog.defineClass(E, {
    * For the Input instances we need to have automatic  state handling.
    * @override
    */
-  getKeyEventTarget: function() {
-    return this.inputElement;
-  },
+  getKeyEventTarget: function() { return this.inputElement; },
 
   statics: {
     /**
@@ -410,9 +403,7 @@ pstj.material.InputBase = goog.defineClass(E, {
 
 /** @extends {ER} */
 pstj.material.InputBaseRenderer = goog.defineClass(ER, {
-  constructor: function() {
-    ER.call(this);
-  },
+  constructor: function() { ER.call(this); },
 
   /**
    * Getter for the actual input element in the dom tree.
@@ -444,9 +435,7 @@ pstj.material.InputBaseRenderer = goog.defineClass(ER, {
   },
 
   /** @override */
-  getCssClass: function() {
-    return pstj.material.InputBaseRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return pstj.material.InputBaseRenderer.CSS_CLASS; },
 
   statics: {
     /**
@@ -460,13 +449,12 @@ goog.addSingletonGetter(pstj.material.InputBaseRenderer);
 
 // Register the default renderer.
 goog.ui.registry.setDefaultRenderer(pstj.material.InputBase,
-    pstj.material.InputBaseRenderer);
+                                    pstj.material.InputBaseRenderer);
 
 
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
-    pstj.material.InputBaseRenderer.CSS_CLASS, function() {
-      return new pstj.material.InputBase(null);
-    });
+    pstj.material.InputBaseRenderer.CSS_CLASS,
+    function() { return new pstj.material.InputBase(null); });
 
 });  // goog.scope
