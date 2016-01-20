@@ -40,6 +40,7 @@ soy_compiler = ../../templates/SoyToJsSrcCompiler.jar
 soy_message_extractor = ../../templates/SoyMsgExtractor.jar
 gss_compiler = ../../stylesheets/closure-stylesheets.jar
 js_compiler = ../../compiler/compiler.jar
+js_linter = ../../compiler/linter.jar
 
 build_js_compiler_option = \
 --charset=UTF-8 \
@@ -51,12 +52,7 @@ build_js_compiler_option = \
 --use_types_for_optimization \
 --warning_level=VERBOSE
 
-lint_cmd = $(linter) \
---jslint_error=all \
---strict \
---custom_jsdoc_tags=package \
---disable 0225 \
---max_line_length 80
+lint_cmd = $(java) $(js_linter)
 
 public_deps_file := deps.js
 private_deps_file := demodeps.js
