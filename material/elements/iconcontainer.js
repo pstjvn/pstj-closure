@@ -7,14 +7,13 @@ goog.require('goog.labs.net.xhr');
 goog.require('goog.object');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.configure');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.Icon');
 goog.require('pstj.material.Icon.EventType');
-goog.require('pstj.material.State');
 goog.require('pstj.material.icons.registry');
-goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.template');
 goog.require('soydata.SanitizedHtml');
 

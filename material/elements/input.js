@@ -7,16 +7,17 @@
 goog.provide('pstj.material.Input');
 goog.provide('pstj.material.InputRenderer');
 
-goog.require('goog.format.EmailAddress');
-goog.require('goog.string');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
-goog.require('pstj.lab.style.css');
+/** @suppress {extraRequire} */
 goog.require('pstj.autogen.iconrenderer.Warning');
+goog.require('pstj.lab.style.css');
 goog.require('pstj.material.EventMap');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.InputBase');
 goog.require('pstj.material.InputBaseRenderer');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
 
 goog.scope(function() {

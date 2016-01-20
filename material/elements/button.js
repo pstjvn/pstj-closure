@@ -3,20 +3,18 @@ goog.provide('pstj.material.ButtonRenderer');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.classlist');
 goog.require('goog.events.BrowserEvent');
 goog.require('goog.events.Event');
 goog.require('goog.object');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventType');
 goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.Ripple');
 goog.require('pstj.material.Shadow');
-goog.require('pstj.material.State');
-goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.template');
 
 goog.scope(function() {

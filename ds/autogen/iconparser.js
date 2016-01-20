@@ -11,16 +11,11 @@ var auto = pstj.ds.autogen;
 
 /** The icon parser implementation. */
 auto.IconParser = class {
-  /**
-   * @constructor
-   * @param {Document} doc The document containing the raw icon elements.
-   */
+  /** @param {Document} doc The document containing the raw icon elements. */
   constructor(doc) {
-    /**
-     * @type {!Array<pstj.ds.autogen.IconRenderer>}
-     */
+    /** @type {!Array<pstj.ds.autogen.IconRenderer>} */
     this.renderers = goog.array.map(doc.querySelectorAll('[is]'),
-        el => new pstj.ds.autogen.IconRenderer(el));
+                                    el => new pstj.ds.autogen.IconRenderer(el));
   }
 
   /**
@@ -28,9 +23,7 @@ auto.IconParser = class {
    * @param {function(pstj.ds.autogen.IconRenderer, number,
    *    Array<pstj.ds.autogen.IconRenderer>): void} fn
    */
-  forEach(fn) {
-    goog.array.forEach(this.renderers, fn);
-  }
+  forEach(fn) { goog.array.forEach(this.renderers, fn); }
 
   /**
    * Generates the contents of the file that contains all icon names mapped
@@ -46,10 +39,8 @@ auto.IconParser = class {
     var symbols = goog.array.map(names, (iconname) => {
       return iconname.toUpperCase().replace(/-/g, '_');
     });
-    return pstj.ds.template.IconNames({
-      names: names,
-      symbols: symbols
-    }).getContent();
+    return pstj.ds.template.IconNames({names: names, symbols: symbols})
+        .getContent();
   }
 
   /**
@@ -59,12 +50,15 @@ auto.IconParser = class {
    * @return {string}
    */
   generateIconTemplate() {
-    return pstj.ds.template.IconTemplate({
-      names: goog.array.map(this.renderers, el => el.className),
-      templates: goog.array.map(this.renderers,
-          el => el.getRendererTemplateContent())
-    }).getContent();
+    return pstj.ds.template
+        .IconTemplate({
+          names: goog.array.map(this.renderers, el => el.className),
+          templates: goog.array.map(this.renderers,
+                                    el => el.getRendererTemplateContent())
+        })
+        .getContent();
   }
-};
+}
+;
 
 });  // goog.scope
