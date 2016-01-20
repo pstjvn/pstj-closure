@@ -2,13 +2,12 @@ goog.provide('pstj.material.Toast');
 goog.provide('pstj.material.ToastRenderer');
 
 goog.require('goog.array');
-goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.Button');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
-goog.require('pstj.material.EventType');
 goog.require('pstj.material.template');
 goog.require('pstj.ui.MediaQuery');
 
@@ -50,11 +49,10 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
     this.setSupportedState(goog.ui.Component.State.NARROW, true);
     this.setSupportedState(goog.ui.Component.State.TRANSITIONING, true);
     this.setDispatchTransitionEvents(goog.ui.Component.State.OPENED, true);
-    this.setAutoEventsInternal(
-        pstj.material.EventMap.EventFlag.PRESS |
-        pstj.material.EventMap.EventFlag.MOVE |
-        pstj.material.EventMap.EventFlag.RELEASE |
-        pstj.material.EventMap.EventFlag.TAP);
+    this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS |
+                               pstj.material.EventMap.EventFlag.MOVE |
+                               pstj.material.EventMap.EventFlag.RELEASE |
+                               pstj.material.EventMap.EventFlag.TAP);
     this.setUsePointerAgent(true);
   },
 
@@ -62,7 +60,8 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
   enterDocument: function() {
     goog.base(this, 'enterDocument');
     this.getHandler().listen(this.mediaquery_,
-        pstj.ui.MediaQuery.EventType.MEDIA_CHANGE, this.onMediaChange);
+                             pstj.ui.MediaQuery.EventType.MEDIA_CHANGE,
+                             this.onMediaChange);
   },
 
   /**
@@ -79,9 +78,7 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
    * Getter for the level value.
    * @return {number}
    */
-  getLevel: function() {
-    return this.level_;
-  },
+  getLevel: function() { return this.level_; },
 
   /**
    * Allows the toast to be on top of another toast (or many toasts).
@@ -111,16 +108,14 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
   /** @override  */
   decorateInternal: function(el) {
     goog.base(this, 'decorateInternal', el);
-    this.actionLabel_ = goog.asserts.assertString(
-        this.getChildAt(0).getContent());
+    this.actionLabel_ =
+        goog.asserts.assertString(this.getChildAt(0).getContent());
   },
 
   /**
    * Toggle the toast.
    */
-  toggle: function() {
-    this.setOpen(!this.isOpen());
-  },
+  toggle: function() { this.setOpen(!this.isOpen()); },
 
   /** @override  */
   setOpen: function(enable) {
@@ -139,32 +134,23 @@ pstj.material.Toast = goog.defineClass(pstj.material.Element, {
 
 /** @extends {pstj.material.ElementRenderer} */
 pstj.material.ToastRenderer = goog.defineClass(pstj.material.ElementRenderer, {
-  constructor: function() {
-    pstj.material.ElementRenderer.call(this);
-  },
+  constructor: function() { pstj.material.ElementRenderer.call(this); },
 
   /** @override */
-  getCssClass: function() {
-    return pstj.material.ToastRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return pstj.material.ToastRenderer.CSS_CLASS; },
 
   /** @override */
-  getTemplate: function(model) {
-    return pstj.material.template.Toast(model);
-  },
+  getTemplate: function(model) { return pstj.material.template.Toast(model); },
 
   /** @override */
   generateTemplateData: function(toast) {
-    return {
-      text: toast.getContent() || '',
-      label: toast.actionLabel_
-    };
+    return {text: toast.getContent() || '', label: toast.actionLabel_};
   },
 
   /** @override */
   getContentElement: function(el) {
-    return goog.dom.getElementByClass(goog.getCssName(
-        this.getCssClass(), 'text'), el);
+    return goog.dom.getElementByClass(
+        goog.getCssName(this.getCssClass(), 'text'), el);
   },
 
   /**
@@ -172,9 +158,8 @@ pstj.material.ToastRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    * @param {pstj.material.Toast} toast The instance to update.
    */
   setLevel: function(toast) {
-    goog.array.forEach(toast.getExtraClassNames(), function(cn) {
-      toast.removeClassName(cn);
-    });
+    goog.array.forEach(toast.getExtraClassNames(),
+                       function(cn) { toast.removeClassName(cn); });
     switch (toast.getLevel()) {
       case 1:
         toast.addClassName(goog.getCssName(this.getCssClass(), 'l1'));
@@ -201,13 +186,13 @@ pstj.material.ToastRenderer = goog.defineClass(pstj.material.ElementRenderer, {
 });
 goog.addSingletonGetter(pstj.material.ToastRenderer);
 
+
 // Register for default renderer.
 goog.ui.registry.setDefaultRenderer(pstj.material.Toast,
-    pstj.material.ToastRenderer);
+                                    pstj.material.ToastRenderer);
 
 
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
-    pstj.material.ToastRenderer.CSS_CLASS, function() {
-      return new pstj.material.Toast(null);
-    });
+    pstj.material.ToastRenderer.CSS_CLASS,
+    function() { return new pstj.material.Toast(null); });

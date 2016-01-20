@@ -59,6 +59,5 @@ auto.IconParser = class {
         .getContent();
   }
 }
-;
 
 });  // goog.scope

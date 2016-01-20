@@ -17,7 +17,9 @@ goog.provide('pstj.element.ListHeaderCellRenderer');
 goog.require('goog.asserts');
 goog.require('goog.log');
 goog.require('goog.ui.registry');
+/** @suppress {extraRequire} */
 goog.require('pstj.autogen.iconrenderer.ArrowDropDown');
+/** @suppress {extraRequire} */
 goog.require('pstj.autogen.iconrenderer.ArrowDropUp');
 goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.Element');
@@ -71,7 +73,7 @@ element.ListHeaderCell = goog.defineClass(material.Element, {
    */
   getRenderer: function() {
     return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-        element.ListHeaderCellRenderer);
+                                         element.ListHeaderCellRenderer);
   },
 
   /**
@@ -85,30 +87,20 @@ element.ListHeaderCell = goog.defineClass(material.Element, {
      * Provides the sort states.
      * @enum {number}
      */
-    SortState: {
-      NOT_SORTED: 0,
-      SORTED_ASCENDING: 1,
-      SORTED_DESCENDING: -1
-    }
+    SortState: {NOT_SORTED: 0, SORTED_ASCENDING: 1, SORTED_DESCENDING: -1}
   }
 });
 
 
 /** @extends {material.ElementRenderer} */
 element.ListHeaderCellRenderer = goog.defineClass(material.ElementRenderer, {
-  constructor: function() {
-    material.ElementRenderer.call(this);
-  },
+  constructor: function() { material.ElementRenderer.call(this); },
 
   /** @override */
-  getCssClass: function() {
-    return element.ListHeaderCellRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return element.ListHeaderCellRenderer.CSS_CLASS; },
 
   /** @override */
-  getTemplate: function(model) {
-    return pstj.templates.ListHeaderCell(model);
-  },
+  getTemplate: function(model) { return pstj.templates.ListHeaderCell(model); },
 
   /**
    * Sets the icon to match the sort state directed from outside.
@@ -117,7 +109,8 @@ element.ListHeaderCellRenderer = goog.defineClass(material.ElementRenderer, {
    */
   setIcon: function(instance, icon) {
     goog.asserts.assertInstanceof(instance.getChildAt(0),
-        material.IconContainer).setIcon(icon);
+                                  material.IconContainer)
+        .setIcon(icon);
   },
 
   statics: {
@@ -129,14 +122,12 @@ element.ListHeaderCellRenderer = goog.defineClass(material.ElementRenderer, {
 
 // Register for default renderer.
 goog.ui.registry.setDefaultRenderer(pstj.element.ListHeaderCell,
-    pstj.element.ListHeaderCellRenderer);
+                                    pstj.element.ListHeaderCellRenderer);
 
 
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
-    pstj.element.ListHeaderCellRenderer.CSS_CLASS, function() {
-      return new pstj.element.ListHeaderCell(null);
-    });
+    pstj.element.ListHeaderCellRenderer.CSS_CLASS,
+    function() { return new pstj.element.ListHeaderCell(null); });
 
 });  // goog.scope
-

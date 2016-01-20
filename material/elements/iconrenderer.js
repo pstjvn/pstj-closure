@@ -17,21 +17,17 @@ pstj.material.IconRenderer = goog.defineClass(ER, {
    * @extends {ER}
    * @struct
    */
-  constructor: function() {
-    goog.base(this);
-  },
+  constructor: function() { goog.base(this); },
 
 
   /** @inheritDoc */
-  getCssClass: function() {
-    return pstj.material.IconRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return pstj.material.IconRenderer.CSS_CLASS; },
 
 
   /** @inheritDoc */
   getTemplate: function() {
     throw new Error('You should not use this instance directly.' +
-        'Instead use the render resolver for icons.');
+                    'Instead use the render resolver for icons.');
   },
 
 
@@ -44,13 +40,13 @@ pstj.material.IconRenderer = goog.defineClass(ER, {
    */
   setType: function(control, to) {
     var from = control.type;
-    control.getElement().setAttribute(
-        'type', 'from-' + from + '-to-' + to);
+    control.getElement().setAttribute('type', 'from-' + from + '-to-' + to);
   },
 
 
   /**
    * Set the type attribute to the current icon name.
+   * @param {pstj.material.Icon} control
    */
   resetType: function(control) {
     control.getElement().setAttribute('type', control.type);
