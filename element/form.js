@@ -97,8 +97,8 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
    */
   updateFormElements: function() {
     if (goog.isNull(this.getModel())) return;
-    var model = goog.asserts.assertInstanceof(this.getModel(),
-        pstj.ds.DtoBase).toJSON();
+    var model = goog.asserts.assertInstanceof(this.getModel(), pstj.ds.DtoBase)
+                    .toJSON();
     this.forEachChild(function(child) {
       var name = child.name;
       if (goog.isDefAndNotNull(model[name])) {
@@ -123,13 +123,14 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
    */
   updateModelFromElements: function(opt_model) {
     var omodel = null;
-    if (goog.isDefAndNotNull(opt_model)) omodel = opt_model;
-    else if (!goog.isNull(this.getModel())) omodel = this.getModel();
+    if (goog.isDefAndNotNull(opt_model))
+      omodel = opt_model;
+    else if (!goog.isNull(this.getModel()))
+      omodel = this.getModel();
 
     if (goog.isNull(omodel)) return;
 
-    var model = goog.asserts.assertInstanceof(omodel,
-        pstj.ds.DtoBase).toJSON();
+    var model = goog.asserts.assertInstanceof(omodel, pstj.ds.DtoBase).toJSON();
     this.forEachChild(function(child) {
       var name = child.name;
       if (goog.isDefAndNotNull(model[name])) {
@@ -157,24 +158,20 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
    */
   getRenderer: function() {
     return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-        pstj.element.FormRenderer);
+                                         pstj.element.FormRenderer);
   },
 
   /**
    * Expose the form as a model.
    * @param {?pstj.ds.DtoBase=} opt_model
    */
-  updateModel: function(opt_model) {
-    this.updateModelFromElements(opt_model);
-  }
+  updateModel: function(opt_model) { this.updateModelFromElements(opt_model); }
 });
 
 
 /** @extends {pstj.material.ElementRenderer} */
 pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
-  constructor: function() {
-    pstj.material.ElementRenderer.call(this);
-  },
+  constructor: function() { pstj.material.ElementRenderer.call(this); },
 
   /**
    * Helper method to retrieve inputs based on child index.
@@ -184,7 +181,7 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    */
   getInputByIndex: function(ctrl, index) {
     return goog.asserts.assertInstanceof(ctrl.getChildAt(index),
-        pstj.material.InputBase);
+                                         pstj.material.InputBase);
   },
 
   /**
@@ -195,7 +192,7 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    */
   getButtonByIndex: function(ctrl, index) {
     return goog.asserts.assertInstanceof(ctrl.getChildAt(index),
-        pstj.material.Button);
+                                         pstj.material.Button);
   },
 
   /**
@@ -206,7 +203,7 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    */
   getErrorMsgByIndex: function(ctrl, index) {
     return goog.asserts.assertInstanceof(ctrl.getChildAt(index),
-        pstj.element.ErrorMsg);
+                                         pstj.element.ErrorMsg);
   },
 
   /**
@@ -217,7 +214,7 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    */
   getCheckboxByIndex: function(ctrl, index) {
     return goog.asserts.assertInstanceof(ctrl.getChildAt(index),
-        pstj.material.Checkbox);
+                                         pstj.material.Checkbox);
   },
 
   /**
@@ -228,9 +225,7 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
    * @param {pstj.element.Form} ctrl
    * @return {!pstj.element.ErrorMsg}
    */
-  getErrorMsgElement: function(ctrl) {
-    throw new Error('Not implemented');
-  },
+  getErrorMsgElement: function(ctrl) { throw new Error('Not implemented'); },
 
   /**
    * Retrieves the submit button.
@@ -251,8 +246,8 @@ pstj.element.FormRenderer = goog.defineClass(pstj.material.ElementRenderer, {
   clearNativeFormElements: function(el) {
     if (!goog.isNull(el)) {
       goog.array.forEach(el.querySelectorAll('select'), function(s) {
-        /** @type {HTMLSelectElement} */(s).value = (
-            /** @type {HTMLOptionElement} */(s.options.item(0)).value);
+        /** @type {HTMLSelectElement} */ (s).value = (
+            /** @type {HTMLOptionElement} */ (s.options.item(0)).value);
       });
     }
   }

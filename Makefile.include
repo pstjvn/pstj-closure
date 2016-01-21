@@ -26,7 +26,8 @@ sourcegen \
 storage \
 style \
 themes \
-ui
+ui \
+worker
 
 template_source_dir := templates
 
