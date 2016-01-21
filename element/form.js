@@ -54,6 +54,7 @@ pstj.element.Form = goog.defineClass(pstj.material.Element, {
    * @override
    */
   handleModelChange: function(e) {
+    goog.base(this, 'handleModelChange', e);
     this.updateFormElements();
   },
 
