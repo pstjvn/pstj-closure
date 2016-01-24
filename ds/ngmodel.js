@@ -118,6 +118,7 @@ ngmodel.Cache_ = goog.defineClass(null, {
   update_: function(model) {
     for (var i = 0; i < this.length_; i++) {
       var barevalue = ngmodel.getNestedProperty_(model, this.modelNames_[i]);
+      if (goog.isNull(barevalue)) continue;
       var rawvalue = barevalue.toString();
       if (!goog.isNull(this.filters_[i])) {
         rawvalue = this.filters_[i](rawvalue);
