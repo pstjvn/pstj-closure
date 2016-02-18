@@ -324,6 +324,13 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   },
 
 
+  /** @override */
+  setEnabled: function(enable) {
+    goog.base(this, 'setEnabled', enable);
+    this.adjustDepth_();
+  },
+
+
   /** @inheritDoc */
   setContent: function(cont) {
     if (this.getLabel()) {
