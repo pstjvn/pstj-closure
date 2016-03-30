@@ -8,6 +8,9 @@
 goog.provide('pstj.app.Pages');
 goog.provide('pstj.app.PagesRenderer');
 
+goog.require('goog.asserts');
+goog.require('goog.dom');
+goog.require('goog.log');
 goog.require('goog.math.Size');
 goog.require('goog.style');
 goog.require('goog.ui.registry');

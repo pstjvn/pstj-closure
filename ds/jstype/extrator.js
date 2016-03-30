@@ -2,6 +2,7 @@ goog.provide('pstj.ds.jstype.Extractor');
 
 goog.require('goog.array');
 goog.require('goog.dom');
+goog.require('goog.string');
 goog.require('pstj.ds.jstype.Constructor');
 goog.require('pstj.ds.jstype.Method');
 goog.require('pstj.ds.jstype.Namespace');

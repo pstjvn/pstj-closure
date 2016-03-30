@@ -12,6 +12,7 @@ goog.provide('pstj.element.Form');
 goog.provide('pstj.element.FormRenderer');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.functions');
 goog.require('pstj.ds.DtoBase');
 goog.require('pstj.element.ErrorMsg');

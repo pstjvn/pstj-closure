@@ -7,6 +7,8 @@ goog.provide('pstj.ds.jsonschema.Class');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
+goog.require('goog.object');
+goog.require('goog.string');
 goog.require('pstj.ds.jsonschema.Buffer');
 goog.require('pstj.ds.jsonschema.Property');
 goog.require('pstj.ds.jsonschema.resolver');
@@ -26,11 +28,13 @@ pstj.ds.jsonschema.Class = goog.defineClass(Buffer, {
     /**
      * References the raw object that is used to generate this class.
      * @type {Object?}
+     * @private
      */
     this.sourceobj_ = null;
     /**
      * The namespace prefix to use.
      * @type {string}
+     * @private
      */
     this.nsPrefix_ = nsPrefix;
     /**

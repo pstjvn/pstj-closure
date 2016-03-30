@@ -12,6 +12,7 @@
 goog.provide('pstj.element.ListHeader');
 goog.provide('pstj.element.ListHeaderRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.log');
 goog.require('goog.ui.registry');

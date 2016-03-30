@@ -86,13 +86,13 @@ pstj.ds.DoubleBufferedList = class {
    *
    * @param {function(this: C, T, number, Array<T>): void} fn The function to
    * execute for each item in the list.
-   * @param {C=} context The context in which to execute the fucntion.
+   * @param {C=} opt_context The context in which to execute the fucntion.
    * @template C
    */
-  forEach(fn, context) {
+  forEach(fn, opt_context) {
     var list = this.list_;
     this.alter_();
-    goog.array.forEach(list, fn, context);
+    goog.array.forEach(list, fn, opt_context);
     this.alter_();
   }
 

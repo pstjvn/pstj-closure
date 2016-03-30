@@ -1,6 +1,7 @@
 goog.provide('pstj.ds.dto.Swipetile');
 goog.provide('pstj.ds.dto.SwipetileList');
 
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('pstj.ds.DtoBase');
 

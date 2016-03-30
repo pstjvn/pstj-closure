@@ -40,7 +40,7 @@ pstj.app.worker.instance_ = null;
 pstj.app.worker.getInstance = function() {
   if (goog.isNull(pstj.app.worker.instance_)) {
     pstj.app.worker.instance_ = new pstj.worker.WorkerClient(
-        COMPILED ? 'build/worker.build.js' : 'js/worker/bootstrap.js')
+        COMPILED ? 'build/worker.build.js' : 'js/worker/bootstrap.js');
   }
   return pstj.app.worker.instance_;
 };

@@ -8,6 +8,7 @@
 
 goog.provide('pstj.graphics.Timeline');
 
+goog.require('goog.asserts');
 goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.events.EventType');

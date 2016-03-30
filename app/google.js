@@ -2,6 +2,7 @@ goog.provide('pstj.app.Google');
 
 goog.require('goog.Promise');
 goog.require('goog.asserts');
+goog.require('goog.log');
 goog.require('goog.net.jsloader');
 
 

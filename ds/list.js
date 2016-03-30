@@ -15,6 +15,7 @@ goog.require('goog.array');
 goog.require('goog.async.Delay');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
+goog.require('goog.string');
 goog.require('pstj.ds.ListItem');
 
 

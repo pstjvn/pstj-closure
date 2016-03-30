@@ -22,6 +22,7 @@
 
 goog.provide('pstj.debug');
 
+goog.require('goog.events');
 goog.require('goog.pubsub.TopicId');
 goog.require('goog.pubsub.TypedPubSub');
 

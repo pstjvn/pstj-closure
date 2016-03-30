@@ -36,6 +36,7 @@ pstj.control.Control = goog.defineClass(goog.Disposable, {
     /**
      * The scope to use when handling topics.
      * @type {?Object}
+     * @private
      */
     this.scope_ = opt_scope || this;
     /**

@@ -45,11 +45,13 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
     /**
      * The template namespace / type if any is used.
      * @type {string}
+     * @private
      */
     this.templatetype_ = '';
     /**
      * If the JSType is a Named Type (class) or a primitive.
      * @type {boolean}
+     * @private
      */
     this.isNamedType_ = false;
   },
@@ -270,6 +272,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    * @param {string} type The primitive type (string, boolean, number).
    * @param {string} item String representation of the item to wrap.
    * @private
+   * @return {string}
    */
   wrapPrimitiveWithAssert_: function(type, item) {
     switch (type) {
@@ -287,6 +290,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    * If the property is required it will be asserted, itherwise it will be
    * checked by type and if not matching default value will be returned.
    * @protected
+   * @return {string}
    */
   wrapFromMapAssignment: function() {
     var map = this.getMapExtractionBit_();

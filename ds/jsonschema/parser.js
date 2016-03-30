@@ -2,7 +2,9 @@ goog.provide('pstj.ds.jsonschema.parser');
 
 goog.require('goog.Promise');
 goog.require('goog.array');
+goog.require('goog.json');
 goog.require('goog.labs.net.xhr');
+goog.require('goog.object');
 goog.require('pstj.ds.jsonschema.Class');
 goog.require('pstj.ds.jsonschema.resolver');
 

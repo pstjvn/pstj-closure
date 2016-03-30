@@ -15,6 +15,7 @@
 
 goog.provide('pstj.material.State');
 
+goog.require('goog.events');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Component.Error');
 goog.require('goog.ui.Component.State');

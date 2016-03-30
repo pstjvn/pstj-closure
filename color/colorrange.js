@@ -7,6 +7,7 @@
 
 goog.provide('pstj.color.ColorRange');
 
+goog.require('goog.array');
 goog.require('goog.color');
 goog.require('pstj.math.utils');
 

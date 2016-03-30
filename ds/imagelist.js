@@ -15,6 +15,7 @@ goog.provide('pstj.ds.ImageList');
 goog.provide('pstj.ds.ImageList.EventType');
 
 goog.require('goog.async.Delay');
+goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.math.Size');
