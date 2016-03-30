@@ -1,166 +1,102 @@
-goog.provide('pstj.animation.Animation');
-goog.provide('pstj.animation.Base');
-goog.provide('pstj.animation.Element');
+goog.provide('pstj.animation.create');
 
-goog.require('goog.async.AnimationDelay');
-
-
-
-/**
- * @constructor
- */
-pstj.animation.Animation = function() {
-  /**
-   * @type {goog.async.AnimationDelay}
-   * @private
-   */
-  //this.rafBound_ = new goog.async.AnimationDelay(this.onRaf, undefined, this);
-  /**
-   * @private
-   */
-  this.handleRafBound_ = goog.bind(this.handleRaf, this);
-  /**
-   * @type {Array.<*>}
-   * @private
-   */
-  this.animations_ = [];
-};
-goog.addSingletonGetter(pstj.animation.Animation);
-
-goog.scope(function() {
-var _ = pstj.animation.Animation.prototype;
+goog.require('pstj.animation.Scheduler');
+goog.require('pstj.animation.State');
+goog.require('pstj.animation.Task');
+goog.require('pstj.animation.TaskSet');
+goog.require('pstj.ds.DoubleBufferedList');
 
 
 /**
- * Handle the rafing.
- * @param {number} ts The timestamp.
- * @protected
+ * Create a new animation function.
+ *
+ * @param {?function(pstj.animation.State):void} measure
+ * @param {?function(pstj.animation.State):void} mutate
+ * @param {?pstj.animation.State} state
+ *
+ * @return {function():void}
  */
-_.onRaf = function(ts) {
-  goog.array.forEach(this.animations_, this.handleRafBound_);
+pstj.animation.create = function(measure, mutate, state) {
+  var ts = new pstj.animation.TaskSet();
+  ts.measure =
+      goog.isDefAndNotNull(measure) ? (new pstj.animation.Task(measure)) : null;
+  ts.mutate =
+      goog.isDefAndNotNull(mutate) ? (new pstj.animation.Task(mutate)) : null;
+  ts.state = (state instanceof pstj.animation.State) ?
+                 state :
+                 new pstj.animation.State();
+  return pstj.animation.generateFunction(ts);
 };
 
-
 /**
- * Handles the raf timeout.
- * @param {*} animation The animation.
- * @protected
+ * Generates an 'animate' function that can be called to schedule animation
+ * tasks per request. We have the guarantee that the task will be executed only
+ * once per run.
+ *
+ * @param {pstj.animation.TaskSet} taskset [description]
+ *
+ * @return {function(): void}
  */
-_.handleRaf = function(animation) {
-  animation.draw();
+pstj.animation.generateFunction = function(taskset) {
+  return function() {
+    if (!taskset.scheduled) {
+      taskset.scheduled = true;
+      pstj.animation.tasks_.add(taskset);
+      pstj.animation.schedule_();
+    }
+  };
 };
 
-});  // goog.scope
+pstj.animation.tasks_ = new pstj.ds.DoubleBufferedList();
+pstj.animation.running_ = false;
+pstj.animation.hasSchedulerActive_ = false;
 
 
 
 /**
- * Provides the basic class for creating animation.
- * The animation can be then started/stopped. Overrideing the [draw] method is
- * used to implement the nimation itself.
- * @constructor
- */
-pstj.animation.Base = function() {
-  this.runnig_ = false;
-  this.onRafBound_ = new goog.async.AnimationDelay(
-      this.onRaf_, undefined, this);
-};
-
-
-goog.scope(function() {
-var _ = pstj.animation.Base.prototype;
-
-
-/**
- * Starts the animation if not already started.
- */
-_.start = function() {
-  this.runnig_ = true;
-  if (!this.onRafBound_.isActive()) {
-    this.onRafBound_.start();
-  }
-};
-
-
-/**
- * Inernal method that is bound to the raf. It checks explicitly to make
- * sure the animation is still supposed to run and executes the
- * drawing method. If the drawing method returns true, the animation delay
- * is rescheduled.
- * @param {number} ts The timestamp of the RAF (in seconds as wrapped by
- * Closure authors).
+ * Schedule a queue run if not already scheduled.
+ *
  * @private
  */
-_.onRaf_ = function(ts) {
-  if (this.runnig_ && this.draw(ts)) {
-    this.onRafBound_.start();
+pstj.animation.schedule_ = function() {
+  if (!pstj.animation.hasSchedulerActive_) {
+    pstj.animation.hasSchedulerActive_ = true;
+    pstj.animation.scheduler_.start();
   }
 };
 
 
 /**
- * Stops the animation.
+ * Runs the task list of tasksets for all scheduled animations.
+ *
+ * @private
+ * @param {number} ts The timestamp of the triggered queue emptying.
  */
-_.stop = function() {
-  this.runnig_ = false;
-  this.onRafBound_.stop();
-};
+pstj.animation.runTasks_ = function(ts) {
+  pstj.animation.running_ = true;
+  pstj.animation.hasSchedulerActive_ = false;
 
+  pstj.animation.tasks_.forEach(function(taskset) {
+    taskset.scheduled = false;
+    taskset.state.timestamp = ts;
+  });
+
+  pstj.animation.tasks_.forEach(function(taskset) {
+    if (!goog.isNull(taskset.measure)) taskset.measure.call(taskset.state);
+  });
+
+  pstj.animation.tasks_.forEach(function(taskset) {
+    if (!goog.isNull(taskset.mutate)) taskset.mutate.call(taskset.state);
+  });
+
+  pstj.animation.tasks_.forEach(function(taskset) { taskset.state.clear(); });
+
+  pstj.animation.tasks_.clear();
+  pstj.animation.running_ = false;
+};
 
 /**
- * Method to be overriden by implementors of animations.
- * @protected
- * @param {number} ts The timsstamp as wrapped by Closure (milliseconds current
- * time).
- * @return {boolean} If true the animation must continue as the drawing
- * did not complete all the drawing job.
+ * @private {pstj.animation.Scheduled}
  */
-_.draw = function(ts) {
-  return false;
-};
-
-});  // goog.scope
-
-
-
-/**
- * Provides class that can animate any element. The animation is predefined in
- * the [draw] method.
- * @constructor
- * @extends {pstj.animation.Base}
- */
-pstj.animation.Element = function() {
-  goog.base(this);
-  /**
-   * Reference to the Element to be currently animated.
-   * @type {Element}
-   * @protected
-   */
-  this.element = null;
-};
-goog.inherits(pstj.animation.Element, pstj.animation.Base);
-
-
-goog.scope(function() {
-var _ = pstj.animation.Element.prototype;
-
-
-/**
- * Grabs an element to be animated.
- * @param {Element} el The HTML element to animate.
- */
-_.grab = function(el) {
-  this.element = el;
-  this.start();
-};
-
-
-/**
- * Release the element from the animation.
- */
-_.drop = function() {
-  this.stop();
-  this.element = null;
-};
-
-});  // goog.scope
+pstj.animation.scheduler_ =
+    new pstj.animation.Scheduler(pstj.animation.runTasks_);

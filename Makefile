@@ -1,3 +1,5 @@
+include Makefile.include
+
 private_source_dirs := tpl demos
 template_build_dir := tpl
 
