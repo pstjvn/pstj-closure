@@ -2,6 +2,7 @@ goog.provide('pstj.material.RadioGroup');
 goog.provide('pstj.material.RadioGroupRenderer');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.string');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
@@ -9,7 +10,7 @@ goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.RadioButton');
-goog.require('pstj.material.RadioButtonRenderer');
+goog.require('pstj.material.template');
 
 
 goog.scope(function() {

@@ -1,6 +1,8 @@
 goog.provide('pstj.material.List');
 goog.provide('pstj.material.ListRenderer');
 
+goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.animationFrame');
 goog.require('goog.events.EventType');
@@ -10,6 +12,7 @@ goog.require('goog.ui.registry');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
+goog.require('pstj.material.template');
 
 
 /** @extends {pstj.material.Element} */
@@ -92,6 +95,7 @@ pstj.material.List = goog.defineClass(pstj.material.Element, {
     /**
      * Cache for the total height
      * @type {number}
+     * @private
      */
     this.scrollTargetHeight_ = 0;
     /**

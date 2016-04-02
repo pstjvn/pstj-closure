@@ -8,18 +8,23 @@
 goog.provide('pstj.widget.Swiper');
 goog.provide('pstj.widget.SwiperRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
 goog.require('goog.log');
+goog.require('goog.style');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
+goog.require('goog.ui.registry');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.ds.dto.SwipetileList');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
 goog.require('pstj.templates');
+/** @suppress {extraRequire} */
 goog.require('pstj.widget.Swipetile');
 
 goog.scope(function() {

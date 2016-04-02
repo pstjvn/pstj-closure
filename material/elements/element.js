@@ -12,6 +12,7 @@ goog.provide('pstj.material.Element');
 goog.provide('pstj.material.ElementRenderer');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
@@ -30,6 +31,7 @@ goog.require('pstj.ds.DtoBase');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.ds.ngmodel');
 goog.require('pstj.material.EventMap');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
 goog.require('soydata');
@@ -800,7 +802,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @param {boolean} empty
    */
   setEmpty: function(empty) {
-    return this.setState(State.EMPTY, empty);
+    this.setState(State.EMPTY, empty);
   },
 
   /**

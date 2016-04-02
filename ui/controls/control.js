@@ -1,9 +1,7 @@
 goog.provide('pstj.ui.TouchControl');
 
-goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.Control');
-goog.require('goog.ui.registry');
 goog.require('pstj.ui.Template');
 
 

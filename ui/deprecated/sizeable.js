@@ -10,7 +10,9 @@ goog.provide('pstj.ui.Sizeable.EventType');
 
 goog.require('goog.async.Throttle');
 goog.require('goog.dom.ViewportSizeMonitor');
-goog.require('goog.events.EventHandler');
+goog.require('goog.events');
+goog.require('goog.math.Size');
+goog.require('goog.style');
 goog.require('goog.ui.Component');
 
 

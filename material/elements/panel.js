@@ -17,11 +17,16 @@
 goog.provide('pstj.material.Panel');
 goog.provide('pstj.material.PanelRenderer');
 
+goog.require('goog.asserts');
+goog.require('goog.dom');
 goog.require('goog.ui.Component.State');
+goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.Shadow');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
+goog.require('pstj.material.template');
 
 
 goog.scope(function() {

@@ -12,6 +12,7 @@
 goog.provide('pstj.material.Shadow');
 goog.provide('pstj.material.ShadowRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component.State');

@@ -157,6 +157,7 @@ pstj.ds.jstype.Extractor = goog.defineClass(null, {
    * Adds a new property to the given class.
    * @param {Element} node
    * @param {pstj.ds.jstype.Constructor} ns
+   * @return {!pstj.ds.jstype.Property}
    */
   createProperty: function(node, ns) {
     var prop = new pstj.ds.jstype.Property();
@@ -189,6 +190,7 @@ pstj.ds.jstype.Extractor = goog.defineClass(null, {
    * Adds constructor record to the list of items to serialize.
    * @param {Element} node The anchor tag that is matched to be link to
    * constructor documentation.
+   * @return {!pstj.ds.jstype.Constructor}
    */
   addConstructor: function(node) {
     var name = this.extractName(node);

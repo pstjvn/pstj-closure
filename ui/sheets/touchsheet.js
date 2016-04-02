@@ -21,6 +21,7 @@ goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
 goog.require('goog.math.Coordinate');
+goog.require('goog.math.Size');
 goog.require('goog.style');
 goog.require('pstj.lab.style.css');
 goog.require('pstj.math.utils');

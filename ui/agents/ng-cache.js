@@ -2,6 +2,7 @@ goog.provide('pstj.ui.NGCache');
 goog.provide('pstj.ui.NGPool');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('goog.dom.classlist');

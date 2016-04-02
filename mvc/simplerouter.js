@@ -23,6 +23,7 @@ goog.provide('pstj.mvc.SimpleRouter');
 goog.require('goog.History');
 goog.require('goog.array');
 goog.require('goog.events');
+goog.require('goog.string');
 
 
 
@@ -64,7 +65,7 @@ pstj.mvc.SimpleRouter.prototype.setEnabled = function(enable) {
  * argument. *abc/def will pass through all after the * as an argument
  *
  * @param {string|RegExp} route to watch for.
- * @param {function(string, ...[string])} fn should take in the token and any
+ * @param {function(string, ...string)} fn should take in the token and any
  * captured strings.
  */
 pstj.mvc.SimpleRouter.prototype.route = function(route, fn) {

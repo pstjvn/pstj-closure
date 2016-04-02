@@ -68,7 +68,7 @@ pstj.ui.CoupledInput.prototype.getValue = function(el) {
  * @param {!goog.events.Event} ev The BLUR event.
  */
 pstj.ui.CoupledInput.prototype.check = function(ev) {
-  var target = (/** @type {!Element} */ ev.target);
+  var target = (/** @type {!Element} */(ev.target));
   var value = this.getValue(target);
   var valid;
   if (target == this.i1) {

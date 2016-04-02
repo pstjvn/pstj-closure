@@ -9,13 +9,11 @@
 
 goog.provide('pstj.ui.SizeMonitorAgent');
 
-goog.require('goog.array');
 goog.require('goog.async.Throttle');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.math.Size');
-goog.require('goog.object');
 goog.require('goog.style');
 goog.require('pstj.ui.Agent');
 

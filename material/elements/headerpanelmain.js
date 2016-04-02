@@ -1,8 +1,8 @@
 goog.provide('pstj.material.HeaderPanelMain');
 goog.provide('pstj.material.HeaderPanelMainRenderer');
 
+goog.require('goog.dom');
 goog.require('goog.ui.registry');
-goog.require('pstj.agent.Scroll');
 goog.require('pstj.agent.ScrollEvent');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');

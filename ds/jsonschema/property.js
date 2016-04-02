@@ -412,6 +412,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    * Wrpas the type conversion for primitive types and date when
    * assigning from MAP to JSType.
    * @protected
+   * @return {string}
    */
   wrapTypeConvertionAssignment: function() {
     var mapbit = this.getMapExtractionBit_();

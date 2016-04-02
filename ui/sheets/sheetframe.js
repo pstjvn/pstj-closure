@@ -11,7 +11,6 @@
 
 goog.provide('pstj.ui.SheetFrame');
 
-goog.require('goog.asserts');
 goog.require('goog.async.Throttle');
 goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');

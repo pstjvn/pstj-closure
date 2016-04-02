@@ -48,10 +48,8 @@ goog.require('goog.async.nextTick');
 goog.require('goog.json.NativeJsonProcessor');
 goog.require('goog.net.Jsonp');
 goog.require('goog.net.XhrIo');
-goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('pstj.configure');
-goog.require('pstj.storage.Storage');
 
 
 /**

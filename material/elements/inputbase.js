@@ -1,11 +1,13 @@
 goog.provide('pstj.material.InputBase');
 goog.provide('pstj.material.InputBaseRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
 goog.require('goog.format.EmailAddress');
 goog.require('goog.labs.userAgent.platform');
+goog.require('goog.string');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -330,7 +332,7 @@ pstj.material.InputBase = goog.defineClass(E, {
     }
     // When pasting we do not receive input either
     this.getHandler().listen(this.inputElement, goog.events.EventType.PASTE,
-                             function(e) { this.iosDelay_.start(); })
+                             function(e) { this.iosDelay_.start(); });
   },
 
   /** @override */

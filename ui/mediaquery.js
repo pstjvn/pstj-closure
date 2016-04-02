@@ -22,6 +22,7 @@ goog.provide('pstj.ui.MediaQuery');
 
 goog.require('goog.async.nextTick');
 goog.require('goog.dom');
+goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.string');
 

@@ -8,9 +8,11 @@ goog.provide('pstj.widget.Pager');
 goog.provide('pstj.widget.PagerTemplate');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('pstj.ds.List');
+/** @suppress {extraRequire} */
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.ng.Template');
 goog.require('pstj.templates');

@@ -3,6 +3,7 @@ goog.provide('pstj.agent.Pointer.EventType');
 goog.provide('pstj.agent.PointerEvent');
 goog.provide('pstj.agent.Swipe');
 
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
@@ -651,7 +652,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
   /**
    * Checks how many touches are currently registered.
-   *
+   * @param {goog.events.BrowserEvent} e
    * @return {number}
    */
   getTouchesCount: function(e) {

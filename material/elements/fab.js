@@ -5,8 +5,11 @@ goog.require('goog.object');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Button');
 goog.require('pstj.material.ButtonRenderer');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.IconContainer');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.Ripple');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.Shadow');
 goog.require('pstj.material.template');
 

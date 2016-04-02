@@ -22,4 +22,4 @@ pstj.worker.Event = class extends goog.events.Event {
     super(goog.events.EventType.MESSAGE, target);
     this.data = data;
   }
-}
+};

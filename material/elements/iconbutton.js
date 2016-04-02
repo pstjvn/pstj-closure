@@ -1,9 +1,11 @@
 goog.provide('pstj.material.IconButton');
 goog.provide('pstj.material.IconButtonRenderer');
 
+goog.require('goog.object');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Button');
 goog.require('pstj.material.ButtonRenderer');
+goog.require('pstj.material.template');
 
 
 /** @extends {pstj.material.Button} */

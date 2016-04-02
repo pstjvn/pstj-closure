@@ -165,7 +165,7 @@ pstj.ui.ScrollList.prototype.decorateInternal = function(element) {
  */
 pstj.ui.ScrollList.prototype.applyItemWidthStyle = function() {
   var csstext = '#' + this.scrollDivId_ + ' .' +
-      pstj.ui.ScrollList.Classes.ListItem + '{';
+      pstj.ui.ScrollList.Classes.LIST_ITEM + '{';
   csstext += 'width:' + this.appliedItemWidth_ + 'px;';
   csstext += '}';
 
@@ -182,5 +182,5 @@ pstj.ui.ScrollList.prototype.applyItemWidthStyle = function() {
  * @enum {string}
  */
 pstj.ui.ScrollList.Classes = {
-  ListItem: goog.getCssName('scroll-list-item')
+  LIST_ITEM: goog.getCssName('scroll-list-item')
 };

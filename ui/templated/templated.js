@@ -10,7 +10,6 @@
 goog.provide('pstj.ui.Templated');
 
 goog.require('goog.dom');
-goog.require('goog.dom.dataset');
 goog.require('goog.ui.Component');
 goog.require('pstj.ui.Template');
 

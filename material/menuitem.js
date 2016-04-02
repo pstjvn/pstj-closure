@@ -1,6 +1,7 @@
 goog.provide('pstj.material.MenuItem');
 goog.provide('pstj.material.MenuItemRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');

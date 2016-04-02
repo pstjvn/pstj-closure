@@ -1,7 +1,6 @@
 goog.provide('pstj.agent.Scroll');
 goog.provide('pstj.agent.ScrollEvent');
 
-goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.events');
 goog.require('goog.events.EventType');

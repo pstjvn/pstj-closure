@@ -46,7 +46,9 @@ goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.EventType');
 goog.require('pstj.material.Panel');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
+goog.require('pstj.material.template');
 goog.require('pstj.ui.MediaQuery');
 
 goog.scope(function() {

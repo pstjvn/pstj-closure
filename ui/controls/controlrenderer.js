@@ -1,6 +1,7 @@
 goog.provide('pstj.ui.ControlRenderer');
 
 goog.require('goog.asserts');
+goog.require('goog.dom');
 goog.require('goog.ui.Control');
 goog.require('goog.ui.ControlRenderer');
 goog.require('pstj.ds.ListItem');

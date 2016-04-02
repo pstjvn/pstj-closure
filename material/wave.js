@@ -27,6 +27,7 @@ goog.provide('pstj.material.WavePool');
 
 goog.require('goog.Disposable');
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.color');

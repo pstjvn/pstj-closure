@@ -2,6 +2,8 @@ goog.provide('pstj.material.Toast');
 goog.provide('pstj.material.ToastRenderer');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.dom');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 /** @suppress {extraRequire} */

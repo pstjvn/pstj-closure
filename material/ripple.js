@@ -43,10 +43,12 @@ goog.provide('pstj.material.Ripple');
 goog.provide('pstj.material.RippleRenderer');
 
 goog.require('goog.dom');
+goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.Wave');
+goog.require('pstj.material.template');
 
 goog.scope(function() {
 var Wave = pstj.material.Wave;

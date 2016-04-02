@@ -7,8 +7,10 @@
 
 goog.provide('pstj.ui.ScrollView');
 
+goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom.ViewportSizeMonitor');
+goog.require('goog.style');
 // goog.require('goog.events.EventType');
 goog.require('goog.ui.Control');
 goog.require('pstj.ds.List');

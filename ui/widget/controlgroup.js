@@ -39,6 +39,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('pstj.templates');
 goog.require('pstj.ui.Button');
+goog.require('pstj.ui.CustomButtonRenderer');
 goog.require('pstj.ui.Template');
 goog.require('pstj.ui.Templated');
 

@@ -1,6 +1,8 @@
 goog.provide('pstj.material.Icon');
 goog.provide('pstj.material.Icon.EventType');
 
+goog.require('goog.asserts');
+goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.Element');

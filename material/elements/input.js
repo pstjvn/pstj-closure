@@ -7,6 +7,10 @@
 goog.provide('pstj.material.Input');
 goog.provide('pstj.material.InputRenderer');
 
+goog.require('goog.asserts');
+goog.require('goog.dom');
+goog.require('goog.object');
+goog.require('goog.style');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 /** @suppress {extraRequire} */
@@ -19,6 +23,7 @@ goog.require('pstj.material.InputBase');
 goog.require('pstj.material.InputBaseRenderer');
 /** @suppress {extraRequire} */
 goog.require('pstj.material.State');
+goog.require('pstj.material.template');
 
 goog.scope(function() {
 var IB = pstj.material.InputBase;
@@ -225,6 +230,7 @@ pstj.material.InputRenderer = goog.defineClass(IBR, {
 
   /**
    * Switches between the regular and floated labels.
+   * @suppress {uselessCode}
    * @param {pstj.material.Input} instance The input instance.
    * @param {boolean} enable If true the floating label is enabled.
    * @param {?string} transformation The transformation to apply.
@@ -237,7 +243,7 @@ pstj.material.InputRenderer = goog.defineClass(IBR, {
         goog.asserts.assertString(transformation)) {
       // reflect the previous state
       pstj.lab.style.css.setTranslationText(el, transformation);
-      /** @suppress {uselessCode} */ (el.offsetWidth);
+      (el.offsetWidth);
     }
 
     if (instance.justGotTranformation_) instance.justGotTranformation_ = false;

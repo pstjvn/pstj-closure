@@ -7,6 +7,7 @@
 goog.provide('pstj.sourcegen.ClosureBuffer');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('pstj.sourcegen.JSBuffer');
 

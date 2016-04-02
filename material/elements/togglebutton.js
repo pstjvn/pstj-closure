@@ -10,6 +10,7 @@
 goog.provide('pstj.material.ToggleButton');
 goog.provide('pstj.material.ToggleButtonRenderer');
 
+goog.require('goog.asserts');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');

@@ -6,7 +6,9 @@ goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.Ripple');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
 

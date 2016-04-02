@@ -14,12 +14,15 @@
 
 goog.provide('pstj.ui.TableView');
 
+goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
+goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.MouseWheelEvent');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.events.MouseWheelHandler.EventType');
+goog.require('goog.style');
 goog.require('pstj.configure');
 goog.require('pstj.ds.List');
 goog.require('pstj.lab.style.css');

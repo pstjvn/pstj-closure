@@ -8,14 +8,21 @@
 goog.provide('pstj.material.HeaderPanel');
 goog.provide('pstj.material.HeaderPanelRenderer');
 
+goog.require('goog.asserts');
+goog.require('goog.dom');
 goog.require('goog.ui.Component.State');
+goog.require('goog.ui.registry');
+/** @suppress {extraRequire} */
 goog.require('pstj.agent.Scroll');
 goog.require('pstj.agent.ScrollEvent');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.HeaderPanelHeader');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.HeaderPanelMain');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.State');
 goog.require('pstj.material.template');
 

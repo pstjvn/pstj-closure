@@ -64,6 +64,6 @@ w.WorkerClient = class extends goog.events.EventTarget {
    * @param  {string} data The data to send to the woker app.
    */
   send(data) { this.worker.postMessage(data); }
-}
+};
 
 });  // goog.scope

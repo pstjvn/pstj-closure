@@ -9,9 +9,11 @@
 
 goog.provide('pstj.ui.ngAgent');
 
+goog.require('goog.asserts');
 goog.require('goog.async.nextTick');
 goog.require('pstj.configure');
 goog.require('pstj.ds.PoolCache');
+/** @suppress {extraRequire} */
 goog.require('pstj.ng.filters');
 goog.require('pstj.ui.Agent');
 goog.require('pstj.ui.NGPool');

@@ -16,6 +16,7 @@
 goog.provide('pstj.style.css');
 
 goog.require('goog.dom');
+goog.require('goog.string');
 goog.require('goog.userAgent');
 goog.require('goog.userAgent.product');
 

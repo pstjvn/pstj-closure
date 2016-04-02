@@ -1,6 +1,7 @@
 goog.provide('pstj.sourcegen.ClosureGenerator');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('pstj.sourcegen.ClosureBuffer');
 goog.require('pstj.sourcegen.template');
@@ -122,6 +123,7 @@ pstj.sourcegen.ClosureGenerator = goog.defineClass(null, {
 
   /**
    * Actually generate the file.
+   * @return {string}
    */
   generate: function() {
     this.generateFromTemplate(pstj.sourcegen.template.Warning(null));

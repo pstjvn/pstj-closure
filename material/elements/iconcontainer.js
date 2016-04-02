@@ -2,6 +2,7 @@ goog.provide('pstj.material.IconContainer');
 goog.provide('pstj.material.IconContainerRenderer');
 
 goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.labs.net.xhr');
 goog.require('goog.object');
