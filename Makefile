@@ -37,3 +37,8 @@ $(template_build_dir)/*.soy.js: $(template_source_dir)/*.soy
 
 templates/icons.soy: templates/icons.xml
 	node nodejs/icongen.js $?
+
+lint:
+	$(lint_cmd) \
+			$(shell for folder in $(public_source_dirs) ; do find $$folder -name '*.js' ; done) \
+			demos/*/*.js

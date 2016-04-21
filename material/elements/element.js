@@ -27,6 +27,8 @@ goog.require('goog.ui.registry');
 goog.require('pstj.agent.Pointer');
 goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.agent.Scroll');
+/** @suppress {extraRequire} */
+goog.require('pstj.autogen.icons.names');
 goog.require('pstj.ds.DtoBase');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.ds.ngmodel');
@@ -209,8 +211,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @protected
    */
   createRootElement: function(htmlstring) {
-    return /** @type {!Element} */(goog.dom.htmlToDocumentFragment(
-        htmlstring.getContent()));
+    return /** @type {!Element} */(goog.dom.safeHtmlToNode(
+        htmlstring.toSafeHtml()));
   },
 
 

@@ -1,0 +1,4174 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "TruScribe.API"
+  },
+  "host": "api-truscribe.int.devsmm.com",
+  "schemes": ["http"],
+  "paths": {
+    "/account/forgotpassword/sendmail": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Send email for forgot password.",
+        "operationId": "Account_ForgotPassword",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "email",
+          "in": "query",
+          "description": "Valid and existing user email",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/password/validatetoken": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Validate forgot password token",
+        "operationId": "Account_ValidatePasswordToken",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "token",
+          "in": "query",
+          "description": "Encrypted token in URL encoded format",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "includeProfile",
+          "in": "query",
+          "description": "A flag to include the profile in the response",
+          "required": false,
+          "type": "boolean"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseProfileModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/password/changepassword": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "The change password endpoint for Forgot password. Anonymous access.",
+        "operationId": "Account_ChangePassword",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "model",
+          "in": "body",
+          "description": "Object with new password and the forgot password token",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ChangePasswordWithTokenModel"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/changepassword": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Change password. User has to be logged in.",
+        "operationId": "Account_ChangePassword",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "model",
+          "in": "body",
+          "description": "Object with old password and the new one",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ChangePasswordModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/social/add": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Create user for social platform",
+        "operationId": "Account_CreateSocialUser",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "model",
+          "in": "body",
+          "description": "User info only, no Person",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/BaseUserModel"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/me": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Return the profile of the currently logged in user",
+        "operationId": "Account_MyProfile",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseProfileModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/confirm": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Confirm user's email address",
+        "operationId": "Account_ConfirmEmail",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "token",
+          "in": "query",
+          "description": "Encrypted token in URL encoded format",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/onboarding": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Call if user has seen TruPort onboading",
+        "operationId": "Account_ResetTruPortOnboarding",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/account/social/onboarding": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Call if user has seen TruGlyph onboading",
+        "operationId": "Account_ResetTruGlyphOnboarding",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/countries": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Get list of all countries",
+        "operationId": "Address_GetCountries",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CountryModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/country/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Find country by ID",
+        "operationId": "Address_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the country",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CountryModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/country/delete/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Delete country by ID",
+        "operationId": "Address_DeleteCountry",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the country",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/country/add": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Add country",
+        "operationId": "Address_CreateCountry",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "country",
+          "in": "body",
+          "description": "Model of the country",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/CountryModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/country/update": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Update country by ID",
+        "operationId": "Address_UpdateCountry",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "country",
+          "in": "body",
+          "description": "Country Model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/CountryModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/states": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Get list of all states",
+        "operationId": "Address_GetStates",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StateModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/state/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Find state by ID",
+        "operationId": "Address_GetState",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/StateModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/state/delete/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Delete state by ID",
+        "operationId": "Address_DeleteState",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "ID of the state",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/state/add": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Add state",
+        "operationId": "Address_CreateState",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "state",
+          "in": "body",
+          "description": "Model if the state",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/StateModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/state/update": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Update state",
+        "operationId": "Address_UpdateState",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "state",
+          "in": "body",
+          "description": "State model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/StateModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/addresses": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Get list of all addresses",
+        "operationId": "Address_GetAddresses",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AddressModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Get address by ID",
+        "operationId": "Address_GetAddress",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Address ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AddressModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/delete/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Delete address by ID",
+        "operationId": "Address_DeleteAddress",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Address ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/add": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Add address",
+        "operationId": "Address_CreateAddress",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "addressInput",
+          "in": "body",
+          "description": "Address model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/AddressModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/update": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Update address by ID",
+        "operationId": "Address_UpdateAddress",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "addressInput",
+          "in": "body",
+          "description": "Address model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/AddressModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/address/states/country/{id}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Get all states by country ID",
+        "operationId": "Address_GetStatesByCountryId",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "ID of the country",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StateModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/badge/paths": {
+      "get": {
+        "tags": ["Badge"],
+        "summary": "Get all system badge paths",
+        "operationId": "Badge_GetBadgeTypes",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BaseBadgeTypeModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/badge": {
+      "get": {
+        "tags": ["Badge"],
+        "summary": "Get all badges in the system",
+        "operationId": "Badge_GetAll",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BadgeModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/badge/totalprogress": {
+      "get": {
+        "tags": ["Badge"],
+        "summary": "Get user achievemets and badges",
+        "operationId": "Badge_UserAchievementsAndBadges",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserAchievementAndBadgesModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/badge/mine": {
+      "get": {
+        "tags": ["Badge"],
+        "summary": "Get badges user has won",
+        "operationId": "Badge_UserBadges",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BadgeModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/badge/next": {
+      "get": {
+        "tags": ["Badge"],
+        "summary": "Get each path next badge user can win",
+        "operationId": "Badge_GetEachPathNextBadgeUserCanWin",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BadgeModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/badge/achievements": {
+      "get": {
+        "tags": ["Badge"],
+        "summary": "Get user current Rank for all badge paths",
+        "operationId": "Badge_GetUserAchievements",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserAchievementModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/{id}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Get a file by ID",
+        "operationId": "File_GetFile",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the file",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FileModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/add/{id}": {
+      "post": {
+        "tags": ["File"],
+        "summary": "Add a file",
+        "operationId": "File_UploadFile",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the current project",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/project/{id}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Get all files per project",
+        "operationId": "File_FilesByProject",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "project Id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FileModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/download/{id}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Download a file",
+        "operationId": "File_DownloadFile",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the file",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/downloadUrl/{id}/{isDownload}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Get file URL",
+        "operationId": "File_GetFileURL",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the file",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "isDownload",
+          "in": "path",
+          "description": "An optional parameter that determines if we need a download URL or a display one",
+          "required": true,
+          "type": "boolean"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/downloadUrl": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Get file URL by token (Get video url to play)",
+        "operationId": "File_GetPublicFileUrl",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "token",
+          "in": "query",
+          "description": "Shared video token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/delete/{id}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Delete file URL from Amazon S3",
+        "operationId": "File_DeleteFile",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the file",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/share/{id}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Get a share token",
+        "operationId": "File_ShareVideo",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "File id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/unshare/{id}": {
+      "get": {
+        "tags": ["File"],
+        "summary": "Stop file sharing",
+        "operationId": "File_UnShareVideo",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "file id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/{id}": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get glyph by id",
+        "operationId": "Glyph_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "glyph id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GlyphModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/details/{id}": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get glyph details by id",
+        "operationId": "Glyph_GetDetailsById",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "glyph id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GlyphExtendedModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/image/{id}": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get image by Id",
+        "operationId": "Glyph_GetImage",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "image id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GlyphModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/add": {
+      "post": {
+        "tags": ["Glyph"],
+        "summary": "Save Glyph",
+        "operationId": "Glyph_AddGlyph",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GlyphCreationResponseModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/page": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get list of glyphs by pages to display in gallery",
+        "operationId": "Glyph_GetPagedGlyphs",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "page",
+          "in": "query",
+          "description": "Current page number (starting from 1). For Guest requests it's limited to a max value of 5.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "pageSize",
+          "in": "query",
+          "description": "Number of elements on the page (starting from 1). For Guest requests it's limited to a max value of 25.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "sortOrder",
+          "in": "query",
+          "description": "sorting by create date - asc(default)/desc",
+          "required": true,
+          "type": "integer",
+          "format": "int32",
+          "enum": [1, 2]
+        }, {
+          "name": "votes",
+          "in": "query",
+          "description": "Id of the glyph/keyword votetype association(None = 0, VoteLabelsForGlyph = 1, VoteGlyphsForLabel = 2, VoteTagAGlyph = 3)",
+          "required": false,
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "collectionFormat": "multi"
+        }, {
+          "name": "userId",
+          "in": "query",
+          "description": "Default is null. If not should be returned only those glyphs created by this user.",
+          "required": false,
+          "type": "integer",
+          "format": "int32"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GlyphGalleryModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/update": {
+      "post": {
+        "tags": ["Glyph"],
+        "summary": "A call to update the keywords associated with a glyph",
+        "operationId": "Glyph_UpdateGlyph",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "glyph",
+          "in": "body",
+          "description": "The model of the glyph to be updated",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/GlyphModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GlyphModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/keyword/add": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Add a new keyword association to a glyph",
+        "operationId": "Glyph_AddKeyword",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "glyphId",
+          "in": "query",
+          "description": "The Id of the glyph",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "keyword",
+          "in": "query",
+          "description": "The keyword to be added",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/keyword/remove": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Remove a glyph-keyword association",
+        "operationId": "Glyph_RemoveKeyword",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "glyphId",
+          "in": "query",
+          "description": "The Id of the association to be removed",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "keyword",
+          "in": "query",
+          "description": "keyword",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/flag": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Flags glyph as unappropriate",
+        "operationId": "Glyph_FlagGlyph",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "glyphId",
+          "in": "query",
+          "description": "The Id of the flagged glyph",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/flagged": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get paged list of all flagged glyphs",
+        "operationId": "Glyph_GetAllFlagGlyphsPaged",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "page",
+          "in": "query",
+          "description": "Page we are on",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "pageSize",
+          "in": "query",
+          "description": "Number of items we wamt to take",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "sortOrder",
+          "in": "query",
+          "description": "Ascending = 1 or Descending = 2",
+          "required": true,
+          "type": "integer",
+          "format": "int32",
+          "enum": [1, 2]
+        }, {
+          "name": "sortBy",
+          "in": "query",
+          "description": "By FlagNumber = 1, KeywordsNumber = 2",
+          "required": true,
+          "type": "integer",
+          "format": "int32",
+          "enum": [1, 2]
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FlaggedGlyphPageViewModel[FlaggedGlyphModel]"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/unflag": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Unflags glyph as appropriate",
+        "operationId": "Glyph_UnFlagGlyph",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "glyphId",
+          "in": "query",
+          "description": "The Id of the unflagged glyph",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/lastvoted": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get list of N last voted for glyphs of game type M for the current user",
+        "operationId": "Glyph_LastVotedGlyph",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "voteNumber",
+          "in": "query",
+          "description": "Number of voted glyphs to return",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "typeOfVote",
+          "in": "query",
+          "description": "Game type we have voted for(None = 0, VoteLabelsForGlyph = 1, VoteGlyphsForLabel = 2, VoteTagAGlyph = 3)",
+          "required": true,
+          "type": "integer",
+          "format": "int32",
+          "enum": [0, 1, 2, 3]
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GlyphModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/mostvoted": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "Get glyphs for keyword ordered by most voted. NOTE: May return related glyphs even if not voted for.",
+        "operationId": "Glyph_GetMostVotedGlyphsForKeyword",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "keywordId",
+          "in": "query",
+          "description": "Id of the keyword",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "numberOfGlyphs",
+          "in": "query",
+          "description": "max is 10",
+          "required": false,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseGlyphModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/share/{id}": {
+      "get": {
+        "tags": ["Glyph"],
+        "summary": "It gives glyph sharing url to the user by glyph Id",
+        "operationId": "Glyph_ShareGlyphUrl",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Id of the glyph to be shared",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/glyph/list": {
+      "post": {
+        "tags": ["Glyph"],
+        "summary": "Gets list of glyphs by list of glyph ids",
+        "operationId": "Glyph_GetGlyphsByIds",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "glyphIds",
+          "in": "body",
+          "description": "List of glyph ids",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BaseGlyphModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/identity": {
+      "get": {
+        "tags": ["Identity"],
+        "operationId": "Identity_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Object"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/keyword/flag": {
+      "get": {
+        "tags": ["Keyword"],
+        "summary": "Flags Keyword as unappropriate",
+        "operationId": "Keyword_FlagKeyword",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "keyword",
+          "in": "query",
+          "description": "The keyword we want to flag",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/keyword/random": {
+      "get": {
+        "tags": ["Keyword"],
+        "summary": "Get a random keyword",
+        "operationId": "Keyword_RandomKeyword",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/KeywordModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/keyword/unflag": {
+      "get": {
+        "tags": ["Keyword"],
+        "summary": "Unflags keyword as appropriate",
+        "operationId": "Keyword_UnFlagGlyph",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "keywordId",
+          "in": "query",
+          "description": "The Id of the unflagged keyword",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/keyword/flagged": {
+      "get": {
+        "tags": ["Keyword"],
+        "summary": "Get paged list of all flagged keywords",
+        "operationId": "Keyword_GetAllFlagKeywordsPaged",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "page",
+          "in": "query",
+          "description": "Page we are on",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "pageSize",
+          "in": "query",
+          "description": "Number of items we want to take",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "sortOrder",
+          "in": "query",
+          "description": "Ascending = 1 or Descending = 2",
+          "required": true,
+          "type": "integer",
+          "format": "int32",
+          "enum": [1, 2]
+        }, {
+          "name": "sortByKeywordCount",
+          "in": "query",
+          "description": "if true then sort by number of flagged keywords",
+          "required": true,
+          "type": "boolean"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FlaggedGlyphPageViewModel[FlaggedGlyphModel]"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/keyword/timeline/generate": {
+      "post": {
+        "tags": ["Keyword"],
+        "summary": "Generate timeline data from script",
+        "operationId": "Keyword_GenerateTimeline",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "model",
+          "in": "body",
+          "description": "the script in text",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ScriptModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ScriptKeywordModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/keyword/search/{searchString}": {
+      "get": {
+        "tags": ["Keyword"],
+        "summary": "Searches the DB for keywords based on some input text",
+        "operationId": "Keyword_SearchKeywords",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "searchString",
+          "in": "path",
+          "description": "The search text. It must be less than 3 words (space separated)",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/KeywordExtendedModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/all": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Get list of all organizations",
+        "operationId": "Organization_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrganizationModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/{id}": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Find organization by ID",
+        "operationId": "Organization_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Organization ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OrganizationModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/add": {
+      "post": {
+        "tags": ["Organization"],
+        "summary": "Add organization",
+        "operationId": "Organization_AddOraganization",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "organization",
+          "in": "body",
+          "description": "Organization model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/OrganizationModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/update": {
+      "post": {
+        "tags": ["Organization"],
+        "summary": "Update organization",
+        "operationId": "Organization_UpdateOrganization",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "organization",
+          "in": "body",
+          "description": "organization Model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/OrganizationModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/paged": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Get paged organizations",
+        "operationId": "Organization_OrganizationsPaged",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "page",
+          "in": "query",
+          "description": "Pega we are on",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "pageSize",
+          "in": "query",
+          "description": "Number of items we wamt to take",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "sortOrder",
+          "in": "query",
+          "description": "Ascending or Descendind",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "sortBy",
+          "in": "query",
+          "description": "By name/date",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrganizationModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/members/{id}": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Get all organization members",
+        "operationId": "Organization_OrganizationMembers",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Organization ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PersonModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/search": {
+      "get": {
+        "tags": ["Organization"],
+        "operationId": "Organization_OrganizationsSearch",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "name",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrganizationModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/search/paged": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Get paged organizations",
+        "operationId": "Organization_OrganizationsSearchPaged",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "page",
+          "in": "query",
+          "description": "The page we are on",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "pageSize",
+          "in": "query",
+          "description": "Number of items we want to display",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "sortOrder",
+          "in": "query",
+          "description": "Ascending or Descending",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "sortBy",
+          "in": "query",
+          "description": "By name/date",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "search",
+          "in": "query",
+          "description": "Search string",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrganizationModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/organization/delete/{id}": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "Deletes organization form DB and Amazon",
+        "operationId": "Organization_Delete",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "organization Id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OrganizationModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/person/all": {
+      "get": {
+        "tags": ["Person"],
+        "summary": "Get list of all persons",
+        "operationId": "Person_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PersonModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/person/{id}": {
+      "get": {
+        "tags": ["Person"],
+        "summary": "Find person by ID",
+        "operationId": "Person_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Person ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PersonModel"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/person/delete/{id}": {
+      "get": {
+        "tags": ["Person"],
+        "summary": "Delete person by ID",
+        "operationId": "Person_DeletePerson",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Person ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/person/add": {
+      "post": {
+        "tags": ["Person"],
+        "summary": "Add person",
+        "operationId": "Person_CreatePerson",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "person",
+          "in": "body",
+          "description": "Person model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/PersonModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/person/update": {
+      "post": {
+        "tags": ["Person"],
+        "summary": "Update person by ID",
+        "operationId": "Person_UpdatePerson",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "person",
+          "in": "body",
+          "description": "Person model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/PersonModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/organization/{id}": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Get list of projects by organization ID",
+        "operationId": "Project_GetProjectsByOrganization",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "Organization ID",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "projectType",
+          "in": "query",
+          "description": "return: 0 - all types; 1 - truScribe Produced; 2 - truClip",
+          "required": false,
+          "type": "integer",
+          "format": "int32",
+          "enum": [0, 1, 2]
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProjectModel"
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/add": {
+      "post": {
+        "tags": ["Project"],
+        "summary": "Create truPort project",
+        "operationId": "Project_CreateTruPortProject",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/update": {
+      "post": {
+        "tags": ["Project"],
+        "summary": "Update project. Status \"Complete\" only.",
+        "operationId": "Project_UpdateProject",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "project",
+          "in": "body",
+          "description": "Project model",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ProjectModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/truclip/save": {
+      "post": {
+        "tags": ["Project"],
+        "summary": "TruClip project incremental save. Status \"In Progress\" only.",
+        "operationId": "Project_TruClipProjectPartialSave",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/truclip/complete": {
+      "post": {
+        "tags": ["Project"],
+        "summary": "Generate a video",
+        "operationId": "Project_CompleteTruClipProject",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/delete/{id}": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Deletes a project from the DB and from Amazon server",
+        "operationId": "Project_DeleteProject",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "delete project Id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/ready/{id}": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Marking a project as ready triggers project owner creation and sending email out",
+        "operationId": "Project_MarkProjectReady",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "The Id of the project",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/OkResult"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/types": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Return valid project types",
+        "operationId": "Project_GetProjectTypes",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProjectTypeModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/statuses": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Return valid project statuses.",
+        "operationId": "Project_GetProjectStatuses",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProjectStatusModel"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/member/add": {
+      "post": {
+        "tags": ["Project"],
+        "summary": "Adds member to a project",
+        "operationId": "Project_AddProjectMember",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "member",
+          "in": "body",
+          "description": "Member to be added",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/PersonModel"
+          }
+        }, {
+          "name": "projectId",
+          "in": "query",
+          "description": "Id of the project",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/member/remove": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Removes member from a project",
+        "operationId": "Project_DeleteProjectMember",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "memberId",
+          "in": "query",
+          "description": "Member to be deleted",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "projectId",
+          "in": "query",
+          "description": "Id of the project",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/project/{id}": {
+      "get": {
+        "tags": ["Project"],
+        "summary": "Get project by id",
+        "operationId": "Project_Get",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "project id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProjectModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/public/health": {
+      "get": {
+        "tags": ["Public"],
+        "summary": "Checks the health of the API",
+        "operationId": "Public_HealthCheck",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/public/health/auth": {
+      "get": {
+        "tags": ["Public"],
+        "summary": "Checks the health of the Authentication Provider",
+        "operationId": "Public_HealthCheckAuth",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/public/glyph-video/{videoAddress}": {
+      "get": {
+        "tags": ["Public"],
+        "summary": "Gets a link to our video(the animated glyph)",
+        "operationId": "Public_GlyphVideo",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "videoAddress",
+          "in": "path",
+          "description": "Address of our video",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Object"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vote/game": {
+      "get": {
+        "tags": ["Vote"],
+        "summary": "Get a specific voting game type with random question",
+        "operationId": "Vote_GetVotingGame",
+        "consumes": [],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "voteType",
+          "in": "query",
+          "description": "[VoteLabelsForGlyph = 1, VoteGlyphsForLabel = 2, TagAGlyph = 3]",
+          "required": true,
+          "type": "integer",
+          "format": "int32",
+          "enum": [0, 1, 2, 3]
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/VoteGameModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vote": {
+      "post": {
+        "tags": ["Vote"],
+        "summary": "Vote for a game",
+        "operationId": "Vote_Post",
+        "consumes": ["application/json", "text/json", "text/html", "application/xml", "text/xml", "application/x-www-form-urlencoded"],
+        "produces": ["application/json", "text/json", "text/html", "application/xml", "text/xml"],
+        "parameters": [{
+          "name": "model",
+          "in": "body",
+          "description": "user answer",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/VoteModel"
+          }
+        }, {
+          "name": "Authorization",
+          "in": "header",
+          "description": "access token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BadgeAchievementSummaryModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "Object": {
+      "type": "object",
+      "properties": {}
+    },
+    "BaseProfileModel": {
+      "required": ["firstName", "lastName", "displayName", "email"],
+      "type": "object",
+      "properties": {
+        "userId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "personId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "email": {
+          "pattern": "^([a-zA-Z0-9_\\.-\\\\+]+)@([\\da-zA-Z\\.-]+)\\.([a-zA-Z\\.]{2,6})$",
+          "type": "string"
+        }
+      }
+    },
+    "ChangePasswordWithTokenModel": {
+      "description": "Change password with token model",
+      "required": ["token", "newPassword"],
+      "type": "object",
+      "properties": {
+        "token": {
+          "description": "Reset password token",
+          "type": "string"
+        },
+        "newPassword": {
+          "description": "New pass for login",
+          "pattern": "^(?=.*[A-Za-z])(?=.*([A-Z]|\\d|[\\\\!\\\"#\\$%&'\\(\\)\\*\\+,-\\.\\/:;<=>\\?@\\[\\]\\^_`\\{\\|\\}~]))[A-Za-z\\d\\\\!\\\"#\\$%&'\\(\\)\\*\\+,-\\.\\/:;<=>\\?@\\[\\]\\^_`\\{\\|\\}~]{8,100}$",
+          "type": "string"
+        }
+      }
+    },
+    "ChangePasswordModel": {
+      "description": "Change password model",
+      "required": ["oldPassword", "newPassword"],
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "description": "Old pass for login",
+          "type": "string"
+        },
+        "newPassword": {
+          "description": "New pass for login",
+          "pattern": "^(?=.*[A-Za-z])(?=.*([A-Z]|\\d|[\\\\!\\\"#\\$%&'\\(\\)\\*\\+,-\\.\\/:;<=>\\?@\\[\\]\\^_`\\{\\|\\}~]))[A-Za-z\\d\\\\!\\\"#\\$%&'\\(\\)\\*\\+,-\\.\\/:;<=>\\?@\\[\\]\\^_`\\{\\|\\}~]{8,100}$",
+          "type": "string"
+        }
+      }
+    },
+    "BaseUserModel": {
+      "required": ["email", "password"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "email": {
+          "pattern": "^([a-zA-Z0-9_\\.-]+)@([\\da-zA-Z\\.-]+)\\.([a-zA-Z\\.]{2,6})$",
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "CountryModel": {
+      "required": ["iso2", "iso3"],
+      "type": "object",
+      "properties": {
+        "countryId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "countryName": {
+          "type": "string"
+        },
+        "iso2": {
+          "type": "string"
+        },
+        "iso3": {
+          "type": "string"
+        }
+      }
+    },
+    "NotFoundResult": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/Object",
+          "readOnly": true
+        }
+      }
+    },
+    "OkResult": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/Object",
+          "readOnly": true
+        }
+      }
+    },
+    "StateModel": {
+      "required": ["countryId", "stateName", "stateTerritoryISO"],
+      "type": "object",
+      "properties": {
+        "stateId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "countryId": {
+          "format": "int32",
+          "pattern": "([1-9][0-9]*)",
+          "type": "integer"
+        },
+        "stateName": {
+          "type": "string"
+        },
+        "stateTerritoryISO": {
+          "type": "string"
+        }
+      }
+    },
+    "AddressModel": {
+      "type": "object",
+      "properties": {
+        "addressId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "addressLine1": {
+          "type": "string"
+        },
+        "addressLine2": {
+          "type": "string"
+        },
+        "addressLine3": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "countryName": {
+          "type": "string"
+        },
+        "countryId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "stateName": {
+          "type": "string"
+        },
+        "stateId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "BaseBadgeTypeModel": {
+      "type": "object",
+      "properties": {
+        "badgePathId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "pathDisplayName": {
+          "type": "string"
+        },
+        "pathImageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "BadgeModel": {
+      "type": "object",
+      "properties": {
+        "badgeId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "badgeName": {
+          "type": "string"
+        },
+        "rank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "criteria": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "badgePath": {
+          "$ref": "#/definitions/BaseBadgeTypeModel"
+        }
+      }
+    },
+    "UserAchievementAndBadgesModel": {
+      "type": "object",
+      "properties": {
+        "badges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BadgeModel"
+          }
+        },
+        "nextBadgeToWin": {
+          "$ref": "#/definitions/BadgeModel"
+        },
+        "currentUserRank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "lastBadgeRank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "nextBadgeRank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "badgePathId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "pathDisplayName": {
+          "type": "string"
+        },
+        "pathImageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "UserAchievementModel": {
+      "type": "object",
+      "properties": {
+        "currentUserRank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "lastBadgeRank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "nextBadgeRank": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "badgePathId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "pathDisplayName": {
+          "type": "string"
+        },
+        "pathImageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "FileModel": {
+      "required": ["fileName", "fileType"],
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "projectId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "fileType": {
+          "type": "string"
+        },
+        "extFileKey": {
+          "type": "string"
+        },
+        "publicShareLink": {
+          "type": "string"
+        },
+        "content": {
+          "$ref": "#/definitions/Stream"
+        }
+      }
+    },
+    "Stream": {
+      "type": "object",
+      "properties": {
+        "canRead": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "canSeek": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "canTimeout": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "canWrite": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "length": {
+          "format": "int64",
+          "type": "integer",
+          "readOnly": true
+        },
+        "position": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "readTimeout": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "writeTimeout": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GlyphModel": {
+      "required": ["glyphSource"],
+      "type": "object",
+      "properties": {
+        "glyphId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphSource": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/KeywordModel"
+          }
+        }
+      }
+    },
+    "KeywordModel": {
+      "required": ["name"],
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GlyphExtendedModel": {
+      "required": ["glyphSource"],
+      "type": "object",
+      "properties": {
+        "createdDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "createdBy": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "authorDisplayName": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/KeywordModel"
+          }
+        },
+        "glyphId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphSource": {
+          "type": "string"
+        }
+      }
+    },
+    "GlyphCreationResponseModel": {
+      "type": "object",
+      "properties": {
+        "glyphShareUrl": {
+          "type": "string"
+        },
+        "badgeWon": {
+          "$ref": "#/definitions/BadgeModel"
+        },
+        "percentUntilNextBadge": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "badgePathId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GlyphGalleryModel": {
+      "type": "object",
+      "properties": {
+        "totalGlyphsCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GlyphExtendedModel"
+          }
+        }
+      }
+    },
+    "FlaggedGlyphPageViewModel[FlaggedGlyphModel]": {
+      "type": "object",
+      "properties": {
+        "totalRecords": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "page": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "totalPages": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "pageSize": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "sortBy": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "sortOrder": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FlaggedGlyphModel"
+          }
+        }
+      }
+    },
+    "FlaggedGlyphModel": {
+      "type": "object",
+      "properties": {
+        "flagedCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "keywordsCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphSource": {
+          "type": "string"
+        },
+        "lastFlaggedDate": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "BaseGlyphModel": {
+      "required": ["glyphSource"],
+      "type": "object",
+      "properties": {
+        "glyphId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphSource": {
+          "type": "string"
+        }
+      }
+    },
+    "ScriptModel": {
+      "description": "Model to POST data instead of GET",
+      "type": "object",
+      "properties": {
+        "scriptContent": {
+          "description": "Script",
+          "type": "string"
+        }
+      }
+    },
+    "ScriptKeywordModel": {
+      "required": ["name", "index", "start", "animationDuration", "stayDuration"],
+      "type": "object",
+      "properties": {
+        "keywordId": {
+          "format": "int32",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "index": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "occurrences": {
+          "format": "int32",
+          "maximum": 1000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "priority": {
+          "format": "int32",
+          "maximum": 1000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "isDuplicate": {
+          "type": "boolean"
+        },
+        "glyphCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "original": {
+          "type": "string"
+        },
+        "glyphId": {
+          "format": "int32",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "start": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "animationDuration": {
+          "format": "int32",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "stayDuration": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "KeywordExtendedModel": {
+      "required": ["name"],
+      "type": "object",
+      "properties": {
+        "keywordId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "votes": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphsCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "OrganizationModel": {
+      "required": ["organizationName"],
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "organizationName": {
+          "type": "string"
+        },
+        "totalProjectsCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "totalFilesCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "createDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/definitions/AddressModel"
+        },
+        "owner": {
+          "$ref": "#/definitions/PersonModel"
+        }
+      }
+    },
+    "PersonModel": {
+      "required": ["firstName", "lastName", "displayName", "email"],
+      "type": "object",
+      "properties": {
+        "personId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "email": {
+          "pattern": "^([a-zA-Z0-9_\\.-\\\\+]+)@([\\da-zA-Z\\.-]+)\\.([a-zA-Z\\.]{2,6})$",
+          "type": "string"
+        }
+      }
+    },
+    "ProjectModel": {
+      "required": ["projectName", "projectType"],
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "projectName": {
+          "type": "string"
+        },
+        "projectType": {
+          "format": "byte",
+          "type": "string"
+        },
+        "projectStatus": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "departmentId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "organizationId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "totalFilesCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "mainVideoId": {
+          "format": "int32",
+          "type": "integer",
+          "readOnly": true
+        },
+        "mainVideoThumbnail": {
+          "type": "string"
+        },
+        "createDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "projectOwner": {
+          "$ref": "#/definitions/PersonModel"
+        },
+        "timeline": {
+          "$ref": "#/definitions/TimelineModel"
+        },
+        "projectMembers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersonModel"
+          }
+        }
+      }
+    },
+    "TimelineModel": {
+      "type": "object",
+      "properties": {
+        "script": {
+          "type": "string"
+        },
+        "timelineMetadata": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ScriptKeywordModel"
+          }
+        },
+        "audio": {
+          "$ref": "#/definitions/FileModel"
+        }
+      }
+    },
+    "ProjectTypeModel": {
+      "type": "object",
+      "properties": {
+        "projectTypeId": {
+          "format": "byte",
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        }
+      }
+    },
+    "ProjectStatusModel": {
+      "type": "object",
+      "properties": {
+        "projectStatusId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "displayName": {
+          "type": "string"
+        }
+      }
+    },
+    "VoteGameModel": {
+      "required": ["glyphSources"],
+      "type": "object",
+      "properties": {
+        "gameType": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "nextGameType": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "glyphSources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BaseGlyphModel"
+          }
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/KeywordModel"
+          }
+        }
+      }
+    },
+    "VoteModel": {
+      "required": ["glyphId", "keywords", "voteTypeId"],
+      "type": "object",
+      "properties": {
+        "glyphId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "voteTypeId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "BadgeAchievementSummaryModel": {
+      "type": "object",
+      "properties": {
+        "badgeWon": {
+          "$ref": "#/definitions/BadgeModel"
+        },
+        "percentUntilNextBadge": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "badgePathId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
