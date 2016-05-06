@@ -22,12 +22,14 @@ goog.provide('pstj.app.worker');
 
 goog.require('pstj.worker.WorkerClient');
 
+/** @define {string} The ulr where we should locate the worker app */
+goog.define('pstj.app.worker.URL', 'build/worker.build.js');
+
 /**
  * @private
  * @type {pstj.worker.WorkerClient}
  */
 pstj.app.worker.instance_ = null;
-
 
 /**
  * Singleton getter for the worker as defined in an app. Note that this will
@@ -40,7 +42,7 @@ pstj.app.worker.instance_ = null;
 pstj.app.worker.getInstance = function() {
   if (goog.isNull(pstj.app.worker.instance_)) {
     pstj.app.worker.instance_ = new pstj.worker.WorkerClient(
-        COMPILED ? 'build/worker.build.js' : 'js/worker/bootstrap.js');
+        COMPILED ? pstj.app.worker.URL : 'js/worker/bootstrap.js');
   }
   return pstj.app.worker.instance_;
 };
