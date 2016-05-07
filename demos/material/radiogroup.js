@@ -32,5 +32,5 @@ goog.require('pstj.material.RadioGroup');
   c.name = 'PreferredDay';
   c.render(document.getElementById('rend3'));
 
-  setTimeout(function() {c.setEnabled(false)}, 2000);
+  setTimeout(function() {c.setEnabled(false);}, 2000);
 })();

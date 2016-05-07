@@ -1,6 +1,7 @@
 goog.provide('pstj.demos.button');
 
 goog.require('goog.array');
+goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.decorate');

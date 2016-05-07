@@ -2,7 +2,6 @@ goog.module('pstj.ds.swagger.Document');
 
 var array = goog.require('goog.array');
 var Uri = goog.require('goog.Uri');
-var QueryData = goog.require('goog.Uri.QueryData');
 
 const Document = class Document {
   /**

@@ -1,6 +1,7 @@
 goog.provide('pstj.demos.ripple');
 
 goog.require('goog.ui.decorate');
+/** @suppress {extraRequire} */
 goog.require('pstj.material.Element');
 goog.require('pstj.material.EventMap');
 goog.require('pstj.material.Ripple');

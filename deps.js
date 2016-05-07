@@ -86,7 +86,7 @@ goog.addDependency('../../../apps/pstj/ds/ngmodel.js', ['pstj.ds.ngmodel'], ['go
 goog.addDependency('../../../apps/pstj/ds/oauth.js', ['pstj.ds.oauth'], ['goog.events', 'goog.pubsub.TopicId'], false);
 goog.addDependency('../../../apps/pstj/ds/poolcache.js', ['pstj.ds.PoolCache'], ['pstj.ds.Cache'], false);
 goog.addDependency('../../../apps/pstj/ds/sortable.js', ['pstj.ds.Sortable'], ['goog.array', 'goog.events', 'goog.events.EventTarget', 'pstj.ds.DtoBase.EventType'], false);
-goog.addDependency('../../../apps/pstj/ds/swagger/document.js', ['pstj.ds.swagger.Document'], ['goog.Uri', 'goog.Uri.QueryData', 'goog.array'], true);
+goog.addDependency('../../../apps/pstj/ds/swagger/document.js', ['pstj.ds.swagger.Document'], ['goog.Uri', 'goog.array'], true);
 goog.addDependency('../../../apps/pstj/ds/timeprovider.js', ['pstj.ds.TimeProvider'], ['goog.array', 'pstj.configure', 'pstj.ds.IClock'], false);
 goog.addDependency('../../../apps/pstj/element/errormsg.js', ['pstj.element.ErrorMsg', 'pstj.element.ErrorMsgRenderer'], ['goog.async.Delay', 'goog.ui.Component.State', 'goog.ui.registry', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.templates'], false);
 goog.addDependency('../../../apps/pstj/element/form.js', ['pstj.element.Form', 'pstj.element.FormRenderer'], ['goog.array', 'goog.asserts', 'goog.functions', 'pstj.ds.DtoBase', 'pstj.element.ErrorMsg', 'pstj.material.Button', 'pstj.material.Checkbox', 'pstj.material.Element', 'pstj.material.ElementRenderer', 'pstj.material.InputBase', 'pstj.material.ToggleButton'], false);

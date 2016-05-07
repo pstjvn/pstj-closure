@@ -1,7 +1,8 @@
 goog.provide('pstj.demos.animation');
 
-goog.require('pstj.animation.create');
 goog.require('pstj.animation.RafSI');
+goog.require('pstj.animation.Scheduler');
+goog.require('pstj.animation.create');
 
 
 var anim = null;
