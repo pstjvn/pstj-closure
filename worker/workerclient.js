@@ -61,7 +61,7 @@ w.WorkerClient = class extends goog.events.EventTarget {
    * Allow the consumers to send messages over to the worker application. Note
    * that the message must be serialized beforehand as this class does not
    * suport message convergence.
-   * @param  {string} data The data to send to the woker app.
+   * @param {string} data The data to send to the woker app.
    */
   send(data) { this.worker.postMessage(data); }
 };

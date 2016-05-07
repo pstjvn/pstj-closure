@@ -28,6 +28,7 @@ goog.addDependency('../../../apps/pstj/demos/material/toast.js', ['pstj.demos.to
 goog.addDependency('../../../apps/pstj/demos/material/togglebutton.js', ['pstj.demos.togglebutton'], ['goog.array', 'goog.ui.decorate', 'pstj.material.ToggleButton'], false);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigation.js', ['pstj.demos.navigation'], ['goog.dom', 'goog.ui.tree.TreeControl', 'pstj.demos.navigationdata'], false);
 goog.addDependency('../../../apps/pstj/demos/navigation/navigationdata.js', ['pstj.demos.navigationdata'], [], false);
+goog.addDependency('../../../apps/pstj/demos/sourcegen/sourcegen.js', ['pstj.demos.sourcegen'], ['goog.array', 'pstj.ds.dto.format', 'pstj.sourcegen.CodeBuffer'], false);
 goog.addDependency('../../../apps/pstj/demos/swagger/main.js', ['pstj.demos.swagger.document'], ['goog.labs.net.xhr', 'pstj.ds.swagger.Document'], true);
 goog.addDependency('../../../apps/pstj/demos/tableview/tableview.js', ['pstj.demos.tableview'], ['goog.dom', 'pstj.ds.List', 'pstj.ui.TableView'], false);
 goog.addDependency('../../../apps/pstj/demos/ui/mediaquery.js', ['pstj.demos.ui.mediaquery'], ['goog.dom', 'goog.events', 'pstj.ui.MediaQuery'], false);
