@@ -16,18 +16,6 @@ goog.require('goog.dom');
 goog.require('goog.userAgent');
 goog.require('pstj.configure');
 
-
-/**
- * PhontomJS sais that it does not support 'transform' and that it supports
- * '-webkit-transform' but it is actually the reverse. This flag allows
- * for detecting from environment what is the situation and use the working
- * prefix.
- *
- * @type {!boolean}
- */
-pstj.lab.style.css.IS_PHANTOM_JS = goog.asserts.assertBoolean(
-    pstj.configure.getRuntimeValue('__PhantomJS', false));
-
 /**
  * Globally forced 2d for translations.
  * @type {boolean}
@@ -55,7 +43,6 @@ pstj.lab.style.css.testDiv_ = document.createElement('div');
  */
 pstj.lab.style.css.getSupportedName_ = function(names) {
   var result = null;
-  if (pstj.lab.style.css.IS_PHANTOM_JS) return names[0];
   for (var i = 0; i < names.length; i++) {
     if (typeof pstj.lab.style.css.testDiv_.style[names[i]] != 'undefined') {
       result = names[i];
