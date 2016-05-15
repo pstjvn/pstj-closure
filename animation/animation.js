@@ -96,7 +96,7 @@ pstj.animation.runTasks_ = function(ts) {
 };
 
 /**
- * @private {pstj.animation.Scheduled}
+ * @private {pstj.animation.Scheduler}
  */
 pstj.animation.scheduler_ =
     new pstj.animation.Scheduler(pstj.animation.runTasks_);
