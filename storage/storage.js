@@ -14,6 +14,7 @@ goog.provide('pstj.storage.Storage');
 
 goog.require('goog.json');
 goog.require('goog.log');
+goog.require('goog.storage.ErrorCode');
 goog.require('goog.storage.mechanism.mechanismfactory');
 
 

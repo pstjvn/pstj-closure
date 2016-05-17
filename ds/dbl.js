@@ -1,5 +1,3 @@
-'use strict';
-
 goog.provide('pstj.ds.DoubleBufferedList');
 
 goog.require('goog.array');
@@ -11,8 +9,8 @@ goog.require('goog.array');
  * @constructor
  * @template T
  */
-pstj.ds.DoubleBufferedList = class {
-  constructor() {
+pstj.ds.DoubleBufferedList = goog.defineClass(null, {
+  constructor: function() {
     /**
      * The backing store for the listings.
      *
@@ -34,30 +32,30 @@ pstj.ds.DoubleBufferedList = class {
      * @private
      */
     this.list_ = this.lists_[this.index_];
-  }
+  },
 
   /**
    * @return {number}
    */
-  get length() {
+  getLength: function() {
     return this.list_.length;
-  }
+  },
 
   /**
    * @param  {number} len The new lenght to set.
    */
-  set length(len) {
+  setLength: function(len) {
     this.list_.length = len;
-  }
+  },
 
   /**
    * Add an item in the list at the end of it.
    *
    * @param {T} item
    */
-  add(item) {
+  add: function(item) {
     this.list_.push(item);
-  }
+  },
 
   /**
    * Getter by index (similar to [i])
@@ -65,21 +63,21 @@ pstj.ds.DoubleBufferedList = class {
    * @param  {number} index The index access.
    * @return {T}
    */
-  item(index) {
+  item: function(index) {
     if (index < 0 || index > this.list_.length) {
       throw new Error('Index out of bound');
     }
     return this.list_[index];
-  }
+  },
 
   /**
    * Clears/null out the list. This will affect only the current list and
    * will swithc to the next in the backing store.
    */
-  clear() {
+  clear: function() {
     this.list_.length = 0;
     this.alter_();
-  }
+  },
 
   /**
    * Implements iteration as {@see goog.array.forEach}.
@@ -89,16 +87,16 @@ pstj.ds.DoubleBufferedList = class {
    * @param {C=} opt_context The context in which to execute the fucntion.
    * @template C
    */
-  forEach(fn, opt_context) {
+  forEach: function(fn, opt_context) {
     var list = this.list_;
     this.alter_();
     goog.array.forEach(list, fn, opt_context);
     this.alter_();
-  }
+  },
 
   /** @private */
-  alter_() {
+  alter_: function() {
     this.index_ = (this.index_ + 1) % 2;
     this.list_ = this.lists_[this.index_];
   }
-};
+});
