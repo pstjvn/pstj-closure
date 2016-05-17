@@ -154,7 +154,7 @@ goog.addDependency('../../../apps/pstj/sourcegen/closuregenerator.js', ['pstj.so
 goog.addDependency('../../../apps/pstj/sourcegen/codebuffer.js', ['pstj.sourcegen.CodeBuffer'], ['pstj.sourcegen.Buffer', 'pstj.sourcegen.Indentation'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/indentration.js', ['pstj.sourcegen.Indentation'], ['goog.string'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/jsbuffer.js', ['pstj.sourcegen.JSBuffer'], ['goog.array', 'goog.string'], false);
-goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Storage'], ['goog.json', 'goog.log', 'goog.storage.mechanism.mechanismfactory'], false);
+goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Storage'], ['goog.json', 'goog.log', 'goog.storage.ErrorCode', 'goog.storage.mechanism.mechanismfactory'], false);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.string', 'goog.userAgent', 'goog.userAgent.product'], false);
 goog.addDependency('../../../apps/pstj/style/css3.js', ['pstj.lab.style.css'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.userAgent', 'pstj.configure'], false);
 goog.addDependency('../../../apps/pstj/themes/theme.js', ['pstj.themes.theme'], ['goog.object', 'goog.pubsub.PubSub'], false);
