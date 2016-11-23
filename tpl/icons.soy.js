@@ -8,7 +8,9 @@
 
 goog.provide('pstj.autogen.template.icons');
 
+/** @suppress {extraRequire} */
 goog.require('soy');
+/** @suppress {extraRequire} */
 goog.require('soydata');
 
 
@@ -65,7 +67,8 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.autogen.template.icons.CastReady = function(opt_data, opt_ignored, opt_ijData) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 80 80" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet"><defs><clippath id="clip-path"><path x="0" y="0" d="M16.694,21.063h51.598v33.5c0,0-35.154,0-37.015,0c-4.569-9.816-10.902-13.816-14.583-15.585 C16.694,37.622,16.694,21.063,16.694,21.063z"></path></clippath></defs><g style="clip-path: url(#clip-path);"><path class="' + goog.getCssName('scale') + '" d="M1.042,40.184C18.96,41.118,28.559,52.463,30.107,69.25H1.042V40.184"></path></g><path d="M11.78,37.418v-20.98l60.98-0.031l0.031,43.011c0,0-39.016,0.041-39.581,0.041 c0.935,2.95,1.198,5.625,1.198,5.625l44.55,0V10.75H5.625c0,0,0,24.755,0,25.191C9.411,36.486,11.78,37.418,11.78,37.418z"></path><g><path d="M1.042,46.625c12.495,0,22.625,10.13,22.625,22.625h7c0-16.361-13.264-29.625-29.625-29.625V46.625z"></path><path d="M1.042,50.125v6.75c6.559,0,11.875,5.316,11.875,11.875c0,0.169-0.019,0.333-0.025,0.5h7.275 C20.167,58.688,11.604,50.125,1.042,50.125z"></path><path d="M1.042,61v8.25h7.725c0.011-0.166,0.025-0.331,0.025-0.5C8.792,64.47,5.322,61,1.042,61z"></path></g></svg>');
+  opt_ijData = opt_ijData || {};
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<svg viewBox="0 0 80 80" class="' + goog.getCssName('material-icon') + ' ' + goog.getCssName('fit') + '" type="none" preserveAspectRatio="xMidYMid meet"><defs><clippath id="clip-path"><path x="0" y="0" d="M16.694,21.063h51.598v33.5c0,0-35.154,0-37.015,0c-4.569-9.816-10.902-13.816-14.583-15.585 C16.694,37.622,16.694,21.063,16.694,21.063z"></path></clippath></defs><g style="' + ((opt_ijData.csp_nonce) ? '/*' + opt_ijData.csp_nonce + '*/' : '') + 'clip-path: url(#clip-path);"><path class="' + goog.getCssName('scale') + '" d="M1.042,40.184C18.96,41.118,28.559,52.463,30.107,69.25H1.042V40.184"></path></g><path d="M11.78,37.418v-20.98l60.98-0.031l0.031,43.011c0,0-39.016,0.041-39.581,0.041 c0.935,2.95,1.198,5.625,1.198,5.625l44.55,0V10.75H5.625c0,0,0,24.755,0,25.191C9.411,36.486,11.78,37.418,11.78,37.418z"></path><g><path d="M1.042,46.625c12.495,0,22.625,10.13,22.625,22.625h7c0-16.361-13.264-29.625-29.625-29.625V46.625z"></path><path d="M1.042,50.125v6.75c6.559,0,11.875,5.316,11.875,11.875c0,0.169-0.019,0.333-0.025,0.5h7.275 C20.167,58.688,11.604,50.125,1.042,50.125z"></path><path d="M1.042,61v8.25h7.725c0.011-0.166,0.025-0.331,0.025-0.5C8.792,64.47,5.322,61,1.042,61z"></path></g></svg>');
 };
 if (goog.DEBUG) {
   pstj.autogen.template.icons.CastReady.soyTemplateName = 'pstj.autogen.template.icons.CastReady';

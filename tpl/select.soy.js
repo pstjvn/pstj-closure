@@ -8,7 +8,9 @@
 
 goog.provide('pstj.select');
 
+/** @suppress {extraRequire} */
 goog.require('soy');
+/** @suppress {extraRequire} */
 goog.require('soydata');
 
 

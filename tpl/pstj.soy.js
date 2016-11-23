@@ -8,10 +8,14 @@
 
 goog.provide('pstj.templates');
 
+/** @suppress {extraRequire} */
 goog.require('soy');
+/** @suppress {extraRequire} */
 goog.require('soydata');
 /** @suppress {extraRequire} */
 goog.require('goog.asserts');
+/** @suppress {extraRequire} */
+goog.require('soy.asserts');
 goog.require('pstj.material.template');
 
 
@@ -104,7 +108,8 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.templates.upload = function(opt_data, opt_ignored, opt_ijData) {
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('pstj-upload-form') + '"><form method="post" enctype="multipart/form-data" action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(opt_data.url)) + '" name="uploadform"><input id="attachment" name="' + soy.$$escapeHtmlAttribute(opt_data.inputname) + '" type="file" style="display:none" class="' + goog.getCssName('pstj-upload-form-input') + '" /></form></div>');
+  opt_ijData = opt_ijData || {};
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div class="' + goog.getCssName('pstj-upload-form') + '"><form method="post" enctype="multipart/form-data" action="' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeUri(opt_data.url)) + '" name="uploadform"><input id="attachment" name="' + soy.$$escapeHtmlAttribute(opt_data.inputname) + '" type="file" style="' + ((opt_ijData.csp_nonce) ? '/*' + opt_ijData.csp_nonce + '*/' : '') + 'display:none" class="' + goog.getCssName('pstj-upload-form-input') + '" /></form></div>');
 };
 if (goog.DEBUG) {
   pstj.templates.upload.soyTemplateName = 'pstj.templates.upload';
@@ -227,11 +232,12 @@ if (goog.DEBUG) {
  * @suppress {checkTypes}
  */
 pstj.templates.Swipetile = function(opt_data, opt_ignored, opt_ijData) {
+  opt_ijData = opt_ijData || {};
   soy.asserts.assertType(goog.isString(opt_data.src) || (opt_data.src instanceof goog.soy.data.SanitizedContent), 'src', opt_data.src, 'string|goog.soy.data.SanitizedContent');
   var src = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.src);
   soy.asserts.assertType(opt_data.text == null || (opt_data.text instanceof goog.soy.data.SanitizedContent) || goog.isString(opt_data.text), 'text', opt_data.text, 'null|string|undefined');
   var text = /** @type {null|string|undefined} */ (opt_data.text);
-  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('pstj-swipetile') + '"><div class="' + goog.getCssName('pstj-swipetile-image') + '" style="background-image: url(' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeMediaUri(src)) + ')">' + ((text) ? '<div class="' + goog.getCssName('pstj-swipetile-text-container') + '"><div class="' + goog.getCssName('pstj-swipetile-text') + '">' + soy.$$escapeHtml(text) + '</div></div>' : '') + '</div></div>');
+  return soydata.VERY_UNSAFE.ordainSanitizedHtml('<div is class="' + goog.getCssName('pstj-swipetile') + '"><div class="' + goog.getCssName('pstj-swipetile-image') + '" style="' + ((opt_ijData.csp_nonce) ? '/*' + opt_ijData.csp_nonce + '*/' : '') + 'background-image: url(' + soy.$$escapeHtmlAttribute(soy.$$filterNormalizeMediaUri(src)) + ')">' + ((text) ? '<div class="' + goog.getCssName('pstj-swipetile-text-container') + '"><div class="' + goog.getCssName('pstj-swipetile-text') + '">' + soy.$$escapeHtml(text) + '</div></div>' : '') + '</div></div>');
 };
 if (goog.DEBUG) {
   pstj.templates.Swipetile.soyTemplateName = 'pstj.templates.Swipetile';

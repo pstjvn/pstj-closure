@@ -7,7 +7,7 @@ goog.require('goog.log');
  * Implements an animation task item.
  * @constructor
  * @struct
- * @param {function(pstj.animation.State)} callback Actual work.
+ * @param {function(!pstj.animation.State)} callback Actual work.
  */
 pstj.animation.Task = function(callback) {
   /**
@@ -19,7 +19,7 @@ pstj.animation.Task = function(callback) {
    * The callback for the task - the actual work to be done.
    * @private
    * @final
-   * @type {function(pstj.animation.State): void}
+   * @type {function(!pstj.animation.State): void}
    */
   this.callback_ = callback;
 };
@@ -34,7 +34,7 @@ pstj.animation.Task.prototype.logger =
 
 /**
  * Allow to call the instance as a function.
- * @param {pstj.animation.State} state
+ * @param {!pstj.animation.State} state
  */
 pstj.animation.Task.prototype.call = function(state) {
   goog.log.fine(this.logger, 'Running task ' + this.id_);

@@ -8,10 +8,14 @@
 
 goog.provide('pstj.ds.template');
 
+/** @suppress {extraRequire} */
 goog.require('soy');
+/** @suppress {extraRequire} */
 goog.require('soydata');
 /** @suppress {extraRequire} */
 goog.require('goog.asserts');
+/** @suppress {extraRequire} */
+goog.require('soy.asserts');
 
 
 /**
@@ -31,7 +35,7 @@ pstj.ds.template.IconRenderer = function(opt_data, opt_ignored, opt_ijData) {
   soy.asserts.assertType(goog.isString(opt_data.iconName) || (opt_data.iconName instanceof goog.soy.data.SanitizedContent), 'iconName', opt_data.iconName, 'string|goog.soy.data.SanitizedContent');
   var iconName = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.iconName);
   var icons = goog.asserts.assertArray(opt_data.icons, "expected parameter 'icons' of type list<string>.");
-  var output = '\n// File auto-generated, please do not edit\ngoog.provide(\'pstj.autogen.iconrenderer.' + soy.$$escapeHtml(className) + '\');\n\ngoog.require(\'pstj.autogen.template.icons\');\ngoog.require(\'pstj.material.IconRenderer\');\ngoog.require(\'pstj.material.icons.registry\');\n\ngoog.scope(function() {\nvar icons = pstj.autogen.iconrenderer;\nvar IR = pstj.material.IconRenderer;\nvar registry = pstj.material.icons.registry;\n\n\n/** Renderer for \'' + soy.$$escapeHtml(iconName) + '\' icon */\nicons.' + soy.$$escapeHtml(className) + ' = goog.defineClass(IR, {\n  constructor: function() {\n    IR.call(this);\n  },\n\n  /** @inheritDoc */\n  getTemplate: function(model) {\n    return pstj.autogen.template.icons.' + soy.$$escapeHtml(className) + '(model);\n  }\n});\ngoog.addSingletonGetter(icons.' + soy.$$escapeHtml(className) + ');\n\n\n// Register the renderer for icon name\n';
+  var output = '\n// File auto-generated, please do not edit\ngoog.provide(\'pstj.autogen.iconrenderer.' + soy.$$escapeHtml(className) + '\');\n\ngoog.require(\'pstj.autogen.template.icons\');\ngoog.require(\'pstj.material.IconRenderer\');\ngoog.require(\'pstj.material.icons.registry\');\n\ngoog.scope(function() {\nvar IR = pstj.material.IconRenderer;\nvar registry = pstj.material.icons.registry;\n\n\n/** Renderer for \'' + soy.$$escapeHtml(iconName) + '\' icon */\npstj.autogen.iconrenderer.' + soy.$$escapeHtml(className) + ' = goog.defineClass(IR, {\n  constructor: function() {\n    IR.call(this);\n  },\n\n  /** @inheritDoc */\n  getTemplate: function(model) {\n    return pstj.autogen.template.icons.' + soy.$$escapeHtml(className) + '(model);\n  }\n});\ngoog.addSingletonGetter(icons.' + soy.$$escapeHtml(className) + ');\n\n\n// Register the renderer for icon name\n';
   var iconnameList19 = icons;
   var iconnameListLen19 = iconnameList19.length;
   for (var iconnameIndex19 = 0; iconnameIndex19 < iconnameListLen19; iconnameIndex19++) {

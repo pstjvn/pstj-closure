@@ -5,6 +5,7 @@ goog.require('pstj.animation.IScheduler');
 
 /**
  * @constructor
+ * @final
  * @struct
  * @implements {pstj.animation.IScheduler}
  */

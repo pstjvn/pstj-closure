@@ -22,14 +22,16 @@ pstj.animation.IScheduler.prototype.setHandler = function(cb) {};
 
 /**
  * Implements actual scheduler as abstraction for the use classes.
+ *
+ * The parameter is a function, that will be called with the timestamp on
+ * each animation iteration.
+ *
  * @constructor
  * @struct
- * @param {function(number): void} fn The function that will be used to be used
- * as a handler for timing function used to schedule animations.
+ * @param {function(number): void} fn The animation iteration handler.
  */
 pstj.animation.Scheduler = function(fn) {
   /**
-   * The handler that will be executed then the
    * @final
    * @type {function(number): void}
    * @private

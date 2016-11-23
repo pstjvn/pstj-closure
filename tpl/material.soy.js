@@ -8,10 +8,14 @@
 
 goog.provide('pstj.material.template');
 
+/** @suppress {extraRequire} */
 goog.require('soy');
+/** @suppress {extraRequire} */
 goog.require('soydata');
 /** @suppress {extraRequire} */
 goog.require('goog.asserts');
+/** @suppress {extraRequire} */
+goog.require('soy.asserts');
 
 
 /**
