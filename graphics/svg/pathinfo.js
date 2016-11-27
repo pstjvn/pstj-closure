@@ -1,6 +1,6 @@
 goog.module('pstj.graphics.svg.PathInfo');
 
-const assert = goog.require('goog.asserts');
+const asserts = goog.require('goog.asserts');
 const style = goog.require('goog.style');
 
 /**
@@ -17,7 +17,7 @@ const PathInfo = class {
   constructor(path) {
     /** @private {!SVGPathElement} */
     this.element_ = path;
-    /** @type {?number} */
+    /** @private {?number} */
     this.length_ = null;
     /** @private {number} */
     this.offset_ = 1.0;
@@ -47,7 +47,7 @@ const PathInfo = class {
    */
   getLength() {
     if (goog.isNull(this.length_)) this.length_ = this.element_.getTotalLength();
-    return goog.asserts.assertNumber(this.length_);
+    return asserts.assertNumber(this.length_);
   }
 
   /**
@@ -60,7 +60,6 @@ const PathInfo = class {
    * @param {number} offset
    */
   setOffset(offset) {
-    console.log('Setting offset', this.offset_, offset)
     if (offset != this.offset_) {
       this.offset_ = offset;
       this.setVisible_(this.offset_ < this.getLength());
@@ -104,11 +103,10 @@ const PathInfo = class {
   enableStrokeDasharray_(enable) {
     if (this.dashed_ != enable) {
       this.dashed_ = enable;
-      console.log(enable)
       style.setStyle(this.element_, 'stroke-dasharray',
                      enable ? `${this.getLength()} ${this.getLength()}` : '');
     }
   }
-}
+};
 
 exports = PathInfo;

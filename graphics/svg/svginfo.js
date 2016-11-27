@@ -2,6 +2,7 @@ goog.module('pstj.graphics.svg.SvgInfo');
 
 const ETarget = goog.require('goog.events.EventTarget');
 const PathInfo = goog.require('pstj.graphics.svg.PathInfo');
+const array = goog.require('goog.array');
 
 /**
  * Abstracts the information that we need in order to work with the SVG element
@@ -58,12 +59,11 @@ const SvgInfo = class extends ETarget {
     let desiredLength = this.length_ * progress;
     let len = 0;
     let point = null;
-    this.paths_.forEach((path) => {
+    array.forEach(this.paths_, function(path) {
       // Show completely
       if (len + path.getLength() <= desiredLength) {
         path.setOffset(0.0);
-      } else if (len + path.getLength() > desiredLength &&
-                 len < desiredLength) {
+      } else if (len + path.getLength() > desiredLength && len < desiredLength) {
         // Show partially
         path.setOffset(path.getLength() - (desiredLength - len));
         // point = path.getElement().getPointAtLength(desiredLength - len);
@@ -74,6 +74,6 @@ const SvgInfo = class extends ETarget {
       len += path.getLength();
     });
   }
-}
+};
 
 exports = SvgInfo;

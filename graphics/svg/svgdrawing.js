@@ -1,9 +1,9 @@
 goog.module('pstj.graphics.svg.SvgDrawing');
 
-const create = goog.require('pstj.animation.create');
-const SvgInfo = goog.require('pstj.graphics.svg.SvgInfo');
-const EventType = goog.require('goog.fx.Transition.EventType');
 const EventTarget = goog.require('goog.events.EventTarget');
+const EventType = goog.require('goog.fx.Transition.EventType');
+const SvgInfo = goog.require('pstj.graphics.svg.SvgInfo');
+const create = goog.require('pstj.animation.create');
 
 /**
  * The possible states our drawing can be settletd in.
@@ -138,6 +138,6 @@ const SvgDrawing = class extends EventTarget {
     this.progress = progress;
     this.animation();
   }
-}
+};
 
 exports = SvgDrawing;

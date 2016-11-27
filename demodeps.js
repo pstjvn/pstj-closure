@@ -3,7 +3,7 @@
 goog.addDependency('../../../apps/pstj/demos/animation/animation.js', ['pstj.demos.animation'], ['pstj.animation.RafSI', 'pstj.animation.Scheduler', 'pstj.animation.create'], false);
 goog.addDependency('../../../apps/pstj/demos/discovery/discovery.js', ['pstj.demos.sourcegen.discovery'], ['goog.html.SafeHtml', 'goog.labs.net.xhr', 'pstj.ds.discovery.Document', 'pstj.sourcegen.ClosureGenerator'], false);
 goog.addDependency('../../../apps/pstj/demos/ds/dbl.js', ['pstj.demos.ds.dbl'], ['pstj.ds.DoubleBufferedList'], false);
-goog.addDependency('../../../apps/pstj/demos/graphics/svgdrawing.js', ['pstj.demos.graphics.svgdrawing'], ['pstj.animation.browser', 'pstj.graphics.svg.SvgDrawing'], true);
+goog.addDependency('../../../apps/pstj/demos/graphics/svgdrawing.js', ['pstj.demos.graphics.svgdrawing'], ['goog.asserts', 'pstj.animation.browser', 'pstj.graphics.svg.SvgDrawing'], true);
 goog.addDependency('../../../apps/pstj/demos/jsonschema/gen/base.js', ['pstj.gen.dto.Base'], ['goog.array', 'goog.asserts', 'pstj.ds.DtoBase', 'pstj.gen.dto.ForExtend'], false);
 goog.addDependency('../../../apps/pstj/demos/jsonschema/gen/baserequired.js', ['pstj.gen.dto.BaseReq'], ['goog.array', 'goog.asserts', 'pstj.ds.DtoBase', 'pstj.gen.dto.ForExtend'], false);
 goog.addDependency('../../../apps/pstj/demos/jsonschema/gen/basext.js', ['pstj.gen.dto.BaseExt'], ['goog.asserts', 'goog.object', 'pstj.gen.dto.Base'], false);
