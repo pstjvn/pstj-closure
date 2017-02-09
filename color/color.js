@@ -27,3 +27,49 @@ pstj.color.hexToRgba = function(hex_color, alpha) {
   rgb.push(alpha);
   return 'rgba(' + rgb.join(',') + ')';
 };
+
+
+/**
+ * The implemented algorythms for converting to greyscaled value.
+ *
+ * @enum {number}
+ */
+pstj.color.GreyscaleMethod = {
+  LIGHTNESS: 0,
+  AVERAGE: 1,
+  LUMINOSITY: 2,
+  DEFAULT: 2
+};
+
+
+/**
+ * Given a color, transform its value to greyscale.
+ *
+ * As a second argument a method can be provided to convert the value. If none
+ * is provided the default will be used, as default is luminosity conversion.
+ *
+ * @param {!goog.color.Rgb} color The color to greyscale.
+ * @param {pstj.color.GreyscaleMethod=} opt_method Optionally, a method to use
+ *    to convert the color.
+ * @return {!goog.color.Rgb}
+ */
+pstj.color.toGreyscale = function(color, opt_method) {
+  if (!goog.isDef(opt_method)) opt_method = pstj.color.GreyscaleMethod.DEFAULT;
+  var gs = 0;
+  switch (opt_method) {
+    case pstj.color.GreyscaleMethod.LIGHTNESS:
+      gs = (Math.max(color[0], color[1], color[2]) +
+            Math.min(color[0], color[1], color[2)) / 2;
+      break;
+    case pstj.color.GreyscaleMethod.AVERAGE:
+      gs = (color[0] + color[1] + color[2]) / 3;
+      break;
+    case pstj.color.GreyscaleMethod.LUMINOSITY:
+    case pstj.color.GreyscaleMethod.DEFAULT:
+      gs = (0.21 * color[0]) + (0.72 * color[1]) + (0.07 * color[2]);
+      break;
+    default:
+      throw new Error('Unknown method for converting to greyscale');
+  }
+  return (/** @type {!goog.color.Rgb} */ ([gs, gs, gs]));
+};

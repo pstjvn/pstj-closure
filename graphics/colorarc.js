@@ -15,7 +15,10 @@ var g = pstj.graphics;
 var mu = pstj.math.utils;
 
 
-/** Separate implementation */
+/**
+ * Provides means to construct dynamically an image that represents a spread
+ * of color values between start and end color in the form of an arc.
+ */
 g.ColorArc = goog.defineClass(null, {
   constructor: function() {
     /**
@@ -51,8 +54,11 @@ g.ColorArc = goog.defineClass(null, {
 
   /**
    * Generate a new arc with the given size and color range.
+   * Supports greyscaling the output.
+   *
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
+   * @param {boolean} opt_greyscale
    * @return {string} The canvas image as string.
    */
   getArc: function(rect, cr) {
@@ -77,9 +83,10 @@ g.ColorArc = goog.defineClass(null, {
       if (rad > cicumference) {
         rad = rad - cicumference;
       }
-
-      ctx.strokeStyle = cr.getColorValue(mu.getFractionFromValue(i,
+      var colorValue = cr.getColorValue(mu.getFractionFromValue(i,
           degreesToDraw));
+      if (opt_greyscale) colorValue = pstj.color.toGreyscale(colorValue);
+      ctx.strokeStyle = colorValue;
       ctx.lineWidth = 10;
       ctx.beginPath();
       // Draw the arcs on top of each other to avoid gaps
