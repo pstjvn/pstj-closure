@@ -179,10 +179,20 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    */
   getJSTypeDefaultValue: function() {
     if (this.defaultValue) {
-      if (this.jstype == 'number') return 'Number(' + this.defaultValue + ')';
-      if (this.jstype == 'string') return '\'' + this.defaultValue + '\'':
-      if (this.jstype == 'boolean') return '!!' + this.defaultValue;
+      if (this.jstype == 'number') {
+        goog.asserts.assertNumber(this.defaultValue);
+        return this.defaultValue;
+      }
+      if (this.jstype == 'string') {
+        goog.asserts.assertString(this.defaultValue);
+        return '\'' + this.defaultValue + '\'';
+      }
+      if (this.jstype == 'boolean') {
+        goog.asserts.assertBoolean(this.defaultValue);
+        return this.defaultValue;
+      }
       if (this.jstype == 'Date') {
+        goog.asserts.assertString(this.defaultValue);
         try {
           var a = new Date(this.defaultValue);
           return 'new Date(' + this.defaultValue + ')';
@@ -190,7 +200,6 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
           throw new Error('Cannot convert default value to Date: ' +
               this.defaultValue);
         }
-
       }
       throw new Error('Type cannot have default: ' + this.jstype +
           '; ' + this.defaultValue);

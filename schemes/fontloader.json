@@ -1,0 +1,24 @@
+{
+  "$schema": "",
+  "title": "FontLoaderOptions",
+  "description": "DTO configuring font loader.",
+  "type": "object",
+  "properties": {
+    "timeout": {
+      "description": "The amount of milliseconds to wait before the font is considered failed to load",
+      "type": "number",
+      "$_default": 1000
+    },
+    "fontname": {
+      "description": "Testing default string",
+      "type": "string",
+      "$_default": "String test"
+    },
+    "force": {
+      "description": "Testing boolean",
+      "type": "boolean",
+      "$_default": true
+    }
+  },
+  "required": "$_all"
+}
