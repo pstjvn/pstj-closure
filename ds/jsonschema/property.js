@@ -54,6 +54,12 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
      * @private
      */
     this.isNamedType_ = false;
+    /**
+     * The default value to use when the object is created.
+     * @type {?}
+     * @protected
+     */
+    this.defaultValue = null;
   },
 
   /**
@@ -65,7 +71,9 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
     var description = value['description'] || '';
     var type = value['type'];
     var name = key;
-
+    if (value['$_default']) {
+      this.defaultValue = value['$_default'];
+    }
     this.jstype = type;
     // if the desired type is different from the json type.
     if (value['$_type']) {
@@ -97,6 +105,7 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
     this.name = name;
     this.type = type;
     this.jsname = value['$_name'] || name;
+
   },
 
   /**
@@ -169,25 +178,43 @@ pstj.ds.jsonschema.Property = goog.defineClass(null, {
    * @protected
    */
   getJSTypeDefaultValue: function() {
-    if (this.jstype == 'number') {
-      return '0';
-      // if (this.required) return '0';
-      // else return 'null';
-    } else if (this.jstype == 'string') {
-      return '\'\'';
-      // if (this.required) return '\'\'';
-      // else return 'null';
-    } else if (this.jstype == 'boolean') {
-      return 'false';
-    } else if (this.jstype == 'Date') {
-      return (this.required ? 'new Date()' : 'null');
-    } else if (this.type == 'object') {
-      return 'new ' + this.jstype + '()';
-    } else if (this.type == 'array') {
-      return '[]';
+    if (this.defaultValue) {
+      if (this.jstype == 'number') return 'Number(' + this.defaultValue + ')';
+      if (this.jstype == 'string') return '\'' + this.defaultValue + '\'':
+      if (this.jstype == 'boolean') return '!!' + this.defaultValue;
+      if (this.jstype == 'Date') {
+        try {
+          var a = new Date(this.defaultValue);
+          return 'new Date(' + this.defaultValue + ')';
+        } catch (e) {
+          throw new Error('Cannot convert default value to Date: ' +
+              this.defaultValue);
+        }
+
+      }
+      throw new Error('Type cannot have default: ' + this.jstype +
+          '; ' + this.defaultValue);
     } else {
-      throw new Error('Cannot provide default type for: ' +
-          this.jstype + ' (type) ' + this.type);
+      if (this.jstype == 'number') {
+        return '0';
+        // if (this.required) return '0';
+        // else return 'null';
+      } else if (this.jstype == 'string') {
+        return '\'\'';
+        // if (this.required) return '\'\'';
+        // else return 'null';
+      } else if (this.jstype == 'boolean') {
+        return 'false';
+      } else if (this.jstype == 'Date') {
+        return (this.required ? 'new Date()' : 'null');
+      } else if (this.type == 'object') {
+        return 'new ' + this.jstype + '()';
+      } else if (this.type == 'array') {
+        return '[]';
+      } else {
+        throw new Error('Cannot provide default type for: ' +
+            this.jstype + ' (type) ' + this.type);
+      }
     }
   },
 
