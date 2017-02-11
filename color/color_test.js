@@ -1,4 +1,5 @@
 goog.provide('pstj.color_test');
+goog.setTestOnly('pstj.color_test');
 
 goog.require('goog.testing.PropertyReplacer');
 goog.require('goog.testing.PseudoRandom');
@@ -60,7 +61,7 @@ function testLargerThanOne() {
 
 function testWithNonNumber() {
   assertThrows('Value is string', function() {
-    pstj.color.hexToRgba(color, 0.23);
+    pstj.color.hexToRgba(color, '0.23');
   });
   assertThrows('Value is Object', function() {
     pstj.color.hexToRgba(color, {});
