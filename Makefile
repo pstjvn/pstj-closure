@@ -14,7 +14,7 @@ private_deps_cmdline = $(shell echo $(private_source_dirs) | sed 's+$(sed_tokeni
 
 # Defines the files that should trigger rebuilding of the ppublic dependency file.
 public_dep_file_deps := $(shell for folder in $(public_source_dirs) ; do find $$folder -name '*.js' ; done)
-private_dep_file_deps = $(template_build_dir)/*.soy.js demos/*/*.js
+private_dep_file_deps = $(template_build_dir)/*.soy.js demos/*/*.js demos/*/*/*.js
 
 all: $(lintfile) $(private_deps_file) $(public_deps_file)
 	@echo '>>> pstj library all done'
@@ -45,4 +45,5 @@ schemes: schemes/*.json
 lint:
 	$(lint_cmd) \
 			$(shell for folder in $(public_source_dirs) ; do find $$folder -name '*.js' ; done) \
-			demos/*/*.js
+			demos/*/*.js demos/*/*/*.js
+
