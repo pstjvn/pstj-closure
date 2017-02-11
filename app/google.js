@@ -12,7 +12,11 @@ goog.require('goog.net.jsloader');
 goog.define('pstj.app.GoogleClientId', '');
 
 
-/** Implements global app utility to work with google apis for auth. */
+/**
+ * Implements global app utility to work with google apis for auth.
+ *
+ * @deprecated Use `pstj.app.google.User` instead.
+ */
 pstj.app.Google = goog.defineClass(null, {
   constructor: function() {
     /**
