@@ -17,6 +17,22 @@ pstj.demos.navigationdata = [
     {name: 'Shadow', url: '../material/shadow.html'},
     {name: 'ToggleButton', url: '../material/togglebutton.html'}
   ]},
-  {name: 'TableView', url: '../tableview/index.html'}
+  {name: 'TableView', url: '../tableview/index.html'},
+  {name: 'Animation Sequence', url: '../animation/animation.html'},
+  {name: 'Google APIs', childNodes: [
+    {name: 'Google GAPI loading', url: '../app/google/gapi.html'},
+    {name: 'Google Auth2 loading', url: '../app/google/auth2.html'}
+  ]},
+  {name: 'Dicsovery document', url: '../discovery/discovery.html'},
+  {name: 'Data structures', childNodes: [
+    {name: 'Double buffered list', url: '../ds/dbl.html'}
+  ]},
+  {name: 'Graphics', childNodes: [
+    {name: 'SVG drawing', url: '../graphics/svgdrawing.html'}
+  ]},
+  {name: 'Widgets', childNodes: [
+    {name: 'Swiper', url: '../widgets/swiper.html'},
+    {name: 'SwipeTule', url: '../widgets/swipetile.html'}
+  ]}
 ];
 

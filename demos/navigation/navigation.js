@@ -26,12 +26,15 @@ function buildNode(parent, nodeArray) {
       var childNode = parent.getTree().createNode();
       parent.add(childNode);
       if (node.url) {
-        childNode.setHtml('<a href="' + node.url + '" title="' + node.name +
-            '" target="demo">' + node.name + '</a>');
+        childNode.setSafeHtml(goog.html.SafeHtml.create('a', {
+          'href': node.url,
+          'title': node.name,
+          'target': 'demo'
+        }, node.name));
         // Need to prevent BaseNode.onClick_ from calling preventDefault.
         childNode.onClick_ = goog.nullFunction;
       } else if (node.childNodes) {
-        childNode.setHtml(node.name);
+        childNode.setText(node.name);
         buildNode(childNode, node.childNodes);
       }
     }
