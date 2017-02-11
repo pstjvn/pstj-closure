@@ -59,7 +59,7 @@ pstj.app.google.User = goog.defineClass(null, {
               this.logger, 'No logged-in user found, rejecting user promise');
           return goog.Promise.reject();
         }
-      }, this);
+      }, null, this);
     }
     return this.user_;
   },
@@ -87,7 +87,7 @@ pstj.app.google.User = goog.defineClass(null, {
         var instance = auth2['getAuthInstance']();
         instance['signOut']()['then'](function() { resolve(null); });
       });
-    }, this);
+    }, null, this);
   },
 
   /** @protected {!goog.debug.Logger} */
@@ -108,7 +108,7 @@ pstj.app.google.User = goog.defineClass(null, {
             });
             return auth2;
           },
-          this);
+          null, this);
     }
     return goog.asserts.assertInstanceof(this.init_, goog.Promise);
   },
@@ -146,7 +146,7 @@ pstj.app.google.User = goog.defineClass(null, {
                 reject(null);
               }, this));
         }, this);
-      });
+      }, null, this);
     }
     return this.user_;
   }

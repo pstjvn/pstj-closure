@@ -7,11 +7,11 @@
 
 goog.provide('pstj.graphics.ColorArc');
 
+goog.require('pstj.color');
 goog.require('pstj.math.utils');
 
 
 goog.scope(function() {
-var g = pstj.graphics;
 var mu = pstj.math.utils;
 
 
@@ -19,7 +19,7 @@ var mu = pstj.math.utils;
  * Provides means to construct dynamically an image that represents a spread
  * of color values between start and end color in the form of an arc.
  */
-g.ColorArc = goog.defineClass(null, {
+pstj.graphics.ColorArc = goog.defineClass(null, {
   constructor: function() {
     /**
      * @protected
@@ -58,10 +58,10 @@ g.ColorArc = goog.defineClass(null, {
    *
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
-   * @param {boolean} opt_greyscale
+   * @param {boolean=} opt_greyscale
    * @return {string} The canvas image as string.
    */
-  getArc: function(rect, cr) {
+  getArc: function(rect, cr, opt_greyscale) {
     this.setSize(rect);
     this.clear(rect);
     var ctx = this.context;
@@ -85,7 +85,7 @@ g.ColorArc = goog.defineClass(null, {
       }
       var colorValue = cr.getColorValue(mu.getFractionFromValue(i,
           degreesToDraw));
-      if (opt_greyscale) colorValue = pstj.color.toGreyscale(colorValue);
+      if (!!opt_greyscale) colorValue = pstj.color.toGreyscale(colorValue);
       ctx.strokeStyle = colorValue;
       ctx.lineWidth = 10;
       ctx.beginPath();

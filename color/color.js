@@ -38,7 +38,7 @@ pstj.color.GreyscaleMethod = {
   LIGHTNESS: 0,
   AVERAGE: 1,
   LUMINOSITY: 2,
-  DEFAULT: 2
+  DEFAULT: 9
 };
 
 

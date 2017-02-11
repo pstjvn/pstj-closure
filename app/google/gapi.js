@@ -30,7 +30,7 @@ pstj.app.google.Gapi = goog.defineClass(null, {
     if (goog.isNull(this.gapi_)) {
       this.gapi_ = new goog.Promise(function(resolve, reject) {
         goog.log.info(this.logger, 'Start loading library');
-        goog.net.jsloader.loadSafe(this.remoteUrl_)
+        goog.net.jsloader.safeLoad(this.remoteUrl_)
             .addCallback(
                 function() {
                   goog.log.info(this.logger, 'Script finished loading');

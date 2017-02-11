@@ -5,6 +5,7 @@
 
 goog.provide('pstj.ds.jsonschema.Property');
 
+goog.require('goog.asserts');
 goog.require('goog.string');
 goog.require('pstj.ds.jsonschema.resolver');
 
