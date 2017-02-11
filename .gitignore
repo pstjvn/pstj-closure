@@ -1,3 +1,4 @@
 *sublime-*
 nodejs/node_modules
 .linted
+.artefact
