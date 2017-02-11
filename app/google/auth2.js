@@ -38,7 +38,7 @@ pstj.app.google.Auth2 = goog.defineClass(null, {
     return goog.asserts.assertInstanceof(this.auth_, goog.Promise);
   },
 
-  /** @protected {!goog.debug.Logger} */
+  /** @protected {?goog.debug.Logger} */
   logger: goog.log.getLogger('pstj.app.google.Auth2')
 });
 goog.addSingletonGetter(pstj.app.google.Auth2);

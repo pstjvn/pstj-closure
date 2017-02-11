@@ -52,7 +52,7 @@ pstj.app.google.Gapi = goog.defineClass(null, {
     return goog.asserts.assertInstanceof(this.gapi_, goog.Promise);
   },
 
-  /** @protected {!goog.debug.Logger} */
+  /** @protected {?goog.debug.Logger} */
   logger: goog.log.getLogger('pstj.app.google.Gapi')
 });
 goog.addSingletonGetter(pstj.app.google.Gapi);

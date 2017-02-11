@@ -23,7 +23,7 @@ pstj.app.google.User = goog.defineClass(null, {
       goog.log.error(this.logger, 'No client_id for auth2 provided');
       throw new Error('Cannot initialize Auth2 without client_id');
     }
-    /** @private {?goog.Promise<!Object>} */
+    /** @private {?goog.Promise<!pstj.ds.oauth.User>} */
     this.user_ = null;
     /** @private {?goog.Promise<!Object>} */
     this.init_ = null;
@@ -42,11 +42,11 @@ pstj.app.google.User = goog.defineClass(null, {
   getUser: function() {
     if (goog.isNull(this.user_)) {
       this.user_ = this.getInitializedPromise_().then(function(auth2) {
-        goog.log.info('Initial checking for logged-in user');
+        goog.log.info(this.logger, 'Initial checking for logged-in user');
         var hasAnUser = auth2['getAuthInstance']()['isSignedIn']['get']();
         if (hasAnUser) {
-          goog.log.info('Found logged-in user');
-          goog.log.info('Requesting user detail and user profile');
+          goog.log.info(this.logger, 'Found logged-in user');
+          goog.log.info(this.logger, 'Requesting user detail and user profile');
           var user = auth2['getAuthInstance']()['currentUser']['get']();
           var bp = user['getBasicProfile']();
           return (/** @type {!pstj.ds.oauth.User} */ ({
@@ -81,7 +81,7 @@ pstj.app.google.User = goog.defineClass(null, {
    * @return {!goog.Promise<null>}
    */
   logout: function() {
-    this.getInitializedPromise_().then(function(auth2) {
+    return this.getInitializedPromise_().then(function(auth2) {
       return new goog.Promise(function(resolve, reject) {
         this.user_ = goog.Promise.reject(null);
         var instance = auth2['getAuthInstance']();
@@ -90,7 +90,7 @@ pstj.app.google.User = goog.defineClass(null, {
     }, null, this);
   },
 
-  /** @protected {!goog.debug.Logger} */
+  /** @protected {?goog.debug.Logger} */
   logger: goog.log.getLogger('pstj.app.google.User'),
 
   /**
@@ -121,7 +121,7 @@ pstj.app.google.User = goog.defineClass(null, {
    * means that an error occured on an earlier stage and we cannot proceed with
    * it and will return the original rejection instead.
    *
-   * @param {?Error} err
+   * @param {*} err
    * @return {!goog.Promise<!pstj.ds.oauth.User>}
    */
   initializeLogin_: function(err) {
@@ -130,7 +130,7 @@ pstj.app.google.User = goog.defineClass(null, {
       this.user_ = this.getInitializedPromise_().then(function(auth2) {
         goog.log.info(this.logger, 'Got initialized auth2');
         return new goog.Promise(function(resolve, reject) {
-          goog.log.info('Starting sign in process');
+          goog.log.info(this.logger, 'Starting sign in process');
           auth2['getAuthInstance']()['signIn']()['then'](
               goog.bind(function(user) {
                 goog.log.info(this.logger, 'Sign in process complete');
@@ -148,7 +148,7 @@ pstj.app.google.User = goog.defineClass(null, {
         }, this);
       }, null, this);
     }
-    return this.user_;
+    return goog.asserts.assertInstanceof(this.user_, goog.Promise);
   }
 });
 goog.addSingletonGetter(pstj.app.google.User);
