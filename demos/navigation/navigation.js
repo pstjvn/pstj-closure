@@ -1,10 +1,11 @@
 goog.provide('pstj.demos.navigation');
 
 goog.require('goog.dom');
+goog.require('goog.html.SafeHtml');
 goog.require('goog.ui.tree.TreeControl');
 goog.require('pstj.demos.navigationdata');
 
-
+/** Initialize tree */
 function initTree() {
   goog.ui.tree.TreeControl.defaultConfig.cleardotPath =
       '../../../library/closure/goog/images/tree/cleardot.gif';

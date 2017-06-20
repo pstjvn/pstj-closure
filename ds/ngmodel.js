@@ -268,6 +268,86 @@ ngmodel.unbindElement = function(node) {
 
 
 /**
+ * New model to work
+ * Create an addition to the main / base renderer.
+ * Add method to renderer (which is template specific - so the link
+ * renderer <-> template is always one to one) to check if there is already
+ * present a model parser. If a model parser is present - noop.
+ *
+ * If a model parser is not present iterate over all the items
+ * and search for known directives.
+ *
+ * for model directive get the string binding (in form "prop1.prop2.prop3" for
+ * example) and create a new pool instance record with model function which
+ * must accept the current model of the instance and return the prop or null
+ * if the prop does not exists.
+ *
+ * It should have list of filters of such are applied (for ng-model)
+ * For each filter create record in 'filter' array a dynamic new function
+ * that applied the arguments statically and call the real registered
+ * filter if it exists otherwise return the original value.
+ *
+ * It should have special treatment for show/hide:
+ * 1) ng-model and show/hide can be used together
+ * 2) show/hide can be complex binding ('prop1.prop2') and should create
+ * show/hide function dynamically as well. It should be run independently
+ * from the ng-model
+ *
+ * Proposed struct
+ * {
+ *  element: HTMLElement
+ *  model: new Function('model', 'return ....'),
+ *  preprocessers: [function(value) { return [value, arg1, arg2,... ] }],
+ *  filters: ['name1', 'name2'],
+ *  showhide: [function() , function() ] => reduce results from all
+ * }
+ *
+ * The struct should be item in an array for a template.
+ *
+ * Alternative - try { var m = eval('model.prop1.prop2.prop3'); } catch (e) return null
+ *
+ * Example for ng-content-model:
+ * 'model'
+ * `
+ * if (goog.isDefAndNotNull(model.prop1))
+ *
+ *  if (goog.isDefAndNotNull(model.prop1.prop2))
+ *
+ *    if (goog.isDefAndNotNull(model.prop1.prop2.prop3))
+ *      return model.prop1.prop2.prop3
+ * return null
+ *
+ * example for ng-content-model w/ filter
+ * "prop1.prop2 | f0 | f1(param1) | f2(param1, param2)"
+ *
+ * 'model'
+ * return [model];
+ *
+ * 'model',
+ * 'return [model, \'param1\'];
+ *
+ * 'model',
+ * 'return [model, \'param1\', \'param2\'];'
+ *
+ * Example processing filters.
+ * gModel
+ * var model = this.model(gModel);
+ * if (model != null)
+ * filtes.forEach((_, i) {
+ * if (var ff = ng.filters.getFilter())
+ * model = ff.apply(null, preprocessors[i](model))
+ * })
+ * --> model is now the value to reflect
+ *
+ * showhide:
+ * model is deducted the same was as ng-content-model without the filters.
+ * var show = showhide.map((model) { -> run model
+ * // do not forget to ! the `hide`}).some(_) { return _; })
+ *
+ * This covers the currently supported items: show, hide, text, html, fill, color
+ */
+
+/**
  * Binds the element in the NG implementation.
  *
  * Note that this means that the developer still needs to call

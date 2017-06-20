@@ -1154,3 +1154,49 @@ goog.ui.registry.setDecoratorByClassName(
     });
 
 });  // goog.scope
+
+
+/*
+If we have to write an entierly new renderer what would we need?
+
+1) it should be responsible for only one very specific template
+2) the template should be written in html+dsl syntax
+3) the template should be compilable to soy template
+4) the renderer should be able to manipulate the template based on the view model
+5) the renderer should be able to set up all needed sub-routines and utils like poiner agent raf etc.
+
+exmaple:
+<div +my-custom-element [class.active]="active">
+  <div +my-sub-element>
+    And this is my [[boundText].
+  </div>
+</div>
+
+Templates:
+1) outher renderer should produce following template:
+<div class="{css my-custom-element}">
+</div>
+
+2) inner renderer template
+<div class="{css my-sub-element}">
+</div>
+
+Renderers:
+1) outer
+Renderer {
+  constructor() {
+    super();
+    this.inserttionPointUid_ = '_238';
+  }
+
+  getTemplate() { return template.MyCustomElement(null); }
+
+  createDom() {
+    var el = this.getTemplate().toElement();
+    var insertionPoint = el.querySelector('.' + this.insertionPointUid_);
+    inserttionPoint.appendChild(Renderer2.getInstance().createDom());
+  }
+
+}
+
+*/

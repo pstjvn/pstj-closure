@@ -23,6 +23,7 @@ goog.provide('pstj.mvc.SimpleRouter');
 goog.require('goog.History');
 goog.require('goog.array');
 goog.require('goog.events');
+goog.require('goog.history.EventType');
 goog.require('goog.string');
 
 
@@ -69,7 +70,7 @@ pstj.mvc.SimpleRouter.prototype.setEnabled = function(enable) {
  * captured strings.
  */
 pstj.mvc.SimpleRouter.prototype.route = function(route, fn) {
-  if (goog.isString(route))
+  if (goog.isString(route)) {
     route = new RegExp('^' + goog.string.regExpEscape(route)
             .replace(/\\:\w+/g, '(\\w+)')
             .replace(/\\\*/g, '(.*)')
@@ -77,7 +78,8 @@ pstj.mvc.SimpleRouter.prototype.route = function(route, fn) {
             .replace(/\\\]/g, ')?')
             .replace(/\\\{/g, '(?:')
             .replace(/\\\}/g, ')?') + '$');
-  this.routes_.push({route: route, callback: fn});
+    this.routes_.push({route: route, callback: fn});
+  }
 };
 
 

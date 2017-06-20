@@ -1,5 +1,7 @@
 goog.provide('pstj.configure');
 
+goog.require('goog.string');
+
 /**
  * @fileoverview Provides utility to obtain values from global configuration
  *   provided on run time on top of default values.
@@ -36,6 +38,9 @@ pstj.configure.Value;
  *   default one.
  */
 pstj.configure.getRuntimeValue = function(value, default_value, opt_prefix) {
+  if (goog.string.isEmptyOrWhitespace(value)) {
+    throw new Error('Cannot lookup value without valid key');
+  }
   var current = goog.global;
   var paths;
   if (goog.isString(opt_prefix)) {

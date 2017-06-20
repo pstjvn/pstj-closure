@@ -23,7 +23,6 @@ goog.require('pstj.worker.Event');
 goog.require('pstj.worker.IWorker');
 
 goog.scope(function() {
-var w = pstj.worker;
 
 /**
  * Implements wrapper around native web wroker so the user does not have to
@@ -31,7 +30,7 @@ var w = pstj.worker;
  * methods.
  * @implements {pstj.worker.IWorker}
  */
-w.WorkerClient = class extends goog.events.EventTarget {
+pstj.worker.WorkerClient = class extends goog.events.EventTarget {
   /** @param {string} url The url of the worker app. */
   constructor(url) {
     super();
@@ -54,7 +53,7 @@ w.WorkerClient = class extends goog.events.EventTarget {
    * @private
    */
   handleNativeMessage_(event) {
-    this.dispatchEvent(new w.Event(this, event.data));
+    this.dispatchEvent(new pstj.worker.Event(this, event.data));
   }
 
   /**

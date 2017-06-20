@@ -8,6 +8,7 @@ config \
 control \
 date \
 debug \
+dom \
 ds \
 element \
 error \

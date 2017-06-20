@@ -27,11 +27,6 @@ goog.require('goog.pubsub.TopicId');
 goog.require('goog.pubsub.TypedPubSub');
 
 
-
-goog.scope(function() {
-var _ = pstj.debug;
-
-
 /**
  * The bus to use for debuging calls. Class instances and caches could
  * subscribe to the desired topics from this class and then they will
@@ -41,7 +36,7 @@ var _ = pstj.debug;
  * @final
  * @type {goog.pubsub.TypedPubSub}
  */
-_.bus = new goog.pubsub.TypedPubSub();
+pstj.debug.bus = new goog.pubsub.TypedPubSub();
 
 
 /**
@@ -49,14 +44,12 @@ _.bus = new goog.pubsub.TypedPubSub();
  * @final
  * @type {!goog.pubsub.TopicId<undefined>}
  */
-_.Topic = new goog.pubsub.TopicId(goog.events.getUniqueId('dump'));
+pstj.debug.Topic = new goog.pubsub.TopicId(goog.events.getUniqueId('dump'));
 
 
 // Export the global method for cache dumping.
 if (goog.DEBUG) {
   goog.exportSymbol('_dumpCaches', function() {
-    _.bus.publish(_.Topic, undefined);
+    pstj.debug.bus.publish(pstj.debug.Topic, undefined);
   });
 }
-
-});  // goog.scope

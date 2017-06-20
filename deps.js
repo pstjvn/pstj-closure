@@ -12,6 +12,7 @@ goog.addDependency('../../../apps/pstj/app/facebook.js', ['pstj.app.Facebook'], 
 goog.addDependency('../../../apps/pstj/app/google.js', ['pstj.app.Google'], ['goog.Promise', 'goog.asserts', 'goog.log', 'goog.net.jsloader'], false);
 goog.addDependency('../../../apps/pstj/app/google/auth2.js', ['pstj.app.google.Auth2'], ['goog.Promise', 'goog.asserts', 'goog.log', 'pstj.app.google.Gapi'], false);
 goog.addDependency('../../../apps/pstj/app/google/gapi.js', ['pstj.app.google.Gapi'], ['goog.Promise', 'goog.asserts', 'goog.html.TrustedResourceUrl', 'goog.log', 'goog.net.jsloader', 'goog.string.Const'], false);
+goog.addDependency('../../../apps/pstj/app/google/gapi_test.js', ['pstj.app.google.GapiTest'], ['goog.testing.jsunit'], false);
 goog.addDependency('../../../apps/pstj/app/google/settings.js', ['pstj.app.google.settings'], [], false);
 goog.addDependency('../../../apps/pstj/app/google/user.js', ['pstj.app.google.User'], ['goog.Promise', 'goog.asserts', 'goog.log', 'goog.string', 'pstj.app.google.Auth2', 'pstj.app.google.settings', 'pstj.ds.oauth'], false);
 goog.addDependency('../../../apps/pstj/app/page.js', ['pstj.app.Page', 'pstj.app.PageRenderer'], ['goog.array', 'goog.ui.Component.State', 'goog.ui.registry', 'pstj.app.UiControl', 'pstj.material.ElementRenderer', 'pstj.templates'], false);
@@ -46,13 +47,20 @@ goog.addDependency('../../../apps/pstj/cast/cast.js', ['pstj.cast.Cast'], ['goog
 goog.addDependency('../../../apps/pstj/color/color.js', ['pstj.color'], ['goog.color'], false);
 goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test'], ['goog.testing.PropertyReplacer', 'goog.testing.PseudoRandom', 'goog.testing.jsunit', 'pstj.color'], false);
 goog.addDependency('../../../apps/pstj/color/colorrange.js', ['pstj.color.ColorRange'], ['goog.array', 'goog.color', 'pstj.math.utils'], false);
-goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], [], false);
-goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configure_test'], [], false);
+goog.addDependency('../../../apps/pstj/config/configure.js', ['pstj.configure'], ['goog.string'], false);
+goog.addDependency('../../../apps/pstj/config/configure_test.js', ['pstj.configure_test'], ['goog.testing.jsunit', 'pstj.configure'], false);
 goog.addDependency('../../../apps/pstj/control/base.js', ['pstj.control.Base'], ['goog.Disposable', 'goog.asserts', 'goog.events.EventHandler'], false);
 goog.addDependency('../../../apps/pstj/control/control.js', ['pstj.control.Control'], ['goog.Disposable', 'goog.array', 'goog.events.EventHandler', 'goog.pubsub.TypedPubSub'], false);
 goog.addDependency('../../../apps/pstj/control/toast.js', ['pstj.control.Toast'], ['goog.array', 'goog.async.Delay', 'goog.log', 'pstj.control.Control', 'pstj.material.Toast'], false);
 goog.addDependency('../../../apps/pstj/date/utils.js', ['pstj.date.utils'], ['goog.array', 'goog.i18n.DateTimeFormat', 'goog.string'], false);
 goog.addDependency('../../../apps/pstj/debug/pubsub.js', ['pstj.debug'], ['goog.events', 'goog.pubsub.TopicId', 'goog.pubsub.TypedPubSub'], false);
+goog.addDependency('../../../apps/pstj/dom/fontconfig.js', ['pstj.dom.FontConfig'], ['goog.array'], false);
+goog.addDependency('../../../apps/pstj/dom/fontlink.js', ['pstj.dom.FontLink'], ['goog.asserts', 'goog.dom', 'goog.events', 'goog.events.EventTarget', 'goog.events.EventType'], false);
+goog.addDependency('../../../apps/pstj/dom/fontloader.js', ['pstj.dom.FontLoader'], ['goog.Delay', 'goog.Promise', 'goog.dom'], false);
+goog.addDependency('../../../apps/pstj/dom/fontloaderfallback.js', ['pstj.dom.FontLoaderFallback'], ['goog.Promise', 'goog.async.AnimationDelay', 'goog.async.Delay', 'goog.dom', 'goog.math.Size', 'goog.style'], false);
+goog.addDependency('../../../apps/pstj/dom/fontoptions.js', ['pstj.dom.FontOptions'], [], false);
+goog.addDependency('../../../apps/pstj/dom/fonts.js', ['pstj.dom.fonts'], ['goog.dom', 'goog.string', 'pstj.dom.FontLoader', 'pstj.dom.FontLoaderFallback'], false);
+goog.addDependency('../../../apps/pstj/dom/fontswitcher.js', ['pstj.dom.FontSwitcher'], ['pstj.dom.FontLink', 'pstj.dom.FontOptions', 'pstj.dom.fonts'], false);
 goog.addDependency('../../../apps/pstj/ds/autogen/iconparser.js', ['pstj.ds.autogen.IconParser'], ['goog.array', 'pstj.ds.autogen.IconRenderer', 'pstj.ds.template'], false);
 goog.addDependency('../../../apps/pstj/ds/autogen/iconrenderer.js', ['pstj.ds.autogen.IconRenderer'], ['goog.array', 'goog.dom.classlist', 'goog.string', 'pstj.ds.template'], false);
 goog.addDependency('../../../apps/pstj/ds/cache.js', ['pstj.ds.Cache'], ['goog.log', 'goog.object', 'pstj.debug'], false);
@@ -151,7 +159,7 @@ goog.addDependency('../../../apps/pstj/material/state.js', ['pstj.material.State
 goog.addDependency('../../../apps/pstj/material/wave.js', ['pstj.material.Wave', 'pstj.material.WavePool'], ['goog.Disposable', 'goog.array', 'goog.asserts', 'goog.async.AnimationDelay', 'goog.async.Delay', 'goog.color', 'goog.dom', 'goog.math.Coordinate', 'goog.math.Size', 'goog.structs.Pool', 'goog.style', 'goog.userAgent.product', 'pstj.color', 'pstj.ds.Cache', 'pstj.lab.style.css', 'pstj.material.EventType', 'pstj.math.utils'], false);
 goog.addDependency('../../../apps/pstj/math/number-generators.js', ['pstj.math.CyclicNumberGenerator', 'pstj.math.LinearNumberGenerator'], [], false);
 goog.addDependency('../../../apps/pstj/math/utils.js', ['pstj.math.utils'], ['goog.array', 'goog.math.Coordinate'], false);
-goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events', 'goog.string'], false);
+goog.addDependency('../../../apps/pstj/mvc/simplerouter.js', ['pstj.mvc.SimpleRouter'], ['goog.History', 'goog.array', 'goog.events', 'goog.history.EventType', 'goog.string'], false);
 goog.addDependency('../../../apps/pstj/ng/filters.js', ['pstj.ng.filters'], ['pstj.databinding.ngFilter', 'pstj.date.utils'], false);
 goog.addDependency('../../../apps/pstj/ng/ifilter.js', ['pstj.databinding.ngFilter'], [], false);
 goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], ['goog.array', 'goog.async.nextTick', 'goog.dom.classlist', 'goog.dom.dataset', 'pstj.ds.ListItem', 'pstj.ng.filters', 'pstj.ui.Touchable'], false);
@@ -175,7 +183,7 @@ goog.addDependency('../../../apps/pstj/ui/agents/ng-cache.js', ['pstj.ui.NGCache
 goog.addDependency('../../../apps/pstj/ui/agents/pointer.js', ['pstj.agent.Pointer', 'pstj.agent.Pointer.EventType', 'pstj.agent.PointerEvent', 'pstj.agent.Swipe'], ['goog.array', 'goog.asserts', 'goog.async.AnimationDelay', 'goog.async.Delay', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventType', 'goog.log', 'goog.math.Coordinate', 'pstj.ui.Agent'], false);
 goog.addDependency('../../../apps/pstj/ui/agents/scroll.js', ['pstj.agent.Scroll', 'pstj.agent.ScrollEvent'], ['goog.async.AnimationDelay', 'goog.events', 'goog.events.EventType', 'pstj.ui.Agent'], false);
 goog.addDependency('../../../apps/pstj/ui/agents/sizemonitor-agent.js', ['pstj.ui.SizeMonitorAgent'], ['goog.async.Throttle', 'goog.dom.ViewportSizeMonitor', 'goog.events', 'goog.events.EventType', 'goog.math.Size', 'goog.style', 'pstj.ui.Agent'], false);
-goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.asserts', 'goog.async.AnimationDelay', 'goog.async.nextTick', 'goog.events', 'goog.events.Event', 'goog.events.EventType', 'goog.events.Key', 'pstj.configure', 'pstj.ui.Agent'], false);
+goog.addDependency('../../../apps/pstj/ui/agents/touch-agent.js', ['pstj.ui.TouchAgent'], ['goog.asserts', 'goog.async.AnimationDelay', 'goog.async.nextTick', 'goog.events', 'goog.events.Event', 'goog.events.EventType', 'goog.events.Key', 'goog.ui.Component.EventType', 'goog.ui.Control', 'pstj.configure', 'pstj.ui.Agent'], false);
 goog.addDependency('../../../apps/pstj/ui/agents/touchpool.js', ['pstj.ui.Touch', 'pstj.ui.TouchPool'], ['goog.math.Coordinate', 'goog.structs.Pool'], false);
 goog.addDependency('../../../apps/pstj/ui/async.js', ['pstj.ui.Async'], ['goog.functions', 'pstj.graphics.Smooth', 'pstj.ui.Templated'], false);
 goog.addDependency('../../../apps/pstj/ui/button/button.js', ['pstj.ui.Button'], ['goog.dom.dataset', 'goog.ui.CustomButton', 'goog.ui.registry', 'pstj.ui.CustomButtonRenderer', 'pstj.ui.TouchAgent'], false);

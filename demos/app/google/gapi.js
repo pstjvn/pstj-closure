@@ -1,8 +1,8 @@
 goog.provide('pstj.demos.app.google.Gapi');
 
+goog.require('goog.debug.DivConsole');
 goog.require('goog.log');
 goog.require('pstj.app.google.Gapi');
-goog.require('goog.debug.DivConsole');
 
 var logger = goog.log.getLogger('pstj.demos.app.google.Gapi');
 var div = document.querySelector('.console');
