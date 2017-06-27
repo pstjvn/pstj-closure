@@ -20,6 +20,10 @@ goog.require('pstj.debug');
  * Provides simple abstraction over regular object, but is useful to measure
  * the amount of items stored.
  *
+ * You should not instanciate this class, instead use the static `create`
+ * method. The class is left public in order to provide access for subclassing
+ * it if needed.
+ *
  * @constructor
  * @param {string=} opt_name Optional, name of the cache, used only for debug
  *    and to notify the number ot items.
@@ -49,10 +53,8 @@ pstj.ds.Cache = function(opt_name) {
   this.count_ = 0;
 
   if (goog.DEBUG) {
-    pstj.debug.bus.subscribe(pstj.debug.Topic, function() {
-      goog.log.info(this.logger, 'Cache name:' + this.name_ + ' -- ' +
-          this.count_);
-    }, this);
+    // Subscribe the instance to emit debug message when asked globally.
+    pstj.debug.bus.subscribe(pstj.debug.Topic, this.debugStatement_, this);
   }
 };
 
@@ -64,6 +66,15 @@ pstj.ds.Cache = function(opt_name) {
  * @protected
  */
 pstj.ds.Cache.prototype.logger = goog.log.getLogger('pstj.ds.Cache');
+
+
+/**
+ * The statement to use for debugging instance caches.
+ * @private
+ */
+pstj.ds.Cache.prototype.debugStatement_ = function() {
+  goog.log.info(this.logger, 'Cache name:' + this.name_ + ' -- ' + this.count_);
+};
 
 
 /**
@@ -159,17 +170,18 @@ pstj.ds.Cache.count_ = 0;
 
 
 /**
- * Creates a new cache with the desired name.
+ * Creates a new cache with the desired name. Use this static method insead of
+ * the constructor directly.
  *
  * @param {string=} opt_name OPtional name of the cache (for debug only).
- * @return {pstj.ds.Cache}
+ * @return {!pstj.ds.Cache}
  */
 pstj.ds.Cache.create = function(opt_name) {
   var cache = new pstj.ds.Cache(opt_name);
   if (goog.DEBUG) {
     pstj.ds.Cache.count_++;
-    goog.log.error(cache.logger, 'Cache containers count:' +
-        pstj.ds.Cache.count_);
+    goog.log.info(
+        cache.logger, 'Cache containers count:' + pstj.ds.Cache.count_);
   }
   return cache;
 };
