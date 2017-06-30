@@ -15,6 +15,7 @@ goog.provide('pstj.ui.TouchSheet');
 
 goog.require('goog.async.Delay');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.events.MouseWheelEvent');

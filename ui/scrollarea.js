@@ -176,7 +176,7 @@ pstj.ui.CustomScrollArea.prototype.onResize = function() {
   goog.style.setWidth(this.scrollDiv_, (
       pstj.ui.CustomScrollArea.nativeScrollWidth_ + containerWidth));
   this.handleNativeScrollDelayed_.start();
-  // probably store the height of the scrollDiv
+  // probably store the height of the SCROLL_DIV
   // probably also store the scrollContainerHeight - true for % sizeables.
 };
 
@@ -271,13 +271,13 @@ pstj.ui.CustomScrollArea.prototype.enableTransitions = function(enable) {
 pstj.ui.CustomScrollArea.prototype.decorateInternal = function(element) {
   goog.base(this, 'decorateInternal', element);
   this.scrollDiv_ = goog.dom.getElementByClass(
-      pstj.ui.CustomScrollArea.Classes.ScrollDiv, this.getElement());
+      pstj.ui.CustomScrollArea.Classes.SCROLL_DIV, this.getElement());
 
   this.scrollContainer_ = goog.dom.getElementByClass(
-      pstj.ui.CustomScrollArea.Classes.ScrollContainer, this.getElement());
+      pstj.ui.CustomScrollArea.Classes.SCROLL_CONTAINER, this.getElement());
 
   var scrollEl = goog.dom.getElementByClass(
-      pstj.ui.CustomScrollArea.Classes.ScrollBar, this.getElement());
+      pstj.ui.CustomScrollArea.Classes.SCROLL_BAR, this.getElement());
 
   this.scrollBar_.decorate(scrollEl);
   this.scrollBar_.setValue(100);
@@ -426,7 +426,7 @@ pstj.ui.CustomScrollArea.nativeScrollWidth_ = goog.style.getScrollbarWidth();
  * @enum {string}
  */
 pstj.ui.CustomScrollArea.Classes = {
-  ScrollContainer: goog.getCssName('custom-scroll-internal'),
-  ScrollDiv: goog.getCssName('custom-scroll-div'),
-  ScrollBar: goog.getCssName('custom-scroll-bar')
+  SCROLL_CONTAINER: goog.getCssName('custom-scroll-internal'),
+  SCROLL_DIV: goog.getCssName('custom-scroll-div'),
+  SCROLL_BAR: goog.getCssName('custom-scroll-bar')
 };

@@ -16,6 +16,7 @@ goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
 goog.require('goog.functions');
 goog.require('goog.object');

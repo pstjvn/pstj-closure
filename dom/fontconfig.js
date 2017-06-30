@@ -18,14 +18,14 @@ goog.require('goog.array');
 pstj.dom.FontConfig = class {
   /**
    * @param {!pstj.dom.FontConfig.Font} font
-   * @param {pstj.dom.FontConfig.Set=} opt_set Optionally which font set is this
+   * @param {pstj.dom.FontConfigSet_=} opt_set Optionally which font set is this
    *    font from.
    */
   constructor(font, opt_set) {
-    /** @private {pstj.dom.FontConfig.Set} */
+    /** @private {pstj.dom.FontConfigSet_} */
     this.set_ =
         (goog.isDefAndNotNull(opt_set) ? opt_set :
-                                         pstj.dom.FontConfig.Set.GOOGLE);
+                                         pstj.dom.FontConfigSet_.GOOGLE);
     /** @private {number} */
     this.index_ = pstj.dom.FontConfig.lastFontIndex_++;
     /** @type {!pstj.dom.FontConfig.Font} */
@@ -62,7 +62,7 @@ pstj.dom.FontConfig = class {
    */
   getSourcePath_() {
     switch (this.set_) {
-      case pstj.dom.FontConfig.Set.GOOGLE:
+      case pstj.dom.FontConfigSet_.GOOGLE:
         return 'https://fonts.googleapis.com/css?family=';
       default:
         throw new Error('Unkown set');
@@ -92,8 +92,10 @@ pstj.dom.FontConfig.lastFontIndex_ = 0;
 
 /**
  * Enumerates the font sets we know how to handle.
+ * @override
+ * @private
  * @enum {number}
  */
-pstj.dom.FontConfig.Set = {
+pstj.dom.FontConfigSet_ = {
   GOOGLE: 0
 };

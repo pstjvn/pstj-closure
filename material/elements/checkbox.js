@@ -4,6 +4,7 @@ goog.provide('pstj.material.CheckboxRenderer');
 goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.events.EventType');
+goog.require('goog.events.KeyCodes');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');

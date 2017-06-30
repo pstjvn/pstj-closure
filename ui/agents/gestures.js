@@ -9,6 +9,7 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventType');
 goog.require('goog.ui.Control');
 goog.require('pstj.ui.Agent');
+goog.require('pstj.ui.Touch');
 goog.require('pstj.ui.TouchPool');
 
 

@@ -15,6 +15,7 @@ goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
+goog.require('pstj.material.EventMap');
 goog.require('pstj.material.RadioButton');
 goog.require('pstj.material.template');
 

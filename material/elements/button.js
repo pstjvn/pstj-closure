@@ -11,6 +11,7 @@ goog.require('goog.ui.registry');
 goog.require('pstj.autogen.icons.names');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
+goog.require('pstj.material.EventMap');
 goog.require('pstj.material.EventType');
 goog.require('pstj.material.IconContainer');
 goog.require('pstj.material.Ripple');

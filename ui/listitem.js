@@ -3,6 +3,7 @@ goog.provide('pstj.ui.ListItemTemplate');
 
 goog.require('goog.asserts');
 goog.require('goog.dom.classlist');
+goog.require('goog.ui.Component.EventType');
 goog.require('pstj.configure');
 goog.require('pstj.ds.ListItem');
 goog.require('pstj.templates');

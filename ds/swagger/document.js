@@ -1,24 +1,41 @@
-goog.module('pstj.ds.swagger.Document');
+goog.provide('pstj.ds.swagger.Document');
 
-var array = goog.require('goog.array');
-var Uri = goog.require('goog.Uri');
+goog.require('goog.Uri');
+goog.require('goog.array');
 
-const Document = class Document {
+
+/**
+ * Represents the parsed version of a swagger document.
+ *
+ * This class will contain all the needed items to build up a version of the
+ * remote API for both constructing a text representation of the swagger API
+ * (i.e. reconstruct the API from this representation as a JSON string) and
+ * usable code representation that can work with the API instances (classes).
+ *
+ * Third usable feature of this representation is the capability to colllect
+ * data similar to discovery documents and thus be subject of data binding
+ * tracing for templates (POC needed).
+ *
+ * In order to make this compatible with discovery document it needs to use the
+ * same interface(s) and class representation. This means that we need to have
+ * a common denomination of the featires ASAP.
+ */
+pstj.ds.swagger.Document = class {
   /**
-   * @param {!Object<string, ?>} map
+   * @param {!Object<string, ?>} map The parser from JSON swagger object.
    */
   constructor(map) {
     /**
-     * The JSON parsed map of the swagger.
-     * @type {!Object<string, ?>}
-     * @private
+     * The JSON parsed map of the swagger config.
+     * @private {!Object<string, ?>}
      */
     this.map_ = map;
     this.name = '';
     this.description = '';
     this.version = '';
     this.host = '';
-    this.path = '';
+    /** @type {?goog.Uri} */
+    this.path = null;
     this.parseMap_();
   }
 
@@ -48,12 +65,12 @@ const Document = class Document {
    * @protected
    */
   parsePath() {
-    var protocol = array.contains(this.map_['schemes'], 'https') ? 'https' :
-        'http';
+    var protocol = goog.array.contains(this.map_['schemes'], 'https') ?
+        'https' : 'http';
     var host = this.map_['host'];
     var basepath = goog.isString(this.map_['basePath']) ?
         this.map_['basePath'] : '';
-    var uri = new Uri();
+    var uri = new goog.Uri();
     uri.setScheme(protocol);
     uri.setDomain(host);
     uri.setPath(basepath);
@@ -76,11 +93,12 @@ const Document = class Document {
   }
 };
 
+
 /**
  * Create a new swagger document from a JSON parsed swagger map.
  * @param {!Object<string, ?>} jsonMap
- * @return {!Document}
+ * @return {!pstj.ds.swagger.Document}
  */
-exports.fromMap = function(jsonMap) {
-  return new Document(jsonMap);
+pstj.ds.swagger.Document.fromMap = function(jsonMap) {
+  return new pstj.ds.swagger.Document(jsonMap);
 };

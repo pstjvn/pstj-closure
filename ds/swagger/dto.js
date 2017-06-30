@@ -1,7 +1,7 @@
 goog.module('pstj.swagger.Dto');
 
-const Type = goog.require('pstj.swagger.ClassType');
 const Node = goog.require('pstj.swagger.Node');
+const Type = goog.require('pstj.swagger.ClassType');
 
 const Dto = class Dto extends Node {
   /**

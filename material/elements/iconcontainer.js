@@ -6,6 +6,7 @@ goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.labs.net.xhr');
 goog.require('goog.object');
+goog.require('goog.soy.data.SanitizedHtml');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.autogen.icons.names');
@@ -14,14 +15,13 @@ goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.Icon');
 goog.require('pstj.material.Icon.EventType');
+goog.require('pstj.material.IconRenderer');
 goog.require('pstj.material.icons.registry');
 goog.require('pstj.material.template');
-goog.require('soydata.SanitizedHtml');
 
 goog.scope(function() {
 var E = pstj.material.Element;
 var ER = pstj.material.ElementRenderer;
-var I = pstj.material.Icon;
 var iconnames = pstj.autogen.icons.names;
 // Set this to true to test behaviour as if the code was compiled:
 // this is - after you run the code generation step
@@ -71,7 +71,8 @@ pstj.material.IconContainer = goog.defineClass(E, {
   /** @inheritDoc */
   enterDocument: function() {
     goog.base(this, 'enterDocument');
-    this.getHandler().listen(this, I.EventType.MORPHEND, this.onMorphEnd);
+    this.getHandler().listen(
+        this, pstj.material.Icon.EventType.MORPHEND, this.onMorphEnd);
   },
 
 
@@ -87,10 +88,10 @@ pstj.material.IconContainer = goog.defineClass(E, {
    * @protected
    */
   onMorphEnd: function(e) {
-    var target = goog.asserts.assertInstanceof(e.target, I);
+    var target = goog.asserts.assertInstanceof(e.target, pstj.material.Icon);
     if (target != this.icon) {
       e.preventDefault();
-      this.removeChild(/** @type {I} */(target), true);
+      this.removeChild(/** @type {pstj.material.Icon} */ (target), true);
     } else if (this.icon.type == iconnames.NONE) {
       e.preventDefault();
       this.removeChild(this.icon, true);
@@ -104,9 +105,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
    * Accessor method for the current icon / type applied to the container.
    * @return {pstj.autogen.icons.names}
    */
-  getIcon: function() {
-    return this.type;
-  },
+  getIcon: function() { return this.type; },
 
 
   /**
@@ -160,13 +159,13 @@ pstj.material.IconContainer = goog.defineClass(E, {
    */
   createIcon: function(iconName) {
     if (COMPILED) {
-      return new pstj.material.Icon(null,
-          pstj.material.icons.registry.getRenderer(iconName),
+      return new pstj.material.Icon(
+          null, pstj.material.icons.registry.getRenderer(iconName),
           this.getDomHelper());
     } else {
       // this path is taken in dev mode - the instances must be handled here.
-      return new pstj.material.Icon(null,
-          pstj.material.IconContainer.getCustomRenderer(iconName),
+      return new pstj.material.Icon(
+          null, pstj.material.IconContainer.getCustomRenderer(iconName),
           this.getDomHelper());
     }
   },
@@ -177,7 +176,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
     var type = this.getElement().getAttribute('type');
     if (!type) type = 'none';
     // set icon - will update the type and set the icon internally.
-    this.setIcon(/** @type {pstj.autogen.icons.names} */(type));
+    this.setIcon(/** @type {pstj.autogen.icons.names} */ (type));
   },
 
 
@@ -200,8 +199,8 @@ pstj.material.IconContainer = goog.defineClass(E, {
    * @return {!pstj.material.IconContainerRenderer}
    */
   getRenderer: function() {
-    return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-        pstj.material.IconContainerRenderer);
+    return goog.asserts.assertInstanceof(
+        goog.base(this, 'getRenderer'), pstj.material.IconContainerRenderer);
   },
 
   statics: {
@@ -236,19 +235,17 @@ pstj.material.IconContainer = goog.defineClass(E, {
      * @return {pstj.material.IconRenderer}
      */
     getCustomRenderer: function(icon) {
-      if (goog.object.containsKey(pstj.material.IconContainer.rendererCache_,
-          icon)) {
-        return goog.object.get(pstj.material.IconContainer.rendererCache_,
-            icon);
+      if (goog.object.containsKey(
+              pstj.material.IconContainer.rendererCache_, icon)) {
+        return goog.object.get(
+            pstj.material.IconContainer.rendererCache_, icon);
       } else {
         var names = pstj.material.IconContainer.getNamesByIcon(icon);
         var r = pstj.material.ElementRenderer.getCustomRenderer(
-            pstj.material.IconRenderer,
-            null,
+            pstj.material.IconRenderer, null,
             pstj.material.IconContainer.getCustomTemplateFn(icon));
         goog.array.forEach(names, function(name) {
-          goog.object.set(pstj.material.IconContainer.rendererCache_,
-              name, r);
+          goog.object.set(pstj.material.IconContainer.rendererCache_, name, r);
         });
         return r;
       }
@@ -282,7 +279,8 @@ pstj.material.IconContainer = goog.defineClass(E, {
      * Given an icon name returns a function that returns the SVG string
      * representing the dvelopment version of the template for this icon.
      * @param {string} icon
-     * @return {function(Object.<string, *>=): soydata.SanitizedHtml}
+     * @return {function(Object.<string, *>=):
+     *    goog.soy.data.SanitizedHtml.SanitizedHtml}
      */
     getCustomTemplateFn: function(icon) {
       // get the svg node from the DOM, clone it and turn it into string
@@ -292,13 +290,14 @@ pstj.material.IconContainer = goog.defineClass(E, {
           '[name*="' + icon + '"]');
       if (!svg) throw new Error('Cannot find SVG node with name: ' + icon);
       svg.removeAttribute('name');
-      var htmlstring = soydata.VERY_UNSAFE.ordainSanitizedHtml(
-          goog.dom.getOuterHtml(/** @type {Element} */(svg)));
+      var htmlstring =
+          goog.soy.data.SanitizedHtml.VERY_UNSAFE.ordainSanitizedHtml(
+              goog.dom.getOuterHtml(/** @type {Element} */ (svg)));
       return (
-          /** @type {function(Object.<string, *>=): soydata.SanitizedHtml} */(
-              function(m) {
-                return htmlstring;
-              }));
+          /** @type {function(Object.<string, *>=):
+              goog.soy.data.SanitizedHtml.SanitizedHtml} */ (function(m) {
+            return htmlstring;
+          }));
     },
 
 
@@ -335,9 +334,7 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
    * @extends {pstj.material.ElementRenderer}
    * @struct
    */
-  constructor: function() {
-    goog.base(this);
-  },
+  constructor: function() { goog.base(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -353,11 +350,7 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
   },
 
   /** @inheritDoc */
-  generateTemplateData: function(control) {
-    return {
-      type: control.type
-    };
-  },
+  generateTemplateData: function(control) { return {type: control.type}; },
 
 
   /** @inheritDoc */
@@ -376,23 +369,23 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
 });
 goog.addSingletonGetter(pstj.material.IconContainerRenderer);
 
-goog.ui.registry.setDefaultRenderer(pstj.material.IconContainer,
-    pstj.material.IconContainerRenderer);
+goog.ui.registry.setDefaultRenderer(
+    pstj.material.IconContainer, pstj.material.IconContainerRenderer);
 
 goog.ui.registry.setDecoratorByClassName(
-    pstj.material.IconContainerRenderer.CSS_CLASS, function() {
-      return new pstj.material.IconContainer(null);
-    });
+    pstj.material.IconContainerRenderer.CSS_CLASS,
+    function() { return new pstj.material.IconContainer(null); });
 
 
 // If working in dev mode load the svg.
 if (!COMPILED) {
-  goog.labs.net.xhr.get(goog.asserts.assertString(
-      pstj.configure.getRuntimeValue(
-          'XML_ICON_SOURCE',
-          '../pstj/templates/icons.xml',
-          'PSTJ.MATERIAL'))).then(
-      function(txt) {
+  goog.labs.net.xhr
+      .get(
+          goog.asserts.assertString(
+              pstj.configure.getRuntimeValue(
+                  'XML_ICON_SOURCE', '../pstj/templates/icons.xml',
+                  'PSTJ.MATERIAL')))
+      .then(function(txt) {
         var dom = goog.dom.htmlToDocumentFragment(txt);
         pstj.material.IconContainer.dom_ = dom;
         pstj.material.IconContainer.XMLLoaded = true;

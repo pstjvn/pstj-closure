@@ -12,6 +12,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.log');
 goog.require('pstj.debug');
+goog.require('pstj.debug.bus');
 goog.require('pstj.ds.Cache');
 
 

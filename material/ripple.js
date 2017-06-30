@@ -44,6 +44,7 @@ goog.provide('pstj.material.RippleRenderer');
 
 goog.require('goog.dom');
 goog.require('goog.ui.registry');
+goog.require('pstj.agent.Pointer.EventType');
 goog.require('pstj.material.Element');
 goog.require('pstj.material.ElementRenderer');
 goog.require('pstj.material.EventMap');

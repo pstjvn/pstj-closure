@@ -5,6 +5,7 @@ goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.Delay');
 goog.require('goog.async.nextTick');
+goog.require('goog.events.EventType');
 goog.require('goog.format.EmailAddress');
 goog.require('goog.labs.userAgent.platform');
 goog.require('goog.string');

@@ -1,7 +1,7 @@
 /**
- * @fileoverview Provides UI component that is asily bound to a control
+ * @fileoverview Provides UI component that is easily bound to a control
  * instance. This is useful if the component needs to communicate back
- * to the controller latyer.
+ * to the controller layer.
  *
  * @author regardingscot@gmail.com (Peter StJ)
  */

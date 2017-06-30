@@ -5,12 +5,9 @@ goog.require('goog.array');
 goog.require('pstj.ds.autogen.IconRenderer');
 goog.require('pstj.ds.template');
 
-goog.scope(function() {
-var auto = pstj.ds.autogen;
-
 
 /** The icon parser implementation. */
-auto.IconParser = class {
+pstj.ds.autogen.IconParser = class {
   /** @param {Document} doc The document containing the raw icon elements. */
   constructor(doc) {
     /** @type {!Array<pstj.ds.autogen.IconRenderer>} */
@@ -59,5 +56,3 @@ auto.IconParser = class {
         .getContent();
   }
 };
-
-});  // goog.scope

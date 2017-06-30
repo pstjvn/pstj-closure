@@ -16,7 +16,7 @@ const dom = goog.require('goog.dom');
 const Transformer = class {
   /**
    * @param {string=} selector
-   * @param {boolean=} outline
+   * @param {boolean=} fill
    */
   constructor(selector = 'polygon,polyline', fill = true) {
     /** @private {string} */
@@ -58,7 +58,7 @@ const Transformer = class {
     }
     el.parentNode.replaceChild(path, el);
   }
-}
+};
 
 /** @type {!Transformer} */
 let instance = new Transformer(undefined, false);

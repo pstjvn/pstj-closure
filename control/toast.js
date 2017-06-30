@@ -9,6 +9,7 @@ goog.provide('pstj.control.Toast');
 goog.require('goog.array');
 goog.require('goog.async.Delay');
 goog.require('goog.log');
+goog.require('goog.ui.Component.EventType');
 goog.require('pstj.control.Control');
 goog.require('pstj.material.Toast');
 

@@ -10,7 +10,7 @@ goog.provide('pstj.widget.MultiView');
 goog.require('goog.asserts');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Component.EventType');
-
+goog.require('goog.ui.Control');
 
 
 /**

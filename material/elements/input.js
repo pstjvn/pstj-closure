@@ -9,6 +9,7 @@ goog.provide('pstj.material.InputRenderer');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
+goog.require('goog.events.EventType');
 goog.require('goog.object');
 goog.require('goog.style');
 goog.require('goog.ui.Component.State');

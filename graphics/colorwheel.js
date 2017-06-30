@@ -45,7 +45,7 @@ var ColorWheel = class ColorWheel {
 
     // https://jsfiddle.net/xty0z5g5/3/
 
-    var radius = rect.width / 2;
+    // var radius = rect.width / 2;
     return '';
   }
 

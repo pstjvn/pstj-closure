@@ -10,33 +10,52 @@ goog.require('pstj.material.Button');
 
 var decorated = [];
 
+/**
+ * Handle the action from buttons.
+ * @param {!goog.events.Event} e
+ */
 function onAction(e) {
   e.target.setIcon(e.target.icon == 'cast-ready' ?
       'cast-active' : 'cast-ready');
 }
+
+/**
+ * Handle the noIcon type action.
+ * @param {!goog.events.Event} e
+ */
 function noIcon(e) {
   e.target.setIcon(e.target.icon != 'none' ? 'none' : 'cast-ready');
 }
+
+/** Set the buttons to use ink. */
 function useInk() {
   goog.array.forEach(arguments, function(i) {
     i.setUseInk(true);
   });
 }
+
+/** Make the instances raised */
 function setRaised() {
   goog.array.forEach(arguments, function(i) {
     i.setRaised(true);
   });
 }
+
+/** Set the button to be animated */
 function setAnimated() {
   goog.array.forEach(arguments, function(i) {
     i.setTransitioning(true);
   });
 }
+
+/** Set the icon on the button instances */
 function setIcon() {
   goog.array.forEach(arguments, function(i) {
     i.setIcon('cast-ready');
   });
 }
+
+/** Render the button type */
 function render() {
   goog.array.forEach(arguments, function(i) {
     var dom = goog.dom.createDom('div');

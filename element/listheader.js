@@ -25,7 +25,6 @@ goog.require('pstj.templates');
 
 goog.scope(function() {
 var ER = pstj.material.ElementRenderer;
-var element = pstj.element;
 
 
 /** @extends {pstj.material.Element} */
@@ -88,15 +87,15 @@ pstj.element.ListHeader = goog.defineClass(pstj.material.Element, {
     if (index != this.index_) {
       if (this.index_ != -1) {
         this.getChildAt(this.index_).setSortingState(
-            element.ListHeaderCell.SortState.NOT_SORTED);
+            pstj.element.ListHeaderCell.SortState.NOT_SORTED);
       }
     }
     this.index_ = index;
     if (this.index_ != -1) {
       this.getChildAt(this.index_).setSortingState(
           asc ?
-              element.ListHeaderCell.SortState.SORTED_ASCENDING :
-              element.ListHeaderCell.SortState.SORTED_DESCENDING);
+              pstj.element.ListHeaderCell.SortState.SORTED_ASCENDING :
+              pstj.element.ListHeaderCell.SortState.SORTED_DESCENDING);
     }
 
   },

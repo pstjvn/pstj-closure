@@ -1,5 +1,6 @@
 goog.provide('pstj.ui.ListItemControl');
 
+goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.Control');
 goog.require('pstj.ui.ListItemRenderer');
 

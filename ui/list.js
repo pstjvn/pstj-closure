@@ -7,6 +7,7 @@ goog.require('pstj.templates');
 goog.require('pstj.ui.Async');
 goog.require('pstj.ui.ListItem');
 goog.require('pstj.ui.Template');
+goog.require('pstj.ui.Touchable');
 
 
 

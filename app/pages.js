@@ -10,9 +10,11 @@ goog.provide('pstj.app.PagesRenderer');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
+goog.require('goog.events.EventType');
 goog.require('goog.log');
 goog.require('goog.math.Size');
 goog.require('goog.style');
+goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.app.Page');
 goog.require('pstj.app.UiControl');

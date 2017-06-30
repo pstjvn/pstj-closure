@@ -2,7 +2,7 @@
  * @fileoverview Provides means to alter the fonts on a remote frame. The frame
  * is assumed to be in the same origin.
  *
- * In order for fonrts to appear / change smoothly we need to buffer them as
+ * In order for fonts to appear / change smoothly we need to buffer them as
  * follows:
  *
  * - install the stylesheet for the font, should contain the font-face
@@ -23,6 +23,9 @@
 
 goog.provide('pstj.dom.FontSwitcher');
 
+goog.require('goog.asserts');
+goog.require('goog.dom');
+goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('pstj.dom.FontLink');
 goog.require('pstj.dom.FontOptions');
@@ -77,21 +80,32 @@ pstj.dom.FontSwitcher = class extends goog.events.EventTarget {
   installFont(fontconfig) {
     this.lastFontConfig_ = fontconfig;
     if (!goog.isNull(this.lastLink_)) {
-      goog.events.unlisten(this.lastLink_, pstj.dom.FontLink.EventType.READY, this.onLinkReady_, false, this);
-      goog.events.unlisten(this.lastLink_, pstj.dom.FontLink.EventType.LOAD_ERROR, this.onLinkError_, false, this);
+      goog.events.unlisten(
+          this.lastLink_, pstj.dom.FontLink.EventType.READY, this.onLinkReady_,
+          false, this);
+      goog.events.unlisten(
+          this.lastLink_, pstj.dom.FontLink.EventType.LOAD_ERROR,
+          this.onLinkError_, false, this);
       this.lastLink_.dispose();
     }
     this.lastLink_ = this.link_;
-    this.link_ = new pstj.dom.FontLink(fontconfig.linkHref, goog.asserts.assert(this.targetDocument_));
-    goog.events.listen(this.link_, pstj.dom.FontLink.EventType.READY, this.onLinkReady_, false, this);
-    goog.events.listen(this.link_, pstj.dom.FontLink.EventType.LOAD_ERROR, this.onLinkError_, false, this);
+    this.link_ = new pstj.dom.FontLink(
+        fontconfig.linkHref, goog.asserts.assert(this.targetDocument_));
+    goog.events.listen(
+        this.link_, pstj.dom.FontLink.EventType.READY, this.onLinkReady_, false,
+        this);
+    goog.events.listen(
+        this.link_, pstj.dom.FontLink.EventType.LOAD_ERROR, this.onLinkError_,
+        false, this);
     this.link_.enterDocument();
     this.dispatchEvent(pstj.dom.FontSwitcher.EventType.START);
   }
 
   /**
-   * Handles the reasy event from the link abstraction. Once the link is ready we need to
-   * make sure the script is installed to load the font and receive the message from it.
+   * Handles the reasy event from the link abstraction. Once the link is ready
+   * we need to
+   * make sure the script is installed to load the font and receive the message
+   * from it.
    *
    * @private
    * @param {goog.events.Event} e
@@ -100,7 +114,8 @@ pstj.dom.FontSwitcher = class extends goog.events.EventTarget {
     if (e.target == this.link_) {
       var options = new pstj.dom.FontOptions();
       options.family = this.lastFontConfig_.font.family;
-      pstj.dom.fonts.load(options, this.targetDocument_).then(this.onFontLoaded_, this.onFontError_, this);
+      pstj.dom.fonts.load(options, this.targetDocument_)
+          .then(this.onFontLoaded_, this.onFontError_, this);
     }
   }
 
@@ -146,7 +161,9 @@ pstj.dom.FontSwitcher = class extends goog.events.EventTarget {
    * @return {string}
    */
   generateStyle_() {
-    return (this.selector + '{font-family: \'' + this.lastFontConfig_.font['family'] + '\' !important; }');
+    return (
+        this.selector + '{font-family: \'' +
+        this.lastFontConfig_.font['family'] + '\' !important; }');
   }
 
   /** @override */

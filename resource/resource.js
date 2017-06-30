@@ -45,6 +45,7 @@ goog.provide('pstj.resource.Local');
 goog.provide('pstj.resource.Resource');
 
 goog.require('goog.async.nextTick');
+goog.require('goog.events.Event');
 goog.require('goog.json.NativeJsonProcessor');
 goog.require('goog.net.Jsonp');
 goog.require('goog.net.XhrIo');

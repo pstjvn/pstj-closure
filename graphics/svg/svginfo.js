@@ -58,7 +58,7 @@ const SvgInfo = class extends ETarget {
           'Cannot update progress without instance being initialized');
     let desiredLength = this.length_ * progress;
     let len = 0;
-    let point = null;
+    // let point = null;
     array.forEach(this.paths_, function(path) {
       // Show completely
       if (len + path.getLength() <= desiredLength) {

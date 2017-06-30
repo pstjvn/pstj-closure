@@ -24,14 +24,11 @@ goog.require('goog.dom.classlist');
 goog.require('goog.string');
 goog.require('pstj.ds.template');
 
-goog.scope(function() {
-var autogen = pstj.ds.autogen;
-
 
 /**
  * The main class representing a new file for a custom renderer.
  */
-autogen.IconRenderer = goog.defineClass(null, {
+pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
   /**
    * @param {Element} element An element, containing the view representation
    * of one or more icons.
@@ -172,4 +169,3 @@ autogen.IconRenderer = goog.defineClass(null, {
     return this.element.outerHTML;
   }
 });
-});  // goog.scope

@@ -11,6 +11,7 @@ goog.provide('pstj.ng.Template');
 
 goog.require('goog.array');
 goog.require('goog.async.nextTick');
+goog.require('goog.dom.TagName');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('pstj.ds.ListItem');

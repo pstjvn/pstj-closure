@@ -5,5 +5,5 @@ var xhr = goog.require('goog.labs.net.xhr');
 
 
 xhr.getJson('example.json').then(function(_) {
-  var doc = Document.fromMap(_);
+  Document.fromMap(_);
 });
