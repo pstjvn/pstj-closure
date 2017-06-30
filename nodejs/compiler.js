@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Provides compilation of SVG iconset to closure based renderers
+ * that include a single icon in a file and generates the needed SOY templates.
+ *
+ * @author regardingscot@gmail.com (Peter StJ)
+ * @deprecated Please use icongen.js instead.
+ */
+
 // How to run: node nodejs/compiler.js  assets/icons.xml
 
 // Inlcude support for closure library.

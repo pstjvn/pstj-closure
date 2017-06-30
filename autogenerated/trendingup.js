@@ -7,13 +7,12 @@ goog.require('pstj.material.IconRenderer');
 goog.require('pstj.material.icons.registry');
 
 goog.scope(function() {
-var icons = pstj.autogen.iconrenderer;
 var IR = pstj.material.IconRenderer;
 var registry = pstj.material.icons.registry;
 
 
 /** Renderer for 'trending-up' icon */
-icons.TrendingUp = goog.defineClass(IR, {
+pstj.autogen.iconrenderer.TrendingUp = goog.defineClass(IR, {
   constructor: function() {
     IR.call(this);
   },

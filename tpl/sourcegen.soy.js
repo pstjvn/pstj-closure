@@ -8,49 +8,54 @@
 
 goog.provide('pstj.sourcegen.template');
 
-/** @suppress {extraRequire} */
-goog.require('soy');
-/** @suppress {extraRequire} */
-goog.require('soydata');
-/** @suppress {extraRequire} */
-goog.require('goog.asserts');
-/** @suppress {extraRequire} */
+goog.require('goog.soy.data.SanitizedContent');
 goog.require('soy.asserts');
+goog.require('soydata');
 
 
 /**
- * @param {{
- *    namespace: string
- * }} opt_data
- * @param {(null|undefined)=} opt_ignored
+ * @param {pstj.sourcegen.template.IntegerHelper.Params} opt_data
  * @param {Object<string, *>=} opt_ijData
- * @return {!soydata.UnsanitizedText}
+ * @param {Object<string, *>=} opt_ijData_deprecated
+ * @return {!goog.soy.data.UnsanitizedText}
  * @suppress {checkTypes}
  */
-pstj.sourcegen.template.IntegerHelper = function(opt_data, opt_ignored, opt_ijData) {
-  soy.asserts.assertType(goog.isString(opt_data.namespace) || (opt_data.namespace instanceof goog.soy.data.SanitizedContent), 'namespace', opt_data.namespace, 'string|goog.soy.data.SanitizedContent');
-  var namespace = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.namespace);
-  return soydata.markUnsanitizedText('/**\n * Helper method for chekcing if the value is really an integer.\n *\n * @private\n * @param {number} val\n * @return {number}\n */\n' + ('' + namespace) + ' = function(val) {\n  if (goog.DEBUG) {\n    if (parseInt(val, 10) != val) {\n      throw new Error(\'The value is not an integer: \' + val);\n    }\n  }\n  return val;\n};');
+pstj.sourcegen.template.IntegerHelper = function(opt_data, opt_ijData, opt_ijData_deprecated) {
+  opt_ijData = opt_ijData_deprecated || opt_ijData;
+  /** @type {!goog.soy.data.SanitizedContent|string} */
+  var namespace = soy.asserts.assertType(goog.isString(opt_data.namespace) || opt_data.namespace instanceof goog.soy.data.SanitizedContent, 'namespace', opt_data.namespace, '!goog.soy.data.SanitizedContent|string');
+  return soydata.markUnsanitizedText('/**\n * Helper method for chekcing if the value is really an integer.\n *\n * @private\n * @param {number} val\n * @return {number}\n */\n' + '' + namespace + ' = function(val) {\n  if (goog.DEBUG) {\n    if (parseInt(val, 10) != val) {\n      throw new Error(\'The value is not an integer: \' + val);\n    }\n  }\n  return val;\n};');
 };
+/**
+ * @typedef {{
+ *  namespace: (!goog.soy.data.SanitizedContent|string),
+ * }}
+ */
+pstj.sourcegen.template.IntegerHelper.Params;
 if (goog.DEBUG) {
   pstj.sourcegen.template.IntegerHelper.soyTemplateName = 'pstj.sourcegen.template.IntegerHelper';
 }
 
 
 /**
- * @param {{
- *    namespace: string
- * }} opt_data
- * @param {(null|undefined)=} opt_ignored
+ * @param {pstj.sourcegen.template.MinMaxHelper.Params} opt_data
  * @param {Object<string, *>=} opt_ijData
- * @return {!soydata.UnsanitizedText}
+ * @param {Object<string, *>=} opt_ijData_deprecated
+ * @return {!goog.soy.data.UnsanitizedText}
  * @suppress {checkTypes}
  */
-pstj.sourcegen.template.MinMaxHelper = function(opt_data, opt_ignored, opt_ijData) {
-  soy.asserts.assertType(goog.isString(opt_data.namespace) || (opt_data.namespace instanceof goog.soy.data.SanitizedContent), 'namespace', opt_data.namespace, 'string|goog.soy.data.SanitizedContent');
-  var namespace = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.namespace);
-  return soydata.markUnsanitizedText('/**\n * Helper function for managing min/max values of ints.\n *\n * @private\n * @param {number} val\n * @param {?number} min\n * @param {?number} max\n * @return {number}\n */\n' + ('' + namespace) + ' = function(val, min, max) {\n  if (goog.DEBUG) {\n    if ((min != null && val < min) || (max != null && val > max)) {\n      throw new Error(\n          \'Value out of range: \' + val + \', \' + min + \', \' + max);\n    }\n  }\n  return val;\n};');
+pstj.sourcegen.template.MinMaxHelper = function(opt_data, opt_ijData, opt_ijData_deprecated) {
+  opt_ijData = opt_ijData_deprecated || opt_ijData;
+  /** @type {!goog.soy.data.SanitizedContent|string} */
+  var namespace = soy.asserts.assertType(goog.isString(opt_data.namespace) || opt_data.namespace instanceof goog.soy.data.SanitizedContent, 'namespace', opt_data.namespace, '!goog.soy.data.SanitizedContent|string');
+  return soydata.markUnsanitizedText('/**\n * Helper function for managing min/max values of ints.\n *\n * @private\n * @param {number} val\n * @param {?number} min\n * @param {?number} max\n * @return {number}\n */\n' + '' + namespace + ' = function(val, min, max) {\n  if (goog.DEBUG) {\n    if ((min != null && val < min) || (max != null && val > max)) {\n      throw new Error(\n          \'Value out of range: \' + val + \', \' + min + \', \' + max);\n    }\n  }\n  return val;\n};');
 };
+/**
+ * @typedef {{
+ *  namespace: (!goog.soy.data.SanitizedContent|string),
+ * }}
+ */
+pstj.sourcegen.template.MinMaxHelper.Params;
 if (goog.DEBUG) {
   pstj.sourcegen.template.MinMaxHelper.soyTemplateName = 'pstj.sourcegen.template.MinMaxHelper';
 }
@@ -58,12 +63,13 @@ if (goog.DEBUG) {
 
 /**
  * @param {Object<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
  * @param {Object<string, *>=} opt_ijData
- * @return {!soydata.UnsanitizedText}
+ * @param {Object<string, *>=} opt_ijData_deprecated
+ * @return {!goog.soy.data.UnsanitizedText}
  * @suppress {checkTypes}
  */
-pstj.sourcegen.template.Warning = function(opt_data, opt_ignored, opt_ijData) {
+pstj.sourcegen.template.Warning = function(opt_data, opt_ijData, opt_ijData_deprecated) {
+  opt_ijData = opt_ijData_deprecated || opt_ijData;
   return soydata.markUnsanitizedText('// This code is auto generate, please do not edit!');
 };
 if (goog.DEBUG) {
@@ -72,22 +78,27 @@ if (goog.DEBUG) {
 
 
 /**
- * @param {{
- *    namespace: string,
- *    base: string
- * }} opt_data
- * @param {(null|undefined)=} opt_ignored
+ * @param {pstj.sourcegen.template.RpcBaseUrl.Params} opt_data
  * @param {Object<string, *>=} opt_ijData
- * @return {!soydata.UnsanitizedText}
+ * @param {Object<string, *>=} opt_ijData_deprecated
+ * @return {!goog.soy.data.UnsanitizedText}
  * @suppress {checkTypes}
  */
-pstj.sourcegen.template.RpcBaseUrl = function(opt_data, opt_ignored, opt_ijData) {
-  soy.asserts.assertType(goog.isString(opt_data.namespace) || (opt_data.namespace instanceof goog.soy.data.SanitizedContent), 'namespace', opt_data.namespace, 'string|goog.soy.data.SanitizedContent');
-  var namespace = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.namespace);
-  soy.asserts.assertType(goog.isString(opt_data.base) || (opt_data.base instanceof goog.soy.data.SanitizedContent), 'base', opt_data.base, 'string|goog.soy.data.SanitizedContent');
-  var base = /** @type {string|goog.soy.data.SanitizedContent} */ (opt_data.base);
-  return soydata.markUnsanitizedText('/**\n * Provides the base path for the RPC URL.\n *\n * @private\n * @const {!string}\n */\n' + ('' + namespace) + '.baseUrl_ = \'' + ('' + base) + '\';');
+pstj.sourcegen.template.RpcBaseUrl = function(opt_data, opt_ijData, opt_ijData_deprecated) {
+  opt_ijData = opt_ijData_deprecated || opt_ijData;
+  /** @type {!goog.soy.data.SanitizedContent|string} */
+  var namespace = soy.asserts.assertType(goog.isString(opt_data.namespace) || opt_data.namespace instanceof goog.soy.data.SanitizedContent, 'namespace', opt_data.namespace, '!goog.soy.data.SanitizedContent|string');
+  /** @type {!goog.soy.data.SanitizedContent|string} */
+  var base = soy.asserts.assertType(goog.isString(opt_data.base) || opt_data.base instanceof goog.soy.data.SanitizedContent, 'base', opt_data.base, '!goog.soy.data.SanitizedContent|string');
+  return soydata.markUnsanitizedText('/**\n * Provides the base path for the RPC URL.\n *\n * @private\n * @const {!string}\n */\n' + '' + namespace + '.baseUrl_ = \'' + '' + base + '\';');
 };
+/**
+ * @typedef {{
+ *  namespace: (!goog.soy.data.SanitizedContent|string),
+ *  base: (!goog.soy.data.SanitizedContent|string),
+ * }}
+ */
+pstj.sourcegen.template.RpcBaseUrl.Params;
 if (goog.DEBUG) {
   pstj.sourcegen.template.RpcBaseUrl.soyTemplateName = 'pstj.sourcegen.template.RpcBaseUrl';
 }

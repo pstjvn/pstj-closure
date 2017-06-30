@@ -7,13 +7,12 @@ goog.require('pstj.material.IconRenderer');
 goog.require('pstj.material.icons.registry');
 
 goog.scope(function() {
-var icons = pstj.autogen.iconrenderer;
 var IR = pstj.material.IconRenderer;
 var registry = pstj.material.icons.registry;
 
 
 /** Renderer for 'download' icon */
-icons.Download = goog.defineClass(IR, {
+pstj.autogen.iconrenderer.Download = goog.defineClass(IR, {
   constructor: function() {
     IR.call(this);
   },

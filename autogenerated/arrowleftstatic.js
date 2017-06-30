@@ -7,13 +7,12 @@ goog.require('pstj.material.IconRenderer');
 goog.require('pstj.material.icons.registry');
 
 goog.scope(function() {
-var icons = pstj.autogen.iconrenderer;
 var IR = pstj.material.IconRenderer;
 var registry = pstj.material.icons.registry;
 
 
 /** Renderer for 'arrow-left-static' icon */
-icons.ArrowLeftStatic = goog.defineClass(IR, {
+pstj.autogen.iconrenderer.ArrowLeftStatic = goog.defineClass(IR, {
   constructor: function() {
     IR.call(this);
   },
