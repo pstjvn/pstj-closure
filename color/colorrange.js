@@ -16,16 +16,6 @@ goog.require('pstj.math.utils');
 pstj.color.ColorRange = goog.defineClass(null, {
   constructor: function() {
     /**
-     * @type {string}
-     * @private
-     */
-    this.startColorHex_ = '';
-    /**
-     * @type {string}
-     * @private
-     */
-    this.endColorHex_ = '';
-    /**
      * @type {goog.color.Rgb}
      * @private
      */
@@ -58,8 +48,8 @@ pstj.color.ColorRange = goog.defineClass(null, {
    * @param {string} stop The end color value as hex color.
    */
   setColors: function(start, stop) {
-    this.startColorHex_ = start;
-    this.endColorHex_ = stop;
+    this.startrgb_ = goog.color.hexToRgb(start);
+    this.endrgb_ = goog.color.hexToRgb(stop);
     this.init_();
   },
 
@@ -68,8 +58,6 @@ pstj.color.ColorRange = goog.defineClass(null, {
    * @private
    */
   init_: function() {
-    this.startrgb_ = goog.color.hexToRgb(this.startColorHex_);
-    this.endrgb_ = goog.color.hexToRgb(this.endColorHex_);
     goog.array.forEach(this.startrgb_, function(_, i) {
       if (this.startrgb_[i] < this.endrgb_[i]) {
         this.distance_[i] = this.endrgb_[i] - this.startrgb_[i];
