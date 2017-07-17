@@ -124,7 +124,7 @@ pstj.codegen.parser.Base = class {
 
     // Gather all the properties - the class fields.
     if (goog.isObject(dto['properties'])) {
-      goog.object.forEach(dto['properties'], (prop, name) =>  {
+      goog.object.forEach(dto['properties'], (prop, name) => {
         cl.properties.push(this.parseMapAsProperty(prop, name));
       });
       if (goog.isArray(dto['required'])) {
@@ -155,7 +155,8 @@ pstj.codegen.parser.Base = class {
     prop.type = pstj.codegen.util.getPropertyType(map['type']);
     prop.description = this.getDescriptionFromMap(map);
 
-    if (prop.type == pstj.codegen.node.type.NUMBER || prop.type == pstj.codegen.node.type.INT) {
+    if (prop.type == pstj.codegen.node.type.NUMBER ||
+        prop.type == pstj.codegen.node.type.INT) {
       if (goog.isNumber(map['minimum'])) prop.minimum = map['minimum'];
       if (goog.isNumber(map['maximum'])) prop.maximum = map['maximum'];
     }
@@ -165,10 +166,12 @@ pstj.codegen.parser.Base = class {
     }
 
     if (goog.isString(map['format'])) {
-      prop.format = pstj.codegen.util.getFormatForType(prop.type, map['format']);
+      prop.format =
+          pstj.codegen.util.getFormatForType(prop.type, map['format']);
     }
 
-    // if (p.type == pstj.codegen.node.type.ARRAY || p.type == pstj.codegen.node.type.OBJECT) {
+    // if (p.type == pstj.codegen.node.type.ARRAY || p.type ==
+    // pstj.codegen.node.type.OBJECT) {
     //   // p.itemType = this.extractArrayTypeInfo()
     // }
 
