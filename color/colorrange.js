@@ -75,7 +75,7 @@ pstj.color.ColorRange = goog.defineClass(null, {
   /**
    * Given a percentage returns the percentile representation of the color
    * range.
-   * @param {number} fraction The fraction to use.
+   * @param {number} fraction The fraction to use
    * @return {string}
    */
   getColorValue: function(fraction) {

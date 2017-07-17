@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Base2",
+  "description": "Basic test",
+  "type": "object",
+  "properties": {
+    "prop1": {
+      "description": "Number",
+      "type": "number",
+      "$_type": "string",
+      "$_name": "myprop"
+    }
+  },
+  "required": ["prop1"]
+}

@@ -3,7 +3,7 @@
 goog.addDependency('../../../apps/pstj/demos/animation/animation.js', ['pstj.demos.animation'], ['pstj.animation.RafSI', 'pstj.animation.Scheduler', 'pstj.animation.create'], false);
 goog.addDependency('../../../apps/pstj/demos/app/google/auth2.js', ['pstj.demos.app.google.Auth2'], ['goog.debug.DivConsole', 'goog.log', 'pstj.app.google.Auth2'], false);
 goog.addDependency('../../../apps/pstj/demos/app/google/gapi.js', ['pstj.demos.app.google.Gapi'], ['goog.debug.DivConsole', 'goog.log', 'pstj.app.google.Gapi'], false);
-goog.addDependency('../../../apps/pstj/demos/codegen/parser/sysmaster.js', ['pstj.demos.codegen.parser.Sysmaster'], ['goog.Promise', 'goog.net.xhr', 'pstj.codegen.parser.sysmasterHelper'], false);
+goog.addDependency('../../../apps/pstj/demos/codegen/sysmaster.js', ['pstj.demos.codegen.parser.Sysmaster'], ['goog.Promise', 'goog.labs.net.xhr', 'pstj.codegen.parser.Sysmaster', 'pstj.codegen.parser.helper'], false);
 goog.addDependency('../../../apps/pstj/demos/discovery/discovery.js', ['pstj.demos.sourcegen.discovery'], ['goog.html.SafeHtml', 'goog.labs.net.xhr', 'pstj.ds.discovery.Document', 'pstj.sourcegen.ClosureGenerator'], false);
 goog.addDependency('../../../apps/pstj/demos/ds/dbl.js', ['pstj.demos.ds.dbl'], ['pstj.ds.DoubleBufferedList'], false);
 goog.addDependency('../../../apps/pstj/demos/graphics/svgdrawing.js', ['pstj.demos.graphics.svgdrawing'], ['goog.asserts', 'pstj.animation.browser', 'pstj.graphics.svg.SvgDrawing'], true);
