@@ -49,10 +49,15 @@ lint:
 			$(shell for folder in $(public_source_dirs) ; do find $$folder -name '*.js' ; done) \
 			demos/*/*.js demos/*/*/*.js
 
+blia:
+	@echo $(python) $(depswriter)  $(private_deps_cmdline)
+
 single:
 	java -jar ../../compiler/compiler.jar \
-			--charset=UTF-8 --dependency_mode=STRICT --entry_point=goog:$(ns) --define='goog.LOCALE="en"' --define='goog.DEBUG=true' --process_closure_primitives --use_types_for_optimization --compilation_level=SIMPLE \
+			--charset=UTF-8 --dependency_mode=STRICT --entry_point=goog:$(ns) --define='goog.LOCALE="en"' --define='goog.DEBUG=true' --process_closure_primitives --use_types_for_optimization --compilation_level=ADVANCED \
 			--jscomp_warning accessControls --jscomp_warning ambiguousFunctionDecl --jscomp_warning checkEventfulObjectDisposal --jscomp_warning checkRegExp --jscomp_warning checkTypes --jscomp_warning checkVars --jscomp_warning const --jscomp_warning constantProperty --jscomp_warning deprecated --jscomp_warning duplicateMessage --jscomp_warning es5Strict --jscomp_warning externsValidation --jscomp_warning fileoverviewTags --jscomp_warning globalThis --jscomp_warning internetExplorerChecks --jscomp_warning invalidCasts --jscomp_warning misplacedTypeAnnotation --jscomp_warning missingProperties --jscomp_warning missingProvide --jscomp_warning missingRequire --jscomp_warning missingReturn --jscomp_warning nonStandardJsDocs --jscomp_warning suspiciousCode --jscomp_warning strictModuleDepCheck --jscomp_warning typeInvalidation --jscomp_warning undefinedNames --jscomp_warning undefinedVars --jscomp_warning unknownDefines --jscomp_warning uselessCode --jscomp_warning visibility \
+			--new_type_inf  \
+			--formatting=PRETTY_PRINT \
 			--js_output_file=.artefact \
 			$(js_src) --js=./demos/**.js \
 			--js="../../templates/soyutils_usegoog.js" \
