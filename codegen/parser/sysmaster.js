@@ -2,6 +2,7 @@ goog.provide('pstj.codegen.parser.Sysmaster');
 
 goog.require('goog.array');
 goog.require('goog.log');
+goog.require('goog.object');
 goog.require('goog.string');
 goog.require('pstj.codegen.node.type');
 goog.require('pstj.codegen.parser.Base');
@@ -16,6 +17,19 @@ pstj.codegen.parser.Sysmaster = class extends pstj.codegen.parser.Base {
     super(map);
     /** @override */
     this.logger = goog.log.getLogger('pstj.codegen.parser.Sysmaster');
+  }
+
+
+  /**
+   * We need to override this, the name we will be looking up the classes by
+   * is not the class name but the file name (sysmster specific) and thus
+   * we use that for the mapping. Code emitters should always use the name
+   * set up in the Class node.
+   *
+   * @override
+   */
+  addDtoClassToDocument(name, instance) {
+    goog.object.add(this.document.classes, instance.sourceFileName, instance);
   }
 
 
@@ -41,6 +55,11 @@ pstj.codegen.parser.Sysmaster = class extends pstj.codegen.parser.Base {
     if (goog.isArray(dto['required']) && dto['required'].length == 1 &&
         dto['required'][0] == '$_all') {
       goog.array.forEach(cl.properties, prop => prop.required = true);
+    }
+    if (goog.isString(dto['sourceFileName'])) {
+      cl.sourceFileName = dto['sourceFileName'];
+    } else {
+      throw new Error('Sysmaster parser expects DTO objectst to have source attribute');
     }
     return cl;
   }

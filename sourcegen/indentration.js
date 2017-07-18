@@ -5,25 +5,36 @@ goog.require('goog.string');
 /** Indentation to use in buffers */
 pstj.sourcegen.Indentation = class {
   constructor() {
+    /** @protected {number} */
+    this.level = 0;
     /** @protected {!string} */
     this.symbol = '  ';
   }
 
   /** Increase the intendation. */
   add() {
-    pstj.sourcegen.Indentation.Level++;
+    this.level++;
   }
 
   /** Decrease the intentation. */
   remove() {
-    if (pstj.sourcegen.Indentation.Level > 0) pstj.sourcegen.Indentation.Level--;
+    if (this.level > 0) {
+      this.level--;
+    } else {
+      throw new Error('Indentation is already zero');
+    }
+  }
+
+  /**
+   * Allows to set up a level one deeper than the context passed in.
+   * @param {!pstj.sourcegen.Indentation} indentation
+   */
+  setup(indentation) {
+    this.level = indentation.level + 1;
   }
 
   /** @override */
   toString() {
-    return goog.string.repeat(this.symbol, pstj.sourcegen.Indentation.Level);
+    return goog.string.repeat(this.symbol, this.level);
   }
 };
-
-/** @type {number} */
-pstj.sourcegen.Indentation.Level = 0;

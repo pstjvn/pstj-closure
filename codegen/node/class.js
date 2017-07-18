@@ -29,6 +29,12 @@ pstj.codegen.node.Class = class extends pstj.codegen.node.Node {
      * @type {!Array<!pstj.codegen.node.Property>}
      */
     this.properties = [];
+    /**
+     * Helper attribute to know where the class came from.
+     *
+     * @type {string}
+     */
+    this.sourceFileName = '';
   }
 
 

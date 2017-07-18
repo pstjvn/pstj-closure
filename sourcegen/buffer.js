@@ -16,10 +16,10 @@ pstj.sourcegen.Buffer = class {
 
   /**
    * Write the object to buffer and add a new line at the end.
-   * @param {(string|number|boolean|Object)=} opt_obj
+   * @param {(string|number|boolean|!Object)=} opt_obj
    */
   writeln(opt_obj) {
-    if (!goog.isDef(opt_obj)) opt_obj = '';
+    if (!goog.isDefAndNotNull(opt_obj)) opt_obj = '';
     var str = (goog.isString(opt_obj) ? opt_obj : opt_obj.toString());
     this.buffer_.push(str + '\n');
   }

@@ -74,11 +74,17 @@ pstj.codegen.node.Property = class extends pstj.codegen.node.Node {
     this.itemsCanRepat = false;
     /**
      * A property representing the type of the items if the property is an
-     * array. For primitive types only the type and format will be available,
-     * for classes a complete property type will be created.
+     * array.
      *
-     * @type {?pstj.codegen.node.Property}
+     * @type {pstj.codegen.node.type}
      */
-    this.itemType = null;
+    this.itemType = pstj.codegen.node.type.UNKNOWN;
+    /**
+     * If the type of the property is an Object or an Array with reference
+     * type of Object, we store the referref type here.
+     *
+     * @type {?string}
+     */
+    this.referredType = null;
   }
 };

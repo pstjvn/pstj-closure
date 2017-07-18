@@ -7,10 +7,15 @@ goog.require('pstj.codegen.node.Node');
 pstj.codegen.node.Document = class extends pstj.codegen.node.Node {
   constructor() {
     super();
+    /** @type {string} */
     this.version = '';
+    /** @type {string} */
     this.url = '';
+    /** @const {!Object<string, !pstj.codegen.node.Class>} */
     this.classes = {};
+    /** @const {!Object<string, ?>} */
     this.lists = {};
+    /** @const {!Array<?>} */
     this.methods = [];
   }
 

@@ -64,6 +64,7 @@ pstj.codegen.parser.Base = class {
    */
   getDtoMap() { return this.map; }
 
+
   /**
    * Assign a DTO class to the document.
    *
@@ -170,12 +171,54 @@ pstj.codegen.parser.Base = class {
           pstj.codegen.util.getFormatForType(prop.type, map['format']);
     }
 
-    // if (p.type == pstj.codegen.node.type.ARRAY || p.type ==
-    // pstj.codegen.node.type.OBJECT) {
-    //   // p.itemType = this.extractArrayTypeInfo()
-    // }
+    if (prop.type == pstj.codegen.node.type.ARRAY) {
+      if (goog.isObject(map['items'])) {
+        if (goog.isString(map['items']['type'])) {
+          prop.itemType = pstj.codegen.util.getPropertyType(map['items']['type']);
+          if (prop.itemType == pstj.codegen.node.type.OBJECT) {
+            prop.referredType = this.getReferredType(map['items']);
+          }
+        } else {
+          throw new Error('Array items must have type');
+        }
+      } else {
+        throw new Error('Array property must have \'items\' config.');
+      }
+    }
+
+    if (prop.type == pstj.codegen.node.type.OBJECT) {
+      prop.referredType = this.getReferredType(map);
+    }
 
     return prop;
+  }
+
+
+  /**
+   * Extracted way to get the reference type, we do this to allow subclasses
+   * to define other type of provifing reference.
+   *
+   * Note that in this default implementation we use the 'discovery' format
+   * which means that the type will be the name of the class without anything
+   * else.
+   *
+   * In Sysmaster format the $_reference notation is used and it points to a
+   * file name instead of class name as one file represents one class.
+   *
+   * In Swagger the $ref notation is used but it points to JSON Path (i.e.
+   * #/definitions/SomeObject). The document however keeps only one thing -
+   * the name of the class (as in discovery) so one might need to convert.
+   *
+   * @protected
+   * @param {!Object<string, ?>} map
+   * @return {string}
+   */
+  getReferredType(map) {
+    if (goog.isString(map['$ref'])) return map['$ref'];
+    if (goog.DEBUG) {
+      goog.log.error(this.logger, goog.debug.deepExpose(map));
+    }
+    throw new Error('There seem to be no referred type here');
   }
 
 

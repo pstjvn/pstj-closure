@@ -52,8 +52,8 @@ goog.addDependency('../../../apps/pstj/codegen/node/node.js', ['pstj.codegen.nod
 goog.addDependency('../../../apps/pstj/codegen/node/property.js', ['pstj.codegen.node.Property'], ['pstj.codegen.node.Node'], false);
 goog.addDependency('../../../apps/pstj/codegen/node/type.js', ['pstj.codegen.node.type'], [], false);
 goog.addDependency('../../../apps/pstj/codegen/parser/base.js', ['pstj.codegen.parser.Base'], ['goog.array', 'goog.asserts', 'goog.debug', 'goog.log', 'goog.object', 'pstj.codegen.IParser', 'pstj.codegen.node.Class', 'pstj.codegen.node.Document', 'pstj.codegen.node.Property', 'pstj.codegen.node.type', 'pstj.codegen.util'], false);
-goog.addDependency('../../../apps/pstj/codegen/parser/helper.js', ['pstj.codegen.parser.helper'], [], false);
-goog.addDependency('../../../apps/pstj/codegen/parser/sysmaster.js', ['pstj.codegen.parser.Sysmaster'], ['goog.array', 'goog.log', 'goog.string', 'pstj.codegen.node.type', 'pstj.codegen.parser.Base', 'pstj.codegen.util'], false);
+goog.addDependency('../../../apps/pstj/codegen/parser/helper.js', ['pstj.codegen.parser.helper'], ['goog.array'], false);
+goog.addDependency('../../../apps/pstj/codegen/parser/sysmaster.js', ['pstj.codegen.parser.Sysmaster'], ['goog.array', 'goog.log', 'goog.object', 'goog.string', 'pstj.codegen.node.type', 'pstj.codegen.parser.Base', 'pstj.codegen.util'], false);
 goog.addDependency('../../../apps/pstj/codegen/util.js', ['pstj.codegen.util'], ['pstj.codegen.node.format', 'pstj.codegen.node.type'], false);
 goog.addDependency('../../../apps/pstj/color/color.js', ['pstj.color'], ['goog.color'], false);
 goog.addDependency('../../../apps/pstj/color/color_test.js', ['pstj.color_test'], ['goog.testing.PropertyReplacer', 'goog.testing.PseudoRandom', 'goog.testing.jsunit', 'pstj.color'], false);
@@ -174,10 +174,12 @@ goog.addDependency('../../../apps/pstj/ng/ngtemplate.js', ['pstj.ng.Template'], 
 goog.addDependency('../../../apps/pstj/object/object.js', ['pstj.object'], ['goog.array', 'goog.object'], false);
 goog.addDependency('../../../apps/pstj/resource/resource.js', ['pstj.resource', 'pstj.resource.Local', 'pstj.resource.Resource'], ['goog.async.nextTick', 'goog.events.Event', 'goog.json.NativeJsonProcessor', 'goog.net.Jsonp', 'goog.net.XhrIo', 'goog.uri.utils', 'pstj.configure'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/buffer.js', ['pstj.sourcegen.Buffer'], [], false);
+goog.addDependency('../../../apps/pstj/sourcegen/buffer_test.js', ['pstj.sourcegen.buffer_test'], ['goog.testing.PropertyReplacer', 'goog.testing.PseudoRandom', 'goog.testing.jsunit', 'pstj.sourcegen.Buffer'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/closurebuffer.js', ['pstj.sourcegen.ClosureBuffer'], ['goog.array', 'goog.asserts', 'goog.object', 'pstj.sourcegen.JSBuffer'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/closuregenerator.js', ['pstj.sourcegen.ClosureGenerator'], ['goog.array', 'goog.asserts', 'goog.object', 'pstj.sourcegen.ClosureBuffer', 'pstj.sourcegen.template'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/codebuffer.js', ['pstj.sourcegen.CodeBuffer'], ['pstj.sourcegen.Buffer', 'pstj.sourcegen.Indentation'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/indentration.js', ['pstj.sourcegen.Indentation'], ['goog.string'], false);
+goog.addDependency('../../../apps/pstj/sourcegen/javascriptbuffer.js', ['pstj.sourcegen.JavascriptBuffer'], ['pstj.sourcegen.CodeBuffer'], false);
 goog.addDependency('../../../apps/pstj/sourcegen/jsbuffer.js', ['pstj.sourcegen.JSBuffer'], ['goog.array', 'goog.string'], false);
 goog.addDependency('../../../apps/pstj/storage/storage.js', ['pstj.storage.Storage'], ['goog.json', 'goog.log', 'goog.storage.ErrorCode', 'goog.storage.mechanism.mechanismfactory'], false);
 goog.addDependency('../../../apps/pstj/style/css.js', ['pstj.style.css'], ['goog.dom', 'goog.string', 'goog.userAgent', 'goog.userAgent.product'], false);

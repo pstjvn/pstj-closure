@@ -21,7 +21,9 @@ const createFilePromises = function() {
 };
 
 goog.Promise.all(createFilePromises())
-    .then(pstj.codegen.parser.helper.sysmaster)
+    .then(function(objects) {
+      pstj.codegen.parser.helper.sysmaster(objects, sources);
+    })
     .then(function(api) {
       let parser = new pstj.codegen.parser.Sysmaster(api);
       let doc = parser.getDocument();
