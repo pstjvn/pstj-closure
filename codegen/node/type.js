@@ -21,9 +21,15 @@ goog.provide('pstj.codegen.node.type');
  * @enum {string}
  */
 pstj.codegen.node.type = {
+  // Used to set initial value
   UNKNOWN: '__unknown',
+  // Used to denote class references, that is 'object' in json terms
   REFERENCE: '__ref',
+  // Not currently used
   CLASS: 'class',
+  // Used to denote specific JS objects like Date.
+  // it should not be set at all even thou it is used in jsonscheme, it messes
+  // things up.
   OBJECT: 'object',
   ARRAY: 'array',
   INT: 'integer',

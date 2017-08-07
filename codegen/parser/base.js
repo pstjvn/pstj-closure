@@ -133,8 +133,15 @@ pstj.codegen.parser.Base = class {
           if (goog.isString(req)) {
             let prop = goog.array.find(cl.properties, prop => prop.name == req);
             if (!goog.isNull(prop)) prop.required = true;
+          } else {
+            throw new Error(
+                'Required property must be string - the name of ' +
+                'the required field, instead it was ' + req.toString());
           }
         });
+      } else if (goog.isDefAndNotNull(dto['required'])) {
+        throw new Error(
+            'Required field for properties provided, but it is not a list');
       }
     }
     return cl;
@@ -171,10 +178,12 @@ pstj.codegen.parser.Base = class {
           pstj.codegen.util.getFormatForType(prop.type, map['format']);
     }
 
+    // TODO: parse additional item settings, like repat, min, max empty etc.
     if (prop.type == pstj.codegen.node.type.ARRAY) {
       if (goog.isObject(map['items'])) {
         if (goog.isString(map['items']['type'])) {
-          prop.itemType = pstj.codegen.util.getPropertyType(map['items']['type']);
+          prop.itemType =
+              pstj.codegen.util.getPropertyType(map['items']['type']);
           if (prop.itemType == pstj.codegen.node.type.OBJECT) {
             prop.referredType = this.getReferredType(map['items']);
           }

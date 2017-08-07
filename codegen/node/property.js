@@ -12,7 +12,7 @@ pstj.codegen.node.Property = class extends pstj.codegen.node.Node {
      * object. Because the type is an enum reference, for classes we also need
      * the name of the reference class.
      *
-     * @type {pstj.codegen.node.type}
+     * @type {!pstj.codegen.node.type}
      */
     this.type = pstj.codegen.node.type.UNKNOWN;
     /**
@@ -76,7 +76,7 @@ pstj.codegen.node.Property = class extends pstj.codegen.node.Node {
      * A property representing the type of the items if the property is an
      * array.
      *
-     * @type {pstj.codegen.node.type}
+     * @type {!pstj.codegen.node.type}
      */
     this.itemType = pstj.codegen.node.type.UNKNOWN;
     /**

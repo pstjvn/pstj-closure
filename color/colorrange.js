@@ -83,14 +83,15 @@ pstj.color.ColorRange = goog.defineClass(null, {
       if (this.revert_[i] == 0) {
         this.lastCalculatedValue_[i] = this.startrgb_[i];
       } else if (this.revert_[i] == 1) {
-        this.lastCalculatedValue_[i] = +(
-            pstj.math.utils.getValueFromFraction(this.distance_[i], fraction) +
-            this.startrgb_[i]).toFixed();
+        this.lastCalculatedValue_[i] = +(pstj.math.utils.getValueFromFraction(
+                                             this.distance_[i], fraction) +
+                                         this.startrgb_[i])
+                                            .toFixed();
       } else if (this.revert_[i] == -1) {
-        this.lastCalculatedValue_[i] = +(
-            this.startrgb_[i] -
-            pstj.math.utils.getValueFromFraction(this.distance_[i], fraction))
-                .toFixed();
+        this.lastCalculatedValue_[i] =
+            +(this.startrgb_[i] -
+              pstj.math.utils.getValueFromFraction(this.distance_[i], fraction))
+                 .toFixed();
       }
     }
     return goog.color.rgbArrayToHex(this.lastCalculatedValue_);

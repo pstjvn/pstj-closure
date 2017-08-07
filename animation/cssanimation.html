@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test css animation.</title>
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .movable {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .movable.active {
+        animation-name: test;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-timing-function: linear;
+      }
+
+      @keyframes test {
+        0% {
+          transform: translate(0, 0);
+        }
+
+        100% {
+          transform: translate(300px, 300px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="movable"></div>
+    <button>Click me to shorten the duration.</button>
+    <script src="cssanimation.js"></script>
+  </body>
+</html>

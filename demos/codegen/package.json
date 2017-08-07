@@ -1,0 +1,10 @@
+{
+  "name": "Demoemiter",
+  "description": "Needs for demo to run in nodejs",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "args": "*",
+    "request": "*"
+  }
+}

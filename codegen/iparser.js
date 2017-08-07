@@ -1,7 +1,6 @@
 goog.provide('pstj.codegen.IParser');
 
 
-
 /**
  * The interface for all parsers. We want the implementation to be able to
  * accept a map (JSON generated object) and provide us with a document that

@@ -6,13 +6,13 @@ pstj.sourcegen.Buffer = class {
     this.buffer_ = [];
   }
 
+
   /**
    * Write an object to the buffer.
    * @param {(!string|!number|!boolean|!Object)} obj
    */
-  write(obj) {
-    this.buffer_.push(goog.isString(obj) ? obj : obj.toString());
-  }
+  write(obj) { this.buffer_.push(goog.isString(obj) ? obj : obj.toString()); }
+
 
   /**
    * Write the object to buffer and add a new line at the end.
@@ -24,8 +24,7 @@ pstj.sourcegen.Buffer = class {
     this.buffer_.push(str + '\n');
   }
 
+
   /** @override */
-  toString() {
-    return this.buffer_.join('');
-  }
+  toString() { return this.buffer_.join(''); }
 };
