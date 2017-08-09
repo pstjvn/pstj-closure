@@ -22,7 +22,7 @@ var constants = pstj.math.constants;
  * of color values between start and end color in the form of an arc.
  */
 pstj.graphics.ColorArc = goog.defineClass(null, {
-  statics:  {
+  statics: {
     /**
      * The ratio the drawing implies to match the SVG to be used in original
      * design requiring this class.
@@ -142,7 +142,8 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
       } else {
         return opt_number;
       }
-    } else return 29;
+    } else
+      return 29;
   }
 });
 goog.addSingletonGetter(pstj.graphics.ColorArc);
