@@ -54,6 +54,22 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
     this.context.clearRect(0, 0, rect.width, rect.height);
   },
 
+
+  /**
+   * Force generation of the arc on the canvas and returns the image data for
+   * it.
+   *
+   * @param {goog.math.Rect} rect
+   * @param {pstj.color.ColorRange} cr
+   * @param {boolean=} opt_greyscale
+   * @return {string}
+   */
+  getArc: function(rect, cr, opt_greyscale) {
+    this.createArc(rect, cr, opt_greyscale);
+    return this.canvas.toDataURL();
+  },
+
+
   /**
    * Generate a new arc with the given size and color range.
    * Supports greyscaling the output.
@@ -61,9 +77,8 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
    * @param {boolean=} opt_greyscale
-   * @return {string} The canvas image as string.
    */
-  getArc: function(rect, cr, opt_greyscale) {
+  createArc: function(rect, cr, opt_greyscale) {
     this.setSize(rect);
     this.clear(rect);
     var ctx = this.context;
@@ -93,7 +108,6 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
       ctx.arc(x, y, r, rad, rad + constants.TwoDegrees, false);
       ctx.stroke();
     }
-    return this.canvas.toDataURL();
   }
 });
 goog.addSingletonGetter(pstj.graphics.ColorArc);
