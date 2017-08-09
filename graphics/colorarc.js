@@ -22,6 +22,23 @@ var constants = pstj.math.constants;
  * of color values between start and end color in the form of an arc.
  */
 pstj.graphics.ColorArc = goog.defineClass(null, {
+  statics:  {
+    /**
+     * The ratio the drawing implies to match the SVG to be used in original
+     * design requiring this class.
+     *
+     * That is to read: in an image with height 200 pixels. the radius of
+     * the circle to be drawing should be the radius of the circle that matches
+     * the square with height 200 minus 27.
+     *
+     * This means that for a square with height 100, the radius of the drawn
+     * circle should be 100 / 2 * ((100-27) / 100) => 36.5 pixels;
+     *
+     * @const {number}
+     */
+    radiusRatio: ((100 - 27) / 100)
+  },
+
   constructor: function() {
     /**
      * @protected
@@ -61,10 +78,11 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
    *
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
+   * @param {number=} opt_startDegree The degree at which to start the arc.
    * @return {string}
    */
-  getArc: function(rect, cr) {
-    this.createArc(rect, cr);
+  getArc: function(rect, cr, opt_startDegree) {
+    this.createArc(rect, cr, opt_startDegree);
     return this.canvas.toDataURL();
   },
 
@@ -75,20 +93,19 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
    *
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
+   * @param {number=} opt_startDegree The degree at which to start the arc.
    */
-  createArc: function(rect, cr) {
+  createArc: function(rect, cr, opt_startDegree) {
     this.setSize(rect);
     this.clear(rect);
     var ctx = this.context;
 
     // TODO: This is solely for our SVG, instead calculate it from the source.
-    var radius = 100 - 27;
-    var degreesToDraw = 302;
-    var startFromDegree = 29;
-
+    var radius = rect.height / 2 * pstj.graphics.ColorArc.radiusRatio;
+    var startFromDegree = this.getDegreeDeclination_(opt_startDegree);
+    var degreesToDraw = (360 - (startFromDegree * 2));
     var x = rect.width / 2;
     var y = rect.height / 2;
-    var r = mu.getValueFromPercent(radius, y);
     ctx.lineWidth = 10;
 
     for (var i = 0; i < degreesToDraw; i++) {
@@ -103,9 +120,30 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
       // ctx.strokeStyle = goog.color.rgbArrayToHex(colorValue);
       ctx.strokeStyle = pstj.color.rgbArrayToCssString(colorValue);
       // Draw the arcs on top of each other to avoid gaps
-      ctx.arc(x, y, r, rad, rad + constants.TwoDegrees, false);
+      ctx.arc(x, y, radius, rad, rad + constants.TwoDegrees, false);
       ctx.stroke();
     }
+  },
+
+
+  /**
+   * Expected to allow to have valid declination for arc drawing. Default
+   * declination is set to 29 to preserve existing behavior for users that
+   * already expect this behavior.
+   *
+   * @private
+   * @param {number=} opt_number
+   * @return {number}
+   */
+  getDegreeDeclination_: function(opt_number) {
+    if (goog.isNumber(opt_number)) {
+      if (opt_number < 0 || opt_number > 179) {
+        // This dos not make any sense... use default
+        return 29;
+      } else {
+        return opt_number;
+      }
+    } else return 29;
   }
 });
 goog.addSingletonGetter(pstj.graphics.ColorArc);
