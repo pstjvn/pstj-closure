@@ -73,8 +73,8 @@ pstj.ds.ListItem = function(data, opt_id_proprety) {
   goog.base(this);
   // because the data source could be either an object or an array and arrays
   // are objects, check only for object
-  goog.asserts.assertObject(data,
-      'List item can use only object literals as data source');
+  goog.asserts.assertObject(
+      data, 'List item can use only object literals as data source');
 
   /**
    * Reference to the raw data record type for this item.
@@ -89,8 +89,10 @@ pstj.ds.ListItem = function(data, opt_id_proprety) {
    * @type {string}
    * @private
    */
-  this.id_property_ = (goog.isDef(opt_id_proprety) && !goog.string.isEmpty(
-      opt_id_proprety)) ? opt_id_proprety : 'id';
+  this.id_property_ = (goog.isDef(opt_id_proprety) &&
+                       !goog.string.isEmptyOrWhitespace(opt_id_proprety)) ?
+      opt_id_proprety :
+      'id';
 
   /**
    * @private
@@ -173,7 +175,8 @@ pstj.ds.ListItem.prototype.getProp = function(prop) {
  */
 pstj.ds.ListItem.prototype.update = function(node) {
   if (this.getId() == node.getId()) {
-    goog.asserts.assertInstanceof(node, pstj.ds.ListItem,
+    goog.asserts.assertInstanceof(
+        node, pstj.ds.ListItem,
         'You should not mix implementation of list items');
     return this.set_(/** @type {pstj.ds.ListItem} */ (node));
   } else {
@@ -229,8 +232,8 @@ pstj.ds.ListItem.prototype.mutate = function(property, value) {
  * @return {pstj.ds.ListItem} The clones item.
  */
 pstj.ds.ListItem.prototype.clone = function() {
-  return new pstj.ds.ListItem(goog.asserts.assertObject(
-      pstj.object.clone(this.getRawData())));
+  return new pstj.ds.ListItem(
+      goog.asserts.assertObject(pstj.object.clone(this.getRawData())));
 };
 
 
@@ -333,7 +336,8 @@ pstj.ds.ListItem.prototype.set_ = function(data) {
   // var updated = false;
 
   if (data.getId() != this.getId()) {
-    throw Error('Cannot update unique ID property, it is immutable and the' +
+    throw Error(
+        'Cannot update unique ID property, it is immutable and the' +
         ' data provided does not match the record.');
   }
 
@@ -348,7 +352,7 @@ pstj.ds.ListItem.prototype.set_ = function(data) {
 
   // TODO: iterate over implementation that actually fires the event only when
   // updated and check for use patterns that might benefit from this.
-  //if (updated)
+  // if (updated)
   this.dispatchEvent(pstj.ds.ListItem.EventType.UPDATE);
   return true;
 };

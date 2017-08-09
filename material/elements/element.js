@@ -91,22 +91,22 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   createClassToStateMapping: function() {
     var baseClass = this.getStructuralCssClass();
     this.classByMaterialState = goog.object.create(
-        State.NARROW, goog.getCssName(baseClass, 'narrow'),
-        State.TRANSITIONING, goog.getCssName(baseClass, 'transition'),
-        State.SEAMED, goog.getCssName(baseClass, 'seamed'),
-        State.SCROLL, goog.getCssName(baseClass, 'scroll'),
-        State.WATERFALL, goog.getCssName(baseClass, 'waterfall'),
-        State.WATERFALL_TALL, goog.getCssName(baseClass, 'waterfall-tall'),
-        State.COVER, goog.getCssName(baseClass, 'cover'),
-        State.STANDARD, goog.getCssName(baseClass, 'standard'),
-        State.SHADOW, goog.getCssName(baseClass, 'shadow'),
-        State.TALL, goog.getCssName(baseClass, 'tall'),
-        State.INVALID, goog.getCssName(baseClass, 'invalid'),
-        State.EMPTY, goog.getCssName(baseClass, 'empty'),
-        State.INVISIBLE, goog.getCssName(baseClass, 'invisible'),
-        State.RAISED, goog.getCssName(baseClass, 'raised'),
-        State.OVERLAY, goog.getCssName(baseClass, 'overlayed'),
-        State.TACTILE, goog.getCssName(baseClass, 'tactile'));
+        State.NARROW, goog.getCssName(baseClass, 'narrow'), State.TRANSITIONING,
+        goog.getCssName(baseClass, 'transition'), State.SEAMED,
+        goog.getCssName(baseClass, 'seamed'), State.SCROLL,
+        goog.getCssName(baseClass, 'scroll'), State.WATERFALL,
+        goog.getCssName(baseClass, 'waterfall'), State.WATERFALL_TALL,
+        goog.getCssName(baseClass, 'waterfall-tall'), State.COVER,
+        goog.getCssName(baseClass, 'cover'), State.STANDARD,
+        goog.getCssName(baseClass, 'standard'), State.SHADOW,
+        goog.getCssName(baseClass, 'shadow'), State.TALL,
+        goog.getCssName(baseClass, 'tall'), State.INVALID,
+        goog.getCssName(baseClass, 'invalid'), State.EMPTY,
+        goog.getCssName(baseClass, 'empty'), State.INVISIBLE,
+        goog.getCssName(baseClass, 'invisible'), State.RAISED,
+        goog.getCssName(baseClass, 'raised'), State.OVERLAY,
+        goog.getCssName(baseClass, 'overlayed'), State.TACTILE,
+        goog.getCssName(baseClass, 'tactile'));
   },
 
 
@@ -118,8 +118,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     if (goog.isNull(this.classByMaterialState)) {
       this.createClassToStateMapping();
     }
-    this.materialStateByClass = goog.object.transpose(
-        this.classByMaterialState);
+    this.materialStateByClass =
+        goog.object.transpose(this.classByMaterialState);
   },
 
 
@@ -165,8 +165,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
   createDom: function(control) {
     // Make sure that we are indeed a material element.
     goog.asserts.assertInstanceof(control, pstj.material.Element);
-    var el = this.createRootElement(this.getTemplate(this.generateTemplateData(
-        control)));
+    var el = this.createRootElement(
+        this.getTemplate(this.generateTemplateData(control)));
     // This is now fixed as we do not call 'decorateInternal' on the
     // base component that was rendered (with createDom)
     // This call simplifies the template so that we do not need to pass the
@@ -193,11 +193,9 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
     var model = control.getModel();
     if (model != null) {
       var li = goog.asserts.assertInstanceof(model, pstj.ds.ListItem);
-      return { model: li.getRawData() };
+      return {model: li.getRawData()};
     } else if (control.getContent()) {
-      return {
-        content: control.getContent()
-      };
+      return {content: control.getContent()};
     } else {
       return null;
     }
@@ -206,14 +204,14 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Creates a DOM tree from an html string assuring its type.
-   * @param {soydata.SanitizedHtml} htmlstring The HTML to parse
+   * @param {!goog.soy.data.SanitizedHtml} htmlstring The HTML to parse
    *    into DOM tree.
    * @return {!Element}
    * @protected
    */
   createRootElement: function(htmlstring) {
-    return /** @type {!Element} */(goog.dom.safeHtmlToNode(
-        htmlstring.toSafeHtml()));
+    return /** @type {!Element} */ (
+        goog.dom.safeHtmlToNode(htmlstring.toSafeHtml()));
   },
 
 
@@ -225,7 +223,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * @param {?} model The model to apply on the template.
    *    The template is a soy template and accepts a single object as model
    *    parameter.
-   * @return {soydata.SanitizedHtml} The output of the soy template.
+   * @return {!goog.soy.data.SanitizedHtml} The output of the soy template.
    * @protected
    */
   getTemplate: function(model) {
@@ -234,9 +232,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
 
   /** @override */
-  getCssClass: function() {
-    return pstj.material.ElementRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return pstj.material.ElementRenderer.CSS_CLASS; },
 
 
   /**
@@ -310,9 +306,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * listeners for itself and its children components/element.
    * @override
    */
-  getKeyEventTarget: function(control) {
-    return null;
-  },
+  getKeyEventTarget: function(control) { return null; },
 
 
   statics: {
@@ -533,9 +527,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * to the scroll agent.
    * @return {boolean}
    */
-  hasUseScrollAgent: function() {
-    return this.useScrollAgent_;
-  },
+  hasUseScrollAgent: function() { return this.useScrollAgent_; },
 
 
   /**
@@ -543,9 +535,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * agent.
    * @return {boolean}
    */
-  hasUsePointerAgent: function() {
-    return this.usePointerAgent_;
-  },
+  hasUsePointerAgent: function() { return this.usePointerAgent_; },
 
 
   /**
@@ -632,9 +622,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * decoration.
    * @return {!NodeList}
    */
-  getDecorativeChildren: function() {
-    return this.querySelectorAll('[is]');
-  },
+  getDecorativeChildren: function() { return this.querySelectorAll('[is]'); },
 
 
   /** @override */
@@ -653,17 +641,16 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   setModel: function(model) {
     if (goog.isDefAndNotNull(this.getModel())) {
       this.getHandler().unlisten(
-          goog.asserts.assertInstanceof(this.getModel(),
-              goog.events.EventTarget),
+          goog.asserts.assertInstanceof(
+              this.getModel(), goog.events.EventTarget),
           pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
     }
     goog.base(this, 'setModel', model);
     if (goog.isDefAndNotNull(this.getModel())) {
       this.getHandler().listen(
-          goog.asserts.assertInstanceof(this.getModel(),
-              goog.events.EventTarget),
+          goog.asserts.assertInstanceof(
+              this.getModel(), goog.events.EventTarget),
           pstj.ds.DtoBase.EventType.CHANGE, this.handleModelChange);
-
     }
     this.handleModelChange(null);
   },
@@ -686,8 +673,9 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   handleModelChange_: function() {
     if (this.isInDocument()) {
-      pstj.ds.ngmodel.updateElement(this.getElement(),
-          /** @type {Object} */(this.getModel()));
+      pstj.ds.ngmodel.updateElement(
+          this.getElement(),
+          /** @type {Object} */ (this.getModel()));
     }
   },
 
@@ -754,11 +742,11 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     }
 
     if (this.hasAutoEvent(EventMap.EventFlag.SCROLL)) {
-      this.getHandler().listen(this, goog.events.EventType.SCROLL,
-          this.onScroll);
+      this.getHandler().listen(
+          this, goog.events.EventType.SCROLL, this.onScroll);
     } else {
-      this.getHandler().unlisten(this, goog.events.EventType.SCROLL,
-          this.onScroll);
+      this.getHandler().unlisten(
+          this, goog.events.EventType.SCROLL, this.onScroll);
     }
   },
 
@@ -797,57 +785,43 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * @return {boolean}
    */
-  isEmpty: function() {
-    return this.hasState(State.EMPTY);
-  },
+  isEmpty: function() { return this.hasState(State.EMPTY); },
 
   /**
    * @param {boolean} empty
    */
-  setEmpty: function(empty) {
-    this.setState(State.EMPTY, empty);
-  },
+  setEmpty: function(empty) { this.setState(State.EMPTY, empty); },
 
   /**
    * @return {boolean}
    */
-  isValid: function() {
-    return !this.hasState(State.INVALID);
-  },
+  isValid: function() { return !this.hasState(State.INVALID); },
 
   /**
    * @param {boolean} valid
    */
-  setValid: function(valid) {
-    this.setState(State.INVALID, !valid);
-  },
+  setValid: function(valid) { this.setState(State.INVALID, !valid); },
 
 
   /**
    * Checks if the narrow state is currently enabled on the component.
    * @return {boolean}
    */
-  isNarrow: function() {
-    return this.hasState(State.NARROW);
-  },
+  isNarrow: function() { return this.hasState(State.NARROW); },
 
 
   /**
    * Updates the state related to narrow design.
    * @param {boolean} enable If true sets the state, removes it otherwise.
    */
-  setNarrow: function(enable) {
-    this.setState(State.NARROW, enable);
-  },
+  setNarrow: function(enable) { this.setState(State.NARROW, enable); },
 
 
   /**
    * Checks if the component has the transitioning flag on.
    * @return {boolean}
    */
-  isTransitioning: function() {
-    return this.hasState(State.TRANSITIONING);
-  },
+  isTransitioning: function() { return this.hasState(State.TRANSITIONING); },
 
 
   /**
@@ -863,9 +837,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * Checks if the component has the OVERLAY bit turned on.
    * @return {boolean}
    */
-  isOverlay: function() {
-    return this.hasState(State.OVERLAY);
-  },
+  isOverlay: function() { return this.hasState(State.OVERLAY); },
 
 
   /**
@@ -880,70 +852,54 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @param {boolean} enable If enabled the component is expected to be covered
    * by some sort of overlay.
    */
-  setOverlay: function(enable) {
-    this.setState(State.OVERLAY, enable);
-  },
+  setOverlay: function(enable) { this.setState(State.OVERLAY, enable); },
 
 
   /**
    * @return {boolean}
    */
-  isShadow: function() {
-    return this.hasState(State.SHADOW);
-  },
+  isShadow: function() { return this.hasState(State.SHADOW); },
 
 
   /**
    * @param {boolean} enable
    */
-  setShadow: function(enable) {
-    this.setState(State.SHADOW, enable);
-  },
+  setShadow: function(enable) { this.setState(State.SHADOW, enable); },
 
 
   /**
    * Updates the tactile state.
    * @param {boolean} enable
    */
-  setTactile: function(enable) {
-    this.setState(State.TACTILE, enable);
-  },
+  setTactile: function(enable) { this.setState(State.TACTILE, enable); },
 
 
   /**
    * Checks if the element is tactile.
    * @return {boolean}
    */
-  isTactile: function() {
-    return this.hasState(State.TACTILE);
-  },
+  isTactile: function() { return this.hasState(State.TACTILE); },
 
 
   /**
    * Check if the element has the invisible state set on.
    * @return {boolean}
    */
-  isInvisibible: function() {
-    return this.hasState(State.INVISIBLE);
-  },
+  isInvisibible: function() { return this.hasState(State.INVISIBLE); },
 
 
   /**
    * Enables/disables the invisible state on the element.
    * @param {boolean} enable
    */
-  setInvisible: function(enable) {
-    this.setState(State.INVISIBLE, enable);
-  },
+  setInvisible: function(enable) { this.setState(State.INVISIBLE, enable); },
 
 
   /**
    * Getter for the auto events currently configured on the material element.
    * @return {number}
    */
-  getAutoEvents: function() {
-    return this.autoEvents_;
-  },
+  getAutoEvents: function() { return this.autoEvents_; },
 
 
   /**
@@ -962,9 +918,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * the root element.
    * @return {!Element}
    */
-  getRippleElement: function() {
-    return this.getElementStrict();
-  },
+  getRippleElement: function() { return this.getElementStrict(); },
 
 
   /**
@@ -972,9 +926,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * scroll agent. This should be overriden in children classes.
    * @return {!Element}
    */
-  getScrollElement: function() {
-    return this.getElementStrict();
-  },
+  getScrollElement: function() { return this.getElementStrict(); },
 
 
   /**
@@ -1049,8 +1001,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    */
   getRaf: function() {
     if (goog.isNull(this.raf_)) {
-      this.raf_ = new goog.async.AnimationDelay(this.onRaf,
-          this.getDomHelper().getWindow(), this);
+      this.raf_ = new goog.async.AnimationDelay(
+          this.onRaf, this.getDomHelper().getWindow(), this);
       this.registerDisposable(this.raf_);
     }
     return this.raf_;
@@ -1082,9 +1034,9 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * @return {pstj.material.ElementRenderer}
    */
   getRenderer: function() {
-    return /** @type {pstj.material.ElementRenderer} */(
-        goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-            pstj.material.ElementRenderer));
+    return /** @type {pstj.material.ElementRenderer} */ (
+        goog.asserts.assertInstanceof(
+            goog.base(this, 'getRenderer'), pstj.material.ElementRenderer));
   },
 
 
@@ -1095,13 +1047,11 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
      * @type {number}
      * @final
      */
-    PointerMap: (EventMap.EventFlag.PRESS |
-        EventMap.EventFlag.MOVE |
-        EventMap.EventFlag.RELEASE |
-        EventMap.EventFlag.TAP |
-        EventMap.EventFlag.SWIPE |
-        EventMap.EventFlag.LONGPRESS |
-        EventMap.EventFlag.RIPPLE)
+    PointerMap:
+        (EventMap.EventFlag.PRESS | EventMap.EventFlag.MOVE |
+         EventMap.EventFlag.RELEASE | EventMap.EventFlag.TAP |
+         EventMap.EventFlag.SWIPE | EventMap.EventFlag.LONGPRESS |
+         EventMap.EventFlag.RIPPLE)
   }
 
 });
@@ -1118,8 +1068,8 @@ pstj.material.Element.setupAdditionalClasses = function(instance, config) {
   if (goog.isDef(config.classNames)) {
     var cl = config.classNames.split(',');
     goog.array.forEach(cl, function(cname) {
-      var cn = pstj.material.Element.ExternalClassRefs_[goog.string.trim(
-          cname)];
+      var cn =
+          pstj.material.Element.ExternalClassRefs_[goog.string.trim(cname)];
       if (!goog.isDef(cn)) {
         cn = cname;
       }
@@ -1135,24 +1085,21 @@ pstj.material.Element.setupAdditionalClasses = function(instance, config) {
  * @private
  */
 pstj.material.Element.ExternalClassRefs_ = goog.object.create(
-    'layout', goog.getCssName('layout'),
-    'horizontal', goog.getCssName('horizontal'),
-    'vertical', goog.getCssName('vertical'),
-    'flex', goog.getCssName('flex'),
-    'center', goog.getCssName('center'),
-    'fit', goog.getCssName('fit'));
+    'layout', goog.getCssName('layout'), 'horizontal',
+    goog.getCssName('horizontal'), 'vertical', goog.getCssName('vertical'),
+    'flex', goog.getCssName('flex'), 'center', goog.getCssName('center'), 'fit',
+    goog.getCssName('fit'));
 
 
 // Register for default renderer.
-goog.ui.registry.setDefaultRenderer(pstj.material.Element,
-    pstj.material.ElementRenderer);
+goog.ui.registry.setDefaultRenderer(
+    pstj.material.Element, pstj.material.ElementRenderer);
 
 
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
-    pstj.material.ElementRenderer.CSS_CLASS, function() {
-      return new pstj.material.Element(null);
-    });
+    pstj.material.ElementRenderer.CSS_CLASS,
+    function() { return new pstj.material.Element(null); });
 
 });  // goog.scope
 
@@ -1163,8 +1110,10 @@ If we have to write an entierly new renderer what would we need?
 1) it should be responsible for only one very specific template
 2) the template should be written in html+dsl syntax
 3) the template should be compilable to soy template
-4) the renderer should be able to manipulate the template based on the view model
-5) the renderer should be able to set up all needed sub-routines and utils like poiner agent raf etc.
+4) the renderer should be able to manipulate the template based on the view
+model
+5) the renderer should be able to set up all needed sub-routines and utils like
+poiner agent raf etc.
 
 exmaple:
 <div +my-custom-element [class.active]="active">

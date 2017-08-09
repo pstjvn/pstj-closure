@@ -93,7 +93,7 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
       ctx.arc(x, y, r, rad, rad + constants.TwoDegrees, false);
       ctx.stroke();
     }
-    // return this.canvas.toDataURL();
+    return this.canvas.toDataURL();
   }
 });
 goog.addSingletonGetter(pstj.graphics.ColorArc);

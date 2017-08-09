@@ -132,8 +132,8 @@ ngmodel.Cache_ = goog.defineClass(null, {
             this.nodes_[i].src = rawvalue;
             break;
           case ngmodel.CACHE_TYPE.SHOW:
-            goog.style.setElementShown(goog.asserts.assertElement(
-                this.nodes_[i]), !!barevalue);
+            goog.style.setElementShown(
+                goog.asserts.assertElement(this.nodes_[i]), !!barevalue);
             break;
           case ngmodel.CACHE_TYPE.HTML:
             this.nodes_[i].innerHTML = rawvalue.toString();
@@ -142,20 +142,21 @@ ngmodel.Cache_ = goog.defineClass(null, {
             goog.dom.setTextContent(this.nodes_[i], rawvalue.toString());
             break;
           case ngmodel.CACHE_TYPE.FILL:
-            (/** @type {!Element} */(this.nodes_[i]))
+            (/** @type {!Element} */ (this.nodes_[i]))
                 .setAttribute('fill', rawvalue.toString());
             break;
           case ngmodel.CACHE_TYPE.STOP_COLOR:
-            (/** @type {!Element} */(this.nodes_[i]))
+            (/** @type {!Element} */ (this.nodes_[i]))
                 .setAttribute('stop-color', rawvalue.toString());
             break;
           case ngmodel.CACHE_TYPE.HIDE:
-            goog.style.setElementShown(goog.asserts.assertElement(
-                this.nodes_[i]), !barevalue);
+            goog.style.setElementShown(
+                goog.asserts.assertElement(this.nodes_[i]), !barevalue);
             break;
           default:
-            goog.log.error(ngmodel.logger_, 'Attempting to use unknown ' +
-                'application type: ' + this.applyTypes_[i]);
+            goog.log.error(
+                ngmodel.logger_, 'Attempting to use unknown ' +
+                    'application type: ' + this.applyTypes_[i]);
         }
       }
     }
@@ -182,9 +183,7 @@ ngmodel.Pool_ = goog.defineClass(goog.structs.Pool, {
    * @override
    * @return {!ngmodel.Cache_}
    */
-  createObject: function() {
-    return new ngmodel.Cache_();
-  },
+  createObject: function() { return new ngmodel.Cache_(); },
 
   /** @override */
   objectCanBeReused: goog.functions.TRUE,
@@ -261,8 +260,9 @@ ngmodel.unbindElement = function(node) {
     ngmodel.pool_.releaseObject(goog.object.get(ngmodel.cache_, id));
     goog.object.set(ngmodel.cache_, id, null);
   } else {
-    goog.log.warning(ngmodel.logger_, 'Element was never bound, but attempted' +
-        ' to unbind it');
+    goog.log.warning(
+        ngmodel.logger_, 'Element was never bound, but attempted' +
+            ' to unbind it');
   }
 };
 
@@ -304,7 +304,8 @@ ngmodel.unbindElement = function(node) {
  *
  * The struct should be item in an array for a template.
  *
- * Alternative - try { var m = eval('model.prop1.prop2.prop3'); } catch (e) return null
+ * Alternative - try { var m = eval('model.prop1.prop2.prop3'); } catch (e)
+ * return null
  *
  * Example for ng-content-model:
  * 'model'
@@ -344,7 +345,8 @@ ngmodel.unbindElement = function(node) {
  * var show = showhide.map((model) { -> run model
  * // do not forget to ! the `hide`}).some(_) { return _; })
  *
- * This covers the currently supported items: show, hide, text, html, fill, color
+ * This covers the currently supported items: show, hide, text, html, fill,
+ * color
  */
 
 /**
@@ -364,19 +366,17 @@ ngmodel.bindElement = function(node) {
   }
   var cache = ngmodel.pool_.getObject();
   goog.object.set(ngmodel.cache_, id, cache);
-  var nodes = node.querySelectorAll(
-      '[data-ng-model],[data-ng-show],[data-ng-hide]');
+  var nodes =
+      node.querySelectorAll('[data-ng-model],[data-ng-show],[data-ng-hide]');
   var items = -1;
   goog.array.forEach(nodes, function(el, index) {
-    var modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
-        'ng-model'));
+    var modelValue =
+        goog.dom.dataset.get(el, goog.string.toCamelCase('ng-model'));
     if (!goog.isDefAndNotNull(modelValue)) {
-      modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
-          'ng-show'));
+      modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase('ng-show'));
     }
     if (!goog.isDefAndNotNull(modelValue)) {
-      modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase(
-          'ng-hide'));
+      modelValue = goog.dom.dataset.get(el, goog.string.toCamelCase('ng-hide'));
     }
     // If the property has a value only then process further.
     if (goog.isString(modelValue)) {
@@ -385,7 +385,7 @@ ngmodel.bindElement = function(node) {
       // Trim the name as it must be matched exactly.
       var modelName = goog.string.trim(p[0]);
       // Only add it to the cache if the model name is not empty.
-      if (!goog.string.isEmpty(modelName)) {
+      if (!goog.string.isEmptyOrWhitespace(modelName)) {
         items++;
         cache.nodes_[items] = el;
         cache.modelNames_[items] = modelName;
@@ -414,8 +414,8 @@ ngmodel.bindElement = function(node) {
                 return pstj.ng.filters.apply(fname, value, fparams);
               });
             } else {
-              goog.log.warning(ngmodel.logger_, 'Cannot resolve ng-filter: ' +
-                  fname);
+              goog.log.warning(
+                  ngmodel.logger_, 'Cannot resolve ng-filter: ' + fname);
             }
           });
           if (!goog.array.isEmpty(filterfns)) {
@@ -428,8 +428,8 @@ ngmodel.bindElement = function(node) {
         }
         cache.length_ = items + 1;
         cache.applyTypes_[items] = ngmodel.resolveCacheType_(el);
-        cache.values_[items] = ngmodel.resolveInitialValue_(
-            el, cache.applyTypes_[items]);
+        cache.values_[items] =
+            ngmodel.resolveInitialValue_(el, cache.applyTypes_[items]);
       }
     }
   });
@@ -478,16 +478,18 @@ ngmodel.resolveInitialValue_ = function(el, applyType) {
  */
 ngmodel.resolveCacheType_ = function(el) {
   // Show/hide the whole element.
-  if (goog.dom.dataset.has(goog.asserts.assertElement(el),
-      goog.string.toCamelCase('ng-show'))) {
+  if (goog.dom.dataset.has(
+          goog.asserts.assertElement(el), goog.string.toCamelCase('ng-show'))) {
     return ngmodel.CACHE_TYPE.SHOW;
-  } else if (goog.dom.dataset.has(goog.asserts.assertElement(el),
-      goog.string.toCamelCase('ng-hide'))) {
+  } else if (
+      goog.dom.dataset.has(
+          goog.asserts.assertElement(el), goog.string.toCamelCase('ng-hide'))) {
     return ngmodel.CACHE_TYPE.HIDE;
   } else {
     // If its marked to be an HTML container always use that
-    if (goog.dom.dataset.has(goog.asserts.assertElement(el),
-        goog.string.toCamelCase('ng-html'))) {
+    if (goog.dom.dataset.has(
+            goog.asserts.assertElement(el),
+            goog.string.toCamelCase('ng-html'))) {
       return ngmodel.CACHE_TYPE.HTML;
     } else {
       // Try to determine behavior from element type / tag.
@@ -497,12 +499,14 @@ ngmodel.resolveCacheType_ = function(el) {
         return ngmodel.CACHE_TYPE.STOP_COLOR;
       } else if (tagname == goog.dom.TagName.IMG) {
         return ngmodel.CACHE_TYPE.IMAGE;
-      } else if (goog.dom.dataset.has(goog.asserts.assertElement(el),
-          goog.string.toCamelCase('ng-prop'))) {
+      } else if (
+          goog.dom.dataset.has(
+              goog.asserts.assertElement(el),
+              goog.string.toCamelCase('ng-prop'))) {
         // If we do not know the specific tag name see if we want to use
         // a specific property
-        var prop = goog.dom.dataset.get(goog.asserts.assertElement(el),
-            goog.string.toCamelCase('ng-prop'));
+        var prop = goog.dom.dataset.get(
+            goog.asserts.assertElement(el), goog.string.toCamelCase('ng-prop'));
         if (prop == 'fill') return ngmodel.CACHE_TYPE.FILL;
       }
     }
@@ -554,13 +558,15 @@ ngmodel.NULL_VALUE_ = '&nbsp;';
  */
 ngmodel.updateElement = function(el, model) {
   if (goog.hasUid(goog.asserts.assertObject(el)) &&
-      goog.object.containsKey(ngmodel.cache_, goog.getUid(
-          goog.asserts.assertObject(el)).toString())) {
-    ngmodel.applyFromCache_(goog.object.get(
-        ngmodel.cache_, goog.getUid(el).toString()), model);
+      goog.object.containsKey(
+          ngmodel.cache_,
+          goog.getUid(goog.asserts.assertObject(el)).toString())) {
+    ngmodel.applyFromCache_(
+        goog.object.get(ngmodel.cache_, goog.getUid(el).toString()), model);
   } else {
-    goog.log.error(ngmodel.logger_, 'Attempt to ng-update element that is not' +
-        ' bound.');
+    goog.log.error(
+        ngmodel.logger_, 'Attempt to ng-update element that is not' +
+            ' bound.');
   }
 };
 
@@ -588,9 +594,9 @@ ngmodel.apply = function(nodelist, model) {
   var nll = nodelist.length;
   if (goog.isDefAndNotNull(model)) {
     for (var i = 0; i < nll; i++) {
-      currentElement = /** @type {Element} */(nodelist[i]);
-      modelName = goog.dom.dataset.get(currentElement, goog.string.toCamelCase(
-          'ng-model'));
+      currentElement = /** @type {Element} */ (nodelist[i]);
+      modelName = goog.dom.dataset.get(
+          currentElement, goog.string.toCamelCase('ng-model'));
       if (goog.isString(modelName)) {
         data = ngmodel.resolveValue_(model, modelName);
         if (goog.isDefAndNotNull(data)) {
@@ -612,7 +618,7 @@ ngmodel.apply = function(nodelist, model) {
  */
 ngmodel.applyFilteredModel_ = function(element, value) {
   switch (element.tagName.toUpperCase()) {
-    case goog.dom.TagName.IMG:
+    case 'IMG':
       element.src = value;
       break;
     default:
