@@ -7,12 +7,20 @@ goog.require('goog.object');
 goog.require('pstj.color.ColorRange');
 goog.require('pstj.graphics.ColorArc');
 
+/** @const {number} */
 var runs = 500;
+/** @type {pstj.graphics.ColorArc} */
 var ca = null;
+/** @type {pstj.color.ColorRange} */
 var cr = null;
+/** @type {number} */
 var times = 0;
+/** @type {!Array<number>} */
 var values = Array(runs);
 
+/**
+ * Sets up the perfing.
+ */
 window.onload = function() {
   cr = new pstj.color.ColorRange();
   cr.setColors('#84a0e8', '#f29093');
@@ -23,6 +31,9 @@ window.onload = function() {
   }, 500);
 };
 
+/**
+ * Calls the actual drawing functions.
+ */
 function draw() {
   if (times >= runs) {
     figureItOut();
@@ -30,11 +41,14 @@ function draw() {
   }
   window.requestAnimationFrame(draw);
   var a = Date.now();
-  ca.getArc(new goog.math.Rect(0, 0, 300, 300), cr);
+  ca.createArc(new goog.math.Rect(0, 0, 300, 300), cr);
   values[times] = (Date.now() - a);
   times++;
 }
 
+/**
+ * Debugging/perf info displayer
+ */
 function figureItOut() {
   values.sort((a, b) => a - b);
   var res = {};
@@ -42,8 +56,6 @@ function figureItOut() {
     if (!res[v]) res[v] = 0;
     res[v]++;
   });
-  var maxKey = 0;
-  var maxValue = 0;
   var itemCount = goog.object.getCount(res);
   var table = goog.dom.createTable(itemCount, 2);
   document.body.appendChild(table);

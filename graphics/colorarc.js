@@ -61,11 +61,10 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
    *
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
-   * @param {boolean=} opt_greyscale
    * @return {string}
    */
-  getArc: function(rect, cr, opt_greyscale) {
-    this.createArc(rect, cr, opt_greyscale);
+  getArc: function(rect, cr) {
+    this.createArc(rect, cr);
     return this.canvas.toDataURL();
   },
 
@@ -76,9 +75,8 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
    *
    * @param {goog.math.Rect} rect
    * @param {pstj.color.ColorRange} cr
-   * @param {boolean=} opt_greyscale
    */
-  createArc: function(rect, cr, opt_greyscale) {
+  createArc: function(rect, cr) {
     this.setSize(rect);
     this.clear(rect);
     var ctx = this.context;
@@ -98,12 +96,12 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
           (i + startFromDegree) * constants.OneDegree + constants.ZeroDegree;
       if (rad > constants.CircleCircumference)
         rad = rad - constants.CircleCircumference;
-      var colorValue =
-          cr.getColorValue(mu.getFractionFromValue(i, degreesToDraw));
-      // FIXME: this is not ready, both input and output are of wrong type.
-      // if (!!opt_greyscale) colorValue = pstj.color.toGreyscale(colorValue);
+      var colorValue = cr.getColorValueAsRgbInstance(
+          mu.getFractionFromValue(i, degreesToDraw));
       ctx.beginPath();
-      ctx.strokeStyle = colorValue;
+      // ctx.strokeStyle = colorValue;
+      // ctx.strokeStyle = goog.color.rgbArrayToHex(colorValue);
+      ctx.strokeStyle = pstj.color.rgbArrayToCssString(colorValue);
       // Draw the arcs on top of each other to avoid gaps
       ctx.arc(x, y, r, rad, rad + constants.TwoDegrees, false);
       ctx.stroke();

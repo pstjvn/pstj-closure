@@ -59,7 +59,8 @@ pstj.color.toGreyscale = function(color, opt_method) {
   switch (opt_method) {
     case pstj.color.GreyscaleMethod.LIGHTNESS:
       gs = (Math.max(color[0], color[1], color[2]) +
-            Math.min(color[0], color[1], color[2])) / 2;
+            Math.min(color[0], color[1], color[2])) /
+          2;
       break;
     case pstj.color.GreyscaleMethod.AVERAGE:
       gs = (color[0] + color[1] + color[2]) / 3;
@@ -72,4 +73,15 @@ pstj.color.toGreyscale = function(color, opt_method) {
       throw new Error('Unknown method for converting to greyscale');
   }
   return (/** @type {!goog.color.Rgb} */ ([gs, gs, gs]));
+};
+
+
+/**
+ * Converts goog.color.Rgb to CSS color representation (rgb(r, g b)).
+ *
+ * @param {!goog.color.Rgb} rgb
+ * @return {string}
+ */
+pstj.color.rgbArrayToCssString = function(rgb) {
+  return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 };

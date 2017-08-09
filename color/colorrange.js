@@ -16,27 +16,27 @@ goog.require('pstj.math.utils');
 pstj.color.ColorRange = goog.defineClass(null, {
   constructor: function() {
     /**
-     * @type {goog.color.Rgb}
+     * @type {?goog.color.Rgb}
      * @private
      */
     this.startrgb_ = null;
     /**
-     * @type {goog.color.Rgb}
+     * @type {?goog.color.Rgb}
      * @private
      */
     this.endrgb_ = null;
     /**
-     * @type {Array<number>}
+     * @type {!Array<number>}
      * @private
      */
     this.distance_ = [0, 0, 0];
     /**
-     * @type {Array<number>}
+     * @type {!Array<number>}
      * @private
      */
     this.revert_ = [0, 0, 0];
     /**
-     * @type {goog.color.Rgb}
+     * @type {!goog.color.Rgb}
      * @private
      */
     this.lastCalculatedValue_ = [0, 0, 0];
@@ -73,12 +73,12 @@ pstj.color.ColorRange = goog.defineClass(null, {
   },
 
   /**
-   * Given a percentage returns the percentile representation of the color
-   * range.
-   * @param {number} fraction The fraction to use
-   * @return {string}
+   * Recalculate the value using internal structures.
+   *
+   * @param {number} fraction
+   * @private
    */
-  getColorValue: function(fraction) {
+  getColorValue_: function(fraction) {
     for (var i = 0; i < 3; i++) {
       if (this.revert_[i] == 0) {
         this.lastCalculatedValue_[i] = this.startrgb_[i];
@@ -94,6 +94,31 @@ pstj.color.ColorRange = goog.defineClass(null, {
                  .toFixed();
       }
     }
+  },
+
+
+  /**
+   * Given a percentage returns the percentile representation of the color
+   * range.
+   *
+   * @param {number} fraction The fraction to use
+   * @return {string}
+   */
+  getColorValue: function(fraction) {
+    this.getColorValue_(fraction);
     return goog.color.rgbArrayToHex(this.lastCalculatedValue_);
+  },
+
+
+  /**
+   * Given a percentage returns the percentile representation of the color
+   * range.
+   *
+   * @param {number} fraction The fraction to use
+   * @return {!goog.color.Rgb}
+   */
+  getColorValueAsRgbInstance: function(fraction) {
+    this.getColorValue_(fraction);
+    return this.lastCalculatedValue_;
   }
 });
