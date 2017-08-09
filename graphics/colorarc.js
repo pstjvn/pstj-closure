@@ -98,15 +98,14 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
   createArc: function(rect, cr, opt_startDegree) {
     this.setSize(rect);
     this.clear(rect);
-    var ctx = this.context;
 
-    // TODO: This is solely for our SVG, instead calculate it from the source.
     var radius = rect.height / 2 * pstj.graphics.ColorArc.radiusRatio;
     var startFromDegree = this.getDegreeDeclination_(opt_startDegree);
     var degreesToDraw = (360 - (startFromDegree * 2));
     var x = rect.width / 2;
     var y = rect.height / 2;
-    ctx.lineWidth = 10;
+
+    this.context.lineWidth = 10;
 
     for (var i = 0; i < degreesToDraw; i++) {
       var rad =
@@ -115,13 +114,13 @@ pstj.graphics.ColorArc = goog.defineClass(null, {
         rad = rad - constants.CircleCircumference;
       var colorValue = cr.getColorValueAsRgbInstance(
           mu.getFractionFromValue(i, degreesToDraw));
-      ctx.beginPath();
-      // ctx.strokeStyle = colorValue;
-      // ctx.strokeStyle = goog.color.rgbArrayToHex(colorValue);
-      ctx.strokeStyle = pstj.color.rgbArrayToCssString(colorValue);
+      this.context.beginPath();
+      // this.context.strokeStyle = colorValue;
+      // this.context.strokeStyle = goog.color.rgbArrayToHex(colorValue);
+      this.context.strokeStyle = pstj.color.rgbArrayToCssString(colorValue);
       // Draw the arcs on top of each other to avoid gaps
-      ctx.arc(x, y, radius, rad, rad + constants.TwoDegrees, false);
-      ctx.stroke();
+      this.context.arc(x, y, radius, rad, rad + constants.TwoDegrees, false);
+      this.context.stroke();
     }
   },
 
