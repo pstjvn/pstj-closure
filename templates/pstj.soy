@@ -7,13 +7,13 @@
  * Content goes on custom-scroll-div so it should be returned by getContentElement
  */
 {template .CustomScrollArea}
-  <div class="{css custom-scroll-area}">
-    <div class="{css custom-scroll-internal}">
-      <div class="{css custom-scroll-div}"></div>
+  <div class="{css('custom-scroll-area')}">
+    <div class="{css('custom-scroll-internal')}">
+      <div class="{css('custom-scroll-div')}"></div>
     </div>
-    <div class="{css custom-scroll-bar} {css goog-slider}">
-      <div class="{css custom-scroll-bar-line}"></div>
-      <div class="{css goog-slider-thumb} {css custom-scroll-bar-thumb}"></div>
+    <div class="{css('custom-scroll-bar')} {css('goog-slider')}">
+      <div class="{css('custom-scroll-bar-line')}"></div>
+      <div class="{css('goog-slider-thumb')} {css('custom-scroll-bar-thumb')}"></div>
     </div>
   </div>
 {/template}
@@ -22,9 +22,9 @@
  * The basic item in the pager.
  */
 {template .page}
-  <div class="{css pstj-pager-item}">
-    <div class="{css pstj-pager-item-vertical-adjustment}">
-      <div class="{css pstj-pager-item-text}" data-model="description"></div>
+  <div class="{css('pstj-pager-item')}">
+    <div class="{css('pstj-pager-item-vertical-adjustment')}">
+      <div class="{css('pstj-pager-item-text')}" data-model="description"></div>
     </div>
   </div>
 {/template}
@@ -35,17 +35,17 @@
  * @param itemsCount The number of items to include in a page.
  */
 {template .pager}
-  <div class="{css pstj-pager-wrapper}">
-    <div class="{css pstj-pager-items}">
+  <div class="{css('pstj-pager-wrapper')}">
+    <div class="{css('pstj-pager-items')}">
       {for $item in range($itemsCount)}
         {call .page /}
       {/for}
     </div>
-    <div class="{css pstj-pager-page-indicator}">
+    <div class="{css('pstj-pager-page-indicator')}">
       {msg desc="The word page in the page N of number of X pages"}Page{/msg}{sp}
-      <span class="{css pstj-pager-page}"></span>
+      <span class="{css('pstj-pager-page')}"></span>
       {sp}{msg desc="the word of in page N of X pages"}of{/msg}{sp}
-      <span class="{css pstj-pager-pages}"></span>
+      <span class="{css('pstj-pager-pages')}"></span>
     </div>
   </div>
 {/template}
@@ -56,12 +56,12 @@
  * @param name The name of the item.
  */
 {template .listitem}
-  <div class="{css pstj-list-item}">
-    <div class="{css pstj-list-item-container}">
-      <div class="{css pstj-list-item-image-holder}">
-        <img src="{$thumbnail}" class="{css pstj-list-item-thumbnail}" />
+  <div class="{css('pstj-list-item')}">
+    <div class="{css('pstj-list-item-container')}">
+      <div class="{css('pstj-list-item-image-holder')}">
+        <img src="{$thumbnail}" class="{css('pstj-list-item-thumbnail')}" />
       </div>
-      <div class="{css pstj-list-item-name}">{$name}</div>
+      <div class="{css('pstj-list-item-name')}">{$name}</div>
     </div>
   </div>
 {/template}
@@ -70,9 +70,9 @@
  * Provides the list container for list items to roll.
  */
 {template .list}
-  <div class="{css pstj-list}">
-    <div class="{css pstj-list-container}">
-    <span class="{css pstj-list-notice}"></span>
+  <div class="{css('pstj-list')}">
+    <div class="{css('pstj-list-container')}">
+    <span class="{css('pstj-list-notice')}"></span>
     </div>
   </div>
 {/template}
@@ -84,9 +84,9 @@
  *   the backend.
  */
 {template .upload}
-  <div class="{css pstj-upload-form}">
+  <div class="{css('pstj-upload-form')}">
     <form method="post" enctype="multipart/form-data" action="{$url}" name="uploadform">
-      <input id="attachment" name="{$inputname}" type="file" style="display:none" class="{css pstj-upload-form-input}" />
+      <input id="attachment" name="{$inputname}" type="file" style="display:none" class="{css('pstj-upload-form-input')}" />
     </form>
   </div>
 {/template}
@@ -98,10 +98,10 @@
  *   order to have usable instance.
  */
 {template .controlgroup}
-  <div class="{css pstj-control-group} {css d-table}">
-    <div class="{css pstj-control-group-button} {css d-table-cell}" data-action="namedaction">
-      <div class="{css d-table} {css margin-auto}">
-        <img src="assets/left-arrow.png" class="{css d-table-cell} {css pstj-control-group-button-image}" />
+  <div class="{css('pstj-control-group')} {css('d-table')}">
+    <div class="{css('pstj-control-group-button')} {css('d-table-cell')}" data-action="namedaction">
+      <div class="{css('d-table')} {css('margin-auto')}">
+        <img src="assets/left-arrow.png" class="{css('d-table-cell')} {css('pstj-control-group-button-image')}" />
       </div>
     </div>
   </div>
@@ -112,14 +112,14 @@
  * @param text The text to show for the progress if any.
  */
 {template .progress}
-  <div class="{css pstj-widget-progress}">
+  <div class="{css('pstj-widget-progress')}">
     {if $text != ''}
-      <div class="{css pstj-widget-progress-text}">
+      <div class="{css('pstj-widget-progress-text')}">
         {$text}
       </div>
     {/if}
-    <div class="{css pstj-widget-progress-container}">
-      <div class="{css pstj-widget-progress-bar}"></div>
+    <div class="{css('pstj-widget-progress-container')}">
+      <div class="{css('pstj-widget-progress-bar')}"></div>
     </div>
   </div>
 {/template}
@@ -129,15 +129,15 @@
  * Provides the selection widget.
  */
 {template .select}
-  <div class="{css pstj-widget-select}">
-    <div class="{css pstj-widget-select-view}">
-      <div class="{css pstj-widget-select-title}">{msg desc="Select item"}Select item{/msg}</div>
-      <div class="{css pstj-widget-select-body}">
+  <div class="{css('pstj-widget-select')}">
+    <div class="{css('pstj-widget-select-view')}">
+      <div class="{css('pstj-widget-select-title')}">{msg desc="Select item"}Select item{/msg}</div>
+      <div class="{css('pstj-widget-select-body')}">
         {call .list /}
       </div>
-      <div class="{css pstj-widget-select-footer}">
-        <div class="{css form-button} {css text-button} {css pstj-widget-select-text-button} {css pstj-action-select}" data-action="select">{msg desc="Select"}Select{/msg}</div>
-        <div class="{css form-button} {css text-button} {css pstj-widget-select-text-button} {css pstj-action-cancel}" data-action="cancel">{msg desc="Cancel"}Cancel{/msg}</div>
+      <div class="{css('pstj-widget-select-footer')}">
+        <div class="{css('form-button')} {css('text-button')} {css('pstj-widget-select-text-button')} {css('pstj-action-select')}" data-action="select">{msg desc="Select"}Select{/msg}</div>
+        <div class="{css('form-button')} {css('text-button')} {css('pstj-widget-select-text-button')} {css('pstj-action-cancel')}" data-action="cancel">{msg desc="Cancel"}Cancel{/msg}</div>
       </div>
     </div>
   </div>
@@ -148,8 +148,8 @@
  * Pop over frame blocker with embedding capabilities.
  */
 {template .popover}
-  <div class="{css pstj-popover-event-blocker}">
-    <div class="{css pstj-popover-frame}"></div>
+  <div class="{css('pstj-popover-event-blocker')}">
+    <div class="{css('pstj-popover-frame')}"></div>
   </div>
 {/template}
 
@@ -166,8 +166,8 @@
  * Demoes the data filtering and data binding (one way).
  */
 {template .clock}
-  <div class="{css pstj-widget-clock}">
-    <div class="{css pstj-widget-clock-time}" data-model="time" data-filter="datetime(HH:mm:ss)"></div>
+  <div class="{css('pstj-widget-clock')}">
+    <div class="{css('pstj-widget-clock-time')}" data-model="time" data-filter="datetime(HH:mm:ss)"></div>
   </div>
 {/template}
 
@@ -175,7 +175,7 @@
  * Super-simple table view item template use to demo the tableview widget.
  */
 {template .TableViewItem}
-  <div class="{css tableviewitem}">
+  <div class="{css('tableviewitem')}">
     <div data-model="id"></div>
   </div>
 {/template}
@@ -185,11 +185,11 @@
 {template .Swipetile}
   {@param src: string}
   {@param? text: string}
-  <div is class="{css pstj-swipetile}">
-    <div class="{css pstj-swipetile-image}" style="background-image: url({$src})">
+  <div is class="{css('pstj-swipetile')}">
+    <div class="{css('pstj-swipetile-image')}" style="background-image: url({$src})">
       {if $text}
-        <div class="{css pstj-swipetile-text-container}">
-          <div class="{css pstj-swipetile-text}">{$text}</div>
+        <div class="{css('pstj-swipetile-text-container')}">
+          <div class="{css('pstj-swipetile-text')}">{$text}</div>
         </div>
       {/if}
     </div>
@@ -199,7 +199,7 @@
 /** Template for the swiper widget */
 {template .Swiper}
   {@param items: list<?>}
-  <div is class="{css pstj-swiper} {css core-swipe}" use-pointer>
+  <div is class="{css('pstj-swiper')} {css('core-swipe')}" use-pointer>
     {foreach $item in $items}
       {call .Swipetile data="$item" /}
     {/foreach}
@@ -211,27 +211,27 @@
  * animate pages in views.
  */
 {template .AppPage}
-  <div is class="{css app-page}"></div>
+  <div is class="{css('app-page')}"></div>
 {/template}
 
 /** The template to host pages */
 {template .AppPages}
-  <div is class="{css app-pages}"></div>
+  <div is class="{css('app-pages')}"></div>
 {/template}
 
 /** Template for an error message widget. */
 {template .ErrorMsg}
   {@param? delay: number}
   {@param? auto: bool}
-  <div is class="{css error-msg} {css error-msg-disabled}" {if $auto==true}auto {/if}{if $delay}delay="{$delay}"{/if}></div>
+  <div is class="{css('error-msg')} {css('error-msg-disabled')}" {if $auto==true}auto {/if}{if $delay}delay="{$delay}"{/if}></div>
 {/template}
 
 /** Default template for the list header cell */
 {template .ListHeaderCell}
   {@param label: string}
-  <div is class="{css list-header-cell}" use-pointer>
-    <div class="{css flex-1}">{$label}</div>
-    <div class="{css list-header-icon}">
+  <div is class="{css('list-header-cell')}" use-pointer>
+    <div class="{css('flex-1')}">{$label}</div>
+    <div class="{css('list-header-icon')}">
       {call material.IconContainer}
         {param type: 'none' /}
       {/call}
@@ -244,24 +244,24 @@
 {template .ListHeader}
   {@param cells: list<string>}
   {@param flexes: list<number>}
-  <div is class="{css list-header} {css core-tap}">
-    <div class="{css list-header-subhead}">
+  <div is class="{css('list-header')} {css('core-tap')}">
+    <div class="{css('list-header-subhead')}">
       {foreach $label in $cells}
-        <div class="{css list-header-item}
+        <div class="{css('list-header-item')}
           {let $local_index: index($label) /}
           {if $flexes[$local_index]}
             {let $flex:$flexes[$local_index] /}
             {switch $flex}
               {case 1}
-                {css flex-1}
+                {css('flex-1')}
               {case 2}
-                {css flex-2}
+                {css('flex-2')}
               {case 3}
-                {css flex-3}
+                {css('flex-3')}
               {case 4}
-                {css flex-4}
+                {css('flex-4')}
               {case 5}
-                {css flex-5}
+                {css('flex-5')}
             {/switch}
           {/if}">
           {call .ListHeaderCell}

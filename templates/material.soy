@@ -4,14 +4,14 @@
 /** Base template */
 {template .CoreElement}
   {@param? content: string}
-  <div is class="{css core-element}">{if $content}{$content}{/if}</div>
+  <div is class="{css('core-element')}">{if $content}{$content}{/if}</div>
 {/template}
 
 
 /** Item template */
 {template .Item}
   {@param? content: string}
-  <div is class="{css core-item}">{if $content}{$content}{/if}</div>
+  <div is class="{css('core-item')}">{if $content}{$content}{/if}</div>
 {/template}
 
 
@@ -20,10 +20,10 @@
  * overlay applied on it.
  */
 {template .Panel}
-  <div is class="{css material-panel}">
+  <div is class="{css('material-panel')}">
     {call .Shadow /}
-    <div class="{css material-panel-content-holder}"></div>
-    <div is class="{css core-element} {css material-panel-overlay}"></div>
+    <div class="{css('material-panel-content-holder')}"></div>
+    <div is class="{css('core-element')} {css('material-panel-overlay')}"></div>
   </div>
 {/template}
 
@@ -37,9 +37,9 @@
  * The template is desined to always use the pointer agent.
  */
 {template .DrawerPanel}
-  <div is class="{css material-drawer-panel}" use-pointer>
+  <div is class="{css('material-drawer-panel')}" use-pointer>
     {call .Panel /}
-    <div class="{css material-drawer-panel-sidebar}">
+    <div class="{css('material-drawer-panel-sidebar')}">
       {call .Panel /}
     </div>
   </div>
@@ -48,18 +48,18 @@
 
 /** The main panel fo rthe header panel. */
 {template .HeaderPanelMain}
-  <div is class="{css material-header-panel-main}" use-scroll>
-    <div class="{css material-header-panel-main-container}">
-      <div class="{css material-header-panel-main-content}"></div>
+  <div is class="{css('material-header-panel-main')}" use-scroll>
+    <div class="{css('material-header-panel-main-container')}">
+      <div class="{css('material-header-panel-main-content')}"></div>
     </div>
-    <div class="{css material-drop-shadow}"></div>
+    <div class="{css('material-drop-shadow')}"></div>
   </div>
 {/template}
 
 
 /** The header in the header panel. */
 {template .HeaderPanelHeader}
-  <div is class="{css material-header-panel-header}"></div>
+  <div is class="{css('material-header-panel-header')}"></div>
 {/template}
 
 
@@ -69,8 +69,8 @@
   * create them programatically with their own children from the JSON config.
   */
 {template .HeaderPanel}
-  <div is class="{css material-header-panel}">
-    <div class="{css material-header-panel-outer-container}">
+  <div is class="{css('material-header-panel')}">
+    <div class="{css('material-header-panel-outer-container')}">
     {call .HeaderPanelHeader /}
     {call .HeaderPanelMain /}
     </div>
@@ -86,10 +86,10 @@
   {@param? recenter: bool}
   {@param? opacity: number}
   {@param? usepointer: bool}
-  <div is class="{css ripple}{if $circle}{sp}{css ripple-circle}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}{if $usepointer}{sp}use-pointer{/if}>
-    <div class="{css ripple-bg}"></div>
-    <div class="{css ripple-waves}"></div>
-    <div class="{css ripple-content}">{if $content}{$content}{/if}</div>
+  <div is class="{css('ripple')}{if $circle}{sp}{css('ripple-circle')}{/if}"{if $recenter}{sp}recenter{/if}{if $opacity}{sp}opacity="{$opacity}"{/if}{if $usepointer}{sp}use-pointer{/if}>
+    <div class="{css('ripple-bg')}"></div>
+    <div class="{css('ripple-waves')}"></div>
+    <div class="{css('ripple-content')}">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 
@@ -99,8 +99,8 @@
  * @param label
  */
 {template .FloatingLabel}
-  <div class="{css floating-label}">
-    <span class="{css floating-label-text}">{$label}</span>
+  <div class="{css('floating-label')}">
+    <span class="{css('floating-label-text')}">{$label}</span>
   </div>
 {/template}
 
@@ -109,9 +109,9 @@
  * The underline effect for the inputs.
  */
 {template .InputUnderline}
-  <div class="{css material-input-underline}">
-    <div class="{css material-input-underline-unfocused}"></div>
-    <div class="{css material-input-underline-focused}"></div>
+  <div class="{css('material-input-underline')}">
+    <div class="{css('material-input-underline-unfocused')}"></div>
+    <div class="{css('material-input-underline-focused')}"></div>
   </div>
 {/template}
 
@@ -121,9 +121,9 @@
  * @param error The error to display.
  */
 {template .InputError}
-  <div class="{css material-input-error}">
-    <div class="{css material-input-error-text}" role="alert">{$error}</div>
-    <div is class="{css material-icon} {css material-input-error-icon}" icon="warning" size="20"></div>
+  <div class="{css('material-input-error')}">
+    <div class="{css('material-input-error-text')}" role="alert">{$error}</div>
+    <div is class="{css('material-icon')} {css('material-input-error-icon')}" icon="warning" size="20"></div>
   </div>
 {/template}
 
@@ -136,12 +136,12 @@
  * @param name
  */
 {template .InputElement}
-  <div is class="{css material-input-body}">
-    <div class="{css material-input-body-label}">
-      <span class="{css material-input-body-label-text}">{$label}</span>
+  <div is class="{css('material-input-body')}">
+    <div class="{css('material-input-body-label')}">
+      <span class="{css('material-input-body-label-text')}">{$label}</span>
     </div>
-    <div is class="{css core-element} {css material-input-body-cursor}"></div>
-    <div class="{css material-input-body-container}">
+    <div is class="{css('core-element')} {css('material-input-body-cursor')}"></div>
+    <div class="{css('material-input-body-container')}">
       <input autocomplete="off" autocorrect="off" autocapitalize="off"
         spellcheck="false" type="{$type}" value="{$value}" name="{$name}">
     </div>
@@ -168,16 +168,16 @@
   {@param? content: string}
   {@param? name: string}
   {@param? value: string}
-  <div is class="{css material-radio-button}" use-pointer role="radio" tabindex="0" name="{$name}" value="{$value}">
-    <div class="{css material-radio-button-container}">
-      <div class="{css material-radio-button-off}"></div>
-      <div class="{css material-radio-button-on}"></div>
+  <div is class="{css('material-radio-button')}" use-pointer role="radio" tabindex="0" name="{$name}" value="{$value}">
+    <div class="{css('material-radio-button-container')}">
+      <div class="{css('material-radio-button-off')}"></div>
+      <div class="{css('material-radio-button-on')}"></div>
       {call .Ripple}
         {param circle: true /}
         {param recenter: true /}
         {param usepointer: false/}
       {/call}
-    </div><div class="{css material-radio-button-content}" aria-hidden="true">{if $content}{$content}{/if}</div>
+    </div><div class="{css('material-radio-button-content')}" aria-hidden="true">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 
@@ -189,16 +189,16 @@
   {@param? content: string}
   {@param? name: string}
   {@param? disabled: bool}
-  <div is class="{css material-toggle-button}
-      {if $disabled} {css material-toggle-button-disabled}{/if}"
+  <div is class="{css('material-toggle-button')}
+      {if $disabled} {css('material-toggle-button-disabled')}{/if}"
       role="button" name="{$name}" use-pointer>
-    <div class="{css material-toggle-button-container}">
-      <div class="{css material-toggle-button-bar}"></div>
+    <div class="{css('material-toggle-button-container')}">
+      <div class="{css('material-toggle-button-bar')}"></div>
       {call .RadioButton}
         {param label: '' /}
       {/call}
     </div>
-    <div class="{css material-toggle-button-content}">
+    <div class="{css('material-toggle-button-content')}">
       {if $content}{$content}{/if}
     </div>
   </div>
@@ -207,14 +207,14 @@
 
 /** Template for the Radio Group */
 {template .RadioGroup}
-  <div is class="{css material-radio-group}"></div>
+  <div is class="{css('material-radio-group')}"></div>
 {/template}
 
 
 /** Progress bar element */
 {template .Progressbar}
-  <div class="{css material-progress-bar}">
-    <div class="{css material-progress-bar-inner}"></div>
+  <div class="{css('material-progress-bar')}">
+    <div class="{css('material-progress-bar-inner')}"></div>
   </div>
 {/template}
 
@@ -222,22 +222,22 @@
 /** Provides template for the shadow element. */
 {template .Shadow}
   {@param? depth: int}
-  <div is class="{css material-shadow}{sp}
+  <div is class="{css('material-shadow')}{sp}
     {if $depth == 1}
-      {css material-shadow-1}
+      {css('material-shadow-1')}
     {elseif $depth == 2}
-      {css material-shadow-2}
+      {css('material-shadow-2')}
     {elseif $depth == 3}
-      {css material-shadow-3}
+      {css('material-shadow-3')}
     {elseif $depth == 4}
-      {css material-shadow-4}
+      {css('material-shadow-4')}
     {elseif $depth == 5}
-      {css material-shadow-5}
+      {css('material-shadow-5')}
     {else}
-      {css material-shadow-0}
+      {css('material-shadow-0')}
     {/if}">
-    <div class="{css material-shadow-bottom}"></div>
-    <div class="{css material-shadow-top}"></div>
+    <div class="{css('material-shadow-bottom')}"></div>
+    <div class="{css('material-shadow-top')}"></div>
   </div>
 {/template}
 
@@ -245,8 +245,8 @@
 /** Template for the internal button label. */
 {template .ButtonContent}
   {@param? content: string}
-  <div is class="{css core-element} {css relative}">
-    <div class="{css material-button-label}">{if $content}{$content}{/if}</div>
+  <div is class="{css('core-element')} {css('relative')}">
+    <div class="{css('material-button-label')}">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 
@@ -264,10 +264,10 @@
   {@param? tactile: bool}
   {@param? disabled: bool}
   {@param? raised: bool}
-  <div is class="{css material-button}
-      {if $tactile} {css material-button-tactile}{/if}
-      {if $disabled} {css material-button-disabled}{/if}
-      {if $raised} {css material-button-raised}{/if}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
+  <div is class="{css('material-button')}
+      {if $tactile} {css('material-button-tactile')}{/if}
+      {if $disabled} {css('material-button-disabled')}{/if}
+      {if $raised} {css('material-button-raised')}{/if}" {if $ink}ink{/if} use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}
@@ -287,7 +287,7 @@
   {@param icon: string}
   {@param? tactile: bool}
   {@param? action: string}
-  <div is class="{css material-icon-button}{if $tactile} {css material-button-tactile}{/if}" use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
+  <div is class="{css('material-icon-button')}{if $tactile} {css('material-button-tactile')}{/if}" use-pointer icon="{$icon}" {if $action}action="{$action}"{/if}>
     {call .IconContainer}
       {param type: $icon /}
     {/call}
@@ -299,7 +299,7 @@
  */
 {template .IconContainer}
   {@param type: string}
-  <div is class="{css material-icon-container} {css material-icon-container-empty}" type="{$type}"></div>
+  <div is class="{css('material-icon-container')} {css('material-icon-container-empty')}" type="{$type}"></div>
 {/template}
 
 
@@ -310,10 +310,10 @@
   {@param? action: string}
   {@param? raised: bool}
   {@param? transition: bool}
-  <div is class="{css material-fab}
-    {if $tactile}{sp}{css material-button-tactile}{/if}
-    {if $raised}{sp}{css material-fab-raised}{/if}
-    {if $transition}{sp}{css material-raf-transition}{/if}" icon="{$icon}" use-pointer ink {if $action}action="{$action}"{/if}>
+  <div is class="{css('material-fab')}
+    {if $tactile}{sp}{css('material-button-tactile')}{/if}
+    {if $raised}{sp}{css('material-fab-raised')}{/if}
+    {if $transition}{sp}{css('material-raf-transition')}{/if}" icon="{$icon}" use-pointer ink {if $action}action="{$action}"{/if}>
     {call .Shadow /}
     {call .IconContainer}
       {param type: $icon /}
@@ -328,15 +328,15 @@
 /** Template for the material checkbox */
 {template .Checkbox}
   {@param content: string}
-  <div is class="{css material-checkbox}" role="checkbox" use-pointer>
-    <div class="{css material-checkbox-container}">
-      <div class="{css material-checkbox-icon}"></div>
+  <div is class="{css('material-checkbox')}" role="checkbox" use-pointer>
+    <div class="{css('material-checkbox-container')}">
+      <div class="{css('material-checkbox-icon')}"></div>
       {call .Ripple}
         {param circle: true /}
         {param recenter: true /}
       {/call}
     </div>
-    <div class="{css material-checkbox-content}">{if $content}{$content}{/if}</div>
+    <div class="{css('material-checkbox-content')}">{if $content}{$content}{/if}</div>
   </div>
 {/template}
 
@@ -345,11 +345,11 @@
 {template .MenuItem}
   {@param icon: string}
   {@param? content: string}
-  <div is class="{css material-menu-item} {css core-tap}" use-pointer>
+  <div is class="{css('material-menu-item')} {css('core-tap')}" use-pointer>
     {call .IconContainer}
       {param type: $icon /}
     {/call}
-    <div class="{css material-menu-item-content}">
+    <div class="{css('material-menu-item-content')}">
       {call .Item}
         {param content: $content /}
       {/call}
@@ -364,7 +364,7 @@
   {@param name: string}
   {@param type: string}
   {@param value: string}
-  <div is class="{css material-base-input}">
+  <div is class="{css('material-base-input')}">
     <label>{if $label}{$label}{/if}</label>
     <input
       autocomplete="off"
@@ -374,7 +374,7 @@
       value="{$value}"
       type="{$type}"
       name="{$name}">
-      <div class="{css material-base-input-error}">{if $error}{$error}{/if}</div>
+      <div class="{css('material-base-input-error')}">{if $error}{$error}{/if}</div>
   </div>
 {/template}
 
@@ -392,29 +392,29 @@
   {@param name: string}
   {@param type: string}
   {@param value: string}
-  <div is class="{css material-input}" use-pointer
+  <div is class="{css('material-input')}" use-pointer
     {if $required}{sp}required{/if} {if $pattern}{sp}pattern="{$pattern}"{/if}>
-    <div class="{css material-input-floated-label}"
+    <div class="{css('material-input-floated-label')}"
       aria-hidden="true">
       <!-- needed for floating label animation measurement -->
-      <span class="{css material-input-floated-label-text}">{$label}</span>
+      <span class="{css('material-input-floated-label-text')}">{$label}</span>
     </div>
-    <div class="{css material-input-body}">
-      <div class="{css material-input-body-label}">
+    <div class="{css('material-input-body')}">
+      <div class="{css('material-input-body-label')}">
         <!-- needed for floating label animation measurement -->
-        <span class="{css material-input-body-label-text}">{$label}</span>
+        <span class="{css('material-input-body-label-text')}">{$label}</span>
       </div>
       <input autocomplete="off" autocorrect="off"
           autocapitalize="off" spellcheck="false" value="{$value}"
           type="{$type}" name="{$name}" />
     </div>
-    <div class="{css material-input-underline}">
-      <div class="{css material-input-not-focused-underline}"></div>
-      <div class="{css material-input-focused-underline}"></div>
+    <div class="{css('material-input-underline')}">
+      <div class="{css('material-input-not-focused-underline')}"></div>
+      <div class="{css('material-input-focused-underline')}"></div>
     </div>
-    <div class="{css material-input-footer}">
-      <div class="{css material-input-footer-error}">
-        <div class="{css material-input-footer-error-text}" role="alert">{$error}</div>
+    <div class="{css('material-input-footer')}">
+      <div class="{css('material-input-footer-error')}">
+        <div class="{css('material-input-footer-error-text')}" role="alert">{$error}</div>
         {call .IconContainer}
           {param type: 'warning' /}
         {/call}
@@ -427,9 +427,9 @@
 {template .Toast}
   {@param text: string}
   {@param label: string}
-  <div is class="{css material-toast}" use-pointer>
-    <div class="{css material-toast-container}">
-      <div class="{css material-toast-text}">{$text}</div>
+  <div is class="{css('material-toast')}" use-pointer>
+    <div class="{css('material-toast-container')}">
+      <div class="{css('material-toast-text')}">{$text}</div>
       {call .Button}
         {param icon: 'none' /}
         {param content: $label /}
@@ -440,7 +440,7 @@
 
 /** Template for the list control. */
 {template .List}
-  <div is class="{css material-list}">
-    <div class="{css material-list-scroll-target}"></div>
+  <div is class="{css('material-list')}">
+    <div class="{css('material-list-scroll-target')}"></div>
   </div>
 {/template}
