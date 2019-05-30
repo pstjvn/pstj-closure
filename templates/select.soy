@@ -18,10 +18,10 @@
 
 /**
  * Provides the selection item view.
- * @param thumbnail The image thumbnail.
- * @param name The name of the channel.
  */
 {template .SelectionItem}
+  {@param thumbnail: string}
+  {@param name: string}
   <div class="{css('pstj-select-item')}">
     <div class="{css('pstj-select-item-image-holder')}">
       <img src="{$thumbnail}" class="{css('pstj-select-item-thumbnail')}" />
