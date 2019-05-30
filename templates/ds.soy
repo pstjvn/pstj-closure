@@ -35,9 +35,9 @@ goog.addSingletonGetter(icons.{/literal}{$className}{literal});
 
 // Register the renderer for icon name
 {/literal}
-{foreach $iconname in $icons}
+{for $iconname in $icons}
 registry.setRenderer('{$iconname}', icons.{$className}.getInstance());{\n}
-{/foreach}
+{/for}
 {literal}
 });  // goog.scope
 
@@ -49,13 +49,13 @@ registry.setRenderer('{$iconname}', icons.{$className}.getInstance());{\n}
  * Provides the template for a new soy template containing all the icon
  * renderers.
  */
-{template .IconTemplate autoescape="strict" kind="text"}
+{template .IconTemplate kind="text"}
   {@param templates: list<string>}
   {@param names: list<string>}
 {literal}
 {namespace pstj.autogen.template.icons}
 {/literal}
-{foreach $t in $templates}
+{for $t in $templates}
 {literal}
 
 
@@ -66,7 +66,7 @@ registry.setRenderer('{$iconname}', icons.{$className}.getInstance());{\n}
 {literal}
 {/te{/literal}{literal}mplate}
 {/literal}
-{/foreach}
+{/for}
 {/template}
 
 
@@ -89,9 +89,9 @@ goog.provide('pstj.autogen.icons.names');
 pstj.autogen.icons.names = {
   NONE: 'none',
 {/literal}
-{foreach $name in $names}
+{for $name in $names}
 {sp}{sp}{$symbols[index($name)]}:{sp}'{$name}',{\n}
-{/foreach}
+{/for}
 {literal}  NONEXISTING: 'nonexisting'
 };
 {/literal}

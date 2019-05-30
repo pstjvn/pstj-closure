@@ -32,9 +32,9 @@
 /**
  * Provides the default template for static pager.
  * In this default version you get 4 items.
- * @param itemsCount The number of items to include in a page.
  */
 {template .pager}
+  {@param itemsCount: number}
   <div class="{css('pstj-pager-wrapper')}">
     <div class="{css('pstj-pager-items')}">
       {for $item in range($itemsCount)}
@@ -52,10 +52,12 @@
 
 /**
  * Provides the default template for the list item representation.
- * @param thumbnail The image to use as thumbnail.
- * @param name The name of the item.
  */
 {template .listitem}
+  /** The image to use as thumbnail. */
+  {@param thumbnail: string}
+  /** The name of the item. */
+  {@param name: string} 
   <div class="{css('pstj-list-item')}">
     <div class="{css('pstj-list-item-container')}">
       <div class="{css('pstj-list-item-image-holder')}">
@@ -79,11 +81,10 @@
 
 /**
  * The upload form template used by the pstj.ui.Upload helper component.
- * @param url The url of the ACTIOn for the form.
- * @param inputname The name to set on the input for it to be recognized on
- *   the backend.
  */
 {template .upload}
+  {@param url: string} /** The url of the ACTIOn for the form. */
+  {@param inputname: string} /** The name to set on the input for it to be recognized on the backend. */
   <div class="{css('pstj-upload-form')}">
     <form method="post" enctype="multipart/form-data" action="{$url}" name="uploadform">
       <input id="attachment" name="{$inputname}" type="file" style="display:none" class="{css('pstj-upload-form-input')}" />
@@ -108,10 +109,10 @@
 {/template}
 
 /**
- * Provides the progress bar widget's html
- * @param text The text to show for the progress if any.
+ * Provides the progress bar widget's html.
  */
 {template .progress}
+  {@param text: string} /** The text to show for the progress if any. */
   <div class="{css('pstj-widget-progress')}">
     {if $text != ''}
       <div class="{css('pstj-widget-progress-text')}">
@@ -200,9 +201,9 @@
 {template .Swiper}
   {@param items: list<?>}
   <div is class="{css('pstj-swiper')} {css('core-swipe')}" use-pointer>
-    {foreach $item in $items}
+    {for $item in $items}
       {call .Swipetile data="$item" /}
-    {/foreach}
+    {/for}
   </div>
 {/template}
 
@@ -246,7 +247,7 @@
   {@param flexes: list<number>}
   <div is class="{css('list-header')} {css('core-tap')}">
     <div class="{css('list-header-subhead')}">
-      {foreach $label in $cells}
+      {for $label in $cells}
         <div class="{css('list-header-item')}
           {let $local_index: index($label) /}
           {if $flexes[$local_index]}
@@ -268,7 +269,7 @@
             {param label: $label /}
           {/call}
         </div>
-      {/foreach}
+      {/for}
     </div>
   </div>
 {/template}

@@ -96,9 +96,9 @@
 
 /**
  * The floating label for the inputs.
- * @param label
  */
 {template .FloatingLabel}
+  {@param label: string}
   <div class="{css('floating-label')}">
     <span class="{css('floating-label-text')}">{$label}</span>
   </div>
@@ -118,9 +118,9 @@
 
 /**
  * The error message for the inputs
- * @param error The error to display.
  */
 {template .InputError}
+  {@param error: string}
   <div class="{css('material-input-error')}">
     <div class="{css('material-input-error-text')}" role="alert">{$error}</div>
     <div is class="{css('material-icon')} {css('material-input-error-icon')}" icon="warning" size="20"></div>
@@ -130,12 +130,12 @@
 
 /**
  * The template for the input body that overlays the actual input element.
- * @param label
- * @param type
- * @param value
- * @param name
  */
 {template .InputElement}
+  {@param label: string}
+  {@param type: string}
+  {@param value: string}
+  {@param name: string}
   <div is class="{css('material-input-body')}">
     <div class="{css('material-input-body-label')}">
       <span class="{css('material-input-body-label-text')}">{$label}</span>
@@ -195,7 +195,7 @@
     <div class="{css('material-toggle-button-container')}">
       <div class="{css('material-toggle-button-bar')}"></div>
       {call .RadioButton}
-        {param label: '' /}
+        {param value: '' /}
       {/call}
     </div>
     <div class="{css('material-toggle-button-content')}">

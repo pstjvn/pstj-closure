@@ -4,8 +4,8 @@ private_source_dirs := tpl demos
 template_build_dir := tpl
 
 soy_compiler_options = \
---shouldProvideRequireSoyNamespaces \
---shouldGenerateJsdoc \
+--shouldGenerateGoogMsgDefs \
+--useGoogIsRtlForBidiGlobalDir \
 --outputPathFormat \
 '$(template_build_dir)/{INPUT_FILE_NAME_NO_EXT}.soy.js'
 
@@ -35,8 +35,8 @@ $(private_deps_file): $(private_dep_file_deps)
 $(public_deps_file): $(public_dep_file_deps)
 	$(python) $(depswriter) $(public_deps_cmdline) --output_file=$@
 
-$(template_build_dir)/*.soy.js: $(template_source_dir)/*.soy
-	$(java) $(soy_compiler) $(soy_compiler_options) $(template_source_dir)/*.soy
+$(template_build_dir)/%.soy.js: $(template_source_dir)/%.soy
+	$(java) $(soy_compiler) $(soy_compiler_options) --srcs $?
 
 templates/icons.soy: templates/icons.xml
 	node nodejs/icongen.js $?
