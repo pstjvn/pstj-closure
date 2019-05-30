@@ -10,6 +10,13 @@
         margin: 0;
       }
 
+      .container {
+        width: 350px;
+        height: 350px;
+        border: 1px solid black;
+        position: relative;
+      }
+
       .movable {
         width: 50px;
         height: 50px;
@@ -38,16 +45,20 @@
     </style>
   </head>
   <body>
-    <div class="movable"></div>
+    <div class="container">
+      <div class="movable"></div>
+    </div>
     <button>Click me to shorten the duration.</button>
     <script>
       (function() {
         var button = document.querySelector('button');
         var div = document.querySelector('.movable');
         var ts = 0;
+        var initialDuration = 100;
+        var subsequentDuration = 10;
 
         div.addEventListener('click', function(e) {
-          e.target.style.animationDuration = '20s';
+          e.target.style.animationDuration = initialDuration.toString() + 's';
           e.target.classList.add('active');
           ts = Date.now();
         });
@@ -55,11 +66,12 @@
         button.addEventListener('click', function(e) {
           var elapsed = Date.now() - ts;
           var delay = elapsed;
-          var percent = elapsed / 20000;
-          var substract = 3000 * percent;
+          var percent = elapsed / (initialDuration * 1000);
+          var substract = (subsequentDuration * 1000) * percent;
           delay = delay - substract;
+          console.log(delay);
           div.style.animationDelay = `${delay}ms`;
-          div.style.animationDuration = '1s';
+          div.style.animationDuration = subsequentDuration.toString() + 's';
         });
       })();
     </script>
