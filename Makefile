@@ -26,8 +26,8 @@ $(lintfile): $(public_dep_file_deps) demos/*/*.js
 	$(lint_cmd) $?
 	touch $@
 
-$(template_build_dir):
-	mkdir $@
+# $(template_build_dir):
+# 	mkdir $@
 
 $(private_deps_file): $(private_dep_file_deps)
 	$(python) $(depswriter) $(private_deps_cmdline) --output_file=$@
@@ -65,7 +65,6 @@ single:
 			--compilation_level=ADVANCED \
 			--assume_function_wrapper \
 			--jscomp_warning accessControls --jscomp_warning ambiguousFunctionDecl --jscomp_warning checkEventfulObjectDisposal --jscomp_warning checkRegExp --jscomp_warning checkTypes --jscomp_warning checkVars --jscomp_warning const --jscomp_warning constantProperty --jscomp_warning deprecated --jscomp_warning duplicateMessage --jscomp_warning es5Strict --jscomp_warning externsValidation --jscomp_warning fileoverviewTags --jscomp_warning globalThis --jscomp_warning internetExplorerChecks --jscomp_warning invalidCasts --jscomp_warning misplacedTypeAnnotation --jscomp_warning missingProperties --jscomp_warning missingProvide --jscomp_warning missingRequire --jscomp_warning missingReturn --jscomp_warning nonStandardJsDocs --jscomp_warning suspiciousCode --jscomp_warning strictModuleDepCheck --jscomp_warning typeInvalidation --jscomp_warning undefinedNames --jscomp_warning undefinedVars --jscomp_warning unknownDefines --jscomp_warning uselessCode --jscomp_warning visibility \
-			--new_type_inf  \
 			--formatting=PRETTY_PRINT \
 			--js_output_file=.artefact \
 			$(js_src) --js=./demos/**.js \
