@@ -12,7 +12,11 @@
     </style>
     <script>
       var less = {env:"development",poll:1000};
-      var CLOSURE_UNCOMPILED_DEFINES = {'goog.ui.Component.ALLOW_DETACHED_DECORATION':true};
+      var CLOSURE_UNCOMPILED_DEFINES = {
+        'goog.ui.Component.ALLOW_DETACHED_DECORATION': true,
+        // Allow goog.base(this) in constructor for defineClass (compat)
+        'goog.defineClass.SEAL_CLASS_INSTANCES': false
+      };
       var PSTJ = {MATERIAL:{XML_ICON_SOURCE:'../../templates/icons.xml'}};
     </script>
     <script src="../less.min.js"></script>
