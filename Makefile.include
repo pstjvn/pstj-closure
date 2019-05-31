@@ -6,6 +6,7 @@ cast \
 codegen \
 color \
 config \
+console \
 control \
 date \
 debug \
