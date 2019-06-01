@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'facebook' icon */
 pstj.autogen.iconrenderer.Facebook = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.Facebook);
 registry.setRenderer('facebook', icons.Facebook.getInstance());
 
 });  // goog.scope
-

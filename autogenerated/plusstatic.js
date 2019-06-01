@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'plus-static' icon */
 pstj.autogen.iconrenderer.PlusStatic = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.PlusStatic);
 registry.setRenderer('plus-static', icons.PlusStatic.getInstance());
 
 });  // goog.scope
-

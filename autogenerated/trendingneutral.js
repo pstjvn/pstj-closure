@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'trending-neutral' icon */
 pstj.autogen.iconrenderer.TrendingNeutral = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.TrendingNeutral);
 registry.setRenderer('trending-neutral', icons.TrendingNeutral.getInstance());
 
 });  // goog.scope
-

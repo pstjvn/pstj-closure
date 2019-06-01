@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'warning' icon */
 pstj.autogen.iconrenderer.Warning = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.Warning);
 registry.setRenderer('warning', icons.Warning.getInstance());
 
 });  // goog.scope
-

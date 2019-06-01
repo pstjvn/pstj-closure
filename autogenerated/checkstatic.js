@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'check-static' icon */
 pstj.autogen.iconrenderer.CheckStatic = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.CheckStatic);
 registry.setRenderer('check-static', icons.CheckStatic.getInstance());
 
 });  // goog.scope
-

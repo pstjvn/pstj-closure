@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'google-plus' icon */
 pstj.autogen.iconrenderer.GooglePlus = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.GooglePlus);
 registry.setRenderer('google-plus', icons.GooglePlus.getInstance());
 
 });  // goog.scope
-

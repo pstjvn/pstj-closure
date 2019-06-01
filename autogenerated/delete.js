@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'delete' icon */
 pstj.autogen.iconrenderer.Delete = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.Delete);
 registry.setRenderer('delete', icons.Delete.getInstance());
 
 });  // goog.scope
-

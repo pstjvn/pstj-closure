@@ -7,7 +7,6 @@ goog.require('pstj.material.IconContainer');
   goog.ui.decorate(document.querySelector('[is]'));
 
   var ci = 'arrow-drop-down';
-
   var ic = new pstj.material.IconContainer();
   ic.setIcon(ci);
   ic.render(document.querySelector('.rendertarget'));

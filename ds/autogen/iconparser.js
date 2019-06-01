@@ -8,17 +8,18 @@ goog.require('pstj.ds.template');
 
 /** The icon parser implementation. */
 pstj.ds.autogen.IconParser = class {
-  /** @param {Document} doc The document containing the raw icon elements. */
+  /** @param {!Document} doc The document containing the raw icon elements. */
   constructor(doc) {
-    /** @type {!Array<pstj.ds.autogen.IconRenderer>} */
-    this.renderers = goog.array.map(doc.querySelectorAll('[is]'),
-                                    el => new pstj.ds.autogen.IconRenderer(el));
+    /** @type {!Array<!pstj.ds.autogen.IconRenderer>} */
+    this.renderers = goog.array.map(
+        doc.querySelectorAll('svg[name]'),
+        el => new pstj.ds.autogen.IconRenderer(el));
   }
 
   /**
    * Provides means to iterate over the created renderers.
-   * @param {function(pstj.ds.autogen.IconRenderer, number,
-   *    Array<pstj.ds.autogen.IconRenderer>): void} fn
+   * @param {function(!pstj.ds.autogen.IconRenderer, number,
+   *    !Array<!pstj.ds.autogen.IconRenderer>): void} fn
    */
   forEach(fn) { goog.array.forEach(this.renderers, fn); }
 
@@ -50,8 +51,8 @@ pstj.ds.autogen.IconParser = class {
     return pstj.ds.template
         .IconTemplate({
           names: goog.array.map(this.renderers, el => el.className),
-          templates: goog.array.map(this.renderers,
-                                    el => el.getRendererTemplateContent())
+          templates: goog.array.map(
+              this.renderers, el => el.getRendererTemplateContent())
         })
         .getContent();
   }

@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'menu' icon */
 pstj.autogen.iconrenderer.Menu = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -34,4 +32,3 @@ registry.setRenderer('back-arrow', icons.Menu.getInstance());
 registry.setRenderer('forward-arrow', icons.Menu.getInstance());
 
 });  // goog.scope
-

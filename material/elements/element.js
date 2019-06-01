@@ -68,7 +68,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      * Provides the additional classes to be used when determining the
      * class names to apply by the current state.
      *
-     * @type {Object<number, string>}
+     * @type {?Object<number, string>}
      * @protected
      */
     this.classByMaterialState = null;
@@ -76,7 +76,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      * Provides the additional mappings for retrieving the state from the
      * class names applied to an html DOM structure.
      *
-     * @type {Object<string, number>}
+     * @type {?Object<string, number>}
      * @protected
      */
     this.materialStateByClass = null;
@@ -152,15 +152,15 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
       }
       state = parseInt(this.materialStateByClass[className], 10);
     }
-    return /** @type {State} */ (isNaN(state) ? 0 : state);
+    return /** @type {!State} */ (isNaN(state) ? 0 : state);
   },
 
 
   /**
    * Overrides the DOM creation to rely on a template.
    * @override
-   * @param {goog.ui.Control} control The control to create DOM for.
-   * @return {Element}
+   * @param {!goog.ui.Control} control The control to create DOM for.
+   * @return {!Element}
    */
   createDom: function(control) {
     // Make sure that we are indeed a material element.
@@ -185,7 +185,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
    * the control element and submit it to the soy template function. If your
    * control contains complex data you should override this method.
    *
-   * @param {goog.ui.Control} control The control that needs the template.
+   * @param {!goog.ui.Control} control The control that needs the template.
    * @return {?Object<string, *>}
    * @protected
    */
@@ -250,8 +250,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Sets up agents from decorated elements.
-   * @param {pstj.material.Element} control
-   * @param {Element} el
+   * @param {!pstj.material.Element} control
+   * @param {!Element} el
    */
   setupAgents: function(control, el) {
     if (el.hasAttribute('use-pointer')) {
@@ -265,8 +265,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Extracts the known auto events from the class names.
-   * @param {pstj.material.Element} control
-   * @param {Element} element
+   * @param {!pstj.material.Element} control
+   * @param {!Element} element
    */
   setupAutoEvents: function(control, element) {
     var autoEvents = control.getAutoEvents();
@@ -280,9 +280,9 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Performs a node search starting from the element passed.
-   * @param {Element} element
-   * @param {!string} selector
-   * @return {Element}
+   * @param {!Element} element
+   * @param {string} selector
+   * @return {?Element}
    */
   querySelector: function(element, selector) {
     return element.querySelector(selector);
@@ -291,8 +291,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
   /**
    * Queries the component's root node for elements matching the query string.
-   * @param {Element} element The element that we want to search in.
-   * @param {!string} selector CSS query string.
+   * @param {!Element} element The element that we want to search in.
+   * @param {string} selector CSS query string.
    * @return {!NodeList} The node collection. Collection could be empty.
    */
   querySelectorAll: function(element, selector) {
@@ -324,7 +324,7 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
      *    create.
      * @param {?string} cssClassName The name of the CSS class for the custom
      *    renderer.
-     * @param {function(Object.<string, *>=): soydata.SanitizedHtml=}
+     * @param {function(!Object<string, *>=): !soydata.SanitizedHtml=}
      *    opt_templateFn Optional
      *    template soy function to use to generate the DOM.
      * @return {T} An instance of the desired
@@ -345,8 +345,8 @@ pstj.material.ElementRenderer = goog.defineClass(goog.ui.ControlRenderer, {
 
       if (goog.isFunction(opt_templateFn)) {
         /**
-         * @param {Object.<string, *>} model
-         * @return {soydata.SanitizedHtml}
+         * @param {?Object<string, *>} model
+         * @return {!soydata.SanitizedHtml}
          */
         renderer.getTemplate = function(model) {
           return opt_templateFn(model);
@@ -409,11 +409,11 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * ui agents automatic attachement.
    *
    *
-   * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
+   * @param {?goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
-   * @param {goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
+   * @param {?goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
    *     decorate the component; defaults to {@link goog.ui.ControlRenderer}.
-   * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
+   * @param {?goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
    *     document interaction.
    * @constructor
    * @extends {goog.ui.Control}
@@ -422,7 +422,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     Control.call(this, opt_content, opt_renderer, opt_domHelper);
     /**
-     * @type {goog.async.AnimationDelay}
+     * @type {?goog.async.AnimationDelay}
      * @private
      */
     this.raf_ = null;
@@ -658,7 +658,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Handles the chages detected on the model, assuming it is DtoBase instance.
    *
-   * @param {goog.events.Event} e
+   * @param {!goog.events.Event} e
    * @protected
    */
   handleModelChange: function(e) {
@@ -675,7 +675,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
     if (this.isInDocument()) {
       pstj.ds.ngmodel.updateElement(
           this.getElement(),
-          /** @type {Object} */ (this.getModel()));
+          /** @type {?Object} */ (this.getModel()));
     }
   },
 
@@ -932,7 +932,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Default handler for the auto event of type PRESS
    * @protected
-   * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
+   * @param {!pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
   onPress: goog.functions.TRUE,
 
@@ -940,7 +940,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Default handler for the auto event of type MOVE
    * @protected
-   * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
+   * @param {!pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
   onMove: goog.functions.TRUE,
 
@@ -948,21 +948,21 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Default handler for the auto event of type RELEASE.
    * @protected
-   * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
+   * @param {!pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
   onRelease: goog.functions.TRUE,
 
   /**
    * Default handler for auto event of type SWIPE.
    * @protected
-   * @param {pstj.agent.PointerEvent} e Wapped event from pointer agent.
+   * @param {!pstj.agent.PointerEvent} e Wapped event from pointer agent.
    */
   onSwipe: goog.functions.TRUE,
 
   /**
    * Default handler for the long press event.
    * @protected
-   * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
+   * @param {!pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
   onLongPress: goog.functions.TRUE,
 
@@ -970,7 +970,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Default handler for the tap event.
    * @protected
-   * @param {pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
+   * @param {!pstj.agent.PointerEvent} e Wrapped event from the pointer agent.
    */
   onTap: goog.functions.TRUE,
 
@@ -987,7 +987,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * Default scroll handler. Note that we expect the scroll events to be raf
    * synced so if you are not sure how to implement this use the scroll agent
    * and the incoming events will be automatically reduced to the raf cycle.
-   * @param {pstj.agent.ScrollEvent} e
+   * @param {!pstj.agent.ScrollEvent} e
    * @protected
    */
   onScroll: goog.functions.TRUE,
@@ -997,7 +997,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
    * Getter for the instance's RAF. The instance is created on demand and
    * is automatically disposed on instance disposal.
    * @protected
-   * @return {goog.async.AnimationDelay}
+   * @return {!goog.async.AnimationDelay}
    */
   getRaf: function() {
     if (goog.isNull(this.raf_)) {
@@ -1011,8 +1011,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
   /**
    * Queries the root element of the component for a specific query pattern and
    *   returns the first match.
-   * @param {!string} selector The query to look up.
-   * @return {Element} The first matching element or null if none matches.
+   * @param {string} selector The query to look up.
+   * @return {?Element} The first matching element or null if none matches.
    */
   querySelector: function(selector) {
     return this.getRenderer().querySelector(this.getElement(), selector);
@@ -1021,7 +1021,7 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
   /**
    * Queries the component's root node for elements matching the query string.
-   * @param {!string} selector CSS query string.
+   * @param {string} selector CSS query string.
    * @return {!NodeList} The node collection. Collection could be empty.
    */
   querySelectorAll: function(selector) {
@@ -1031,10 +1031,10 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
 
   /**
    * @override
-   * @return {pstj.material.ElementRenderer}
+   * @return {!pstj.material.ElementRenderer}
    */
   getRenderer: function() {
-    return /** @type {pstj.material.ElementRenderer} */ (
+    return /** @type {!pstj.material.ElementRenderer} */ (
         goog.asserts.assertInstanceof(
             goog.base(this, 'getRenderer'), pstj.material.ElementRenderer));
   },
@@ -1061,8 +1061,8 @@ pstj.material.Element = goog.defineClass(goog.ui.Control, {
  * Enable additional class names based on the base config option of
  * classNames. This can be used to setup elements with layout classes as
  * defined imperatively in JSON configuration.
- * @param {pstj.material.Element} instance
- * @param {MaterialConfig} config
+ * @param {!pstj.material.Element} instance
+ * @param {!MaterialConfig} config
  */
 pstj.material.Element.setupAdditionalClasses = function(instance, config) {
   if (goog.isDef(config.classNames)) {
@@ -1081,7 +1081,7 @@ pstj.material.Element.setupAdditionalClasses = function(instance, config) {
 
 /**
  * The un-obfuscated class name to obfuscated one translation.
- * @type {Object.<string, string>}
+ * @type {!Object<string, string>}
  * @private
  */
 pstj.material.Element.ExternalClassRefs_ = goog.object.create(

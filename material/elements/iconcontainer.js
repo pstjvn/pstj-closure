@@ -4,9 +4,11 @@ goog.provide('pstj.material.IconContainerRenderer');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
+goog.require('goog.html.uncheckedconversions');
 goog.require('goog.labs.net.xhr');
 goog.require('goog.object');
 goog.require('goog.soy.data.SanitizedHtml');
+goog.require('goog.string.Const');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
 goog.require('pstj.autogen.icons.names');
@@ -18,6 +20,7 @@ goog.require('pstj.material.Icon.EventType');
 goog.require('pstj.material.IconRenderer');
 goog.require('pstj.material.icons.registry');
 goog.require('pstj.material.template');
+goog.require('soydata.VERY_UNSAFE');
 
 goog.scope(function() {
 var E = pstj.material.Element;
@@ -26,7 +29,6 @@ var iconnames = pstj.autogen.icons.names;
 // Set this to true to test behaviour as if the code was compiled:
 // this is - after you run the code generation step
 // var COMPILED = true;
-
 
 /**
  * Implementation for the Icon container class for icon swapping and
@@ -38,23 +40,23 @@ pstj.material.IconContainer = goog.defineClass(E, {
    * @constructor
    * @extends {E}
    * @struct
-   * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
+   * @param {?goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
-   * @param {goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
+   * @param {?goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
    *     decorate the component; defaults to {@link goog.ui.ControlRenderer}.
-   * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
+   * @param {?goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
    *     document interaction.
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
     goog.base(this, opt_content, opt_renderer, opt_domHelper);
     /**
-     * @type {pstj.material.Icon}
+     * @type {?pstj.material.Icon}
      * @protected
      */
     this.icon = null;
     /**
      * The type of icon we want to show currently.
-     * @type {iconnames}
+     * @type {!iconnames}
      * @protected
      */
     this.type = iconnames.NONE;
@@ -84,14 +86,14 @@ pstj.material.IconContainer = goog.defineClass(E, {
    * and fix its view properties (useful for SVG icons that support more than
    * one icon type).
    *
-   * @param {goog.events.Event} e
+   * @param {!goog.events.Event} e
    * @protected
    */
   onMorphEnd: function(e) {
     var target = goog.asserts.assertInstanceof(e.target, pstj.material.Icon);
     if (target != this.icon) {
       e.preventDefault();
-      this.removeChild(/** @type {pstj.material.Icon} */ (target), true);
+      this.removeChild(/** @type {!pstj.material.Icon} */ (target), true);
     } else if (this.icon.type == iconnames.NONE) {
       e.preventDefault();
       this.removeChild(this.icon, true);
@@ -103,14 +105,14 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
   /**
    * Accessor method for the current icon / type applied to the container.
-   * @return {pstj.autogen.icons.names}
+   * @return {!pstj.autogen.icons.names}
    */
   getIcon: function() { return this.type; },
 
 
   /**
    * Sets the icon to use by its name.
-   * @param {pstj.autogen.icons.names} iconName
+   * @param {!pstj.autogen.icons.names} iconName
    */
   setIcon: function(iconName) {
     if (COMPILED || pstj.material.IconContainer.XMLLoaded) {
@@ -145,7 +147,6 @@ pstj.material.IconContainer = goog.defineClass(E, {
       // alternative path for handling icons in source mode.
       pstj.material.IconContainer.registerPending(this, iconName);
     }
-
     if (goog.isNull(this.getElement())) {
       this.tmpType_ = iconName;
     }
@@ -154,8 +155,8 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
   /**
    * Create a custom icon instance matchin the desired type.
-   * @param {pstj.autogen.icons.names} iconName
-   * @return {pstj.material.Icon}
+   * @param {!pstj.autogen.icons.names} iconName
+   * @return {!pstj.material.Icon}
    */
   createIcon: function(iconName) {
     if (COMPILED) {
@@ -176,14 +177,14 @@ pstj.material.IconContainer = goog.defineClass(E, {
     var type = this.getElement().getAttribute('type');
     if (!type) type = 'none';
     // set icon - will update the type and set the icon internally.
-    this.setIcon(/** @type {pstj.autogen.icons.names} */ (type));
+    this.setIcon(/** @type {!pstj.autogen.icons.names} */ (type));
   },
 
 
   /**
    * Easier way to get to a suitable renderer for an icon type.
-   * @param {pstj.autogen.icons.names} iconName
-   * @return {pstj.material.IconRenderer}
+   * @param {!pstj.autogen.icons.names} iconName
+   * @return {?pstj.material.IconRenderer}
    */
   getSuitableRenderer: function(iconName) {
     if (COMPILED) {
@@ -207,7 +208,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
     /**
      * Adds an instance to the list of pending updates for when the XML with
      * icons has been received.
-     * @param {pstj.material.IconContainer} control
+     * @param {!pstj.material.IconContainer} control
      * @param {string} icon
      */
     registerPending: function(control, icon) {
@@ -223,7 +224,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
     /**
      * Contains the caches renderers for development mode renderer resolution.
-     * @type {Object.<pstj.material.IconRenderer>}
+     * @type {!Object<!pstj.material.IconRenderer>}
      * @private
      */
     rendererCache_: {},
@@ -231,8 +232,8 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
     /**
      * Retrieves a custom renderer instance matching the icon name.
-     * @param {pstj.autogen.icons.names} icon
-     * @return {pstj.material.IconRenderer}
+     * @param {!pstj.autogen.icons.names} icon
+     * @return {!pstj.material.IconRenderer}
      */
     getCustomRenderer: function(icon) {
       if (goog.object.containsKey(
@@ -253,9 +254,13 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
     /**
      * Given a single icon name, filtering the svg nodes returns the icons that
-     * are supported by the node that supports the queries icon name.
+     * are supported by the node that supports the queried icon name.
+     *
+     * Note that if the icon name provided is not supported at all then an empty
+     * list will be returned.
+     *
      * @param {string} icon
-     * @return {Array.<string>}
+     * @return {!Array<string>}
      */
     getNamesByIcon: function(icon) {
       // look into the dom and fine the matching SVG element, then extract the
@@ -267,7 +272,8 @@ pstj.material.IconContainer = goog.defineClass(E, {
         return names.split(',');
       } else {
         if (goog.DEBUG) {
-          console.log('Cannot find svg node matching name: ' + icon);
+          console.warn(
+              'Tryin to look up supported icon names for icon name that is not found');
         }
         return [];
       }
@@ -277,10 +283,14 @@ pstj.material.IconContainer = goog.defineClass(E, {
 
     /**
      * Given an icon name returns a function that returns the SVG string
-     * representing the dvelopment version of the template for this icon.
+     * representing the development version of the template for this icon.
+     *
+     * FIXME: use newer conventions to pass the code of the icon as safe in dev
+     * mode.
+     *
      * @param {string} icon
-     * @return {function(Object.<string, *>=):
-     *    goog.soy.data.SanitizedHtml.SanitizedHtml}
+     * @return {function(!Object<string, *>=):
+     *    !goog.soy.data.SanitizedHtml.SanitizedHtml}
      */
     getCustomTemplateFn: function(icon) {
       // get the svg node from the DOM, clone it and turn it into string
@@ -290,20 +300,18 @@ pstj.material.IconContainer = goog.defineClass(E, {
           '[name*="' + icon + '"]');
       if (!svg) throw new Error('Cannot find SVG node with name: ' + icon);
       svg.removeAttribute('name');
-      var htmlstring =
-          goog.soy.data.SanitizedHtml.VERY_UNSAFE.ordainSanitizedHtml(
-              goog.dom.getOuterHtml(/** @type {Element} */ (svg)));
+      var htmlstring = goog.dom.getOuterHtml(/** @type {!Element} */ (svg));
       return (
-          /** @type {function(Object.<string, *>=):
-              goog.soy.data.SanitizedHtml.SanitizedHtml} */ (function(m) {
-            return htmlstring;
+          /** @type {function(!Object<string, *>=):
+              !goog.soy.data.SanitizedHtml} */ (function(m) {
+            return soydata.VERY_UNSAFE.ordainSanitizedHtml(htmlstring);
           }));
     },
 
 
     /**
      * Locally cached version of the xml for the icons built as fragment.
-     * @type {Node}
+     * @type {?Node}
      * @private
      */
     dom_: null,
@@ -312,7 +320,7 @@ pstj.material.IconContainer = goog.defineClass(E, {
     /**
      * List of instances that require resetting the icon once the XML with icons
      * have been loaded.
-     * @type {Array.<(pstj.material.IconContainer|string)>}
+     * @type {!Array<(!pstj.material.IconContainer|string)>}
      * @private
      */
     pending_: [],
@@ -343,7 +351,7 @@ pstj.material.IconContainerRenderer = goog.defineClass(ER, {
 
   /**
    * Reflects the type of the icon back in the HTML.
-   * @param {pstj.material.IconContainer} control
+   * @param {!pstj.material.IconContainer} control
    */
   setType: function(control) {
     control.getElement().setAttribute('type', control.getIcon());
@@ -386,7 +394,12 @@ if (!COMPILED) {
                   'XML_ICON_SOURCE', '../pstj/templates/icons.xml',
                   'PSTJ.MATERIAL')))
       .then(function(txt) {
-        var dom = goog.dom.htmlToDocumentFragment(txt);
+        var dom = goog.dom.safeHtmlToNode(
+            goog.html.uncheckedconversions
+                .safeHtmlFromStringKnownToSatisfyTypeContract(
+                    goog.string.Const.from(
+                        'Used only in tests, in prod those are precompiled to safe html from soy'),
+                    txt));
         pstj.material.IconContainer.dom_ = dom;
         pstj.material.IconContainer.XMLLoaded = true;
         var len = pstj.material.IconContainer.pending_.length;
@@ -395,7 +408,7 @@ if (!COMPILED) {
         // added (i.e. icon names that are matched by an SVG element)
         for (var i = 0; i < len; i = i + 2) {
           pstj.material.IconContainer.pending_[i].setIcon(
-              /** @type {pstj.autogen.icons.names} */ (
+              /** @type {!pstj.autogen.icons.names} */ (
                   pstj.material.IconContainer.pending_[i + 1]));
         }
         goog.array.clear(pstj.material.IconContainer.pending_);

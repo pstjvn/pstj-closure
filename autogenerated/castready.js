@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'cast-ready' icon */
 pstj.autogen.iconrenderer.CastReady = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -30,4 +28,3 @@ registry.setRenderer('cast-ready', icons.CastReady.getInstance());
 registry.setRenderer('cast-active', icons.CastReady.getInstance());
 
 });  // goog.scope
-

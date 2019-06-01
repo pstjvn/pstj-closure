@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'arrow-left-static' icon */
 pstj.autogen.iconrenderer.ArrowLeftStatic = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.ArrowLeftStatic);
 registry.setRenderer('arrow-left-static', icons.ArrowLeftStatic.getInstance());
 
 });  // goog.scope
-

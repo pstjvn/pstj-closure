@@ -5,6 +5,7 @@ goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.events.BrowserEvent');
 goog.require('goog.events.Event');
+goog.require('goog.log');
 goog.require('goog.object');
 goog.require('goog.ui.Component.State');
 goog.require('goog.ui.registry');
@@ -27,17 +28,23 @@ var ER = pstj.material.ElementRenderer;
  * button that supports both label and icons. If an icon or label or both
  * should be used is commanded by the selected renderer, this is why
  * we proved them all in this file.
+ *
+ * If the button is defined as 'tactile' either by setting the state (
+ * setTactile(true)) or by pasring it from the DOM (material-button-tactile)
+ * when decorating, the action event will be triggered with a delay that is
+ * equal to the finish of the ripple effect. If no ripple is configured, then
+ * the action will be dispatched immediately.
  */
 pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /**
    * @constructor
    * @struct
    * @extends {pstj.material.Element}
-   * @param {goog.ui.ControlContent=} opt_content Text caption or DOM structure
+   * @param {?goog.ui.ControlContent=} opt_content Text caption or DOM structure
    *     to display as the content of the control (if any).
-   * @param {goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
+   * @param {?goog.ui.ControlRenderer=} opt_renderer Renderer used to render or
    *     decorate the component; defaults to {@link goog.ui.ControlRenderer}.
-   * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
+   * @param {?goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
    *     document interaction.
    */
   constructor: function(opt_content, opt_renderer, opt_domHelper) {
@@ -64,7 +71,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.disabledDepth = 0;
     /**
      * The icon to display in the button.
-     * @type {pstj.autogen.icons.names}
+     * @type {!pstj.autogen.icons.names}
      * @protected
      */
     this.icon = pstj.autogen.icons.names.NONE;
@@ -91,14 +98,14 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
      * This is useful if you have mutliple buttons in the same container and you
      * need to use event delegation. Instead of counting the buttons you can
      * assign them 'an action' name and use it to recognize the button later on.
-     * @type {!string}
+     * @type {string}
      * @private
      */
     this.action_ = '';
     /**
      * Reference to a delayed event we can use to recreate a tactile triggered
      * action.
-     * @type {goog.events.Event}
+     * @type {?goog.events.Event}
      * @private
      */
     this.delayedEvent_ = null;
@@ -113,7 +120,8 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.setAutoStates(goog.ui.Component.State.ACTIVE, true);
     this.setAutoStates(goog.ui.Component.State.FOCUSED, true);
     // Enable automatic handlers for PRESS and RELEASE pointer events.
-    this.setAutoEventsInternal(pstj.material.EventMap.EventFlag.PRESS |
+    this.setAutoEventsInternal(
+        pstj.material.EventMap.EventFlag.PRESS |
         pstj.material.EventMap.EventFlag.RELEASE);
     // Dissallow text selection by accident
     this.setAllowTextSelection(false);
@@ -121,6 +129,11 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     this.setUsePointerAgent(true);
   },
 
+  /**
+   * @type {!goog.debug.Logger}
+   * @protected
+   */
+  logger: goog.log.getLogger('pstj.material.Button'),
 
   /** @inheritDoc */
   decorateInternal: function(el) {
@@ -130,7 +143,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
     if (es.hasAttribute('icon')) {
       var icon = es.getAttribute('icon');
       if (icon) {
-        this.icon = /** @type {pstj.autogen.icons.names} */ (icon);
+        this.icon = /** @type {!pstj.autogen.icons.names} */ (icon);
       } else {
         if (this.getIcon()) {
           this.icon = this.getIcon().getIcon();
@@ -142,6 +155,17 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
       this.setUseInk(true);
     }
     this.useIconAnimationDelay = es.hasAttribute('delay');
+    // Delay in icon animation can only work with tactile as we
+    // are delaying for after the ripple ends.
+    if (this.useIconAnimationDelay) {
+      if (!this.useInk_ || !this.getRipple()) {
+        goog.log.warning(
+            this.logger, 'Configured to use icon animation with delay, ' +
+                'but no ink/ripple is used, icon will changed immediately!');
+      } else {
+        if (!this.isTactile()) this.setTactile(true);
+      }
+    }
     this.action_ = el.getAttribute('action') || '';
   },
 
@@ -174,9 +198,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
    * Setter for if we should use ink on the button
    * @param {boolean} enable
    */
-  setUseInk: function(enable) {
-    this.useInk_ = enable;
-  },
+  setUseInk: function(enable) { this.useInk_ = enable; },
 
 
   /** @inheritDoc */
@@ -190,27 +212,27 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   enterDocument: function() {
     goog.base(this, 'enterDocument');
     if (this.getRipple()) {
-      this.getHandler().listen(this.getRipple(),
-          pstj.material.EventType.RIPPLE_END,
+      this.getHandler().listen(
+          this.getRipple(), pstj.material.EventType.RIPPLE_END,
           this.onRippleEnd);
     }
   },
 
   /**
    * Handles the ripple end effect.
-   * @param {goog.events.Event} e The RIPPLE_END event.
+   * @param {!goog.events.Event} e The RIPPLE_END event.
    * @protected
    */
   onRippleEnd: function(e) {
     if (this.isTactile() && !goog.isNull(this.delayedEvent_)) {
       this.triggerTactileAction();
-      this.setIconAfterDelay(e);
     }
+    this.setIconAfterDelay(e);
   },
 
   /**
    * Method used solely to delay the icon setter.
-   * @param {goog.events.Event} e The ripple-ready event.
+   * @param {!goog.events.Event} e The ripple-ready event.
    * @protected
    */
   setIconAfterDelay: function(e) {
@@ -224,7 +246,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /**
    * Sets the icon to be used in the button, if icon is supported by the
    * renderer.
-   * @param {pstj.autogen.icons.names} icon
+   * @param {!pstj.autogen.icons.names} icon
    */
   setIcon: function(icon) {
     this.icon = icon;
@@ -298,9 +320,8 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
       if (this.isAutoState(goog.ui.Component.State.OPENED)) {
         this.setOpen(!this.isOpen());
       }
-      var actionEvent = new goog.events.Event(
-          goog.ui.Component.EventType.ACTION,
-          this);
+      var actionEvent =
+          new goog.events.Event(goog.ui.Component.EventType.ACTION, this);
       if (e && goog.asserts.assertInstanceof(e, goog.events.BrowserEvent)) {
         actionEvent.altKey = e.altKey;
         actionEvent.ctrlKey = e.ctrlKey;
@@ -344,11 +365,11 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
   /**
    * Override this so we know what is the type of renderer and call it.
    * @override
-   * @return {pstj.material.ButtonRenderer}
+   * @return {!pstj.material.ButtonRenderer}
    */
   getRenderer: function() {
-    return goog.asserts.assertInstanceof(goog.base(this, 'getRenderer'),
-        pstj.material.ButtonRenderer);
+    return goog.asserts.assertInstanceof(
+        goog.base(this, 'getRenderer'), pstj.material.ButtonRenderer);
   },
 
   /**
@@ -357,7 +378,7 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
    * should be expected at and thus allowing fast access to specific
    * children by the main component.
    * @param {string} name
-   * @return {goog.ui.Component}
+   * @return {?goog.ui.Component}
    */
   getNamedChild: function(name) {
     var index = this.getRenderer().getChildIndex(name);
@@ -371,63 +392,59 @@ pstj.material.Button = goog.defineClass(pstj.material.Element, {
 
   /**
    * Getter for the shadow element that is part of the button.
-   * @return {pstj.material.Shadow}
+   * @return {?pstj.material.Shadow}
    */
   getShadow: function() {
     var shadow = this.getNamedChild(pstj.material.Button.Children.SHADOW);
-    if (shadow) return goog.asserts.assertInstanceof(shadow,
-        pstj.material.Shadow);
+    if (shadow)
+      return goog.asserts.assertInstanceof(shadow, pstj.material.Shadow);
     return shadow;
   },
 
 
   /**
    * Getter for the label component if one exists.
-   * @return {pstj.material.Element}
+   * @return {?pstj.material.Element}
    */
   getLabel: function() {
     var label = this.getNamedChild(pstj.material.Button.Children.LABEL);
-    if (label) return goog.asserts.assertInstanceof(label,
-        pstj.material.Element);
+    if (label)
+      return goog.asserts.assertInstanceof(label, pstj.material.Element);
     return label;
   },
 
 
   /**
    * Getter for the icon element if one exists in the DOM structure.
-   * @return {pstj.material.IconContainer}
+   * @return {?pstj.material.IconContainer}
    */
   getIcon: function() {
     var icon = this.getNamedChild(pstj.material.Button.Children.ICON);
-    if (icon) return goog.asserts.assertInstanceof(icon,
-        pstj.material.IconContainer);
+    if (icon)
+      return goog.asserts.assertInstanceof(icon, pstj.material.IconContainer);
     return icon;
   },
 
 
   /**
    * Getter for the ripple.
-   * @return {pstj.material.Ripple}
+   * @return {?pstj.material.Ripple}
    */
   getRipple: function() {
     var ripple = this.getNamedChild(pstj.material.Button.Children.RIPPLE);
-    if (ripple) return goog.asserts.assertInstanceof(ripple,
-        pstj.material.Ripple);
+    if (ripple)
+      return goog.asserts.assertInstanceof(ripple, pstj.material.Ripple);
     return ripple;
   },
 
   /** @override */
-  getKeyEventTarget: function() {
-    return this.getElement();
-  },
+  getKeyEventTarget: function() { return this.getElement(); },
 
   /**
    * Retrieves the named user action.
-   * @return {!string}
+   * @return {string}
    */
-  getAction: function() {
-    return this.action_;
-  },
+  getAction: function() { return this.action_; },
 
 
   statics: {
@@ -463,7 +480,7 @@ pstj.material.ButtonRenderer = goog.defineClass(ER, {
     /**
      * Provides the needed abstraction over the position of the
      * sub-elements in the button.
-     * @type {Object.<string, number>}
+     * @type {!Object<string, number>}
      */
     this.childrenNames = goog.object.create(
         pstj.material.Button.Children.ICON, 1,
@@ -476,23 +493,16 @@ pstj.material.ButtonRenderer = goog.defineClass(ER, {
   /** @inheritDoc */
   generateTemplateData: function(control) {
     goog.asserts.assertInstanceof(control, pstj.material.Button);
-    return {
-      content: control.getContent() || '',
-      icon: control.icon
-    };
+    return {content: control.getContent() || '', icon: control.icon};
   },
 
 
   /** @inheritDoc */
-  getTemplate: function(model) {
-    return pstj.material.template.Button(model);
-  },
+  getTemplate: function(model) { return pstj.material.template.Button(model); },
 
 
   /** @inheritDoc */
-  getCssClass: function() {
-    return pstj.material.ButtonRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return pstj.material.ButtonRenderer.CSS_CLASS; },
 
   /** @inheritDoc */
   getContentElement: function(el) {
@@ -525,14 +535,13 @@ goog.addSingletonGetter(pstj.material.ButtonRenderer);
 
 
 // Register for default renderer.
-goog.ui.registry.setDefaultRenderer(pstj.material.Button,
-    pstj.material.ButtonRenderer);
+goog.ui.registry.setDefaultRenderer(
+    pstj.material.Button, pstj.material.ButtonRenderer);
 
 
 // Register decorator factory function.
 goog.ui.registry.setDecoratorByClassName(
-    pstj.material.ButtonRenderer.CSS_CLASS, function() {
-      return new pstj.material.Button(null);
-    });
+    pstj.material.ButtonRenderer.CSS_CLASS,
+    function() { return new pstj.material.Button(null); });
 
 });  // goog.scope

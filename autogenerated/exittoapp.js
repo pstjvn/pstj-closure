@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'exit-to-app' icon */
 pstj.autogen.iconrenderer.ExitToApp = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.ExitToApp);
 registry.setRenderer('exit-to-app', icons.ExitToApp.getInstance());
 
 });  // goog.scope
-

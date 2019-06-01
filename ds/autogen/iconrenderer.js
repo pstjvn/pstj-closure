@@ -30,18 +30,18 @@ goog.require('pstj.ds.template');
  */
 pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
   /**
-   * @param {Element} element An element, containing the view representation
+   * @param {!Element} element An element, containing the view representation
    * of one or more icons.
    */
   constructor: function(element) {
     /**
      * The root element for the icon.
-     * @type {Element}
+     * @type {!Element}
      */
     this.element = element;
     /**
      * List of the icon names this DOM element can support.
-     * @type {Array<string>}
+     * @type {?Array<string>}
      */
     this.iconNames = null;
     /**
@@ -67,8 +67,8 @@ pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
   parse: function() {
     this.templatizeCssClassNames();
     this.iconNames = this.getIconNames();
-    this.className = goog.string.toTitleCase(goog.string.toCamelCase(
-        this.iconNames[0]));
+    this.className =
+        goog.string.toTitleCase(goog.string.toCamelCase(this.iconNames[0]));
 
     this.removeIsAttribute();
     this.removeNameAttribute();
@@ -83,22 +83,21 @@ pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
   getIconNames: function() {
     if (this.element.hasAttribute('name')) {
       return goog.array.map(
-          this.element.getAttribute('name').split(','), function(name) {
-            return goog.string.trim(name);
-          });
-    } else throw new Error(
-        'At least one icon name should be supported via the name attribute.');
+          this.element.getAttribute('name').split(','),
+          function(name) { return goog.string.trim(name); });
+    } else
+      throw new Error(
+          'At least one icon name should be supported via the name attribute.');
   },
 
   /**
-   * Removes the attribute used to mark decpratable elements. It will be not
+   * Removes the attribute used to mark decoratable elements. It will be not
    * needed as we do not use decoration for icons currently.
-   *
+   * @deprecated Use of 'is' attribute in dev mode loading from SVG breaks the
+   * material child finder.
    * @protected
    */
-  removeIsAttribute: function() {
-    this.element.removeAttribute('is');
-  },
+  removeIsAttribute: function() {},
 
   /**
    * Removes the name attribute. In source it is used to match the element to
@@ -107,9 +106,7 @@ pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
    *
    * @protected
    */
-  removeNameAttribute: function() {
-    this.element.removeAttribute('name');
-  },
+  removeNameAttribute: function() { this.element.removeAttribute('name'); },
 
   /**
    * Replaces the class names on all elements (including the root one) with
@@ -128,13 +125,16 @@ pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
    * Given an element convert its class name value to one that can be used in
    * closure with minification.
    *
-   * @param {Element} el The element to convert the classes on.
+   * @param {!Element} el The element to convert the classes on.
    */
   templatizeCssClassNameOnElement: function(el) {
-    goog.dom.classlist.set(el, goog.array.map(goog.dom.classlist.get(el),
-        function(classname) {
-          return '{css ' + classname + '}';
-        }).join(' '));
+    goog.dom.classlist.set(
+        el,
+        goog.array
+            .map(
+                goog.dom.classlist.get(el),
+                function(classname) { return '{css(\'' + classname + '\')}'; })
+            .join(' '));
   },
 
   /**
@@ -144,11 +144,13 @@ pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
    * @return {string}
    */
   getRendererClassAsText: function() {
-    return pstj.ds.template.IconRenderer({
-      iconName: this.iconNames[0],
-      className: this.className,
-      icons: this.iconNames
-    }).getContent();
+    return pstj.ds.template
+        .IconRenderer({
+          iconName: this.iconNames[0],
+          className: this.className,
+          icons: this.iconNames
+        })
+        .getContent();
   },
 
   /**
@@ -157,15 +159,11 @@ pstj.ds.autogen.IconRenderer = goog.defineClass(null, {
    *
    * @return {string}
    */
-  getRendererFileName: function() {
-    return this.className.toLowerCase();
-  },
+  getRendererFileName: function() { return this.className.toLowerCase(); },
 
   /**
    * Returns the raw template content converted to soy format.
    * @return {string}
    */
-  getRendererTemplateContent: function() {
-    return this.element.outerHTML;
-  }
+  getRendererTemplateContent: function() { return this.element.outerHTML; }
 });

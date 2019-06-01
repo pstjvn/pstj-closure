@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'trending-down' icon */
 pstj.autogen.iconrenderer.TrendingDown = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.TrendingDown);
 registry.setRenderer('trending-down', icons.TrendingDown.getInstance());
 
 });  // goog.scope
-

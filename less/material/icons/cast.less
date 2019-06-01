@@ -3,11 +3,29 @@
 
 .material-icon {
   //CAST
+  &[type*="cast"] {
+    .scale {
+      transform-origin: 0 88%;
+      animation-fill-mode: both;
+      animation-duration: @general-icon-mutation-duration;
+    }
+  }
+  &[type="cast-active"] {
+    .scale {
+      transform: scale(3);
+    }
+  }
+  &[type="cast-ready"] {
+    .scale {
+      transform: scale(1);
+    }
+  }
   &[type="from-cast-ready-to-cast-active"] {
     .scale {
-      transform-origin: left bottom;
-      -webkit-animation: from-cast-ready-to-cast-active @general-icon-mutation-duration forwards;
-      @-webkit-keyframes from-cast-ready-to-cast-active {
+      transform-origin: 0 88%;
+      animation-name: from-cast-ready-to-cast-active;
+      animation-timing-function: ease-in;
+      @keyframes from-cast-ready-to-cast-active {
         0% {
           transform: scale(1);
         }
@@ -22,9 +40,9 @@
   }
   &[type="from-cast-active-to-cast-ready"] {
     .scale {
-      transform-origin: left bottom;
-      -webkit-animation: from-cast-active-to-cast-ready @general-icon-mutation-duration forwards;
-      @-webkit-keyframes from-cast-active-to-cast-ready {
+      animation-name: from-cast-active-to-cast-ready;
+      animation-timing-function: ease-out;
+      @keyframes from-cast-active-to-cast-ready {
         0% {
           transform: scale(3);
         }
@@ -39,9 +57,8 @@
   }
   &[type="from-none-to-cast-active"] {
     .scale {
-      transform-origin: left bottom;
-      -webkit-animation: from-none-to-cast-active @general-icon-mutation-duration forwards;
-      @-webkit-keyframes from-none-to-cast-active {
+      animation-name: from-none-to-cast-active;
+      @keyframes from-none-to-cast-active {
         0% {
           transform: scale(3);
         }

@@ -14,7 +14,7 @@ goog.addDependency('../../../apps/pstj/demos/jsonschema/gen/baserequired.js', ['
 goog.addDependency('../../../apps/pstj/demos/jsonschema/gen/basext.js', ['pstj.gen.dto.BaseExt'], ['goog.asserts', 'goog.object', 'pstj.gen.dto.Base'], {});
 goog.addDependency('../../../apps/pstj/demos/jsonschema/gen/forextend.js', ['pstj.gen.dto.ForExtend'], ['goog.asserts', 'pstj.ds.DtoBase'], {});
 goog.addDependency('../../../apps/pstj/demos/jsonschema/jsonschema.js', ['pstj.demos.jsonschema.generator'], ['goog.array', 'goog.debug.DivConsole', 'pstj.ds.jsonschema.parser'], {});
-goog.addDependency('../../../apps/pstj/demos/material/button.js', ['pstj.demos.button'], ['goog.array', 'goog.dom', 'goog.events', 'goog.ui.Component.EventType', 'goog.ui.decorate', 'pstj.material.Button'], {});
+goog.addDependency('../../../apps/pstj/demos/material/button.js', ['pstj.demos.button'], ['goog.array', 'goog.debug.Console', 'goog.dom', 'goog.events', 'goog.log', 'goog.ui.Component.EventType', 'goog.ui.decorate', 'pstj.material.Button'], {});
 goog.addDependency('../../../apps/pstj/demos/material/checkbox.js', ['pstj.demos.checkbox'], ['goog.array', 'goog.ui.decorate', 'pstj.material.Checkbox'], {});
 goog.addDependency('../../../apps/pstj/demos/material/drawerpanel.js', ['pstj.demos.drawerpanel'], ['pstj.material.DrawerPanel'], {});
 goog.addDependency('../../../apps/pstj/demos/material/element.js', ['pstj.demos.element'], ['pstj.material.Element'], {});

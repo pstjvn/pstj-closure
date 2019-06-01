@@ -13,9 +13,7 @@ var registry = pstj.material.icons.registry;
 
 /** Renderer for 'arrow-drop-down' icon */
 pstj.autogen.iconrenderer.ArrowDropDown = goog.defineClass(IR, {
-  constructor: function() {
-    IR.call(this);
-  },
+  constructor: function() { IR.call(this); },
 
   /** @inheritDoc */
   getTemplate: function(model) {
@@ -29,4 +27,3 @@ goog.addSingletonGetter(icons.ArrowDropDown);
 registry.setRenderer('arrow-drop-down', icons.ArrowDropDown.getInstance());
 
 });  // goog.scope
-
