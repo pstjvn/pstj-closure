@@ -97,9 +97,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
    * Setter for the recentering of the waves.
    * @param {boolean} recenter
    */
-  setRecenterRipples: function(recenter) {
-    this.recenterRipples_ = recenter;
-  },
+  setRecenterRipples: function(recenter) { this.recenterRipples_ = recenter; },
 
 
   /** @inheritDoc */
@@ -126,9 +124,7 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
    * waves it creates.
    * @param {number} o A number between 0 and 1.
    */
-  setOpacity: function(o) {
-    this.opacity_ = o;
-  },
+  setOpacity: function(o) { this.opacity_ = o; },
 
 
   /** @override */
@@ -143,8 +139,8 @@ pstj.material.Ripple = goog.defineClass(pstj.material.Element, {
         // Usually ripple is targeted externally (i.e. z-index -1) so the user
         // of the ripple should trigger those event manually.
         if (this.hasUsePointerAgent()) {
-          this.getHandler().listenOnce(this,
-              pstj.agent.Pointer.EventType.RELEASE, this.onRelease);
+          this.getHandler().listenOnce(
+              this, pstj.agent.Pointer.EventType.RELEASE, this.onRelease);
         }
         this.wave_.handlePress(e);
       }
@@ -210,26 +206,20 @@ pstj.material.RippleRenderer = goog.defineClass(ER, {
    * @constructor
    * @extends {ER}
    */
-  constructor: function() {
-    ER.call(this);
-  },
+  constructor: function() { ER.call(this); },
 
 
   /** @override */
-  getTemplate: function(model) {
-    return pstj.material.template.Ripple(model);
-  },
+  getTemplate: function(model) { return pstj.material.template.Ripple(model); },
 
 
   /** @override */
-  getCssClass: function() {
-    return pstj.material.RippleRenderer.CSS_CLASS;
-  },
+  getCssClass: function() { return pstj.material.RippleRenderer.CSS_CLASS; },
 
   /** @override */
   getContentElement: function(el) {
-    return goog.dom.getElementByClass(goog.getCssName(this.getCssClass(),
-        'content'), el);
+    return goog.dom.getElementByClass(
+        goog.getCssName(this.getCssClass(), 'content'), el);
   },
 
 
@@ -244,15 +234,12 @@ pstj.material.RippleRenderer = goog.defineClass(ER, {
 
 });
 
-goog.ui.registry.setDefaultRenderer(pstj.material.Ripple,
-    pstj.material.RippleRenderer);
+goog.ui.registry.setDefaultRenderer(
+    pstj.material.Ripple, pstj.material.RippleRenderer);
 
 
 goog.ui.registry.setDecoratorByClassName(
     pstj.material.RippleRenderer.CSS_CLASS,
-    function() {
-      return new pstj.material.Ripple(null);
-    });
+    function() { return new pstj.material.Ripple(null); });
 
 });  // goog.scope
-

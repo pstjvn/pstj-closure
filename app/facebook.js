@@ -16,25 +16,26 @@ goog.require('goog.net.jsloader');
  * @define {string} Globally defined facebook app id. We need this on compile
  * time for this to work.
  */
-goog.define('pstj.app.FacebookId', '');
+pstj.app.FacebookId = goog.define('pstj.app.FacebookId', '');
 
 
 /**
  * @define {string} Globally settable FB JS SDK version to use.
  */
-goog.define('pstj.app.FacebookSDKVersion', 'v2.5');
+pstj.app.FacebookSDKVersion =
+    goog.define('pstj.app.FacebookSDKVersion', 'v2.5');
 
 
 /** Facebook integration */
 pstj.app.Facebook = goog.defineClass(null, {
   constructor: function() {
     /**
-     * @type {goog.Promise}
+     * @type {?goog.Promise}
      * @private
      */
     this.loadPromise_ = null;
     /**
-     * @type {goog.Promise<!pstj.ds.oauth.User>}
+     * @type {?goog.Promise<!pstj.ds.oauth.User>}
      * @private
      */
     this.userPromise_ = null;
@@ -46,8 +47,7 @@ pstj.app.Facebook = goog.defineClass(null, {
    * @return {!goog.Promise}
    */
   getReadyPromise: function() {
-    return goog.asserts.assertInstanceof(this.loadPromise_,
-        goog.Promise);
+    return goog.asserts.assertInstanceof(this.loadPromise_, goog.Promise);
   },
 
   /**
@@ -55,8 +55,7 @@ pstj.app.Facebook = goog.defineClass(null, {
    * @return {!goog.Promise<!pstj.ds.oauth.User>}
    */
   getUserPromise: function() {
-    return goog.asserts.assertInstanceof(this.userPromise_,
-        goog.Promise);
+    return goog.asserts.assertInstanceof(this.userPromise_, goog.Promise);
   },
 
   /** @protected */
@@ -79,7 +78,7 @@ pstj.app.Facebook = goog.defineClass(null, {
               goog.log.info(this.logger, 'Start user info retrieval');
               goog.global['FB']['api']('/me', goog.bind(function(response) {
                 goog.log.info(this.logger, 'Received user info initial load');
-                res(/** @type {!pstj.ds.oauth.User} */({
+                res(/** @type {!pstj.ds.oauth.User} */ ({
                   id: response['id'],
                   name: response['name'],
                   provider: 'facebook'
@@ -89,13 +88,15 @@ pstj.app.Facebook = goog.defineClass(null, {
           }, this));
         }, this);
         goog.log.info(this.logger, 'Start loading JS SDK for Facebook');
-        goog.net.jsloader.load('https://connect.facebook.net/en_US/sdk.js', {
-          cleanupWhenDone: true
-        }).addErrback(function(e) {
-          goog.log.error(this.logger, 'Could not load the DB JS SDK');
-          reject(e);
-          rej();
-        });
+        goog.net.jsloader
+            .load(
+                'https://connect.facebook.net/en_US/sdk.js',
+                {cleanupWhenDone: true})
+            .addErrback(function(e) {
+              goog.log.error(this.logger, 'Could not load the DB JS SDK');
+              reject(e);
+              rej();
+            });
       }, this);
     }, this);
   },
@@ -154,7 +155,7 @@ pstj.app.Facebook = goog.defineClass(null, {
           goog.log.info(this.logger, 'Attempt details info retrieval');
           goog.global['FB']['api']('/me', function(response) {
             goog.log.info(this.logger, 'Received user details');
-            resolve(/** @type {!pstj.ds.oauth.User} */({
+            resolve(/** @type {!pstj.ds.oauth.User} */ ({
               id: response['id'],
               name: response['name'],
               provider: 'facebook'
@@ -171,7 +172,7 @@ pstj.app.Facebook = goog.defineClass(null, {
 
   /**
    * @protected
-   * @type {goog.debug.Logger}
+   * @type {?goog.debug.Logger}
    */
   logger: goog.log.getLogger('pstj.app.Facebook')
 

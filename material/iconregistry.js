@@ -12,7 +12,8 @@ var registry = pstj.material.icons.registry;
  * @define {boolean} If set to true the system will prefer the static names of
  * icons instead of the ones that can mutate.
  */
-goog.define('pstj.material.icons.registry.PREFER_STATICS', false);
+pstj.material.icons.registry.PREFER_STATICS =
+    goog.define('pstj.material.icons.registry.PREFER_STATICS', false);
 
 
 /**
@@ -43,8 +44,8 @@ registry.getRenderer = function(iconName) {
     renderer = goog.object.get(registry.renderers_, iconName);
   }
   if (goog.isDefAndNotNull(renderer)) return renderer;
-  goog.log.error(registry.logger, 'Did not find renderer for icon: ' +
-      iconName);
+  goog.log.error(
+      registry.logger, 'Did not find renderer for icon: ' + iconName);
   return null;
 };
 

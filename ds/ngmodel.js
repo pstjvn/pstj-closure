@@ -42,7 +42,8 @@ var ngmodel = pstj.ds.ngmodel;
  * account the fact that using large number might result in slower response
  * times and overwhole application lags.
  */
-goog.define('pstj.ds.ngmodel.MAX_CACHE_SIZE', 200);
+pstj.ds.ngmodel.MAX_CACHE_SIZE =
+    goog.define('pstj.ds.ngmodel.MAX_CACHE_SIZE', 200);
 
 
 /**

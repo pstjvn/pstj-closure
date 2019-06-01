@@ -81,8 +81,7 @@ pstj.material.Wave = function() {
    * @type {Element}
    * @private
    */
-  this.waveContainer_ = dom.createDom('div',
-      goog.getCssName('wave-container'));
+  this.waveContainer_ = dom.createDom('div', goog.getCssName('wave-container'));
   /**
    * Inner in-script created element (wave, inner).
    * @type {Element}
@@ -240,13 +239,13 @@ pstj.material.Wave.prototype.setOpacityDecayVelocity = function(velocity) {
  */
 pstj.material.Wave.prototype.nextFrame = function() {
   if (this.pressTimestamp_ > 0) {
-    this.pressElapsedTime_ = (
-        pstj.material.Wave.LastTs_ - this.pressTimestamp_);
+    this.pressElapsedTime_ =
+        (pstj.material.Wave.LastTs_ - this.pressTimestamp_);
   }
 
   if (this.releaseTimestamp_ > 0) {
-    this.releaseElapsedTime_ = (
-        pstj.material.Wave.LastTs_ - this.releaseTimestamp_);
+    this.releaseElapsedTime_ =
+        (pstj.material.Wave.LastTs_ - this.releaseTimestamp_);
   }
 
   var radius = this.getWaveRadius();
@@ -263,8 +262,8 @@ pstj.material.Wave.prototype.nextFrame = function() {
     // User has lifted his/her finger plus
     // the minimum alpha is reached and the maximum radius is reached
     // so we need not render this wave anymore.
-    if (alpha < 0.01 && radius >= Math.min(this.maxRadius_,
-        pstj.material.Wave.WaveMaxRadius)) {
+    if (alpha < 0.01 &&
+        radius >= Math.min(this.maxRadius_, pstj.material.Wave.WaveMaxRadius)) {
       return false;
     } else {
       return true;
@@ -293,8 +292,8 @@ pstj.material.Wave.prototype.drawRipple = function(
   var x = this.startPoint_.x;
   var y = this.startPoint_.y;
   if (this.recenter_) {
-    var fraction = Math.min(1, (
-        radius / this.containerLargestSide_ * 2 / Math.sqrt(2)));
+    var fraction =
+        Math.min(1, (radius / this.containerLargestSide_ * 2 / Math.sqrt(2)));
     x = x + (fraction * (this.endPoint_.x - this.startPoint_.x));
     y = y + (fraction * (this.endPoint_.y - this.startPoint_.y));
   }
@@ -306,11 +305,9 @@ pstj.material.Wave.prototype.drawRipple = function(
   // effect to work.
   var s = radius / (this.containerLargestSide_ / 2);
   if (goog.userAgent.product.SAFARI) {
-    style.setStyle(
-        this.wave_, 'transform', 'scale(' + s + ',' + s + ')');
+    style.setStyle(this.wave_, 'transform', 'scale(' + s + ',' + s + ')');
   } else {
-    style.setStyle(
-        this.wave_, 'transform', 'scale3d(' + s + ',' + s + ',1)');
+    style.setStyle(this.wave_, 'transform', 'scale3d(' + s + ',' + s + ',1)');
   }
 };
 
@@ -323,8 +320,8 @@ pstj.material.Wave.prototype.drawRipple = function(
  * @protected
  */
 pstj.material.Wave.prototype.getBackgroundAlpha = function(waveOpacity) {
-  return Math.max(0, Math.min(
-      this.pressElapsedTime_ / 1000 * 0.3, waveOpacity));
+  return Math.max(
+      0, Math.min(this.pressElapsedTime_ / 1000 * 0.3, waveOpacity));
 };
 
 
@@ -351,8 +348,9 @@ pstj.material.Wave.prototype.getWaveAlpha = function() {
     return this.initialOpacity_;
   }
 
-  return Math.max(0, this.initialOpacity_ - (
-      (this.releaseElapsedTime_ / 1000) * this.opacityDecayVelocity_));
+  return Math.max(
+      0, this.initialOpacity_ -
+          ((this.releaseElapsedTime_ / 1000) * this.opacityDecayVelocity_));
 };
 
 
@@ -391,10 +389,11 @@ pstj.material.Wave.prototype.getWaveRadius = function() {
     }
   } else {
     return (
-        this.cache_[0] * (1 - Math.pow(80,
-            -(((this.pressElapsedTime_ / 1000) +
-            (this.releaseElapsedTime_ / 1000)) / this.cache_[1]))));
-
+        this.cache_[0] * (1 -
+                          Math.pow(
+                              80, -(((this.pressElapsedTime_ / 1000) +
+                                     (this.releaseElapsedTime_ / 1000)) /
+                                    this.cache_[1]))));
   }
 };
 
@@ -405,8 +404,9 @@ pstj.material.Wave.prototype.getWaveRadius = function() {
  */
 pstj.material.Wave.prototype.setComponent = function(comp) {
   this.component_ = comp;
-  this.setElement(goog.asserts.assertInstanceof(
-      this.component_.getRippleElement(), Element));
+  this.setElement(
+      goog.asserts.assertInstanceof(
+          this.component_.getRippleElement(), Element));
 };
 
 
@@ -435,15 +435,16 @@ pstj.material.Wave.prototype.setElement = function(element) {
  */
 pstj.material.Wave.prototype.setupElements = function() {
   // Set up the background container.
-  this.background_ = dom.getElementByClass(goog.getCssName('ripple-bg'),
-      this.element_);
+  this.background_ =
+      dom.getElementByClass(goog.getCssName('ripple-bg'), this.element_);
   // Calculate the wave color
   this.waveColor_ = style.getComputedStyle(this.element_, 'color');
   // Set the color on th wave
   style.setStyle(this.wave_, 'backgroundColor', this.waveColor_);
   // Append the ripple nodes to the waves container. Those are cached
-  dom.appendChild(dom.getElementByClass(goog.getCssName('ripple-waves'),
-      this.element_), this.waveContainer_);
+  dom.appendChild(
+      dom.getElementByClass(goog.getCssName('ripple-waves'), this.element_),
+      this.waveContainer_);
   // Set the background color on the BG container in the element.
   style.setStyle(this.background_, 'backgroundColor', this.waveColor_);
 };
@@ -488,29 +489,31 @@ pstj.material.Wave.prototype.handlePress = function(e) {
   this.containerSize_.height = clientRect.height;
   this.containerLargestSide_ = this.containerSize_.getLongest();
 
-  this.maxRadius_ = mutils.distanceToFurthestCorner(this.startPoint_,
-      clientRect);
+  this.maxRadius_ =
+      mutils.distanceToFurthestCorner(this.startPoint_, clientRect);
 
   // Update the cache.
   if (!pstj.material.Wave.USE_NATIVE_RIPPLE) {
-    this.cache_[0] = ((Math.min(mutils.diagonal(this.containerSize_),
-        pstj.material.Wave.WaveMaxRadius) * 1.1) + 5);
-    this.cache_[1] = (1.1 - (0.2 * (this.cache_[0] /
-        pstj.material.Wave.WaveMaxRadius)));
+    this.cache_[0] =
+        ((Math.min(
+              mutils.diagonal(this.containerSize_),
+              pstj.material.Wave.WaveMaxRadius) *
+          1.1) +
+         5);
+    this.cache_[1] =
+        (1.1 - (0.2 * (this.cache_[0] / pstj.material.Wave.WaveMaxRadius)));
   } else {
-    this.cache_[2] = (
-        this.maxRadius_ / pstj.material.Wave.pressAnimationDuration_);
-    this.cache_[3] = (
-        this.maxRadius_ / pstj.material.Wave.releaseAnimationDuration_);
+    this.cache_[2] =
+        (this.maxRadius_ / pstj.material.Wave.pressAnimationDuration_);
+    this.cache_[3] =
+        (this.maxRadius_ / pstj.material.Wave.releaseAnimationDuration_);
   }
 
   style.setStyle(this.waveContainer_, {
-    'top' : (
-        this.containerSize_.height - this.containerLargestSide_) / 2 + 'px',
-    'left' : (
-        this.containerSize_.width - this.containerLargestSide_) / 2 + 'px',
-    'width' : this.containerLargestSide_ + 'px',
-    'height' : this.containerLargestSide_ + 'px'
+    'top': (this.containerSize_.height - this.containerLargestSide_) / 2 + 'px',
+    'left': (this.containerSize_.width - this.containerLargestSide_) / 2 + 'px',
+    'width': this.containerLargestSide_ + 'px',
+    'height': this.containerLargestSide_ + 'px'
   });
 };
 
@@ -636,8 +639,8 @@ pstj.material.Wave.InitialOpacity_ = 0.25;
  * @final
  * @private
  */
-pstj.material.Wave.OpacityDecayVelocity_ = (
-    pstj.material.Wave.USE_NATIVE_RIPPLE ? 0.8 : 1.25);
+pstj.material.Wave.OpacityDecayVelocity_ =
+    (pstj.material.Wave.USE_NATIVE_RIPPLE ? 0.8 : 1.25);
 
 
 /**
@@ -670,7 +673,8 @@ pstj.material.Wave.LastTs_ = 0;
  * @define {boolean} If set to true the Lolipop 5.0 ripple will be used,
  * otherwise the polymer 0.5 version will be used.
  */
-goog.define('pstj.material.Wave.USE_NATIVE_RIPPLE', true);
+pstj.material.Wave.USE_NATIVE_RIPPLE =
+    goog.define('pstj.material.Wave.USE_NATIVE_RIPPLE', true);
 
 
 /**
@@ -699,7 +703,8 @@ pstj.material.Wave.get = function(component) {
 
   // Record how many active waves are there on this component.
   if (pstj.material.Wave.Cache_.has(component.getId())) {
-    pstj.material.Wave.Cache_.set(component.getId(),
+    pstj.material.Wave.Cache_.set(
+        component.getId(),
         pstj.material.Wave.Cache_.get(component.getId()) + 1);
   } else {
     pstj.material.Wave.Cache_.set(component.getId(), 1);
@@ -725,8 +730,8 @@ pstj.material.Wave.get = function(component) {
  */
 pstj.material.Wave.onRaf = function(ts) {
   pstj.material.Wave.LastTs_ = ts;
-  goog.array.forEach(pstj.material.Wave.waves_,
-      pstj.material.Wave.animateWave_);
+  goog.array.forEach(
+      pstj.material.Wave.waves_, pstj.material.Wave.animateWave_);
 
   if (!pstj.material.Wave.Cache_.isEmpty()) {
     pstj.material.Wave.raf_.start();

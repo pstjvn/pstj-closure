@@ -9,7 +9,7 @@ goog.require('goog.net.jsloader');
 /**
  * @define {string} The client id to use.
  */
-goog.define('pstj.app.GoogleClientId', '');
+pstj.app.GoogleClientId = goog.define('pstj.app.GoogleClientId', '');
 
 
 /**
@@ -20,12 +20,12 @@ goog.define('pstj.app.GoogleClientId', '');
 pstj.app.Google = goog.defineClass(null, {
   constructor: function() {
     /**
-     * @type {goog.Promise}
+     * @type {?goog.Promise}
      * @private
      */
     this.loadPromise_ = null;
     /**
-     * @type {goog.Promise}
+     * @type {?goog.Promise}
      * @private
      */
     this.userPromise_ = null;
@@ -53,46 +53,54 @@ pstj.app.Google = goog.defineClass(null, {
     this.loadPromise_ = new goog.Promise(function(resolve, reject) {
       this.userPromise_ = new goog.Promise(function(res, rej) {
         goog.log.info(this.logger, 'Loading google apis');
-        goog.net.jsloader.load('https://apis.google.com/js/platform.js', {
-          cleanupWhenDone: true
-        }).addCallback(function() {
-          goog.log.info(this.logger, 'GAPI lib loaded');
-          goog.log.info(this.logger, 'Loading oauth library');
-          goog.global['gapi']['load']('auth2', goog.bind(function() {
-            goog.log.info(this.logger, 'oauth library loaded');
-            goog.log.info(this.logger, 'Initializing google oauth with id:' +
-                pstj.app.GoogleClientId);
-            goog.global['gapi']['auth2']['init']({
-              'client_id': pstj.app.GoogleClientId,
-              'cookiepolicy': 'single_host_origin'
-            });
-            goog.log.info(this.logger, 'Oauth initialized');
-            // Loaded the auth2 api
-            resolve();
-            goog.log.info(this.logger, 'Checking for existing user');
-            var hasUser = goog.global['gapi']['auth2']['getAuthInstance'](
-                )['isSignedIn']['get']();
-            // if we have an user we need to query it and resolve
-            // user promise, else we reject the user promise
-            if (hasUser) {
-              var user = goog.global['gapi']['auth2']['getAuthInstance']()[
-                  'currentUser']['get']();
-              var bp = user['getBasicProfile']();
-              resolve(/** @type {!pstj.ds.oauth.User} */({
-                id: bp['getId'](),
-                name: bp['getName'](),
-                provider: 'google'
-              }));
-            } else {
-              goog.log.error(this.logger, 'No user logged in');
+        goog.net.jsloader
+            .load(
+                'https://apis.google.com/js/platform.js',
+                {cleanupWhenDone: true})
+            .addCallback(
+                function() {
+                  goog.log.info(this.logger, 'GAPI lib loaded');
+                  goog.log.info(this.logger, 'Loading oauth library');
+                  goog.global['gapi']['load']('auth2', goog.bind(function() {
+                    goog.log.info(this.logger, 'oauth library loaded');
+                    goog.log.info(
+                        this.logger, 'Initializing google oauth with id:' +
+                            pstj.app.GoogleClientId);
+                    goog.global['gapi']['auth2']['init']({
+                      'client_id': pstj.app.GoogleClientId,
+                      'cookiepolicy': 'single_host_origin'
+                    });
+                    goog.log.info(this.logger, 'Oauth initialized');
+                    // Loaded the auth2 api
+                    resolve();
+                    goog.log.info(this.logger, 'Checking for existing user');
+                    var hasUser =
+                        goog.global['gapi']['auth2']
+                                   ['getAuthInstance']()['isSignedIn']['get']();
+                    // if we have an user we need to query it and resolve
+                    // user promise, else we reject the user promise
+                    if (hasUser) {
+                      var user = goog.global['gapi']['auth2']
+                                            ['getAuthInstance']()['currentUser']
+                                                                 ['get']();
+                      var bp = user['getBasicProfile']();
+                      resolve(/** @type {!pstj.ds.oauth.User} */ ({
+                        id: bp['getId'](),
+                        name: bp['getName'](),
+                        provider: 'google'
+                      }));
+                    } else {
+                      goog.log.error(this.logger, 'No user logged in');
+                      rej();
+                    }
+                  }, this));
+                },
+                this)
+            .addErrback(function(e) {
+              goog.log.error(this.logger, 'Faild to load GAPI');
+              reject(e);
               rej();
-            }
-          }, this));
-        }, this).addErrback(function(e) {
-          goog.log.error(this.logger, 'Faild to load GAPI');
-          reject(e);
-          rej();
-        });
+            });
       }, this);
     }, this);
   },
@@ -115,9 +123,7 @@ pstj.app.Google = goog.defineClass(null, {
     return new goog.Promise(function(resolve, reject) {
       this.userPromise_ = goog.Promise.reject();
       var instance = goog.global['gapi']['auth2']['getAuthInstance']();
-      instance['signOut']()['then'](function() {
-        resolve(null);
-      });
+      instance['signOut']()['then'](function() { resolve(null); });
     });
   },
 
@@ -132,7 +138,7 @@ pstj.app.Google = goog.defineClass(null, {
       var instance = goog.global['gapi']['auth2']['getAuthInstance']();
       instance['signIn']()['then'](goog.bind(function(userobj) {
         var bp = userobj['getBasicProfile']();
-        resolve(/** @type {!pstj.ds.oauth.User} */({
+        resolve(/** @type {!pstj.ds.oauth.User} */ ({
           id: bp['getId'](),
           name: bp['getName'](),
           provider: 'google'
@@ -144,7 +150,7 @@ pstj.app.Google = goog.defineClass(null, {
 
   /**
    * @protected
-   * @type {goog.debug.Logger}
+   * @type {?goog.debug.Logger}
    */
   logger: goog.log.getLogger('pstj.app.Google')
 });

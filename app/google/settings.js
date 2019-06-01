@@ -7,4 +7,5 @@ goog.provide('pstj.app.google.settings');
  *
  * @define {string} The client_id to use. See {@see http://bit.ly/2kekech}
  */
-goog.define('pstj.app.google.settings.CLIENT_ID', '');
+pstj.app.google.settings.CLIENT_ID =
+    goog.define('pstj.app.google.settings.CLIENT_ID', '');

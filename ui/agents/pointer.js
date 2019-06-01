@@ -88,9 +88,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * @type {goog.async.Delay}
      * @private
      */
-    this.longPressDelay_ = new goog.async.Delay(
-        this.fireLongPress,
-        1650, this);
+    this.longPressDelay_ = new goog.async.Delay(this.fireLongPress, 1650, this);
 
     // generate our point and keep them for the app live cycle.
     /**
@@ -193,9 +191,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * Getter for the swipe configuration instance.
    * @return {!pstj.agent.Swipe}
    */
-  getSwipe: function() {
-    return this.swipe_;
-  },
+  getSwipe: function() { return this.swipe_; },
 
   /**
    * Sets up the document listeners when event delegation is used.
@@ -203,12 +199,14 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    */
   setupListeners: function() {
     if (pstj.agent.Pointer.USE_EVENT_DELEGATION) {
-      this.handler.listen(this.dom_.getDocument(), [
-        goog.events.EventType.TOUCHSTART,
-        goog.events.EventType.TOUCHMOVE,
-        goog.events.EventType.TOUCHEND,
-        goog.events.EventType.TOUCHCANCEL,
-        goog.events.EventType.MOUSEDOWN], this.handleEvents);
+      this.handler.listen(
+          this.dom_.getDocument(),
+          [
+            goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHMOVE,
+            goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL,
+            goog.events.EventType.MOUSEDOWN
+          ],
+          this.handleEvents);
     }
   },
 
@@ -217,9 +215,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * Getter for the type of event that triggered the pointer event.
    * @return {pstj.agent.Pointer.Type}
    */
-  getOriginalType: function() {
-    return this.currentEventType_;
-  },
+  getOriginalType: function() { return this.currentEventType_; },
 
 
   /**
@@ -289,18 +285,18 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
     this.elements_[this.indexOf(component)] = el;
 
     if (pstj.agent.Pointer.USE_DOM_ATTRIBUTE) {
-      el.setAttribute(
-          pstj.agent.Pointer.DOM_ATTRIBUTE, this.elements_.length);
+      el.setAttribute(pstj.agent.Pointer.DOM_ATTRIBUTE, this.elements_.length);
     }
 
     if (!pstj.agent.Pointer.USE_EVENT_DELEGATION) {
-      this.handler.listen(el, [
-        goog.events.EventType.TOUCHSTART,
-        goog.events.EventType.TOUCHMOVE,
-        goog.events.EventType.TOUCHEND,
-        goog.events.EventType.TOUCHCANCEL,
-        goog.events.EventType.MOUSEDOWN
-      ], this.handleEvents);
+      this.handler.listen(
+          el,
+          [
+            goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHMOVE,
+            goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL,
+            goog.events.EventType.MOUSEDOWN
+          ],
+          this.handleEvents);
     }
   },
 
@@ -319,14 +315,16 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
   enableDocumentMouseHandling: function(enable) {
     if (enable && !this.isDocumentBound_) {
       this.isDocumentBound_ = true;
-      this.handler.listen(this.dom_.getDocument(), [
-        goog.events.EventType.MOUSEMOVE,
-        goog.events.EventType.MOUSEUP], this.handleEvents);
+      this.handler.listen(
+          this.dom_.getDocument(),
+          [goog.events.EventType.MOUSEMOVE, goog.events.EventType.MOUSEUP],
+          this.handleEvents);
     } else if (!enable && this.isDocumentBound_) {
       this.isDocumentBound_ = false;
-      this.handler.unlisten(this.dom_.getDocument(), [
-        goog.events.EventType.MOUSEMOVE,
-        goog.events.EventType.MOUSEUP], this.handleEvents);
+      this.handler.unlisten(
+          this.dom_.getDocument(),
+          [goog.events.EventType.MOUSEMOVE, goog.events.EventType.MOUSEUP],
+          this.handleEvents);
     }
   },
 
@@ -347,13 +345,14 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         el.removeAttribute(pstj.agent.Pointer.DOM_ATTRIBUTE);
       }
       if (!pstj.agent.Pointer.USE_EVENT_DELEGATION) {
-        this.handler.unlisten(el, [
-          goog.events.EventType.TOUCHSTART,
-          goog.events.EventType.TOUCHMOVE,
-          goog.events.EventType.TOUCHEND,
-          goog.events.EventType.TOUCHCANCEL,
-          goog.events.EventType.MOUSEDOWN
-        ], this.handleEvents);
+        this.handler.unlisten(
+            el,
+            [
+              goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHMOVE,
+              goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL,
+              goog.events.EventType.MOUSEDOWN
+            ],
+            this.handleEvents);
       }
     }
 
@@ -381,27 +380,21 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * @param {number=} opt_idx The index of the multi event.
    * @return {!pstj.agent.Point_}
    */
-  getCurrentPoint: function(opt_idx) {
-    return this.currentPoint_;
-  },
+  getCurrentPoint: function(opt_idx) { return this.currentPoint_; },
 
 
   /**
    * Getter for the start point.
    * @return {!pstj.agent.Point_}
    */
-  getStartPoint: function() {
-    return this.startPoint_;
-  },
+  getStartPoint: function() { return this.startPoint_; },
 
 
   /**
    * Getter for the previous point in move.
    * @return {!pstj.agent.Point_}
    */
-  getLastPoint: function() {
-    return this.lastPoint_;
-  },
+  getLastPoint: function() { return this.lastPoint_; },
 
 
   /**
@@ -421,7 +414,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
     if (e.type == goog.events.EventType.TOUCHSTART ||
         e.type == goog.events.EventType.MOUSEDOWN) {
-
       // Reset velocity detectors
       this.lastDiffX_ = 0;
       this.lastDiffY_ = 0;
@@ -432,12 +424,12 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
       this.swipe_.reset();
 
       if (!this.isLocked()) {
-        if (!this.lock(goog.asserts.assertInstanceof(
-            // Use the original target is event delegation is in use.
-            (pstj.agent.Pointer.USE_EVENT_DELEGATION ?
-                e.target :
-                e.currentTarget),
-            Element))) {
+        if (!this.lock(
+                goog.asserts.assertInstanceof(
+                    // Use the original target is event delegation is in use.
+                    (pstj.agent.Pointer.USE_EVENT_DELEGATION ? e.target :
+                                                               e.currentTarget),
+                    Element))) {
           return;
         }
       }
@@ -449,7 +441,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
           // touch for now
           var touch = this.getTouchByIndex(this.getTouchEvent(e));
           this.startPoint_.update(touch.pageX, touch.pageY, ts);
-          this.sourceElement_ = /** @type {Element} */(e.target);
+          this.sourceElement_ = /** @type {Element} */ (e.target);
         } else {
           this.longPressDelay_.stop();
           // TODO: handle multiple touches.
@@ -464,7 +456,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         this.currentEventType_ = pstj.agent.Pointer.Type.MOUSE;
         var event = this.getMouseEvent(e);
         this.startPoint_.update(event.pageX, event.pageY, ts);
-        this.sourceElement_ = /** @type {Element} */(e.target);
+        this.sourceElement_ = /** @type {Element} */ (e.target);
         // Start listening on the document for move events as mouse
         // events are not bound to their original target.
         this.enableDocumentMouseHandling(true);
@@ -481,10 +473,10 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         this.externalMoveHandling_ = true;
       }
 
-    // MOVE
-    } else if (e.type == goog.events.EventType.TOUCHMOVE ||
+      // MOVE
+    } else if (
+        e.type == goog.events.EventType.TOUCHMOVE ||
         e.type == goog.events.EventType.MOUSEMOVE) {
-
       if (this.isLocked()) {
         if (e.type == goog.events.EventType.MOUSEMOVE) {
           // cancel event handling if the document is not bound
@@ -524,7 +516,8 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
             this.currentPoint_.update(touch.pageX, touch.pageY, ts);
           } else {
-            goog.log.error(this.logger,
+            goog.log.error(
+                this.logger,
                 'Unsupported - TOUCHMOVE with more than one touch');
             // TODO: handle multiple touches.
           }
@@ -533,10 +526,10 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
 
         if (!this.raf_.isActive()) this.raf_.start();
       }
-    // RELEASE
-    } else if (e.type == goog.events.EventType.TOUCHEND ||
+      // RELEASE
+    } else if (
+        e.type == goog.events.EventType.TOUCHEND ||
         e.type == goog.events.EventType.MOUSEUP) {
-
       if (this.isLocked()) {
         this.externalMoveHandling_ = false;
         if (this.sourceElement_.tagName.toUpperCase() !=
@@ -550,7 +543,6 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
             // TODO: figure out how to handle multiple touches.
             // for now just ignore the event completely
             return;
-
           }
         } else if (e.type == goog.events.EventType.MOUSEUP) {
           this.currentPoint_.timestamp = ts;
@@ -560,12 +552,10 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         this.raf_.stop();
         this.longPressDelay_.stop();
         this.createEvent(pstj.agent.Pointer.EventType.RELEASE);
-
         if (goog.math.Coordinate.distance(
-            this.startPoint_, this.currentPoint_) < 2 &&
+                this.startPoint_, this.currentPoint_) < 2 &&
             (this.currentPoint_.timestamp - this.startPoint_.timestamp) <
                 pstj.agent.Pointer.TapDelay) {
-
           this.createEvent(pstj.agent.Pointer.EventType.TAP);
         }
 
@@ -594,7 +584,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
         this.sourceElement_ = null;
         this.unlock(this.currentElement_);
       }
-    // CANCEL
+      // CANCEL
     } else if (e.type == goog.events.EventType.TOUCHCANCEL) {
       this.externalMoveHandling_ = false;
       goog.log.warning(this.logger, 'TODO: handle cancel events');
@@ -645,9 +635,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    *
    * @return {boolean}
    */
-  isLocked: function() {
-    return !goog.isNull(this.currentElement_);
-  },
+  isLocked: function() { return !goog.isNull(this.currentElement_); },
 
 
   /**
@@ -655,9 +643,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    * @param {goog.events.BrowserEvent} e
    * @return {number}
    */
-  getTouchesCount: function(e) {
-    return this.getTouchEvent(e).touches.length;
-  },
+  getTouchesCount: function(e) { return this.getTouchEvent(e).touches.length; },
 
 
   /**
@@ -700,9 +686,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    *
    * @return {goog.ui.Component}
    */
-  getTargetComponent: function() {
-    return this.currentComponent_;
-  },
+  getTargetComponent: function() { return this.currentComponent_; },
 
 
   /**
@@ -731,9 +715,7 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
    *
    * @return {Element}
    */
-  getSourceTarget: function() {
-    return this.sourceElement_;
-  },
+  getSourceTarget: function() { return this.sourceElement_; },
 
 
   statics: {
@@ -749,23 +731,14 @@ pstj.agent.Pointer = goog.defineClass(pstj.ui.Agent, {
      * The type of initiation event.
      * @enum {number}
      */
-    Type: {
-      UNKNOWN: 0,
-      TOUCH: 1,
-      MOUSE: 2,
-      POINTER: 3
-    },
+    Type: {UNKNOWN: 0, TOUCH: 1, MOUSE: 2, POINTER: 3},
 
 
     /**
      * The directions we are interested in.
      * @enum {number}
      */
-    Direction: {
-      X: 1,
-      Y: 2,
-      ALL: 4
-    }
+    Direction: {X: 1, Y: 2, ALL: 4}
   }
 
 });
@@ -781,7 +754,8 @@ goog.addSingletonGetter(pstj.agent.Pointer);
  * could lower the power consumption on mobile devices, thus we support that
  * as well at the cost of resolving the element once per pointer inisiation.
  */
-goog.define('pstj.agent.Pointer.USE_EVENT_DELEGATION', false);
+pstj.agent.Pointer.USE_EVENT_DELEGATION =
+    goog.define('pstj.agent.Pointer.USE_EVENT_DELEGATION', false);
 
 
 /**
@@ -793,7 +767,8 @@ goog.define('pstj.agent.Pointer.USE_EVENT_DELEGATION', false);
  * access to the attribute instead of array index lookup (which can be
  * potentially slower on larget lists).
  */
-goog.define('pstj.agent.Pointer.USE_DOM_ATTRIBUTE', false);
+pstj.agent.Pointer.USE_DOM_ATTRIBUTE =
+    goog.define('pstj.agent.Pointer.USE_DOM_ATTRIBUTE', false);
 
 
 /**
@@ -815,16 +790,14 @@ pstj.agent.Pointer.EventType = {
  * @define {number} The maximum delay between the initiation of the tap and its
  * end to consider the gesture as tap event.
  */
-goog.define('pstj.agent.Pointer.TapDelay', 150);
+pstj.agent.Pointer.TapDelay = goog.define('pstj.agent.Pointer.TapDelay', 150);
 
 
 /**
  * Implementes a simple swipe configuration object.
  */
 pstj.agent.Swipe = goog.defineClass(null, {
-  constructor: function() {
-    this.directions_ = 0;
-  },
+  constructor: function() { this.directions_ = 0; },
 
   /**
    * Enables a direction for this swipe.
@@ -871,29 +844,20 @@ pstj.agent.Swipe = goog.defineClass(null, {
    * Checks if currently there is a swipe direction recorded.
    * @return {boolean} True if at leas one direction swipe is added.
    */
-  hasSwipe: function() {
-    return this.directions_ != 0;
-  },
+  hasSwipe: function() { return this.directions_ != 0; },
 
   /**
    * Resets the swipe direction state.
    * @package
    */
-  reset: function() {
-    this.directions_ = 0;
-  },
+  reset: function() { this.directions_ = 0; },
 
   statics: {
     /**
      * The direction we understand.
      * @enum {number}
      */
-    Direction: {
-      TOP: 1,
-      BOTTOM: 2,
-      LEFT: 4,
-      RIGHT: 8
-    }
+    Direction: {TOP: 1, BOTTOM: 2, LEFT: 4, RIGHT: 8}
   }
 });
 
@@ -1003,10 +967,12 @@ pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
           pstj.agent.Pointer.getInstance().getStartPoint(),
           pstj.agent.Pointer.getInstance().getCurrentPoint());
     } else if (opt_direction == pstj.agent.Pointer.Direction.X) {
-      return (pstj.agent.Pointer.getInstance().getStartPoint().x -
+      return (
+          pstj.agent.Pointer.getInstance().getStartPoint().x -
           pstj.agent.Pointer.getInstance().getCurrentPoint().x);
     } else if (opt_direction == pstj.agent.Pointer.Direction.Y) {
-      return (pstj.agent.Pointer.getInstance().getStartPoint().y -
+      return (
+          pstj.agent.Pointer.getInstance().getStartPoint().y -
           pstj.agent.Pointer.getInstance().getCurrentPoint().y);
     } else {
       return 0;
@@ -1022,10 +988,12 @@ pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
   getDuration: function() {
     if (this.type == pstj.agent.Pointer.EventType.RELEASE ||
         this.type == pstj.agent.Pointer.EventType.TAP) {
-      return (pstj.agent.Pointer.getInstance().getCurrentPoint().timestamp -
+      return (
+          pstj.agent.Pointer.getInstance().getCurrentPoint().timestamp -
           pstj.agent.Pointer.getInstance().getStartPoint().timestamp);
     } else if (this.type == pstj.agent.Pointer.EventType.MOVE) {
-      return (pstj.agent.Pointer.getInstance().getCurrentPoint().timestamp -
+      return (
+          pstj.agent.Pointer.getInstance().getCurrentPoint().timestamp -
           pstj.agent.Pointer.getInstance().getLastPoint().timestamp);
     } else {
       return 0;
@@ -1038,9 +1006,7 @@ pstj.agent.PointerEvent = goog.defineClass(goog.events.Event, {
    *
    * @return {!pstj.agent.Swipe}
    */
-  getSwipe: function() {
-    return pstj.agent.Pointer.getInstance().getSwipe();
-  },
+  getSwipe: function() { return pstj.agent.Pointer.getInstance().getSwipe(); },
 
 
   /**

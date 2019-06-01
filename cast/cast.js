@@ -105,7 +105,7 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
      * @type {boolean}
      * @private
      */
-    //this.available_ = false;
+    // this.available_ = false;
     /**
      * Delayed initialization. Used for when the chrome cast api is not
      * readily available and we need to re-initialize internally.
@@ -123,8 +123,8 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
      * @type {function(this:pstj.cast.Cast, boolean): void}
      * @private
      */
-    this.sessionUpdateListenerBound_ = goog.bind(this.sessionUpdateListener,
-        this);
+    this.sessionUpdateListenerBound_ =
+        goog.bind(this.sessionUpdateListener, this);
     /**
      * Prebound version of the error handler for requestSession calls.
      * @type {function(this:pstj.cast.Cast, chrome.cast.Error): void}
@@ -171,7 +171,8 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * @return {boolean}
    */
   isAvailable: function() {
-    return (this.deviceState_ == pstj.cast.Cast.DeviceState.IDLE ||
+    return (
+        this.deviceState_ == pstj.cast.Cast.DeviceState.IDLE ||
         this.deviceState_ == pstj.cast.Cast.DeviceState.ACTIVE);
   },
 
@@ -180,9 +181,7 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * Allows users to query the device state.
    * @return {pstj.cast.Cast.DeviceState}
    */
-  getDeviceState: function() {
-    return this.deviceState_;
-  },
+  getDeviceState: function() { return this.deviceState_; },
 
 
   /**
@@ -255,8 +254,8 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    */
   getDelayedInit_: function() {
     if (goog.isNull(this.delayedInit_)) {
-      this.delayedInit_ = new goog.async.Delay(this.initializePrivate_,
-          1000, this);
+      this.delayedInit_ =
+          new goog.async.Delay(this.initializePrivate_, 1000, this);
     }
     return this.delayedInit_;
   },
@@ -277,21 +276,21 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
     // a previous session is still alive on the device.
     var config = new chrome.cast.ApiConfig(
         sessionRequest,
-        goog.bind(function(e) {
-          if (goog.DEBUG) {
-            console.log('Original session listener instantiation');
-          }
-          this.sessionListener(e);
-        }, this),
+        goog.bind(
+            function(e) {
+              if (goog.DEBUG) {
+                console.log('Original session listener instantiation');
+              }
+              this.sessionListener(e);
+            },
+            this),
         goog.bind(this.receiverListener, this),
         chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED);
     // Initialize session discovery. The session is actually a link
     // to the cast SDK/API and not to a remote application or a particular
     // device that is in range
     chrome.cast.initialize(
-        config,
-        goog.functions.NULL,
-        goog.bind(this.onInitError, this));
+        config, goog.functions.NULL, goog.bind(this.onInitError, this));
   },
 
 
@@ -419,8 +418,9 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    * @return {boolean}
    */
   hasActiveSession: function() {
-    return (!goog.isNull(this.session_) && (this.session_.status ==
-        chrome.cast.SessionStatus.CONNECTED));
+    return (
+        !goog.isNull(this.session_) &&
+        (this.session_.status == chrome.cast.SessionStatus.CONNECTED));
   },
 
 
@@ -435,7 +435,7 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
     }
     if (pstj.cast.OldAPI) {
       if (!alive) {
-        this.session_.status = /** @type {!chrome.cast.SessionStatus} */(
+        this.session_.status = /** @type {!chrome.cast.SessionStatus} */ (
             chrome.cast.SessionStatus.DISCONNECTED);
         this.dispatchEvent(pstj.cast.Cast.EventType.DISCONNECTED);
       }
@@ -536,14 +536,16 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
    */
   createSession: function() {
     chrome.cast.requestSession(
-        goog.bind(function(e) {
-          if (!pstj.cast.OldAPI) {
-            if (goog.DEBUG) {
-              console.log('Subscribed from create session - for cordova');
-            }
-            this.sessionListener(e);
-          }
-        }, this),
+        goog.bind(
+            function(e) {
+              if (!pstj.cast.OldAPI) {
+                if (goog.DEBUG) {
+                  console.log('Subscribed from create session - for cordova');
+                }
+                this.sessionListener(e);
+              }
+            },
+            this),
         // this.sessionListenerBound_,
         this.onLaunchErrorBound_);
   },
@@ -593,8 +595,8 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
     request.currentTime = this.mediaTime;
 
     this.playerState_ = pstj.cast.Cast.PlayerState.LOADING;
-    this.session_.loadMedia(request,
-        this.onLoadMediaSuccess_.bind(this),
+    this.session_.loadMedia(
+        request, this.onLoadMediaSuccess_.bind(this),
         this.onLoadMediaError_.bind(this));
 
     // } else {
@@ -675,13 +677,7 @@ pstj.cast.Cast = goog.defineClass(EventTarget, {
      * The state the remote device could be in.
      * @enum {number}
      */
-    DeviceState: {
-      UNAVAILABLE: -1,
-      IDLE: 0,
-      ACTIVE: 1,
-      WARNING: 2,
-      ERROR: 3
-    },
+    DeviceState: {UNAVAILABLE: -1, IDLE: 0, ACTIVE: 1, WARNING: 2, ERROR: 3},
 
 
     /**
@@ -728,7 +724,7 @@ goog.addSingletonGetter(pstj.cast.Cast);
  *   implemented in some third party plugins, which changes how some methods
  *   operate.
  */
-goog.define('pstj.cast.OldAPI', false);
+pstj.cast.OldAPI = goog.define('pstj.cast.OldAPI', false);
 
 
 if (!pstj.cast.OldAPI) {
